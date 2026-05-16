@@ -91,13 +91,46 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (filled by roadmap) | | |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 3 | Pending |
+| AUTH-04 | Phase 4 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| CAT-01 | Phase 2 | Pending |
+| CAT-02 | Phase 2 | Pending |
+| CAT-03 | Phase 2 | Pending |
+| CAT-04 | Phase 2 | Pending |
+| CAT-05 | Phase 2 | Pending |
+| CAT-06 | Phase 2 | Pending |
+| CAT-07 | Phase 2 | Pending |
+| CART-01 | Phase 3 | Pending |
+| CART-02 | Phase 3 | Pending |
+| CART-03 | Phase 3 | Pending |
+| CHK-01 | Phase 3 | Pending |
+| CHK-02 | Phase 3 | Pending |
+| CHK-03 | Phase 3 | Pending |
+| CHK-04 | Phase 3 | Pending |
+| CHAT-01 | Phase 5 | Pending |
+| CHAT-02 | Phase 5 | Pending |
+| CHAT-03 | Phase 5 | Pending |
+| CHAT-04 | Phase 5 | Pending |
+| ADM-01 | Phase 4 | Pending |
+| ADM-02 | Phase 4 | Pending |
+| ADM-03 | Phase 4 | Pending |
+| ADM-04 | Phase 4 | Pending |
+| ADM-05 | Phase 4 | Pending |
+| UI-01 | Phase 1 | Pending |
+| UI-02 | Phase 1 | Pending |
+| UI-03 | Phase 1 | Pending |
+| SEO-01 | Phase 2 | Pending |
+| SEO-02 | Phase 2 | Pending |
+| PERF-01 | Phase 1 | Pending |
 
 **Coverage:**
-- v1 requirements: 32 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 32 ⚠️
+- v1 requirements: 34 total
+- Mapped to phases: 34/34 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-16*
-*Last updated: 2026-05-16 after initial definition*
+*Last updated: 2026-05-16 after roadmap creation*
