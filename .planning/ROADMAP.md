@@ -73,7 +73,30 @@ Plans:
   4. Користувач шукає і фільтрує за категорією, брендом, ціною і станом; фільтри в URL — посилання можна поділитися
   5. Сторінки категорій і товарів мають унікальні meta та JSON-LD (Product, LocalBusiness для Львова)
 
-**Plans**: TBD
+**Plans**: 6 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Prisma Product/Image, migrate, catalog.service, seed (data foundation)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 02-02-PLAN.md — Category grid on /katalog/[slug] (CAT-01, CAT-03, CAT-07)
+- [ ] 02-03-PLAN.md — PDP /tovar/[slug] (CAT-02)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 02-04-PLAN.md — nuqs filters + global /katalog (CAT-05, CAT-06)
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 02-05-PLAN.md — Text search q param (CAT-04)
+
+**Wave 5** *(blocked on Wave 2)*
+
+- [ ] 02-06-PLAN.md — generateMetadata, JSON-LD, sitemap (SEO-01, SEO-02)
+
 **UI hint**: yes
 
 ### Phase 3: Cart & Checkout
@@ -145,7 +168,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation, Auth & Design System | 0/6 | Not started | - |
-| 2. Catalog & Discovery | 0/TBD | Not started | - |
+| 2. Catalog & Discovery | 0/6 | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 0/TBD | Not started | - |
 | 5. Realtime Chat | 0/TBD | Not started | - |
