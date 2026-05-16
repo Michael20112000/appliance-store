@@ -40,6 +40,8 @@ yarn-error.log*
 
 # vercel
 .vercel
+.vercel-cli-data
+.vercel-cli-cache
 
 # typescript
 *.tsbuildinfo
