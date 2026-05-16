@@ -567,18 +567,13 @@ Phase mode is **mvp** — ship thin end-to-end slices, not horizontal layers onl
 | A4 | Seed uses pre-uploaded Cloudinary public IDs | Seed | Without IDs, cards show broken images until manual upload |
 | A5 | `nuqs` + `schema-dts` safe without slopcheck | Package audit | Rare supply-chain risk — human-verify at install |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Store NAP for LocalBusiness**
-   - What we know: Footer has placeholder contacts from Phase 1.
-   - What's unclear: Real address/phone for JSON-LD.
-   - Recommendation: Use env `STORE_ADDRESS`, `STORE_PHONE` with Lviv defaults in seed/docs; planner adds to `.env.example`.
+1. **Store NAP for LocalBusiness** — RESOLVED: env `STORE_ADDRESS`, `STORE_PHONE` with Lviv defaults in `.env.example` (plan 02-06).
 
-2. **PDP for sold items — 404 vs «Продано»**
-   - Recommendation: 404 for strict CAT-07; revisit in Phase 6 polish if marketing wants sold pages.
+2. **PDP for sold items — 404 vs «Продано»** — RESOLVED: `notFound()` for SOLD/DRAFT (plans 02-03, strict CAT-07).
 
-3. **Global `/katalog` vs category-only browse**
-   - Recommendation: Both — `/katalog` for «всі товари», category pages for SEO landing.
+3. **Global `/katalog` vs category-only browse** — RESOLVED: both routes — `/katalog` global list + `/katalog/[slug]` category landing (plans 02-02, 02-04).
 
 ## Environment Availability
 

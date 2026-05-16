@@ -93,7 +93,7 @@ Plans:
 
 - [ ] 02-05-PLAN.md — Text search q param (CAT-04)
 
-**Wave 5** *(blocked on Wave 2)*
+**Wave 5** *(blocked on Wave 4 completion)*
 
 - [ ] 02-06-PLAN.md — generateMetadata, JSON-LD, sitemap (SEO-01, SEO-02)
 
