@@ -686,17 +686,14 @@ export default async function HomePage() {
 | A4 | Geist package `geist` works with Next 16 without `next/font/local` | UI | Font load failure — fallback Inter in layout |
 | A5 | Phase 1 skips `requireEmailVerification` | Auth | Simpler signup; revisit for production abuse |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Better Auth role string for buyers**  
-   - Known: admin plugin defaults to `user` in docs.  
-   - Unclear: whether `buyer` is accepted as `defaultRole`.  
-   - Recommendation: Spike in Wave 0 task 1 — generate schema, test signup, adjust PLAN.
+1. **Better Auth role string for buyers** — **RESOLVED**  
+   - Decision: use `defaultRole: "buyer"` in admin plugin config (`01-05-PLAN.md` Task 1).  
+   - Spike: after `npx @better-auth/cli generate`, run one signup in `01-02` seed verification; if plugin rejects `buyer`, map public signup to `user` and rename app role field in a follow-up task (document in SUMMARY).
 
-2. **Preview DB strategy**  
-   - Known: Neon supports branches.  
-   - Unclear: per-PR branch vs shared staging for solo dev.  
-   - Recommendation: Solo → one dev branch; enable per-PR when team grows.
+2. **Preview DB strategy** — **RESOLVED**  
+   - Decision: **one Neon dev branch** for local + Vercel preview (D-18, `01-02-PLAN.md`); per-PR branches deferred until team grows.
 
 ## Environment Availability
 
