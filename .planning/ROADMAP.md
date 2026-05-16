@@ -38,24 +38,24 @@
 Plans:
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Scaffold, tests, Vercel deploy (S1)
+- [x] 01-01-PLAN.md — Scaffold, tests, Vercel deploy (S1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-02-PLAN.md — Neon + Prisma migrate + seed (S2)
-- [ ] 01-03-PLAN.md — Design tokens + shadcn + storefront shell (S3)
+- [x] 01-02-PLAN.md — Neon + Prisma migrate + seed (S2)
+- [x] 01-03-PLAN.md — Design tokens + shadcn + storefront shell (S3)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-04-PLAN.md — Public home + category stubs (S4)
+- [x] 01-04-PLAN.md — Public home + category stubs (S4)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 01-05-PLAN.md — Auth pages + session persist (S5)
+- [x] 01-05-PLAN.md — Auth pages + session persist (S5)
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 01-06-PLAN.md — Admin RBAC + Cloudinary OptimizedImage (S6)
+- [x] 01-06-PLAN.md — Admin RBAC + Cloudinary OptimizedImage (S6)
 
 **UI hint**: yes
 
