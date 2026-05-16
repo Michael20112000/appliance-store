@@ -29,7 +29,16 @@
   2. Користувач переглядає публічні сторінки без реєстрації
   3. Користувач реєструється / входить email-паролем і залишається в системі після перезавантаження
   4. Зображення з Cloudinary віддаються в оптимізованих форматах і розмірах через єдиний компонент
-**Plans**: TBD
+**Plans**: 6 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold, tests, Vercel deploy (S1)
+- [ ] 01-02-PLAN.md — Neon + Prisma migrate + seed (S2)
+- [ ] 01-03-PLAN.md — Design tokens + shadcn + storefront shell (S3)
+- [ ] 01-04-PLAN.md — Public home + category stubs (S4)
+- [ ] 01-05-PLAN.md — Auth pages + session persist (S5)
+- [ ] 01-06-PLAN.md — Admin RBAC + Cloudinary OptimizedImage (S6)
+
 **UI hint**: yes
 
 ### Phase 2: Catalog & Discovery
@@ -102,7 +111,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation, Auth & Design System | 0/TBD | Not started | - |
+| 1. Foundation, Auth & Design System | 0/6 | Not started | - |
 | 2. Catalog & Discovery | 0/TBD | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 0/TBD | Not started | - |
