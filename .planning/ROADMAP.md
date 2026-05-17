@@ -12,7 +12,7 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 7 | Catalog Filters Fix | 4/4 | Complete   | 2026-05-17 |
-| 8 | Admin UX & Chat Lifecycle | 6/7 | In Progress|  |
+| 8 | Admin UX & Chat Lifecycle | 7/7 | Complete   | 2026-05-17 |
 | 9 | Wishlist | Обране для гостя й юзера без merge | WISH-01–05 | 5 |
 | 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | 4 |
 
@@ -62,7 +62,7 @@
 5. Адмін архівує чат → зникає з активного списку, доступний у «Архів»
 6. Адмін видаляє чат після confirm → записів немає в БД
 
-**Plans:** 6/7 plans executed
+**Plans:** 7/7 plans complete
 
 **Wave 1** *(foundation — dashboard fix + sidebar shell)*
 - [x] 08-01-PLAN.md — FIX-01 drafts href; shadcn sidebar/table/pagination/tabs install; AppSidebar layout (ADM-01)
@@ -79,7 +79,7 @@
 
 **Wave 5–6** *(blocked on Wave 4 — chat UI + verification)*
 - [x] 08-06-PLAN.md — Admin chat tabs, archive/unarchive/delete UX (CHAT-05/06)
-- [ ] 08-07-PLAN.md — Buyer archived read-only, API guard, Vitest + manual checklist (CHAT-05/06)
+- [x] 08-07-PLAN.md — Buyer archived read-only, API guard, Vitest + manual checklist (CHAT-05/06)
 
 **Notes:**
 - Prisma: `ConversationStatus` enum (`OPEN` | `ARCHIVED`) + optional `deletedAt` або hard delete policy
