@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { X } from "lucide-react";
 import { useChat } from "@/components/chat/chat-provider";
 import { ChatComposer } from "@/components/chat/chat-composer";
@@ -55,7 +56,7 @@ function DisconnectedBanner({
   );
 }
 
-function PanelBody() {
+function PanelBody({ useNativeScroll }: { useNativeScroll?: boolean }) {
   const {
     messages,
     isLoading,
@@ -67,7 +68,7 @@ function PanelBody() {
   } = useChat();
 
   return (
-    <>
+    <motion.div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <PanelHeader onClose={closePanel} />
       {isDisconnected ? (
         <DisconnectedBanner onRefresh={refetchMessages} />
@@ -76,12 +77,13 @@ function PanelBody() {
         messages={messages}
         isLoading={isLoading}
         loadError={loadError}
+        useNativeScroll={useNativeScroll}
       />
       {productContext ? (
         <ProductContextBanner context={productContext} />
       ) : null}
       <ChatComposer />
-    </>
+    </motion.div>
   );
 }
 
@@ -119,7 +121,7 @@ export function ChatPanel() {
           aria-modal="true"
           aria-label="Чат з магазином"
         >
-          {isOpen ? <PanelBody /> : null}
+          {isOpen ? <PanelBody useNativeScroll={false} /> : null}
         </div>
       </div>
 
@@ -129,12 +131,13 @@ export function ChatPanel() {
       >
         <SheetContent
           side="bottom"
-          className="flex h-[85dvh] flex-col gap-0 p-0 md:hidden"
+          showCloseButton={false}
+          className="flex h-[85dvh] min-h-0 flex-col gap-0 p-0 md:hidden"
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Чат з магазином</SheetTitle>
           </SheetHeader>
-          <PanelBody />
+          <PanelBody useNativeScroll />
         </SheetContent>
       </Sheet>
     </>

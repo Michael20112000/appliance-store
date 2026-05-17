@@ -13,6 +13,8 @@ type MessageListProps = {
   buyerDisplayName?: string;
   emptyTitle?: string;
   emptyBody?: string;
+  /** Native overflow scroll for mobile Sheet (touch-friendly). */
+  useNativeScroll?: boolean;
 };
 
 export function MessageList({
@@ -22,6 +24,7 @@ export function MessageList({
   buyerDisplayName,
   emptyTitle = "Напишіть нам",
   emptyBody = "Маєте питання про товар чи замовлення? Ми відповімо тут.",
+  useNativeScroll = false,
 }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -57,22 +60,30 @@ export function MessageList({
     );
   }
 
-  return (
-    <ScrollArea className="min-h-0 flex-1">
-      <div
-        className="flex flex-col gap-2 px-4 py-4"
-        aria-live="polite"
-        aria-relevant="additions"
-      >
-        {messages.map((message) => (
-          <MessageBubble
-            key={message.id}
-            message={message}
-            buyerDisplayName={buyerDisplayName}
-          />
-        ))}
-        <div ref={bottomRef} />
-      </div>
-    </ScrollArea>
+  const thread = (
+    <div
+      className="flex flex-col gap-2 px-4 py-4"
+      aria-live="polite"
+      aria-relevant="additions"
+    >
+      {messages.map((message) => (
+        <MessageBubble
+          key={message.id}
+          message={message}
+          buyerDisplayName={buyerDisplayName}
+        />
+      ))}
+      <div ref={bottomRef} />
+    </div>
   );
+
+  if (useNativeScroll) {
+    return (
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+        {thread}
+      </div>
+    );
+  }
+
+  return <ScrollArea className="min-h-0 flex-1">{thread}</ScrollArea>;
 }
