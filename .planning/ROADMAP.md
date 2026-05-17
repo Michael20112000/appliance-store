@@ -205,7 +205,7 @@ Plans:
 
 **Wave 3b** *(blocked on 05-03 — shares chat.actions.ts)*
 
-- [ ] 05-04-PLAN.md — Admin /admin/chaty inbox, AdminChatProvider, enable Чати nav + unread badge (CHAT-04, ADM-05)
+- [x] 05-04-PLAN.md — Admin /admin/chaty inbox, AdminChatProvider, enable Чати nav + unread badge (CHAT-04, ADM-05)
 
 **Wave 4** *(blocked on Wave 3)*
 
@@ -239,7 +239,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Catalog & Discovery | 0/6 | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
-| 5. Realtime Chat | 3/5 | In Progress|  |
+| 5. Realtime Chat | 4/5 | In Progress|  |
 | 6. Polish & Launch | 0/TBD | Not started | - |
 
 ---
