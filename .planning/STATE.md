@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Engagement & Fixes
 status: executing
-stopped_at: Completed 07-02-PLAN.md
-last_updated: "2026-05-17T16:20:00.000Z"
-last_activity: 2026-05-17 -- Completed 07-02 price slider and mobile filters
+stopped_at: Completed 07-03-PLAN.md
+last_updated: "2026-05-17T16:23:10.926Z"
+last_activity: 2026-05-17
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
-  percent: 50
+  completed_plans: 3
+  percent: 0
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-17)
 ## Current Position
 
 Phase: 07 (catalog-filters-fix) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 Status: Ready to execute
 Last activity: 2026-05-17
 
@@ -47,11 +47,11 @@ Last activity: 2026-05-17
 | 03 | 5 | - | - |
 | 5 | 5 | - | - |
 | 06 | 9 | - | - |
-| 07 | 2 | 16min | 8min |
+| 07 | 3 | 24min | 8min |
 
 **Recent Trend:**
 
-- Last 5 plans: 07-01, 07-02
+- Last 5 plans: 07-01, 07-02, 07-03
 - Trend: —
 
 *Updated after each plan completion*
@@ -69,6 +69,8 @@ Recent decisions affecting current work:
 - buildCatalogContextWhere shared between getDistinctBrands and getCatalogPriceBounds
 - dragValues + useMemo for slider thumb sync (no useEffect setState)
 - Mobile CatalogFiltersSheet reuses CatalogFiltersPanel
+- Invalid brend cleared client-side with history replace on category pages (D-07-11)
+- ActiveFilterChips in toolbar via same nuqs parsers as filters (D-07-12/13)
 
 ### Pending Todos
 
@@ -91,9 +93,9 @@ Items acknowledged at v1.0 milestone close on 2026-05-17:
 
 ## Session Continuity
 
-Last session: 2026-05-17T16:20:00.000Z
+Last session: 2026-05-17T16:23:10.917Z
 Stopped at: Completed 07-02-PLAN.md
-Resume file: .planning/phases/07-catalog-filters-fix/07-03-PLAN.md
+Resume file: None
 
 ## Operator Next Steps
 
