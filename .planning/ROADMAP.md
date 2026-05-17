@@ -13,7 +13,7 @@
 |---|-------|------|--------------|------------------|
 | 7 | Catalog Filters Fix | 4/4 | Complete   | 2026-05-17 |
 | 8 | Admin UX & Chat Lifecycle | 7/7 | Complete   | 2026-05-17 |
-| 9 | Wishlist | Обране для гостя й юзера без merge | WISH-01–05 | 5 |
+| 9 | Wishlist | 5/5 | Complete   | 2026-05-17 |
 | 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | 4 |
 
 ### Phase 7: Catalog Filters Fix
@@ -100,22 +100,22 @@
 4. Сторінка `/obrane` (або кабінет) показує доступні товари; sold/draft приховані
 5. Unit tests на storage key і server actions
 
-**Plans:** 5 plans in 5 waves
+**Plans:** 5/5 plans complete
 
 **Wave 1** *(schema + guest storage)*
-- [ ] 09-01-PLAN.md — Prisma `WishlistItem` migrate [BLOCKING] + `guest-storage.ts` Vitest (WISH-01, WISH-03)
+- [x] 09-01-PLAN.md — Prisma `WishlistItem` migrate [BLOCKING] + `guest-storage.ts` Vitest (WISH-01, WISH-03)
 
 **Wave 2** *(server layer)*
-- [ ] 09-02-PLAN.md — wishlist service/actions, no auto-prune, no merge (WISH-02, WISH-03, WISH-04 backend)
+- [x] 09-02-PLAN.md — wishlist service/actions, no auto-prune, no merge (WISH-02, WISH-03, WISH-04 backend)
 
 **Wave 3** *(toggle UX)*
-- [ ] 09-03-PLAN.md — Storefront Toaster, `WishlistToggleButton`, ProductCard overlay + PDP (WISH-05)
+- [x] 09-03-PLAN.md — Storefront Toaster, `WishlistToggleButton`, ProductCard overlay + PDP (WISH-05)
 
 **Wave 4** *(nav + /obrane)*
-- [ ] 09-04-PLAN.md — `WishlistNavLink` all visitors, `/obrane` guest+session, unavailable rows (WISH-01, WISH-02, WISH-04)
+- [x] 09-04-PLAN.md — `WishlistNavLink` all visitors, `/obrane` guest+session, unavailable rows (WISH-01, WISH-02, WISH-04)
 
 **Wave 5** *(cabinet + verification)*
-- [ ] 09-05-PLAN.md — `/kabinet` preview ≤3, Vitest gate, `09-MANUAL-CHECKLIST.md` D-09-24 (WISH-03, WISH-04)
+- [x] 09-05-PLAN.md — `/kabinet` preview ≤3, Vitest gate, `09-MANUAL-CHECKLIST.md` D-09-24 (WISH-03, WISH-04)
 
 **Notes:**
 - Prisma: `WishlistItem` (userId, productId) unique — `npx prisma migrate dev --name wishlist_item`
