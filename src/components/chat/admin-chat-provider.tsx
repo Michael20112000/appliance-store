@@ -15,6 +15,7 @@ import {
   getPusherClient,
   isPusherClientConfigured,
 } from "@/lib/pusher-client";
+import { buildAdminChatHref, type AdminChatView } from "@/lib/admin-chat-url";
 import type { ConversationSummaryDto, MessageDto } from "@/types/chat";
 
 export type AdminChatMessage = MessageDto & {
@@ -22,6 +23,7 @@ export type AdminChatMessage = MessageDto & {
 };
 
 type AdminChatContextValue = {
+  view: AdminChatView;
   conversations: ConversationSummaryDto[];
   selectedConversationId: string | null;
   selectedConversation: ConversationSummaryDto | null;
@@ -30,6 +32,8 @@ type AdminChatContextValue = {
   loadError: string | null;
   isDisconnected: boolean;
   setSelectedConversationId: (id: string | null) => void;
+  clearSelectionAndRefresh: () => void;
+  refreshInbox: () => void;
   appendMessage: (message: AdminChatMessage) => void;
   replaceOptimisticMessage: (tempId: string, message: MessageDto) => void;
   removeOptimisticMessage: (tempId: string) => void;
@@ -51,17 +55,21 @@ type PusherMessagePayload = {
 type AdminChatProviderProps = {
   children: ReactNode;
   conversations: ConversationSummaryDto[];
+  view: AdminChatView;
+  initialConversationId?: string | null;
 };
 
 export function AdminChatProvider({
   children,
   conversations: initialConversations,
+  view,
+  initialConversationId = null,
 }: AdminChatProviderProps) {
   const router = useRouter();
   const [conversations, setConversations] = useState(initialConversations);
-  const [selectedConversationId, setSelectedConversationId] = useState<
+  const [selectedConversationId, setSelectedConversationIdState] = useState<
     string | null
-  >(null);
+  >(initialConversationId);
   const [messages, setMessages] = useState<AdminChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -78,6 +86,24 @@ export function AdminChatProvider({
       conversations.find((item) => item.id === selectedConversationId) ?? null,
     [conversations, selectedConversationId],
   );
+
+  const setSelectedConversationId = useCallback(
+    (id: string | null) => {
+      setSelectedConversationIdState(id);
+      router.replace(buildAdminChatHref(view, id), { scroll: false });
+    },
+    [router, view],
+  );
+
+  const refreshInbox = useCallback(() => {
+    router.refresh();
+  }, [router]);
+
+  const clearSelectionAndRefresh = useCallback(() => {
+    setSelectedConversationIdState(null);
+    router.replace(buildAdminChatHref(view, null), { scroll: false });
+    router.refresh();
+  }, [router, view]);
 
   const appendMessage = useCallback((message: AdminChatMessage) => {
     setMessages((prev) => {
@@ -253,6 +279,7 @@ export function AdminChatProvider({
 
   const value = useMemo<AdminChatContextValue>(
     () => ({
+      view,
       conversations,
       selectedConversationId,
       selectedConversation,
@@ -261,6 +288,8 @@ export function AdminChatProvider({
       loadError,
       isDisconnected,
       setSelectedConversationId,
+      clearSelectionAndRefresh,
+      refreshInbox,
       appendMessage,
       replaceOptimisticMessage,
       removeOptimisticMessage,
@@ -270,6 +299,7 @@ export function AdminChatProvider({
     }),
     [
       appendMessage,
+      clearSelectionAndRefresh,
       conversations,
       isDisconnected,
       isLoading,
@@ -277,11 +307,13 @@ export function AdminChatProvider({
       markConversationReadLocally,
       messages,
       refreshAfterRead,
+      refreshInbox,
       refetchMessages,
       removeOptimisticMessage,
       replaceOptimisticMessage,
       selectedConversation,
       selectedConversationId,
+      view,
     ],
   );
 
