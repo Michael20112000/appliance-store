@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
+import { OpenChatButton } from "@/components/chat/open-chat-button";
 import { JsonLd } from "@/components/catalog/json-ld";
+import { auth } from "@/lib/auth";
 import { ConditionBadge } from "@/components/catalog/condition-badge";
 import { PriceDisplay } from "@/components/catalog/price-display";
 import { ProductGallery } from "@/components/catalog/product-gallery";
@@ -25,6 +29,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
+  const session = await auth.api.getSession({ headers: await headers() });
   const product = await getPublicProductBySlug(slug);
 
   if (!product) {
@@ -72,6 +77,22 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <p className="text-muted-foreground">{product.brand}</p>
             <PriceDisplay priceKopiyky={product.price} className="text-2xl" />
             <ConditionBadge condition={product.condition} />
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <AddToCartButton
+              productId={product.id}
+              productTitle={product.title}
+              hasSession={Boolean(session?.user)}
+            />
+            <OpenChatButton
+              hasSession={Boolean(session?.user)}
+              productId={product.id}
+              productTitle={product.title}
+              productSlug={product.slug}
+              variant="outline"
+              className="w-full sm:w-auto"
+            />
           </div>
 
           <section>
