@@ -62,7 +62,24 @@
 5. Адмін архівує чат → зникає з активного списку, доступний у «Архів»
 6. Адмін видаляє чат після confirm → записів немає в БД
 
-**Plans:** TBD via `/gsd-plan-phase 8`
+**Plans:** 7 plans in 6 waves
+
+**Wave 1** *(foundation — dashboard fix + sidebar shell)*
+- [ ] 08-01-PLAN.md — FIX-01 drafts href; shadcn sidebar/table/pagination/tabs install; AppSidebar layout (ADM-01)
+
+**Wave 2** *(blocked on Wave 1 — orders backend)*
+- [ ] 08-02-PLAN.md — listOrdersAdminPaginated, Zod schema, adminOrdersUrl, Vitest (ADM-02)
+
+**Wave 3** *(blocked on Wave 2 / parallel ADM-03)*
+- [ ] 08-03-PLAN.md — Orders Data Table page, URL sort/pagination (ADM-02)
+- [ ] 08-04-PLAN.md — Remove Slug column from categories table (ADM-03)
+
+**Wave 4** *(blocked on Wave 1 — chat schema + services)*
+- [ ] 08-05-PLAN.md — ConversationStatus migration [BLOCKING], chat lifecycle services/actions (CHAT-05/06)
+
+**Wave 5–6** *(blocked on Wave 4 — chat UI + verification)*
+- [ ] 08-06-PLAN.md — Admin chat tabs, archive/unarchive/delete UX (CHAT-05/06)
+- [ ] 08-07-PLAN.md — Buyer archived read-only, API guard, Vitest + manual checklist (CHAT-05/06)
 
 **Notes:**
 - Prisma: `ConversationStatus` enum (`OPEN` | `ARCHIVED`) + optional `deletedAt` або hard delete policy
