@@ -197,7 +197,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 05-02-PLAN.md — API routes (messages POST/GET, pusher auth), rate limit, route tests (CHAT-02, CHAT-03)
+- [x] 05-02-PLAN.md — API routes (messages POST/GET, pusher auth), rate limit, route tests (CHAT-02, CHAT-03)
 
 **Wave 3** *(blocked on Wave 2)*
 
@@ -239,7 +239,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Catalog & Discovery | 0/6 | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
-| 5. Realtime Chat | 1/5 | In Progress|  |
+| 5. Realtime Chat | 2/5 | In Progress|  |
 | 6. Polish & Launch | 0/TBD | Not started | - |
 
 ---
