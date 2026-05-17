@@ -16,7 +16,7 @@
 - [x] **Phase 3: Cart & Checkout** — Кошик, оформлення замовлення (самовивіз / Львів), історія замовлень
 - [x] **Phase 4: Admin Operations** — CRUD категорій і товарів, замовлення, RBAC для `/admin` (completed 2026-05-17)
 - [x] **Phase 5: Realtime Chat** — Чат покупець ↔ магазин з persistence і адмін-інбоксом (completed 2026-05-17)
-- [ ] **Phase 6: Polish & Launch** — Продуктивність, стабільність, E2E, deploy hardening
+- [ ] **Phase 6: Polish & Launch** — Продуктивність, стабільність, E2E, deploy hardening (plans done; verification gaps 2026-05-17)
 
 ## Phase Details
 
@@ -240,11 +240,11 @@ Plans:
 
 **Wave 3** *(blocked on 06-02, 06-03)*
 
-- [ ] 06-04-PLAN.md — 06-VERIFICATION.md manual Lighthouse/Rich Results + PERF-01 code pass
+- [x] 06-04-PLAN.md — 06-VERIFICATION.md manual Lighthouse/Rich Results + PERF-01 code pass
 
 **Wave 4** *(blocked on 06-03, 06-04)*
 
-- [ ] 06-05-PLAN.md — smoke-deploy extend + deploy runbook + production smoke
+- [x] 06-05-PLAN.md — smoke-deploy extend + deploy runbook + production smoke
 
 ## Progress
 
@@ -258,7 +258,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
 | 5. Realtime Chat | 5/5 | Complete    | 2026-05-17 |
-| 6. Polish & Launch | 3/5 | In Progress|  |
+| 6. Polish & Launch | 5/5 | Gaps found | 2026-05-17 |
 
 ---
 *Roadmap created: 2026-05-16*
