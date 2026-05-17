@@ -80,3 +80,23 @@ Set variables in **Vercel → Project → Settings → Environment Variables** f
 
 - CI secrets and local gate: [§ GitHub Actions CI](#github-actions-ci) (plan 06-01).
 - `.env.example` **Production** section: Ukrainian comments for required/forbidden vars (D-06-18).
+
+## Deploy runbook (D-06-16 / D-06-17)
+
+Ordered steps before and after **Production** promote:
+
+1. **CI green on `main`** — GitHub Actions or locally: `npm test && npm run test:e2e`.
+2. **Preview gate** — fill [06-VERIFICATION.md](./06-VERIFICATION.md): mobile Lighthouse (3 URLs), Rich Results on public preview, `GET /robots.txt` + `GET /sitemap.xml`.
+3. **Vercel Production env** — all variables in [§ Production (Vercel)](#production-vercel); no `ADMIN_PASSWORD` (D-06-14/15).
+4. **Promote** — Vercel → Deployments → promote preview to **Production** (D-06-16).
+5. **Production smoke (ship blocker, D-06-19):**
+
+   ```bash
+   PLAYWRIGHT_BASE_URL=https://<production-origin> npx playwright test e2e/smoke-deploy.spec.ts --reporter=line
+   ```
+
+   Replace `<production-origin>` with the live `https` origin (no trailing slash). When production is not provisioned yet, run against the latest **preview** URL first and re-run on prod after promote (document URL in `06-05-SUMMARY.md`).
+
+6. **Sanity (optional)** — open `/katalog`, `/uviity` in browser; confirm Ukrainian UI.
+
+**Smoke spec:** `e2e/smoke-deploy.spec.ts` — home, catalog PDP link, `robots.txt`, `sitemap.xml` (public routes only, D-06-21).
