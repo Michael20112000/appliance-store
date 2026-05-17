@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: phase-2-complete
-stopped_at: Phase 2 execution complete
-last_updated: "2026-05-17T00:05:00.000Z"
-last_activity: 2026-05-17 -- Phase 2 catalog & discovery executed (plans 02-01..02-06)
+status: executing
+stopped_at: Phase 3 complete — ready for Phase 4 or `/gsd-verify-work`
+last_updated: "2026-05-17T10:06:04.610Z"
+last_activity: 2026-05-17 -- Phase 04 execution started
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 12
+  total_plans: 22
   completed_plans: 12
   percent: 33
 ---
@@ -21,22 +21,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-16)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 2 — catalog & discovery
+**Current focus:** Phase 04 — admin-operations
 
 ## Current Position
 
-Phase: 2
-Plan: 02-06 complete
-Status: Phase 2 complete — ready for verification / Phase 3
-Last activity: 2026-05-17 -- Phase 2 execution complete
+Phase: 04 (admin-operations) — EXECUTING
+Plan: 1 of 5
+Status: Executing Phase 04
+Last activity: 2026-05-17 -- Phase 04 execution started
 
-Progress: [██████░░░░] 33%
+Progress: [██████████░░░░░░░░░░] 50% (Phases 1–3 done; Phase 4 planned)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 6
+- Total plans completed: 17
 - Average duration: —
 - Total execution time: —
 
@@ -44,12 +44,13 @@ Progress: [██████░░░░] 33%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| — | — | — | — |
 | 01 | 6 | - | - |
+| 02 | 6 | - | - |
+| 03 | 5 | - | - |
 
 **Recent Trend:**
 
-- Last 5 plans: —
+- Last 5 plans: 03-01..03-05
 - Trend: —
 
 *Updated after each plan completion*
@@ -61,8 +62,9 @@ Progress: [██████░░░░] 33%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- Roadmap: 6 vertical MVP phases (Foundation → Catalog → Commerce → Admin → Chat → Polish)
-- Phase 1 includes design system + Cloudinary pipeline (PERF-01); catalog SEO in Phase 2
+- Guest cart: localStorage `appliance-cart-pending` → login → `mergePendingCartAction`
+- Checkout: pay on delivery only; atomic AVAILABLE→SOLD in transaction
+- Order numbers: `ASL-YYYYMMDD-####`
 
 ### Pending Todos
 
@@ -80,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-16T20:12:24.788Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-foundation-auth-design-system/01-CONTEXT.md
+Last session: 2026-05-17
+Stopped at: Phase 3 complete — ready for Phase 4 or `/gsd-verify-work`
+Resume file: .planning/phases/04-admin-operations/ (create on plan-phase)

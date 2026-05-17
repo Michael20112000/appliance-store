@@ -13,8 +13,8 @@
 
 - [ ] **Phase 1: Foundation, Auth & Design System** — Next.js, Prisma, Better Auth, український UI, design tokens, Cloudinary pipeline
 - [ ] **Phase 2: Catalog & Discovery** — Каталог, картка товару, категорії, пошук, фільтри в URL, local SEO
-- [ ] **Phase 3: Cart & Checkout** — Кошик, оформлення замовлення (самовивіз / Львів), історія замовлень
-- [ ] **Phase 4: Admin Operations** — CRUD категорій і товарів, замовлення, RBAC для `/admin`
+- [x] **Phase 3: Cart & Checkout** — Кошик, оформлення замовлення (самовивіз / Львів), історія замовлень
+- [x] **Phase 4: Admin Operations** — CRUD категорій і товарів, замовлення, RBAC для `/admin` (completed 2026-05-17)
 - [ ] **Phase 5: Realtime Chat** — Чат покупець ↔ магазин з persistence і адмін-інбоксом
 - [ ] **Phase 6: Polish & Launch** — Продуктивність, стабільність, E2E, deploy hardening
 
@@ -117,23 +117,23 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 03-01-PLAN.md — Prisma Cart/Order models, cart.service, order.service skeleton, validators, unit tests
+- [x] 03-01-PLAN.md — Prisma Cart/Order models, cart.service, order.service skeleton, validators, unit tests
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 03-02-PLAN.md — requireBuyer, cart.actions, PDP add-to-cart, localStorage pending merge (AUTH-03, CART-01, CART-03)
+- [x] 03-02-PLAN.md — requireBuyer, cart.actions, PDP add-to-cart, localStorage pending merge (AUTH-03, CART-01, CART-03)
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 03-03-PLAN.md — /koszyk page + cart UI components (CART-02, AUTH-03)
+- [x] 03-03-PLAN.md — /koszyk page + cart UI components (CART-02, AUTH-03)
 
 **Wave 4** *(blocked on Wave 1 + Wave 3)*
 
-- [ ] 03-04-PLAN.md — /zamovlennia checkout, atomic SOLD transaction, /zamovlennia/pidtverdzhennia/[orderNumber] (CHK-01–03)
+- [x] 03-04-PLAN.md — /zamovlennia checkout, atomic SOLD transaction, /zamovlennia/pidtverdzhennia/[orderNumber] (CHK-01–03)
 
 **Wave 5** *(blocked on Wave 4)*
 
-- [ ] 03-05-PLAN.md — /kabinet order history, header cart badge, Playwright e2e (CHK-04)
+- [x] 03-05-PLAN.md — /kabinet order history, header cart badge, Playwright e2e (CHK-04)
 
 **Validation:** `03-VALIDATION.md`
 
@@ -142,7 +142,7 @@ Plans:
 **Goal**: Адміністратор магазину повністю керує асортиментом і замовленнями через захищену адмінку
 **Mode:** mvp
 **Depends on**: Phase 3
-**Requirements**: AUTH-04, ADM-01, ADM-02, ADM-03, ADM-04, ADM-05
+**Requirements**: AUTH-04, ADM-01, ADM-02, ADM-03, ADM-04 *(ADM-05 chat admin → Phase 5)*
 **Success Criteria** (what must be TRUE):
 
   1. Користувач без ролі admin не може відкрити `/admin` (server-side перевірка)
@@ -150,7 +150,29 @@ Plans:
   3. Адмін CRUD товарів із завантаженням кількох фото через Cloudinary
   4. Адмін переглядає замовлення і змінює їхній статус
 
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+**Wave 1**
+
+- [x] 04-01-PLAN.md — Cloudinary SDK + signed upload route (ADM-03 infra)
+
+**Wave 2** *(parallel with Wave 1 — no Cloudinary dependency)*
+
+- [x] 04-02-PLAN.md — Category CRUD + /admin/kategorii (ADM-01, AUTH-04)
+
+**Wave 3** *(depends on 04-01, 04-02)*
+
+- [x] 04-03-PLAN.md — Product CRUD + multi-image upload (ADM-02, ADM-03)
+
+**Wave 4** *(parallel — orders independent of Cloudinary)*
+
+- [x] 04-04-PLAN.md — Orders list + status + cancel revert (ADM-04)
+
+**Wave 5** *(depends on 04-02, 04-03, 04-04)*
+
+- [x] 04-05-PLAN.md — Admin shell, dashboard, E2E, disabled Чати nav (AUTH-04 proof)
+
 **UI hint**: yes
 
 ### Phase 5: Realtime Chat
@@ -193,7 +215,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation, Auth & Design System | 0/6 | Not started | - |
 | 2. Catalog & Discovery | 0/6 | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
-| 4. Admin Operations | 0/TBD | Not started | - |
+| 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
 | 5. Realtime Chat | 0/TBD | Not started | - |
 | 6. Polish & Launch | 0/TBD | Not started | - |
 
