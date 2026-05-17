@@ -231,8 +231,8 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 06-01-PLAN.md — GitHub Actions CI (lint, Vitest, Playwright localhost) + CI secrets checklist
-- [ ] 06-02-PLAN.md — critical-journey E2E + catalog-seo automation (SEO-01/02)
+- [x] 06-01-PLAN.md — GitHub Actions CI (lint, Vitest, Playwright localhost) + CI secrets checklist
+- [x] 06-02-PLAN.md — critical-journey E2E + catalog-seo automation (SEO-01/02)
 
 **Wave 2** *(blocked on Wave 1 plan 06-01 for ENV checklist base)*
 
@@ -258,7 +258,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
 | 5. Realtime Chat | 5/5 | Complete    | 2026-05-17 |
-| 6. Polish & Launch | 0/5 | Not started | - |
+| 6. Polish & Launch | 2/5 | In Progress|  |
 
 ---
 *Roadmap created: 2026-05-16*
