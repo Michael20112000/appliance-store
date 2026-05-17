@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
+import { CatalogFiltersSheet } from "@/components/catalog/catalog-filters-sheet";
 import { CatalogToolbar } from "@/components/catalog/catalog-toolbar";
 import { ProductGrid } from "@/components/catalog/product-grid";
 import { buttonVariants } from "@/components/ui/button";
@@ -86,6 +87,12 @@ export default async function CategoryCatalogPage({
           priceBounds={priceBounds}
         />
         <div>
+          <CatalogFiltersSheet
+            brands={brands}
+            categories={categories}
+            activeCategorySlug={slug}
+            priceBounds={priceBounds}
+          />
           <CatalogToolbar total={result.total} />
           <ProductGrid
             products={result.items}
