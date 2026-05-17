@@ -3,6 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import { ChatProviderGate } from "@/components/chat/chat-provider-gate";
 import { CartPendingMergeGate } from "@/components/cart/cart-pending-merge-gate";
+import { WishlistPendingMergeGate } from "@/components/wishlist/wishlist-pending-merge-gate";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { StoreHeader } from "@/components/layout/store-header";
 import { Analytics } from "@vercel/analytics/next";
@@ -20,6 +21,7 @@ export default function StorefrontLayout({
           <Suspense fallback={null}>
             <ChatProviderGate>
               <CartPendingMergeGate />
+              <WishlistPendingMergeGate />
               {children}
               <Analytics />
             </ChatProviderGate>

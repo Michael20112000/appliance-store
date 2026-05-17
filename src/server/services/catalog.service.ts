@@ -182,6 +182,42 @@ export async function listCategories() {
   return prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
 }
 
+export async function getCatalogCategoryCounts(): Promise<{
+  total: number;
+  byCategoryId: Record<string, number>;
+}> {
+  const [total, grouped] = await Promise.all([
+    prisma.product.count({ where: buildCatalogContextWhere() }),
+    prisma.product.groupBy({
+      by: ["categoryId"],
+      where: buildCatalogContextWhere(),
+      _count: { _all: true },
+    }),
+  ]);
+
+  const byCategoryId = Object.fromEntries(
+    grouped.map((row) => [row.categoryId, row._count._all]),
+  );
+
+  return { total, byCategoryId };
+}
+
+export async function listCategoriesWithProductCounts() {
+  const [categories, counts] = await Promise.all([
+    listCategories(),
+    getCatalogCategoryCounts(),
+  ]);
+
+  return {
+    totalProductCount: counts.total,
+    categories: categories.map((category) => ({
+      slug: category.slug,
+      name: category.name,
+      productCount: counts.byCategoryId[category.id] ?? 0,
+    })),
+  };
+}
+
 export async function getDistinctBrands(
   categoryId?: string,
 ): Promise<string[]> {

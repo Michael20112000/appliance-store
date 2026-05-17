@@ -20,8 +20,6 @@ export const catalogParsers = {
   storinka: parseAsInteger.withDefault(1),
 };
 
-export const catalogSearchParamsCache = createSearchParamsCache(catalogParsers);
-
 export const catalogUrlKeys = {
   q: "q",
   brend: "brend",
@@ -31,6 +29,11 @@ export const catalogUrlKeys = {
   sort: "sort",
   storinka: "сторінка",
 };
+
+export const catalogSearchParamsCache = createSearchParamsCache(
+  catalogParsers,
+  { urlKeys: catalogUrlKeys },
+);
 
 export function parsersToFilters(
   parsed: Awaited<ReturnType<typeof catalogSearchParamsCache.parse>>,

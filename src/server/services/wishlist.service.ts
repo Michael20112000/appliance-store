@@ -1,8 +1,11 @@
 import type { Prisma, ProductStatus } from "@/generated/prisma/client";
+import { WISHLIST_MAX_ITEMS } from "@/lib/wishlist/constants";
 import { prisma } from "@/lib/db";
 import type { WishlistLineDto, WishlistViewDto } from "@/types/wishlist";
 
 const PUBLIC_STATUS = "AVAILABLE" as const;
+
+export const WISHLIST_MAX_ERROR = "WISHLIST_MAX";
 
 const wishlistLineInclude = {
   product: {
@@ -97,6 +100,14 @@ export async function listWishlistPreviewForUser(
 }
 
 export async function addToWishlist(userId: string, productId: string) {
+  const alreadyInWishlist = await isProductInWishlist(userId, productId);
+  if (!alreadyInWishlist) {
+    const count = await getWishlistItemCount(userId);
+    if (count >= WISHLIST_MAX_ITEMS) {
+      throw new Error(WISHLIST_MAX_ERROR);
+    }
+  }
+
   const product = await prisma.product.findFirst({
     where: { id: productId, status: PUBLIC_STATUS },
     select: { id: true },
@@ -130,6 +141,10 @@ export async function removeFromWishlist(userId: string, productId: string) {
   });
 }
 
+export async function clearWishlistForUser(userId: string) {
+  await prisma.wishlistItem.deleteMany({ where: { userId } });
+}
+
 export async function getWishlistItemCount(userId: string): Promise<number> {
   return prisma.wishlistItem.count({ where: { userId } });
 }
@@ -151,6 +166,37 @@ export async function isProductInWishlist(
     select: { id: true },
   });
   return row != null;
+}
+
+export async function mergePendingWishlistItems(
+  userId: string,
+  pending: { productId: string }[],
+) {
+  const existingIds = new Set(await getWishlistedProductIds(userId));
+  const seen = new Set<string>();
+  let merged = 0;
+
+  for (const { productId } of pending) {
+    if (seen.has(productId) || existingIds.has(productId)) {
+      seen.add(productId);
+      continue;
+    }
+    seen.add(productId);
+
+    if (existingIds.size >= WISHLIST_MAX_ITEMS) {
+      break;
+    }
+
+    try {
+      await addToWishlist(userId, productId);
+      existingIds.add(productId);
+      merged += 1;
+    } catch {
+      // skip unavailable products
+    }
+  }
+
+  return { merged };
 }
 
 export async function resolveProductsByIds(

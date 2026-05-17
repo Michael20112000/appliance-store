@@ -28,11 +28,11 @@
 
 ### Wishlist
 
-- [ ] **WISH-01**: Гість додає/прибирає товари в обране (localStorage, окремий ключ)
-- [ ] **WISH-02**: Залогінений користувач керує обраним у БД (додати/прибрати)
-- [ ] **WISH-03**: При вході обране гостя **не** зливається з обраним користувача
-- [ ] **WISH-04**: Користувач переглядає список обраного (кабінет або `/obrane`)
-- [ ] **WISH-05**: Кнопка «В обране» на картці каталогу та на PDP
+- [x] **WISH-01**: Гість додає/прибирає товари в обране (localStorage, окремий ключ)
+- [x] **WISH-02**: Залогінений користувач керує обраним у БД (додати/прибрати)
+- [x] **WISH-03**: При вході обране гостя **зливається** в БД wishlist користувача (merge gate)
+- [x] **WISH-04**: Користувач переглядає список обраного (кабінет або `/obrane`)
+- [x] **WISH-05**: Кнопка «В обране» на картці каталогу та на PDP
 
 ### Homepage Categories
 
@@ -63,7 +63,7 @@ Deferred beyond v1.1.
 |---------|--------|
 | Відгуки v1.1 | Descoped під час планування milestone |
 | CWV / Lighthouse milestone | Явно out of scope v1.1 |
-| Wishlist merge on login | Протилежно вимозі користувача |
+| Wishlist without merge | Superseded — merge on login shipped phase 9 |
 | Нова адмінка (звіти, експорт) | Не в scope |
 | Онлайн-оплата | v1+ product |
 | Доставка за межі Львова | v1 boundary |
@@ -76,16 +76,16 @@ Deferred beyond v1.1.
 | CAT-01 | Phase 7 | Complete |
 | CAT-02 | Phase 7 | Complete |
 | CAT-03 | Phase 7 | Complete |
-| ADM-01 | Phase 8 | Pending |
+| ADM-01 | Phase 8 | Complete |
 | ADM-02 | Phase 8 | Complete |
 | ADM-03 | Phase 8 | Complete |
 | CHAT-05 | Phase 8 | Complete |
 | CHAT-06 | Phase 8 | Complete |
-| WISH-01 | Phase 9 | Pending |
-| WISH-02 | Phase 9 | Pending |
-| WISH-03 | Phase 9 | Pending |
-| WISH-04 | Phase 9 | Pending |
-| WISH-05 | Phase 9 | Pending |
+| WISH-01 | Phase 9 | Complete |
+| WISH-02 | Phase 9 | Complete |
+| WISH-03 | Phase 9 | Complete |
+| WISH-04 | Phase 9 | Complete |
+| WISH-05 | Phase 9 | Complete |
 | HOME-01 | Phase 10 | Pending |
 | HOME-02 | Phase 10 | Pending |
 
@@ -96,4 +96,4 @@ Deferred beyond v1.1.
 
 ---
 *Requirements defined: 2026-05-17*
-*Last updated: 2026-05-17 after milestone v1.1 roadmap*
+*Last updated: 2026-05-17 — Phase 9 complete*

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CartEmpty } from "@/components/cart/cart-empty";
+import { ClearCartButton } from "@/components/cart/clear-cart-button";
 import { CartLineItem } from "@/components/cart/cart-line-item";
 import { CartSummary } from "@/components/cart/cart-summary";
 import { requireBuyer } from "@/lib/permissions";
@@ -16,7 +17,10 @@ export default async function CartPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <h1 className="text-3xl font-semibold tracking-tight">Кошик</h1>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-tight">Кошик</h1>
+        {cart.items.length > 0 ? <ClearCartButton /> : null}
+      </div>
 
       {cart.removedTitles.length > 0 ? (
         <Alert className="mt-6">

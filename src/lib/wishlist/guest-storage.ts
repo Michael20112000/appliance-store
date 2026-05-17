@@ -1,9 +1,10 @@
 "use client";
 
+import { WISHLIST_MAX_ITEMS } from "@/lib/wishlist/constants";
 import { dispatchWishlistChanged } from "@/lib/wishlist/wishlist-events";
 
 export const GUEST_WISHLIST_KEY = "appliance-wishlist-guest";
-export const GUEST_WISHLIST_MAX_ITEMS = 20;
+export const GUEST_WISHLIST_MAX_ITEMS = WISHLIST_MAX_ITEMS;
 
 export type GuestWishlist = {
   v: 1;
@@ -11,6 +12,20 @@ export type GuestWishlist = {
 };
 
 export type GuestWishlistAddResult = "added" | "duplicate" | "max";
+
+function normalizeGuestWishlist(data: GuestWishlist): GuestWishlist {
+  const seen = new Set<string>();
+  const items: { productId: string }[] = [];
+
+  for (const item of data.items) {
+    if (!item?.productId || seen.has(item.productId)) continue;
+    seen.add(item.productId);
+    items.push({ productId: item.productId });
+    if (items.length >= WISHLIST_MAX_ITEMS) break;
+  }
+
+  return { v: 1, items };
+}
 
 function readRaw(): GuestWishlist {
   if (typeof window === "undefined") {
@@ -24,7 +39,11 @@ function readRaw(): GuestWishlist {
     if (parsed?.v !== 1 || !Array.isArray(parsed.items)) {
       return { v: 1, items: [] };
     }
-    return parsed;
+    const normalized = normalizeGuestWishlist(parsed);
+    if (normalized.items.length !== parsed.items.length) {
+      write(normalized);
+    }
+    return normalized;
   } catch {
     return { v: 1, items: [] };
   }

@@ -67,6 +67,17 @@ describe("guest wishlist storage", () => {
     expect(getGuestWishlistCount()).toBe(GUEST_WISHLIST_MAX_ITEMS);
   });
 
+  it("trims stored list to max items on read", () => {
+    const ids = Array.from({ length: 25 }, (_, i) => `prod-${i}`);
+    store.set(
+      GUEST_WISHLIST_KEY,
+      JSON.stringify({ v: 1, items: ids.map((productId) => ({ productId })) }),
+    );
+
+    expect(getGuestWishlistCount()).toBe(20);
+    expect(getGuestWishlistProductIds()).toHaveLength(20);
+  });
+
   it("dispatches wishlist:changed after mutations", () => {
     const dispatchEvent = vi.mocked(window.dispatchEvent);
     addGuestWishlistProduct("prod-1");

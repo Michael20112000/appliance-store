@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import {
   getCatalogPriceBounds,
   getDistinctBrands,
-  listCategories,
+  listCategoriesWithProductCounts,
   listPublicProducts,
 } from "@/server/services/catalog.service";
 
@@ -46,8 +46,8 @@ export default async function CatalogPage({ searchParams }: PageProps) {
     ? new Set(await getWishlistedProductIds(session.user.id))
     : undefined;
 
-  const [categories, brands, priceBounds, result] = await Promise.all([
-    listCategories(),
+  const [categoryCounts, brands, priceBounds, result] = await Promise.all([
+    listCategoriesWithProductCounts(),
     getDistinctBrands(),
     getCatalogPriceBounds(),
     listPublicProducts({
@@ -70,13 +70,15 @@ export default async function CatalogPage({ searchParams }: PageProps) {
       <div className="mt-8 grid gap-8 lg:grid-cols-[240px_1fr]">
         <CatalogFilters
           brands={brands}
-          categories={categories}
+          categories={categoryCounts.categories}
+          totalProductCount={categoryCounts.totalProductCount}
           priceBounds={priceBounds}
         />
         <div>
           <CatalogFiltersSheet
             brands={brands}
-            categories={categories}
+            categories={categoryCounts.categories}
+            totalProductCount={categoryCounts.totalProductCount}
             priceBounds={priceBounds}
           />
           <CatalogToolbar total={result.total} />

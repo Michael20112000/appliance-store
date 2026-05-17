@@ -104,6 +104,10 @@ export function WishlistToggleButton({
       const result = await addToWishlistAction(productId);
       if (!result.ok) {
         setInWishlist(false);
+        if (result.error === "WISHLIST_MAX") {
+          toast.error("У обраному вже максимум 20 товарів");
+          return;
+        }
         toast.error("Не вдалося оновити обране");
         return;
       }

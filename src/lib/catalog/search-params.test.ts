@@ -1,5 +1,28 @@
 import { describe, expect, it } from "vitest";
-import { parsersToFilters } from "./search-params";
+import {
+  catalogSearchParamsCache,
+  parsersToFilters,
+} from "./search-params";
+
+describe("catalogSearchParamsCache.parse", () => {
+  it("reads Ukrainian URL keys for price filters", async () => {
+    const parsed = await catalogSearchParamsCache.parse({
+      "cina-vid": "6400",
+      "cina-do": "28900",
+    });
+
+    expect(parsed.cinaVid).toBe(6400);
+    expect(parsed.cinaDo).toBe(28900);
+  });
+
+  it("reads storinka from Ukrainian URL key", async () => {
+    const parsed = await catalogSearchParamsCache.parse({
+      "сторінка": "2",
+    });
+
+    expect(parsed.storinka).toBe(2);
+  });
+});
 
 describe("parsersToFilters", () => {
   it("maps cinaVid only to minPrice in kopiyky (13000 UAH → 1_300_000)", () => {

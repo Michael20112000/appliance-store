@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireBuyer } from "@/lib/permissions";
 import {
   addToCart,
+  clearCart,
   mergePendingItems,
   removeFromCart,
 } from "@/server/services/cart.service";
@@ -42,6 +43,13 @@ export async function removeFromCartAction(productId: string) {
   const session = await requireBuyer();
   const parsed = addToCartSchema.parse({ productId, quantity: 1 });
   await removeFromCart(session.user.id, parsed.productId);
+  revalidateCartPaths();
+  return { ok: true as const };
+}
+
+export async function clearCartAction() {
+  const session = await requireBuyer();
+  await clearCart(session.user.id);
   revalidateCartPaths();
   return { ok: true as const };
 }

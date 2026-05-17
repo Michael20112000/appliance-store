@@ -22,4 +22,4 @@ export type WishlistViewDto = {
 
 export type WishlistActionResult =
   | { ok: true }
-  | { ok: false; error: "PRODUCT_UNAVAILABLE" | "UNKNOWN" };
+  | { ok: false; error: "PRODUCT_UNAVAILABLE" | "WISHLIST_MAX" | "UNKNOWN" };

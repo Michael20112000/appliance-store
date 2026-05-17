@@ -15,7 +15,7 @@ export function WishlistUnavailableCard({
   const imageAlt = line.image?.alt ?? `${line.title} — ${line.brand}`;
 
   return (
-    <Card className="h-full overflow-hidden opacity-80">
+    <Card className="h-full overflow-hidden opacity-55">
       <div className="relative aspect-[4/3] min-h-48 w-full bg-muted">
         {line.image ? (
           <OptimizedImage

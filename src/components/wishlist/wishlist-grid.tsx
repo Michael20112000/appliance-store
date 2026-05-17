@@ -24,42 +24,24 @@ function toPublicProductCard(line: WishlistLineDto): PublicProductCard {
 }
 
 export function WishlistGrid({ lines, hasSession }: WishlistGridProps) {
-  const available = lines.filter((line) => line.available);
-  const unavailable = lines.filter((line) => !line.available);
-
   return (
-    <>
-      {available.length > 0 ? (
-        <section>
-          <div className={gridClassName}>
-            {available.map((line) => (
-              <ProductCard
-                key={line.productId}
-                product={toPublicProductCard(line)}
-                hasSession={hasSession}
-                initialInWishlist
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {unavailable.length > 0 ? (
-        <section className={available.length > 0 ? "mt-10" : undefined}>
-          {available.length > 0 ? (
-            <h2 className="mb-4 text-lg font-medium">Недоступні</h2>
-          ) : null}
-          <div className={gridClassName}>
-            {unavailable.map((line) => (
-              <WishlistUnavailableCard
-                key={line.productId}
-                line={line}
-                hasSession={hasSession}
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
-    </>
+    <div className={gridClassName}>
+      {lines.map((line) =>
+        line.available ? (
+          <ProductCard
+            key={line.productId}
+            product={toPublicProductCard(line)}
+            hasSession={hasSession}
+            initialInWishlist
+          />
+        ) : (
+          <WishlistUnavailableCard
+            key={line.productId}
+            line={line}
+            hasSession={hasSession}
+          />
+        ),
+      )}
+    </div>
   );
 }

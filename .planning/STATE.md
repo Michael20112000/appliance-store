@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Engagement & Fixes
 status: executing
-stopped_at: Phase 9 context gathered
-last_updated: "2026-05-17T17:58:58.404Z"
-last_activity: 2026-05-17 -- Phase 09 execution started
+stopped_at: Phase 9 complete — ready for Phase 10
+last_updated: "2026-05-17T21:50:00.000Z"
+last_activity: 2026-05-17 -- Phase 09 closed (UAT passed)
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 16
-  completed_plans: 11
-  percent: 50
+  completed_plans: 16
+  percent: 75
 ---
 
 # Project State
@@ -21,20 +21,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 09 — wishlist
+**Current focus:** Phase 10 — category showcase images
 
 ## Current Position
 
-Phase: 09 (wishlist) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 09
-Last activity: 2026-05-17 -- Phase 09 execution started
+Phase: 10 (category showcase images) — NEXT
+Plan: TBD via `/gsd-plan-phase 10`
+Status: Phase 09 complete
+Last activity: 2026-05-17 -- Phase 09 closed (verification passed, human UAT)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 45
+- Total plans completed: 50
 - Average duration: —
 - Total execution time: —
 
@@ -42,18 +42,14 @@ Last activity: 2026-05-17 -- Phase 09 execution started
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01 | 6 | - | - |
-| 02 | 6 | - | - |
-| 03 | 5 | - | - |
-| 5 | 5 | - | - |
-| 06 | 9 | - | - |
 | 07 | 4 | 29min | 7min |
-| 08 | 7 | - | - |
+| 08 | 7 | — | — |
+| 09 | 5 | — | — |
 
 **Recent Trend:**
 
-- Last 5 plans: 07-02, 07-03, 07-04
-- Trend: —
+- Last 5 plans: 09-01 … 09-05
+- Trend: Phase 9 shipped with post-plan UX fixes (merge, catalog price urlKeys, clear-all)
 
 *Updated after each plan completion*
 
@@ -64,24 +60,18 @@ Last activity: 2026-05-17 -- Phase 09 execution started
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- Guest cart: localStorage `appliance-cart-pending` → login → `mergePendingCartAction`
-- Checkout: pay on delivery only; atomic AVAILABLE→SOLD in transaction
-- Order numbers: `ASL-YYYYMMDD-####`
-- buildCatalogContextWhere shared between getDistinctBrands and getCatalogPriceBounds
-- dragValues + useMemo for slider thumb sync (no useEffect setState)
-- Mobile CatalogFiltersSheet reuses CatalogFiltersPanel
-- Invalid brend cleared client-side with history replace on category pages (D-07-11)
-- ActiveFilterChips in toolbar via same nuqs parsers as filters (D-07-12/13)
-- Vitest parsersToFilters one-sided bounds; manual checklist for slider/price UX (D-07-14/15)
-- D-08-14: Slug column removed from categories admin table only; edit form keeps slug (ADM-03)
+- Wishlist: guest `appliance-wishlist-guest` → login → `mergePendingWishlistAction` (like cart)
+- Wishlist max 20 enforced guest + DB; unavailable in single grid with opacity
+- Catalog price filter: server `catalogSearchParamsCache` must use `catalogUrlKeys` (cina-vid/cina-do)
+- ProductCard: full card link except Heart overlay
 
 ### Pending Todos
 
-None yet.
+- Plan Phase 10 (`/gsd-plan-phase 10`)
 
 ### Blockers/Concerns
 
-None yet.
+None.
 
 ## Deferred Items
 
@@ -96,10 +86,12 @@ Items acknowledged at v1.0 milestone close on 2026-05-17:
 
 ## Session Continuity
 
-Last session: 2026-05-17T17:46:32.062Z
-Stopped at: Phase 9 context gathered
-Resume file: .planning/phases/09-wishlist/09-CONTEXT.md
+Last session: 2026-05-17T21:50:00.000Z
+Stopped at: Phase 9 complete
+Resume file: `.planning/ROADMAP.md` — Phase 10
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+1. `/gsd-discuss-phase 10` or `/gsd-plan-phase 10` — category images on homepage + admin
+2. Commit uncommitted code from phase 9 + catalog fixes if not yet committed
+3. After phase 10: `/gsd-complete-milestone` for v1.1

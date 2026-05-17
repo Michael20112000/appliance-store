@@ -11,17 +11,22 @@ import { cn } from "@/lib/utils";
 export const PRICE_STEP_UAH = 50;
 export const PRICE_URL_THROTTLE_MS = 200;
 
-type CategoryOption = { slug: string; name: string };
+type CategoryOption = { slug: string; name: string; productCount: number };
 
 export type PriceBounds = { minUah: number; maxUah: number };
 
 export type CatalogFiltersPanelProps = {
   brands: string[];
   categories: CategoryOption[];
+  totalProductCount: number;
   activeCategorySlug?: string;
   priceBounds?: PriceBounds | null;
   className?: string;
 };
+
+function formatCategoryLabel(name: string, count: number) {
+  return `${name} — ${count}`;
+}
 
 type CatalogFiltersProps = CatalogFiltersPanelProps;
 
@@ -71,6 +76,7 @@ function toSliderValues(
 export function CatalogFiltersPanel({
   brands,
   categories,
+  totalProductCount,
   activeCategorySlug,
   priceBounds,
   className,
@@ -91,6 +97,18 @@ export function CatalogFiltersPanel({
     return thumbValuesFromParams(params.cinaVid, params.cinaDo, bounds);
   }, [dragValues, bounds, params.cinaVid, params.cinaDo]);
 
+  const minInputValue = useMemo(() => {
+    if (!bounds) return "";
+    if (dragValues) return dragValues[0];
+    return params.cinaVid ?? bounds.minUah;
+  }, [bounds, dragValues, params.cinaVid]);
+
+  const maxInputValue = useMemo(() => {
+    if (!bounds) return "";
+    if (dragValues) return dragValues[1];
+    return params.cinaDo ?? bounds.maxUah;
+  }, [bounds, dragValues, params.cinaDo]);
+
   const throttledPriceUrlSync = useMemo(
     () => createThrottle(PRICE_URL_THROTTLE_MS),
     [],
@@ -99,7 +117,14 @@ export function CatalogFiltersPanel({
   const syncPriceToUrl = useCallback(
     (cinaVid: number, cinaDo: number, immediate: boolean) => {
       const apply = () => {
-        void setParams({ cinaVid, cinaDo, storinka: 1 });
+        if (!bounds) return;
+        const atMin = cinaVid <= bounds.minUah;
+        const atMax = cinaDo >= bounds.maxUah;
+        void setParams({
+          cinaVid: atMin && atMax ? null : atMin ? null : cinaVid,
+          cinaDo: atMin && atMax ? null : atMax ? null : cinaDo,
+          storinka: 1,
+        });
       };
       if (immediate) {
         throttledPriceUrlSync.flush();
@@ -108,7 +133,7 @@ export function CatalogFiltersPanel({
       }
       throttledPriceUrlSync(apply);
     },
-    [setParams, throttledPriceUrlSync],
+    [bounds, setParams, throttledPriceUrlSync],
   );
 
   const handleMinInput = (raw: string) => {
@@ -162,7 +187,7 @@ export function CatalogFiltersPanel({
                 !activeCategorySlug && "bg-muted font-medium",
               )}
             >
-              Усі товари
+              {formatCategoryLabel("Усі товари", totalProductCount)}
             </Link>
           </li>
           {categories.map((cat) => (
@@ -174,7 +199,7 @@ export function CatalogFiltersPanel({
                   activeCategorySlug === cat.slug && "bg-muted font-medium",
                 )}
               >
-                {cat.name}
+                {formatCategoryLabel(cat.name, cat.productCount)}
               </Link>
             </li>
           ))}
@@ -239,9 +264,7 @@ export function CatalogFiltersPanel({
                 step={PRICE_STEP_UAH}
                 placeholder="Від"
                 className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
-                value={
-                  dragValues ? dragValues[0] : (params.cinaVid ?? "")
-                }
+                value={minInputValue}
                 onChange={(e) => handleMinInput(e.target.value)}
               />
               <input
@@ -251,7 +274,7 @@ export function CatalogFiltersPanel({
                 step={PRICE_STEP_UAH}
                 placeholder="До"
                 className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
-                value={dragValues ? dragValues[1] : (params.cinaDo ?? "")}
+                value={maxInputValue}
                 onChange={(e) => handleMaxInput(e.target.value)}
               />
             </div>

@@ -22,40 +22,32 @@ export function ProductCard({
     product.image?.alt ??
     `${product.title} — ${product.brand}, б/у, Львів`;
 
+  const productHref = `/tovar/${product.slug}`;
+  const productLabel = `${product.title}, ${formatPriceKopiyky(product.price)}`;
+
   return (
     <div className="group h-full">
-      <Card className="relative h-full overflow-hidden transition-shadow group-hover:shadow-md">
-        <div className="relative aspect-[4/3] min-h-48 w-full bg-muted">
-          {product.image ? (
-            <OptimizedImage
-              src={product.image.cloudinaryPublicId}
-              alt={imageAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 50vw, 25vw"
+      <Card className="relative h-full overflow-hidden pt-0 transition-shadow group-hover:shadow-md">
+        <Link href={productHref} className="block" aria-label={productLabel}>
+          <div className="relative aspect-[4/3] min-h-48 w-full bg-muted">
+            {product.image ? (
+              <OptimizedImage
+                src={product.image.cloudinaryPublicId}
+                alt={imageAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                Без фото
+              </div>
+            )}
+            <ConditionBadge
+              condition={product.condition}
+              className="absolute left-2 top-2"
             />
-          ) : (
-            <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-              Без фото
-            </div>
-          )}
-          <ConditionBadge
-            condition={product.condition}
-            className="absolute left-2 top-2"
-          />
-          <WishlistToggleButton
-            productId={product.id}
-            productTitle={product.title}
-            hasSession={hasSession}
-            initialInWishlist={initialInWishlist}
-            variant="overlay"
-          />
-        </div>
-        <Link
-          href={`/tovar/${product.slug}`}
-          className="block"
-          aria-label={`${product.title}, ${formatPriceKopiyky(product.price)}`}
-        >
+          </div>
           <CardHeader className="space-y-1 p-4">
             <CardTitle className="line-clamp-2 text-base font-medium leading-snug">
               {product.title}
@@ -66,6 +58,13 @@ export function ProductCard({
             <PriceDisplay priceKopiyky={product.price} className="text-lg" />
           </CardContent>
         </Link>
+        <WishlistToggleButton
+          productId={product.id}
+          productTitle={product.title}
+          hasSession={hasSession}
+          initialInWishlist={initialInWishlist}
+          variant="overlay"
+        />
       </Card>
     </div>
   );

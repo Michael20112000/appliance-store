@@ -13,8 +13,8 @@
 |---|-------|------|--------------|------------------|
 | 7 | Catalog Filters Fix | 4/4 | Complete   | 2026-05-17 |
 | 8 | Admin UX & Chat Lifecycle | 7/7 | Complete   | 2026-05-17 |
-| 9 | Wishlist | 5/5 | Complete   | 2026-05-17 |
-| 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | 4 |
+| 9 | Wishlist | 5/5 | ✅ Complete   | 2026-05-17 |
+| 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | — |
 
 ### Phase 7: Catalog Filters Fix
 
@@ -87,20 +87,20 @@
 
 ---
 
-### Phase 9: Wishlist
+### Phase 9: Wishlist ✅
 
-**Goal:** Обране для гостя (localStorage) і залогіненого (БД) без merge при логіні.
+**Goal:** Обране для гостя (localStorage) і залогіненого (БД); merge гостевого списку в БД при логіні.
 
 **Requirements:** WISH-01, WISH-02, WISH-03, WISH-04, WISH-05
 
 **Success criteria:**
 1. Гість додає товар → badge/іконка «в обраному»; після reload — на місці
 2. Залогінений юзер має свій список у БД
-3. Гість додає 3 товари → логін → wishlist юзера **не** містить ці 3 (окремі списки)
-4. Сторінка `/obrane` (або кабінет) показує доступні товари; sold/draft приховані
-5. Unit tests на storage key і server actions
+3. Гість додає товари → логін → items **merge** у DB wishlist (як кошик)
+4. Сторінка `/obrane` показує доступні та недоступні (opacity + «Товар більше недоступний»)
+5. Unit tests на storage key; Vitest gate green
 
-**Plans:** 5/5 plans complete
+**Plans:** 5/5 plans complete · **Verification:** passed · **UAT:** 09-HUMAN-UAT.md
 
 **Wave 1** *(schema + guest storage)*
 - [x] 09-01-PLAN.md — Prisma `WishlistItem` migrate [BLOCKING] + `guest-storage.ts` Vitest (WISH-01, WISH-03)
@@ -119,8 +119,9 @@
 
 **Notes:**
 - Prisma: `WishlistItem` (userId, productId) unique — `npx prisma migrate dev --name wishlist_item`
-- Guest key: `appliance-wishlist-guest` (аналог cart pending, **без** merge gate)
-- ROADMAP criterion #4 (hide sold/draft) **superseded by CONTEXT D-09-19** — show «Товар більше недоступний»
+- Guest key: `appliance-wishlist-guest`; merge gate `WishlistPendingMergeGate` (як cart)
+- Unavailable: єдиний grid, opacity, без окремої секції «Недоступні»
+- Post-phase UX: «Очистити обране» / «Очистити кошик»; клік по картці каталогу → PDP
 
 ---
 
@@ -146,7 +147,7 @@
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
 | v1.0 MVP | 6 | 36 | ✅ Shipped 2026-05-17 |
-| v1.1 Engagement & Fixes | 4 | 0 | 🚧 Planning |
+| v1.1 Engagement & Fixes | 4 | 16 | 🚧 Phase 10 next |
 
 ---
 *Roadmap updated: 2026-05-17 — milestone v1.1*
