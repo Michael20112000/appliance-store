@@ -2,9 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Engagement & Fixes
-status: planning
-last_updated: "2026-05-17T15:51:23.774Z"
-last_activity: 2026-05-17
+status: Defining requirements
+stopped_at: Phase 7 context gathered
+last_updated: "2026-05-17T16:03:31.226Z"
+last_activity: 2026-05-17 — Milestone v1.1 started
 progress:
   total_phases: 4
   completed_phases: 0
@@ -86,9 +87,9 @@ Items acknowledged at v1.0 milestone close on 2026-05-17:
 
 ## Session Continuity
 
-Last session: 2026-05-17T12:20:36.371Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-polish-launch/06-CONTEXT.md
+Last session: 2026-05-17T16:03:31.217Z
+Stopped at: Phase 7 context gathered
+Resume file: .planning/phases/07-catalog-filters-fix/07-CONTEXT.md
 
 ## Operator Next Steps
 
