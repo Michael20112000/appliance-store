@@ -35,6 +35,19 @@ export const updateCategorySchema = z
     description: data.description === "" ? undefined : data.description,
   }));
 
+export const updateCategoryImageSchema = z
+  .object({
+    categoryId: z.string().cuid("Невірний ідентифікатор категорії"),
+    imagePublicId: z.string().trim().min(1).nullable(),
+    imageAlt: z.union([z.string().trim().max(500), z.literal("")]).optional(),
+  })
+  .transform((data) => ({
+    categoryId: data.categoryId,
+    imagePublicId: data.imagePublicId,
+    imageAlt: data.imageAlt === "" ? null : (data.imageAlt ?? null),
+  }));
+
 export type UpsertCategoryInput = z.input<typeof upsertCategorySchema>;
 export type UpsertCategoryValues = z.output<typeof upsertCategorySchema>;
 export type UpdateCategoryValues = z.output<typeof updateCategorySchema>;
+export type UpdateCategoryImageValues = z.output<typeof updateCategoryImageSchema>;
