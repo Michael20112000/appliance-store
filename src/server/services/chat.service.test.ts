@@ -350,11 +350,12 @@ describe("assertConversationAccess", () => {
     vi.mocked(prisma.conversation.findUnique).mockResolvedValue({
       id: "conv-1",
       userId: "buyer-1",
+      status: "OPEN",
     } as never);
 
     await expect(
       assertConversationAccess(buyerSession, "conv-1"),
-    ).resolves.toBeUndefined();
+    ).resolves.toMatchObject({ id: "conv-1", status: "OPEN" });
   });
 
   it("throws FORBIDDEN when buyer accesses another thread", async () => {
@@ -372,11 +373,12 @@ describe("assertConversationAccess", () => {
     vi.mocked(prisma.conversation.findUnique).mockResolvedValue({
       id: "conv-1",
       userId: "buyer-1",
+      status: "ARCHIVED",
     } as never);
 
     await expect(
       assertConversationAccess(adminSession, "conv-1"),
-    ).resolves.toBeUndefined();
+    ).resolves.toMatchObject({ id: "conv-1", status: "ARCHIVED" });
   });
 
   it("throws CONVERSATION_NOT_FOUND when missing", async () => {

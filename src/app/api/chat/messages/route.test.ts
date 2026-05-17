@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   ChatRateLimitError,
   ChatServiceError,
+  CHAT_ARCHIVED,
   CONVERSATION_NOT_FOUND,
   FORBIDDEN,
 } from "@/server/services/chat.service";
@@ -185,6 +186,27 @@ describe("POST /api/chat/messages", () => {
     expect(trigger).not.toHaveBeenCalled();
   });
 
+  it("returns 403 when sendMessage throws CHAT_ARCHIVED", async () => {
+    getSession.mockResolvedValue({
+      user: { id: "buyer-1", role: "buyer" },
+    });
+    sendMessage.mockRejectedValue(
+      new ChatServiceError(
+        CHAT_ARCHIVED,
+        "Діалог закрито магазином. Написати більше не можна.",
+      ),
+    );
+
+    const res = await postMessages({ body: "Hi", conversationId: CONV_ID });
+
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({
+      error: CHAT_ARCHIVED,
+      message: "Діалог закрито магазином. Написати більше не можна.",
+    });
+    expect(trigger).not.toHaveBeenCalled();
+  });
+
   it("does not trigger Pusher when sendMessage throws", async () => {
     getSession.mockResolvedValue({
       user: { id: "buyer-1", role: "buyer" },
@@ -219,7 +241,11 @@ describe("POST /api/chat/messages", () => {
 describe("GET /api/chat/messages", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    assertConversationAccess.mockResolvedValue(undefined);
+    assertConversationAccess.mockResolvedValue({
+      id: CONV_ID,
+      userId: "buyer-1",
+      status: "OPEN",
+    });
     listMessages.mockResolvedValue([messageDto]);
   });
 
@@ -240,7 +266,10 @@ describe("GET /api/chat/messages", () => {
     const res = await getMessages(CONV_ID);
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ messages: [messageDto] });
+    await expect(res.json()).resolves.toEqual({
+      messages: [messageDto],
+      status: "OPEN",
+    });
     expect(assertConversationAccess).toHaveBeenCalledWith(
       { user: { id: "buyer-1", role: "buyer" } },
       CONV_ID,
