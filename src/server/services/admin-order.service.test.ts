@@ -1,11 +1,42 @@
 import { describe, expect, it, vi } from "vitest";
+import { prisma } from "@/lib/db";
 import {
   assertTransitionAllowed,
+  getAdminDashboardStats,
   getAllowedNextStatuses,
   getProductIdsForCancelRevert,
   INVALID_STATUS_TRANSITION,
   revertSoldProductsOnCancel,
 } from "./admin-order.service";
+
+vi.mock("@/lib/db", () => ({
+  prisma: {
+    order: {
+      count: vi.fn(),
+      findMany: vi.fn(),
+    },
+    product: {
+      count: vi.fn(),
+    },
+  },
+}));
+
+describe("getAdminDashboardStats", () => {
+  it("returns pending, product counts, and recent orders", async () => {
+    vi.mocked(prisma.order.count).mockResolvedValueOnce(4);
+    vi.mocked(prisma.product.count)
+      .mockResolvedValueOnce(12)
+      .mockResolvedValueOnce(2);
+    vi.mocked(prisma.order.findMany).mockResolvedValueOnce([]);
+
+    const stats = await getAdminDashboardStats();
+
+    expect(stats.pendingOrders).toBe(4);
+    expect(stats.availableProducts).toBe(12);
+    expect(stats.draftProducts).toBe(2);
+    expect(stats.recentOrders).toEqual([]);
+  });
+});
 
 describe("assertTransitionAllowed", () => {
   it("allows PENDING → CONFIRMED", () => {
