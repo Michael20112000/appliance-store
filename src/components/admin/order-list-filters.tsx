@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { adminOrdersUrl } from "@/lib/admin/orders-url";
 import { cn } from "@/lib/utils";
 import type { AdminOrderListFilter } from "@/server/services/admin-order.service";
+import type {
+  AdminOrderListDir,
+  AdminOrderListSort,
+} from "@/server/validators/admin-order";
 
 const filters: Array<{ key: AdminOrderListFilter; label: string }> = [
   { key: "all", label: "Усі" },
@@ -12,16 +17,27 @@ const filters: Array<{ key: AdminOrderListFilter; label: string }> = [
 
 type OrderListFiltersProps = {
   active: AdminOrderListFilter;
+  pageSize: 10 | 20 | 50;
+  sort: AdminOrderListSort;
+  dir: AdminOrderListDir;
 };
 
-export function OrderListFilters({ active }: OrderListFiltersProps) {
+export function OrderListFilters({
+  active,
+  pageSize,
+  sort,
+  dir,
+}: OrderListFiltersProps) {
   return (
     <div className="flex flex-wrap gap-2">
       {filters.map((filter) => {
-        const href =
-          filter.key === "all"
-            ? "/admin/zamovlennia"
-            : `/admin/zamovlennia?filter=${filter.key}`;
+        const href = adminOrdersUrl({
+          filter: filter.key,
+          page: 1,
+          pageSize,
+          sort,
+          dir,
+        });
 
         return (
           <Link
