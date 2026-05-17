@@ -1,18 +1,10 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { MenuIcon } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { CartNavLink } from "@/components/cart/cart-nav-link";
 import { StoreHeaderAuth } from "@/components/layout/store-header-auth";
+import { StoreMobileNav } from "@/components/layout/store-mobile-nav";
 
 export async function StoreHeader() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -46,31 +38,7 @@ export async function StoreHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Sheet>
-            <SheetTrigger
-              className="md:hidden"
-              render={<Button variant="outline" size="icon" aria-label="Меню" />}
-            >
-              <MenuIcon />
-            </SheetTrigger>
-            <SheetContent side="right">
-              <SheetHeader>
-                <SheetTitle>Категорії</SheetTitle>
-              </SheetHeader>
-              <ul className="mt-4 pl-4 flex flex-col gap-2">
-                {categories.map((category) => (
-                  <li key={category.id}>
-                    <Link
-                      href={`/katalog/${category.slug}`}
-                      className="block min-h-11 py-2 text-sm"
-                    >
-                      {category.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </SheetContent>
-          </Sheet>
+          <StoreMobileNav categories={categories} />
           {session?.user ? <CartNavLink userId={session.user.id} /> : null}
           <StoreHeaderAuth session={session} />
         </div>
