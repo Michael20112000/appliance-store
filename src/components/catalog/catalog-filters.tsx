@@ -57,7 +57,9 @@ function thumbValuesFromParams(
   cinaDo: number | null,
   bounds: PriceBounds,
 ): [number, number] {
-  return [cinaVid ?? bounds.minUah, cinaDo ?? bounds.maxUah];
+  const low = cinaVid ?? bounds.minUah;
+  const high = cinaDo ?? bounds.maxUah;
+  return normalizeThumbRange([low, high], bounds);
 }
 
 function toSliderValues(
@@ -116,8 +118,10 @@ export function CatalogFiltersPanel({
       void setParams({ cinaVid: null, storinka: 1 });
       return;
     }
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed)) return;
     const cinaVid = clampPrice(
-      snapPriceToStep(Number(raw), PRICE_STEP_UAH),
+      snapPriceToStep(parsed, PRICE_STEP_UAH),
       bounds.minUah,
       bounds.maxUah,
     );
@@ -133,8 +137,10 @@ export function CatalogFiltersPanel({
       void setParams({ cinaDo: null, storinka: 1 });
       return;
     }
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed)) return;
     const cinaDo = clampPrice(
-      snapPriceToStep(Number(raw), PRICE_STEP_UAH),
+      snapPriceToStep(parsed, PRICE_STEP_UAH),
       bounds.minUah,
       bounds.maxUah,
     );
@@ -233,7 +239,9 @@ export function CatalogFiltersPanel({
                 step={PRICE_STEP_UAH}
                 placeholder="Від"
                 className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
-                value={params.cinaVid ?? ""}
+                value={
+                  dragValues ? dragValues[0] : (params.cinaVid ?? "")
+                }
                 onChange={(e) => handleMinInput(e.target.value)}
               />
               <input
@@ -243,7 +251,7 @@ export function CatalogFiltersPanel({
                 step={PRICE_STEP_UAH}
                 placeholder="До"
                 className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
-                value={params.cinaDo ?? ""}
+                value={dragValues ? dragValues[1] : (params.cinaDo ?? "")}
                 onChange={(e) => handleMaxInput(e.target.value)}
               />
             </div>

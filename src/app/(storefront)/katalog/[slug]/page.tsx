@@ -52,17 +52,22 @@ export default async function CategoryCatalogPage({
   searchParams,
 }: PageProps) {
   const { slug } = await params;
-  const parsed = await catalogSearchParamsCache.parse(searchParams);
-  const filters = parsersToFilters(parsed);
+  const rawParsed = await catalogSearchParamsCache.parse(searchParams);
 
   const category = await getCategoryBySlug(slug);
   if (!category) {
     notFound();
   }
 
-  const [categories, brands, priceBounds, result] = await Promise.all([
+  const brands = await getDistinctBrands(category.id);
+  const parsed =
+    rawParsed.brend != null && !brands.includes(rawParsed.brend)
+      ? { ...rawParsed, brend: null, storinka: 1 }
+      : rawParsed;
+  const filters = parsersToFilters(parsed);
+
+  const [categories, priceBounds, result] = await Promise.all([
     listCategories(),
-    getDistinctBrands(category.id),
     getCatalogPriceBounds(category.id),
     listPublicProducts({
       categoryId: category.id,
