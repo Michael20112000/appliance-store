@@ -11,7 +11,7 @@
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
-| 7 | Catalog Filters Fix | Робочі фільтри ціни й бренду | CAT-01, CAT-02, CAT-03 | 3 |
+| 7 | Catalog Filters Fix | 1/4 | In Progress|  |
 | 8 | Admin UX & Chat Lifecycle | shadcn admin shell, orders table, chat states | FIX-01, ADM-01–03, CHAT-05–06 | 5 |
 | 9 | Wishlist | Обране для гостя й юзера без merge | WISH-01–05 | 5 |
 | 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | 4 |
@@ -29,10 +29,10 @@
 4. Vitest покриває `parsersToFilters` і `getDistinctBrands(categoryId?)`
 5. Playwright або manual checklist: зміна slider → оновлений grid
 
-**Plans:** 4 plans in 3 waves
+**Plans:** 1/4 plans executed
 
 **Wave 1** *(foundation — service + slider install)*
-- [ ] 07-01-PLAN.md — `getDistinctBrands(categoryId?)`, `getCatalogPriceBounds`, wire pages, shadcn slider
+- [x] 07-01-PLAN.md — `getDistinctBrands(categoryId?)`, `getCatalogPriceBounds`, wire pages, shadcn slider
 
 **Wave 2** *(blocked on Wave 1 — interactive UX)*
 - [ ] 07-02-PLAN.md — Dual-thumb Slider, throttle 200ms, mobile filter sheet
