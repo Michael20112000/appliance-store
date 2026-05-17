@@ -344,7 +344,7 @@ export function parseConversationChannel(channelName: string): string | null {
 export async function assertConversationAccess(
   session: ChatSession,
   conversationId: string,
-): Promise<void> {
+): Promise<{ id: string; userId: string; status: ConversationStatus }> {
   const conversation = await prisma.conversation.findUnique({
     where: { id: conversationId },
   });
@@ -354,10 +354,12 @@ export async function assertConversationAccess(
   }
 
   if (session.user.role === "admin") {
-    return;
+    return conversation;
   }
 
   if (conversation.userId !== session.user.id) {
     throw new ChatServiceError(FORBIDDEN, "Немає доступу до цієї розмови");
   }
+
+  return conversation;
 }

@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import type { ConversationStatus } from "@/generated/prisma/client";
 import { getConversationForBuyer } from "@/server/services/chat.service";
 import { ChatProvider } from "@/components/chat/chat-provider";
 
@@ -14,12 +15,14 @@ export async function ChatProviderGate({
 
   const hasSession = Boolean(session?.user);
   let initialConversationId: string | undefined;
+  let initialConversationStatus: ConversationStatus | undefined;
   let initialUnreadFromStore = false;
 
   if (session?.user) {
     const conversation = await getConversationForBuyer(session.user.id);
     if (conversation) {
       initialConversationId = conversation.id;
+      initialConversationStatus = conversation.status;
       initialUnreadFromStore =
         conversation.lastMessageSender === "STORE" &&
         conversation.lastMessageAt !== null &&
@@ -31,6 +34,7 @@ export async function ChatProviderGate({
     <ChatProvider
       hasSession={hasSession}
       initialConversationId={initialConversationId}
+      initialConversationStatus={initialConversationStatus}
       initialUnreadFromStore={initialUnreadFromStore}
     >
       {children}

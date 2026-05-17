@@ -10,6 +10,7 @@ import {
   assertConversationAccess,
   ChatRateLimitError,
   ChatServiceError,
+  CHAT_ARCHIVED,
   CHAT_RATE_LIMIT,
   CONVERSATION_NOT_FOUND,
   FORBIDDEN,
@@ -34,6 +35,12 @@ function pusherPayload(message: MessageDto) {
 function mapChatServiceError(error: ChatServiceError): Response {
   if (error.code === FORBIDDEN) {
     return Response.json({ error: FORBIDDEN }, { status: 403 });
+  }
+  if (error.code === CHAT_ARCHIVED) {
+    return Response.json(
+      { error: CHAT_ARCHIVED, message: error.message },
+      { status: 403 },
+    );
   }
   if (error.code === CONVERSATION_NOT_FOUND) {
     return Response.json(
@@ -140,9 +147,9 @@ export async function GET(request: Request) {
   }
 
   try {
-    await assertConversationAccess(session, conversationId);
+    const conversation = await assertConversationAccess(session, conversationId);
     const messages = await listMessages(conversationId, { limit: 50 });
-    return Response.json({ messages });
+    return Response.json({ messages, status: conversation.status });
   } catch (error) {
     if (error instanceof ChatServiceError) {
       return mapChatServiceError(error);

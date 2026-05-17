@@ -18,6 +18,7 @@ import {
   getPusherClient,
   isPusherClientConfigured,
 } from "@/lib/pusher-client";
+import type { ConversationStatus } from "@/generated/prisma/client";
 import { markBuyerReadAction } from "@/server/actions/chat.actions";
 import type { MessageDto } from "@/types/chat";
 
@@ -49,6 +50,8 @@ type ChatContextValue = {
   isOpen: boolean;
   messages: ChatMessage[];
   conversationId: string | null;
+  conversationStatus: ConversationStatus | null;
+  canSend: boolean;
   isLoading: boolean;
   loadError: string | null;
   isDisconnected: boolean;
@@ -61,6 +64,7 @@ type ChatContextValue = {
   replaceOptimisticMessage: (tempId: string, message: MessageDto) => void;
   removeOptimisticMessage: (tempId: string) => void;
   setConversationId: (id: string) => void;
+  setConversationStatus: (status: ConversationStatus) => void;
   clearUnreadFromStore: () => void;
 };
 
@@ -70,6 +74,7 @@ type ChatProviderProps = {
   children?: ReactNode;
   hasSession: boolean;
   initialConversationId?: string;
+  initialConversationStatus?: ConversationStatus;
   initialUnreadFromStore?: boolean;
 };
 
@@ -85,6 +90,7 @@ export function ChatProvider({
   children,
   hasSession,
   initialConversationId,
+  initialConversationStatus,
   initialUnreadFromStore = false,
 }: ChatProviderProps) {
   const router = useRouter();
@@ -98,6 +104,8 @@ export function ChatProvider({
   const [conversationId, setConversationId] = useState<string | null>(
     initialConversationId ?? null,
   );
+  const [conversationStatus, setConversationStatus] =
+    useState<ConversationStatus | null>(initialConversationStatus ?? null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -111,6 +119,8 @@ export function ChatProvider({
   const subscribedChannelRef = useRef<string | null>(null);
 
   const isOpen = query.chat === "open";
+  const canSend =
+    conversationStatus === null || conversationStatus === "OPEN";
 
   const guestRedirect = useCallback(() => {
     const query = searchParams.toString();
@@ -186,8 +196,14 @@ export function ChatProvider({
       throw new Error("LOAD_FAILED");
     }
 
-    const data = (await response.json()) as { messages: MessageDto[] };
+    const data = (await response.json()) as {
+      messages: MessageDto[];
+      status?: ConversationStatus;
+    };
     setMessages(data.messages);
+    if (data.status) {
+      setConversationStatus(data.status);
+    }
     setLoadError(null);
   }, []);
 
@@ -233,6 +249,7 @@ export function ChatProvider({
     }
 
     setMessages([]);
+    setConversationStatus(null);
     setLoadError(null);
     setIsLoading(false);
   }, [clearUnreadFromStore, conversationId, fetchMessages, hasSession, isOpen]);
@@ -315,6 +332,8 @@ export function ChatProvider({
       isOpen,
       messages,
       conversationId,
+      conversationStatus,
+      canSend,
       isLoading,
       loadError,
       isDisconnected,
@@ -327,13 +346,16 @@ export function ChatProvider({
       replaceOptimisticMessage,
       removeOptimisticMessage,
       setConversationId,
+      setConversationStatus,
       clearUnreadFromStore,
     }),
     [
       appendMessage,
       clearUnreadFromStore,
       closePanel,
+      canSend,
       conversationId,
+      conversationStatus,
       hasSession,
       isDisconnected,
       isLoading,

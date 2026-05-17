@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useChat } from "@/components/chat/chat-provider";
+import { ArchivedChatBanner } from "@/components/chat/archived-chat-banner";
 import { ChatComposer } from "@/components/chat/chat-composer";
 import { MessageList } from "@/components/chat/message-list";
 import { ProductContextBanner } from "@/components/chat/product-context-banner";
@@ -81,10 +82,13 @@ function PanelBody({
     loadError,
     isDisconnected,
     productContext,
+    conversationStatus,
     refetchMessages,
     closePanel,
     isOpen,
   } = useChat();
+
+  const isArchived = conversationStatus === "ARCHIVED";
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
@@ -104,6 +108,11 @@ function PanelBody({
       {productContext ? (
         <div className="shrink-0">
           <ProductContextBanner context={productContext} />
+        </div>
+      ) : null}
+      {isArchived ? (
+        <div className="shrink-0">
+          <ArchivedChatBanner />
         </div>
       ) : null}
       <div className="shrink-0">

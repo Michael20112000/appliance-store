@@ -12,6 +12,12 @@ import type { MessageDto } from "@/types/chat";
 const MAX_LENGTH = 2000;
 
 function mapSendError(status: number, payload: { error?: string; message?: string }) {
+  if (payload.error === "CHAT_ARCHIVED") {
+    return (
+      payload.message ??
+      "Діалог закрито. Напишіть нам іншим способом або зачекайте відповіді магазину."
+    );
+  }
   if (status === 429 || payload.error === "CHAT_RATE_LIMIT") {
     return payload.message ?? "Забагато повідомлень. Зачекайте хвилину.";
   }
@@ -25,10 +31,12 @@ export function ChatComposer() {
   const {
     conversationId,
     productContext,
+    canSend: canSendMessages,
     appendMessage,
     replaceOptimisticMessage,
     removeOptimisticMessage,
     setConversationId,
+    setConversationStatus,
   } = useChat();
 
   const [body, setBody] = useState("");
@@ -37,10 +45,12 @@ export function ChatComposer() {
 
   const trimmed = body.trim();
   const overLimit = body.length > MAX_LENGTH;
-  const canSend = trimmed.length > 0 && !overLimit && !isSending;
+  const canSubmit =
+    canSendMessages && trimmed.length > 0 && !overLimit && !isSending;
+  const composerDisabled = !canSendMessages || isSending;
 
   const send = async () => {
-    if (!canSend) return;
+    if (!canSubmit) return;
 
     setError(null);
     setIsSending(true);
@@ -77,6 +87,9 @@ export function ChatComposer() {
 
       if (!response.ok) {
         removeOptimisticMessage(tempId);
+        if (payload.error === "CHAT_ARCHIVED") {
+          setConversationStatus("ARCHIVED");
+        }
         setError(mapSendError(response.status, payload));
         setBody(trimmed);
         return;
@@ -85,6 +98,7 @@ export function ChatComposer() {
       replaceOptimisticMessage(tempId, payload);
       if (!conversationId) {
         setConversationId(payload.conversationId);
+        setConversationStatus("OPEN");
       }
     } catch {
       removeOptimisticMessage(tempId);
@@ -113,10 +127,13 @@ export function ChatComposer() {
           value={body}
           onChange={(event) => setBody(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Напишіть повідомлення…"
+          placeholder={
+            canSendMessages ? "Напишіть повідомлення…" : "Діалог закрито"
+          }
           rows={1}
           maxLength={MAX_LENGTH}
-          disabled={isSending}
+          disabled={composerDisabled}
+          aria-disabled={!canSendMessages}
           aria-invalid={overLimit || Boolean(error)}
           className="max-h-[120px] min-h-11 resize-none"
         />
@@ -124,7 +141,7 @@ export function ChatComposer() {
           type="button"
           size="icon"
           className="size-11 shrink-0"
-          disabled={!canSend}
+          disabled={!canSubmit}
           aria-label="Надіслати"
           aria-busy={isSending}
           onClick={() => void send()}
