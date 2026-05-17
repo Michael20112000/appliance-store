@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { MessageBubble } from "@/components/chat/message-bubble";
 import type { ChatMessage } from "@/components/chat/chat-provider";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,7 +15,37 @@ type MessageListProps = {
   emptyBody?: string;
   /** Native overflow scroll for mobile Sheet (touch-friendly). */
   useNativeScroll?: boolean;
+  /** When true, scroll to latest messages on open and after load. */
+  isPanelOpen?: boolean;
 };
+
+function isNearBottom(el: HTMLElement) {
+  return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
+}
+
+function scrollMessagesToEnd(
+  bottomRef: RefObject<HTMLDivElement | null>,
+  scrollRef: RefObject<HTMLDivElement | null>,
+  useNativeScroll: boolean,
+) {
+  if (useNativeScroll && scrollRef.current) {
+    const el = scrollRef.current;
+    el.scrollTop = el.scrollHeight;
+    return;
+  }
+  bottomRef.current?.scrollIntoView({ behavior: "instant", block: "end" });
+}
+
+function getScrollContainer(
+  bottomRef: RefObject<HTMLDivElement | null>,
+  scrollRef: RefObject<HTMLDivElement | null>,
+  useNativeScroll: boolean,
+): HTMLElement | null {
+  if (useNativeScroll) return scrollRef.current;
+  return bottomRef.current?.closest(
+    '[data-slot="scroll-area-viewport"]',
+  ) as HTMLElement | null;
+}
 
 export function MessageList({
   messages,
@@ -25,12 +55,43 @@ export function MessageList({
   emptyTitle = "Напишіть нам",
   emptyBody = "Маєте питання про товар чи замовлення? Ми відповімо тут.",
   useNativeScroll = false,
+  isPanelOpen = false,
 }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const prevPanelOpenRef = useRef(isPanelOpen);
+  const prevLoadingRef = useRef(isLoading);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+    const justOpened = isPanelOpen && !prevPanelOpenRef.current;
+    const loadJustFinished = isPanelOpen && prevLoadingRef.current && !isLoading;
+    prevPanelOpenRef.current = isPanelOpen;
+    prevLoadingRef.current = isLoading;
+
+    if (!isPanelOpen || isLoading || loadError) return;
+    if (!justOpened && !loadJustFinished) return;
+
+    const run = () => scrollMessagesToEnd(bottomRef, scrollRef, useNativeScroll);
+    run();
+    const frame = requestAnimationFrame(() => {
+      run();
+      requestAnimationFrame(run);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [isPanelOpen, isLoading, loadError, messages.length, useNativeScroll]);
+
+  useEffect(() => {
+    if (!isPanelOpen || isLoading || loadError) return;
+
+    const scrollContainer = getScrollContainer(
+      bottomRef,
+      scrollRef,
+      useNativeScroll,
+    );
+    if (scrollContainer && !isNearBottom(scrollContainer)) return;
+
+    scrollMessagesToEnd(bottomRef, scrollRef, useNativeScroll);
+  }, [messages, isPanelOpen, isLoading, loadError, useNativeScroll]);
 
   if (loadError) {
     return (
@@ -79,7 +140,10 @@ export function MessageList({
 
   if (useNativeScroll) {
     return (
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+      <div
+        ref={scrollRef}
+        className="h-0 min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain"
+      >
         {thread}
       </div>
     );

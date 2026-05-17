@@ -108,4 +108,4 @@ Fill after each deploy. Do not paste secret values.
 | Environment | Origin URL | Deploy ID / timestamp | Operator | Notes |
 |-------------|------------|------------------------|----------|-------|
 | Preview | `https://project-r4qzr.vercel.app` | `498b492` · 2026-05-17 | Michael Ivashko | Smoke 4/4 green; Lighthouse **fail** LCP/CLS — promote blocked |
-| Production | `https://<production-host>` | | | After promote — env verified + smoke 4/4 (06-08) |
+| Production | `https://project-r4qzr.vercel.app` | | | After promote — env verified + smoke 4/4 (06-08) |

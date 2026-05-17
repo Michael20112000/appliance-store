@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 import { X } from "lucide-react";
 import { useChat } from "@/components/chat/chat-provider";
 import { ChatComposer } from "@/components/chat/chat-composer";
@@ -15,17 +14,30 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-function PanelHeader({ onClose }: { onClose: () => void }) {
+function PanelHeader({
+  onClose,
+  sticky = false,
+}: {
+  onClose: () => void;
+  sticky?: boolean;
+}) {
   return (
-    <div className="flex items-start justify-between border-b border-border px-4 py-3">
-      <div>
+    <div
+      className={
+        sticky
+          ? "relative z-20 flex shrink-0 items-start justify-between border-b border-border bg-background px-4 py-3"
+          : "flex shrink-0 items-start justify-between border-b border-border px-4 py-3"
+      }
+    >
+      <div className="min-w-0 pr-2">
         <p className="text-sm font-semibold">Чат з магазином</p>
         <p className="text-xs text-muted-foreground">Відповімо якнайшвидше</p>
       </div>
       <Button
         type="button"
-        variant="ghost"
+        variant="outline"
         size="icon"
+        className="size-9 shrink-0"
         onClick={onClose}
         aria-label="Закрити чат"
       >
@@ -56,7 +68,13 @@ function DisconnectedBanner({
   );
 }
 
-function PanelBody({ useNativeScroll }: { useNativeScroll?: boolean }) {
+function PanelBody({
+  useNativeScroll,
+  stickyHeader = false,
+}: {
+  useNativeScroll?: boolean;
+  stickyHeader?: boolean;
+}) {
   const {
     messages,
     isLoading,
@@ -65,25 +83,33 @@ function PanelBody({ useNativeScroll }: { useNativeScroll?: boolean }) {
     productContext,
     refetchMessages,
     closePanel,
+    isOpen,
   } = useChat();
 
   return (
-    <motion.div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <PanelHeader onClose={closePanel} />
+    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+      <PanelHeader onClose={closePanel} sticky={stickyHeader} />
       {isDisconnected ? (
-        <DisconnectedBanner onRefresh={refetchMessages} />
+        <div className="shrink-0">
+          <DisconnectedBanner onRefresh={refetchMessages} />
+        </div>
       ) : null}
       <MessageList
         messages={messages}
         isLoading={isLoading}
         loadError={loadError}
         useNativeScroll={useNativeScroll}
+        isPanelOpen={isOpen}
       />
       {productContext ? (
-        <ProductContextBanner context={productContext} />
+        <div className="shrink-0">
+          <ProductContextBanner context={productContext} />
+        </div>
       ) : null}
-      <ChatComposer />
-    </motion.div>
+      <div className="shrink-0">
+        <ChatComposer />
+      </div>
+    </div>
   );
 }
 
@@ -132,12 +158,12 @@ export function ChatPanel() {
         <SheetContent
           side="bottom"
           showCloseButton={false}
-          className="flex h-[85dvh] min-h-0 flex-col gap-0 p-0 md:hidden"
+          className="flex h-[80dvh] max-h-[80dvh] min-h-0 flex-col gap-0 overflow-hidden rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))] md:hidden data-[side=bottom]:h-[80dvh]"
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Чат з магазином</SheetTitle>
           </SheetHeader>
-          <PanelBody useNativeScroll />
+          <PanelBody useNativeScroll stickyHeader />
         </SheetContent>
       </Sheet>
     </>
