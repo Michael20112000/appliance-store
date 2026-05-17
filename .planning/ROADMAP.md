@@ -252,7 +252,7 @@ Plans:
 
 **Wave 6** *(gap closure — blocked on 06-06)*
 
-- [ ] 06-07-PLAN.md — Vercel preview Lighthouse + Rich Results operator gate
+- [x] 06-07-PLAN.md — Vercel preview Lighthouse + Rich Results operator gate (CWV fail — promote blocked)
 
 **Wave 7** *(gap closure — blocked on 06-07)*
 

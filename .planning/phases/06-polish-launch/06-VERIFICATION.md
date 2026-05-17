@@ -7,7 +7,9 @@
 
 ## Preview deployment URL
 
-**Base URL (Vercel preview, D-06-13):** `https://<vercel-preview-host>`
+**Base URL (Vercel preview, D-06-13):** `https://project-r4qzr.vercel.app`
+
+**Deploy:** `498b492` (main) · Vercel deployment `project-r4qzr-6axoptgp4-michael20112000s-projects.vercel.app` (401 without auth — use canonical domain above)
 
 **Production origin (post-promote):** `https://<production-host>`
 
@@ -20,24 +22,24 @@
 | `npm run build` | ☑ OK | 2026-05-17 |
 | `curl` home 200 on `npm run start` | ☑ 200 | 2026-05-17 |
 
-Команди: `npm run build && npm run start` → Lighthouse mobile на `http://localhost:3000` для трьох URL нижче. **CWV pass/fail для ship** — лише після запису preview lab (06-07).
-
 ---
 
 ## Mobile Lighthouse (lab, D-06-06 / D-06-07)
 
-**Інструмент:** Chrome DevTools → Lighthouse → **Mobile** на **Vercel preview** (production build).  
+**Інструмент:** Lighthouse CLI 12.6.1 — **Mobile** на `https://project-r4qzr.vercel.app` (production build on Vercel).  
 **Цілі v1:** LCP ≤ **2.5s** · CLS ≤ **0.1** · INP ≤ **200ms**
 
 | URL | LCP | CLS | INP | Pass/Fail |
 |-----|-----|-----|-----|-----------|
-| `/` (головна) | | | | ☐ |
-| `/katalog` | | | | ☐ |
-| PDP seed: `/tovar/bosch-kholodylnyky-8-available` | | | | ☐ |
+| `/` (головна) | 3.68s | 0.000 | n/a | ☑ **Fail** (LCP) |
+| `/katalog` | 3.05s | 0.171 | n/a | ☑ **Fail** (LCP + CLS) |
+| PDP seed: `/tovar/bosch-kholodylnyky-8-available` | 3.17s | 0.000 | n/a | ☑ **Fail** (LCP) |
 
 **Обраний PDP slug:** `bosch-kholodylnyky-8-available`
 
-**Дата прогону (preview):** _pending 06-07_
+**Дата прогону (preview):** 2026-05-17
+
+**Висновок (D-06-07):** CWV targets **not met** on preview. **Promote to production blocked** until LCP ≤2.5s and CLS ≤0.1 on all three URLs (or documented override with measured pass).
 
 <details>
 <summary>Dev lab (invalid for ship) — localhost `next dev`, 2026-05-17</summary>
@@ -58,22 +60,32 @@
 
 | Сторінка | URL (preview) | LocalBusiness / Product | Pass/Fail |
 |----------|---------------|---------------------------|-----------|
-| Головна — LocalBusiness, Львів | `https://<preview>/` | | ☐ |
-| PDP — Product + UsedCondition | `https://<preview>/tovar/bosch-kholodylnyky-8-available` | | ☐ |
+| Головна — LocalBusiness, Львів | `https://project-r4qzr.vercel.app/` | `addressLocality` Львів у HTML (automated curl) | ☑ Pass (pending Google tool) |
+| PDP — Product + UsedCondition | `https://project-r4qzr.vercel.app/tovar/bosch-kholodylnyky-8-available` | `UsedCondition` у markup | ☑ Pass (pending Google tool) |
 
-**Примітки:** `catalog-seo.spec.ts` (localhost) — green; Rich Results на preview — 06-07 Task 3.
+**Примітки:** `catalog-seo.spec.ts` — green. Рекомендовано підтвердити в Rich Results Test перед prod promote.
 
 ---
 
 ## robots.txt (preview)
 
-URL: `https://<preview>/robots.txt`
+URL: `https://project-r4qzr.vercel.app/robots.txt`
 
 | Перевірка | OK? |
 |-----------|-----|
-| Рядок `Sitemap:` присутній | ☐ |
-| `Disallow: /admin` (або еквівалент) | ☐ |
-| Публічний каталог не заблокований | ☐ |
+| Рядок `Sitemap:` присутній | ☑ |
+| `Disallow: /admin` (або еквівалент) | ☑ |
+| Публічний каталог не заблокований | ☑ |
+
+---
+
+## Preview smoke (automated)
+
+```bash
+PLAYWRIGHT_BASE_URL=https://project-r4qzr.vercel.app npx playwright test e2e/smoke-deploy.spec.ts
+```
+
+**2026-05-17:** ☑ **4/4 passed**
 
 ---
 
@@ -89,14 +101,17 @@ npx playwright test e2e/catalog-seo.spec.ts
 
 ## Code review — PERF-01 / D-06-09
 
-**06-04:** Pass. **06-06 gap fixes:** single Geist stack, deferred chat chrome, catalog card `min-h-48` for CLS.
+**06-04:** Pass. **06-06:** single Geist, deferred chat, catalog `min-h-48`.
 
 ---
 
 ## Perf remediation (D-06-07)
 
-- [x] 06-06: duplicate font removed; chat lazy-loaded; catalog thumbnail layout stability
-- [ ] Preview mobile lab pass (06-07) — record scores above
+- [x] 06-06: duplicate font, chat deferral, catalog min-height
+- [ ] Preview LCP still >2.5s on all three URLs (3.05–3.68s)
+- [ ] `/katalog` CLS 0.171 — needs layout fix (grid images/fonts)
+
+**Next perf ideas:** hero image preload, reduce JS on catalog route, fix catalog CLS (skeleton or fixed aspect on all cards), consider `next/font` subsetting audit.
 
 ---
 
@@ -104,9 +119,10 @@ npx playwright test e2e/catalog-seo.spec.ts
 
 | Gate | Готово до prod promote? |
 |------|-------------------------|
-| Lighthouse 3 URL (preview) | ☐ |
-| Rich Results (preview) | ☐ |
-| robots.txt preview | ☐ |
-| Production smoke 4/4 (06-08) | ☐ |
+| Lighthouse 3 URL (preview) | ☑ **Fail** — blocked |
+| Rich Results (preview) | ☑ Pass (markup; Google tool optional) |
+| robots.txt preview | ☑ Pass |
+| Preview smoke 4/4 | ☑ Pass |
+| Production smoke 4/4 (06-08) | ☐ Blocked until Lighthouse pass |
 
-**Підпис / дата оператора:** _pending 06-07/08_
+**Підпис / дата оператора:** Michael Ivashko · 2026-05-17 · **preview recorded; promote blocked (CWV)**
