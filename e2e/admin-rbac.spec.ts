@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { hasCloudinarySecrets, loginAsAdmin } from "./helpers/admin";
 
 test("admin RBAC", async ({ page }) => {
   const buyerEmail = `buyer-rbac-${Date.now()}@example.com`;
@@ -15,19 +16,25 @@ test("admin RBAC", async ({ page }) => {
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/uviity/);
 
+  const buyerSign = await page.request.post("/api/upload/sign", {
+    data: { paramsToSign: { timestamp: Math.floor(Date.now() / 1000) } },
+  });
+  expect(buyerSign.ok()).toBe(false);
+  expect([401, 403]).toContain(buyerSign.status());
+
   await page.getByRole("button", { name: "Вийти" }).click();
 
-  await page.goto("/uviity");
-  await page.getByLabel("Email").fill(
-    process.env.ADMIN_EMAIL ?? "official.michael.developer@gmail.com",
-  );
-  await page.getByLabel("Пароль", { exact: true }).fill(
-    process.env.ADMIN_PASSWORD ?? "michael20112000",
-  );
-  await page.getByRole("button", { name: "Увійти" }).click();
-  await expect(page).toHaveURL(/\/kabinet/);
-
+  await loginAsAdmin(page);
   await page.goto("/admin");
-  await expect(page.getByText("Адмін-панель")).toBeVisible();
   await expect(page.getByText("Панель керування")).toBeVisible();
+  await expect(page.getByText("Незабаром")).toBeVisible();
+
+  test.skip(!hasCloudinarySecrets(), "Cloudinary secrets required for admin sign route");
+
+  const adminSign = await page.request.post("/api/upload/sign", {
+    data: { paramsToSign: { timestamp: Math.floor(Date.now() / 1000) } },
+  });
+  expect(adminSign.ok()).toBe(true);
+  const body = (await adminSign.json()) as { signature?: string };
+  expect(body.signature).toBeTruthy();
 });

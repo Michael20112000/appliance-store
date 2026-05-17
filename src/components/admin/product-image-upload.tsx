@@ -12,6 +12,14 @@ import { Label } from "@/components/ui/label";
 
 const MAX_IMAGES = 8;
 
+function isUploadWidgetConfigured(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME &&
+    (process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY ??
+      process.env.CLOUDINARY_API_KEY),
+  );
+}
+
 type ExistingImage = {
   cloudinaryPublicId: string;
   alt: string | null;
@@ -111,6 +119,17 @@ export function ProductImageUpload({
   const saveAlts = () => {
     persistImages(images);
   };
+
+  if (!isUploadWidgetConfigured()) {
+    return (
+      <Alert>
+        <AlertDescription>
+          Завантаження фото недоступне: додайте NEXT_PUBLIC_CLOUDINARY_API_KEY
+          або CLOUDINARY_API_KEY у середовище.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <div className="space-y-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { OrderStatus } from "@/generated/prisma/client";
 import { toast } from "sonner";
@@ -40,6 +41,7 @@ export function OrderStatusSelect({
   order,
   allowedNextStatuses,
 }: OrderStatusSelectProps) {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [cancelOpen, setCancelOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(
@@ -70,6 +72,7 @@ export function OrderStatusSelect({
     toast.success("Статус оновлено");
     setSelectedStatus(null);
     setCancelOpen(false);
+    router.refresh();
   }
 
   function handleSelect(value: string | null) {
@@ -95,7 +98,9 @@ export function OrderStatusSelect({
           disabled={pending}
         >
           <SelectTrigger id="order-status" className="w-full max-w-xs">
-            <SelectValue placeholder="Оберіть статус" />
+            <SelectValue placeholder="Оберіть статус">
+              {ORDER_STATUS_LABELS_UA[order.status]}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={order.status}>
