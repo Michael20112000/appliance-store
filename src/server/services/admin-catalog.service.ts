@@ -96,6 +96,29 @@ export async function updateCategory(
   });
 }
 
+export async function updateCategoryImage(input: {
+  categoryId: string;
+  imagePublicId: string | null;
+  imageAlt?: string | null;
+}) {
+  const existing = await prisma.category.findUnique({
+    where: { id: input.categoryId },
+    select: { id: true },
+  });
+  if (!existing) {
+    throw new Error(CATEGORY_NOT_FOUND);
+  }
+
+  return prisma.category.update({
+    where: { id: input.categoryId },
+    data: {
+      imagePublicId: input.imagePublicId,
+      imageAlt: input.imageAlt ?? null,
+    },
+    select: { id: true, slug: true },
+  });
+}
+
 export async function deleteCategory(id: string) {
   const category = await prisma.category.findUnique({
     where: { id },
