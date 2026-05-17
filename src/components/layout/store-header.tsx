@@ -3,7 +3,9 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { CartNavLink } from "@/components/cart/cart-nav-link";
+import { WishlistNavLink } from "@/components/wishlist/wishlist-nav-link";
 import { StoreHeaderAuth } from "@/components/layout/store-header-auth";
+import { getWishlistItemCount } from "@/server/services/wishlist.service";
 import { StoreMobileNav } from "@/components/layout/store-mobile-nav";
 
 export async function StoreHeader() {
@@ -39,6 +41,14 @@ export async function StoreHeader() {
 
         <div className="flex items-center gap-2">
           <StoreMobileNav categories={categories} />
+          <WishlistNavLink
+            hasSession={Boolean(session?.user)}
+            initialCount={
+              session?.user
+                ? await getWishlistItemCount(session.user.id)
+                : undefined
+            }
+          />
           {session?.user ? <CartNavLink userId={session.user.id} /> : null}
           <StoreHeaderAuth session={session} />
         </div>
