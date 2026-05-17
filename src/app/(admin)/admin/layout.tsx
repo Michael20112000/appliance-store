@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import { requireAdmin } from "@/lib/permissions";
 import { AdminNav } from "@/components/admin/admin-nav";
 
@@ -27,6 +28,7 @@ export default async function AdminLayout({
         </aside>
         <main>{children}</main>
       </div>
+      <Toaster richColors position="top-center" />
     </div>
   );
 }

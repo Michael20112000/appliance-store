@@ -8,7 +8,7 @@ const navItems = [
   { href: "/admin", label: "Панель", enabled: true },
   { href: "/admin/kategorii", label: "Категорії", enabled: true },
   { href: "#", label: "Товари", enabled: false },
-  { href: "#", label: "Замовлення", enabled: false },
+  { href: "/admin/zamovlennia", label: "Замовлення", enabled: true },
 ] as const;
 
 export function AdminNav() {

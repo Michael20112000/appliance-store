@@ -1,18 +1,12 @@
 import type { OrderStatus, Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
+import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
 import type { OrderDetailDto, OrderSummaryDto } from "@/types/order";
+
+export { ORDER_STATUS_LABELS_UA };
 
 export const INVALID_STATUS_TRANSITION = "INVALID_STATUS_TRANSITION";
 export const ORDER_NOT_FOUND = "ORDER_NOT_FOUND";
-
-export const ORDER_STATUS_LABELS_UA: Record<OrderStatus, string> = {
-  PENDING: "Нове",
-  CONFIRMED: "Підтверджено",
-  READY_FOR_PICKUP: "Готово до самовивозу",
-  OUT_FOR_DELIVERY: "Доставляється",
-  COMPLETED: "Виконано",
-  CANCELLED: "Скасовано",
-};
 
 const ALLOWED_TRANSITIONS: Record<OrderStatus, readonly OrderStatus[]> = {
   PENDING: ["CONFIRMED", "CANCELLED"],
