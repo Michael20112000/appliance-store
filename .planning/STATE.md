@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Engagement & Fixes
 status: executing
-stopped_at: Phase 8 context gathered
-last_updated: "2026-05-17T16:46:48.304Z"
-last_activity: 2026-05-17 -- Phase 08 planning complete
+stopped_at: Completed 08-04-PLAN.md
+last_updated: "2026-05-17T16:56:00.000Z"
+last_activity: 2026-05-17 -- Completed 08-04 (ADM-03 categories table)
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 11
-  completed_plans: 4
-  percent: 25
+  completed_plans: 5
+  percent: 45
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 07 — catalog-filters-fix
+**Current focus:** Phase 08 — admin-ux-chat-lifecycle
 
 ## Current Position
 
-Phase: 07 (catalog-filters-fix) — EXECUTING
-Plan: 4 of 4
-Status: Ready to execute
-Last activity: 2026-05-17 -- Phase 08 planning complete
+Phase: 08 (admin-ux-chat-lifecycle) — EXECUTING
+Plan: 5 of 7 (next)
+Status: 08-04 complete; ready for 08-05
+Last activity: 2026-05-17 -- Completed 08-04 (ADM-03)
 
 ## Performance Metrics
 
@@ -72,6 +72,7 @@ Recent decisions affecting current work:
 - Invalid brend cleared client-side with history replace on category pages (D-07-11)
 - ActiveFilterChips in toolbar via same nuqs parsers as filters (D-07-12/13)
 - Vitest parsersToFilters one-sided bounds; manual checklist for slider/price UX (D-07-14/15)
+- D-08-14: Slug column removed from categories admin table only; edit form keeps slug (ADM-03)
 
 ### Pending Todos
 
@@ -94,9 +95,9 @@ Items acknowledged at v1.0 milestone close on 2026-05-17:
 
 ## Session Continuity
 
-Last session: 2026-05-17T16:35:03.469Z
-Stopped at: Phase 8 context gathered
-Resume file: .planning/phases/08-admin-ux-chat-lifecycle/08-CONTEXT.md
+Last session: 2026-05-17T16:56:00.000Z
+Stopped at: Completed 08-04-PLAN.md
+Resume file: .planning/phases/08-admin-ux-chat-lifecycle/08-05-PLAN.md
 
 ## Operator Next Steps
 
