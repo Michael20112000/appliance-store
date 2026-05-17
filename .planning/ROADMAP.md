@@ -14,7 +14,7 @@
 | 7 | Catalog Filters Fix | 4/4 | Complete   | 2026-05-17 |
 | 8 | Admin UX & Chat Lifecycle | 7/7 | Complete   | 2026-05-17 |
 | 9 | Wishlist | 5/5 | ✅ Complete   | 2026-05-17 |
-| 10 | Category Showcase Images | 3/4 | In Progress|  |
+| 10 | Category Showcase Images | 4/4 | Complete   | 2026-05-17 |
 
 ### Phase 7: Catalog Filters Fix
 
@@ -138,7 +138,7 @@
 4. Зображення оптимізовані (CldImage, sizes для grid)
 5. Seed/migration не ламає існуючі категорії
 
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 **Wave 1** *(schema + validators)*
 - [x] 10-01-PLAN.md — Prisma `imagePublicId`/`imageAlt`, migrate [BLOCKING], Zod + Vitest
@@ -150,7 +150,7 @@
 - [x] 10-03-PLAN.md — `CategoryImageUpload`, `/admin/kategorii/[id]` section (HOME-02)
 
 **Wave 4** *(blocked on Wave 1+3 — storefront + verification)*
-- [ ] 10-04-PLAN.md — `CategoryGrid` images, optional seed, manual checklist (HOME-01)
+- [x] 10-04-PLAN.md — `CategoryGrid` images, optional seed, manual checklist (HOME-01)
 
 **Cross-cutting constraints:**
 - Field name `Category.imagePublicId` (not `cloudinaryPublicId`)
