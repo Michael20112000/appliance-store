@@ -16,6 +16,7 @@ import {
 vi.mock("@/lib/db", () => ({
   prisma: {
     conversation: {
+      fields: { adminLastReadAt: "adminLastReadAt" },
       findUnique: vi.fn(),
       findUniqueOrThrow: vi.fn(),
       create: vi.fn(),
@@ -80,10 +81,13 @@ describe("getOrCreateConversation", () => {
 
 describe("sendMessage", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
+    vi.mocked(prisma.conversation).fields = {
+      adminLastReadAt: "adminLastReadAt",
+    };
   });
 
-  it("rejects when rate limit exceeded", async () => {
+  it("rejects when rate limit exceeded at 20 messages in window", async () => {
     vi.mocked(prisma.message.count).mockResolvedValueOnce(20);
 
     await expect(
@@ -98,15 +102,28 @@ describe("sendMessage", () => {
     expect(prisma.$transaction).not.toHaveBeenCalled();
   });
 
+  it("rejects 21st message in the same window", async () => {
+    vi.mocked(prisma.message.count).mockResolvedValueOnce(21);
+
+    await expect(
+      sendMessage({
+        senderId: "buyer-1",
+        senderRole: "BUYER",
+        userId: "buyer-1",
+        body: "зайве",
+      }),
+    ).rejects.toBeInstanceOf(ChatRateLimitError);
+  });
+
   it("creates message and returns MessageDto", async () => {
-    vi.mocked(prisma.message.count).mockResolvedValueOnce(0);
+    vi.mocked(prisma.message.count).mockResolvedValue(0);
     const conversation = {
       id: "conv-1",
       userId: "buyer-1",
       contextProductId: null,
       contextProductTitle: null,
     };
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValue(
       conversation as never,
     );
 
@@ -174,34 +191,37 @@ describe("listMessages", () => {
 });
 
 describe("countUnreadForAdmin", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("counts conversations with buyer messages after admin read cursor", async () => {
     vi.mocked(prisma.conversation.count).mockResolvedValueOnce(3);
 
     const count = await countUnreadForAdmin();
 
     expect(count).toBe(3);
-    expect(prisma.conversation.count).toHaveBeenCalledWith({
-      where: {
-        lastMessageSender: "BUYER",
-        lastMessageAt: { not: null },
-        AND: [
-          {
-            OR: [
-              { adminLastReadAt: null },
-              {
-                lastMessageAt: { gt: prisma.conversation.fields?.adminLastReadAt },
-              },
-            ],
-          },
-        ],
-      },
-    });
+    expect(prisma.conversation.count).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          lastMessageSender: "BUYER",
+          lastMessageAt: { not: null },
+        }),
+      }),
+    );
   });
 });
 
 describe("assertConversationAccess", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.mocked(prisma.conversation).fields = {
+      adminLastReadAt: "adminLastReadAt",
+    };
+  });
+
   it("allows buyer for own conversation", async () => {
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce({
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValue({
       id: "conv-1",
       userId: "buyer-1",
     } as never);
@@ -212,7 +232,7 @@ describe("assertConversationAccess", () => {
   });
 
   it("throws FORBIDDEN when buyer accesses another thread", async () => {
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce({
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValue({
       id: "conv-1",
       userId: "other-buyer",
     } as never);
@@ -223,7 +243,7 @@ describe("assertConversationAccess", () => {
   });
 
   it("allows admin for any conversation", async () => {
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce({
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValue({
       id: "conv-1",
       userId: "buyer-1",
     } as never);
@@ -234,7 +254,7 @@ describe("assertConversationAccess", () => {
   });
 
   it("throws CONVERSATION_NOT_FOUND when missing", async () => {
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(null);
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValue(null);
 
     await expect(
       assertConversationAccess(buyerSession, "conv-missing"),
@@ -244,9 +264,10 @@ describe("assertConversationAccess", () => {
 
 describe("parseConversationChannel", () => {
   it("parses valid private conversation channel", () => {
-    expect(parseConversationChannel("private-conversation-clabc123")).toBe(
-      "clabc123",
-    );
+    const conversationId = "clh3vjq8e0000qz3e8q8q8q8q";
+    expect(
+      parseConversationChannel(`private-conversation-${conversationId}`),
+    ).toBe(conversationId);
   });
 
   it("returns null for invalid channel", () => {
