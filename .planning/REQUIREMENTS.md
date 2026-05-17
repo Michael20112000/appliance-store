@@ -7,7 +7,7 @@
 
 ### Bug Fixes
 
-- [ ] **FIX-01**: Кнопка «Чернетки» на `/admin` веде на `/admin/tovary?status=DRAFT` (не без query)
+- [x] **FIX-01**: Кнопка «Чернетки» на `/admin` веде на `/admin/tovary?status=DRAFT` (не без query)
 
 ### Catalog
 
@@ -17,7 +17,7 @@
 
 ### Admin UX
 
-- [ ] **ADM-01**: Адмін-оболонка використовує shadcn Sidebar (навігація, mobile collapse)
+- [x] **ADM-01**: Адмін-оболонка використовує shadcn Sidebar (навігація, mobile collapse)
 - [x] **ADM-02**: Таблиця замовлень — shadcn Data Table з пагінацією та вибором кількості рядків на сторінці
 - [x] **ADM-03**: У таблиці `/admin/kategorii` прибрано колонку Slug
 
@@ -72,7 +72,7 @@ Deferred beyond v1.1.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FIX-01 | Phase 8 | Pending |
+| FIX-01 | Phase 8 | Complete |
 | CAT-01 | Phase 7 | Complete |
 | CAT-02 | Phase 7 | Complete |
 | CAT-03 | Phase 7 | Complete |

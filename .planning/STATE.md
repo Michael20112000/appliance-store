@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Engagement & Fixes
-status: verifying
-stopped_at: Completed 08-04-PLAN.md
-last_updated: "2026-05-17T17:09:40.456Z"
+status: ready_to_plan
+stopped_at: Phase 08 complete (7/7) — ready to discuss Phase 9
+last_updated: 2026-05-17T17:39:53.595Z
 last_activity: 2026-05-17
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 11
-  completed_plans: 11
+  completed_plans: 42
   percent: 50
 ---
 
@@ -21,20 +21,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 08 — admin-ux-chat-lifecycle
+**Current focus:** Phase 9 — wishlist
 
 ## Current Position
 
-Phase: 08 (admin-ux-chat-lifecycle) — EXECUTING
-Plan: 7 of 7 (next)
-Status: Phase complete — ready for verification
+Phase: 9
+Plan: Not started
+Status: Ready to plan
 Last activity: 2026-05-17
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 38
+- Total plans completed: 45
 - Average duration: —
 - Total execution time: —
 
@@ -48,6 +48,7 @@ Last activity: 2026-05-17
 | 5 | 5 | - | - |
 | 06 | 9 | - | - |
 | 07 | 4 | 29min | 7min |
+| 08 | 7 | - | - |
 
 **Recent Trend:**
 

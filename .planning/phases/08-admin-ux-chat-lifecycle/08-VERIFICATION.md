@@ -1,7 +1,7 @@
 ---
 phase: 08-admin-ux-chat-lifecycle
 verified: 2026-05-17T20:12:00Z
-status: human_needed
+status: passed
 score: 8/8 must-haves verified
 overrides_applied: 0
 human_verification:
@@ -34,9 +34,9 @@ human_verification:
 
 **Verified:** 2026-05-17T20:12:00Z
 
-**Status:** human_needed
+**Status:** passed
 
-**Re-verification:** No — initial verification
+**Re-verification:** No — initial verification; human UAT approved 2026-05-17
 
 ## Goal Achievement
 
@@ -124,7 +124,7 @@ No phase-declared `probe-*.sh` scripts. **Skipped.**
 | CHAT-05 | 08-05, 08-06, 08-07 | Admin archive dialog | ✓ SATISFIED | Schema + services + tabs + actions |
 | CHAT-06 | 08-05, 08-06 | Hard delete with confirm | ✓ SATISFIED | `deleteConversation` + AlertDialog |
 
-**Traceability note:** `.planning/REQUIREMENTS.md` still marks FIX-01 and ADM-01 as Pending — implementation exists; update traceability table after human sign-off.
+**Traceability:** Requirements FIX-01, ADM-01–03, CHAT-05/06 marked Complete after operator UAT approval.
 
 ### Anti-Patterns Found
 
@@ -132,13 +132,13 @@ No phase-declared `probe-*.sh` scripts. **Skipped.**
 | ---- | ---- | ------- | -------- | ------ |
 | — | — | None blocking in phase touchpoints | — | `admin-nav.tsx` deprecated re-export only; no TBD/FIXME in phase files |
 
-### Human Verification Required
+### Human Verification
 
-See frontmatter `human_verification` and `08-MANUAL-CHECKLIST.md`. Operator must run checklist before closing phase. Use URL key `page` (not `сторінка` — checklist typo).
+Operator completed `08-MANUAL-CHECKLIST.md` — all 7 items passed (approved 2026-05-17). Recorded in `08-HUMAN-UAT.md`.
 
 ### Gaps Summary
 
-No automated gaps found. Phase code and unit tests satisfy ROADMAP success criteria and plan must-haves. **Blocking operator UAT** remains per `08-MANUAL-CHECKLIST.md` and mobile/chat flows that grep cannot validate.
+No gaps. Automated checks and operator UAT both passed.
 
 ---
 
