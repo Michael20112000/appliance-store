@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Continuous Integration
+
+Every push and pull request to `main` runs lint, Vitest, and Playwright against **localhost** (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+
+Before the first CI run, add these **GitHub Actions** repository secrets (Neon **CI branch** only — never production URLs):
+
+- `DATABASE_URL`
+- `DIRECT_URL`
+- `BETTER_AUTH_SECRET`
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
+
+Full setup notes: [`.planning/phases/06-polish-launch/06-ENV-CHECKLIST.md`](.planning/phases/06-polish-launch/06-ENV-CHECKLIST.md).
+
+Local gate (same as phase 6): `npm test && npm run test:e2e`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
