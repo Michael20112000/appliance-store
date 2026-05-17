@@ -79,7 +79,7 @@ completed: 2026-05-17
 
 1. **Task 1: Admin layout unread prop + enable Чати nav** - `9fc96a3` (feat)
 2. **Task 2: /admin/chaty page + conversation list** - `c978151` (feat)
-3. **Task 3: ChatThread admin reply + mark read** - `5f70be0` (feat)
+3. **Task 3: ChatThread admin reply + mark read** - `5f70be0` (feat), `77726e8` (fix)
 
 ## Files Created/Modified
 
@@ -100,7 +100,19 @@ completed: 2026-05-17
 
 ## Deviations from Plan
 
-None — plan executed as written.
+### Auto-fixed Issues
+
+**1. [Rule 1 - Bug] Missing `useAdminChat` import in AdminChatComposer**
+- **Found during:** Post-commit build verification
+- **Issue:** Task 3 commit referenced `useAdminChat()` without import — TypeScript build failed
+- **Fix:** Added import from `admin-chat-provider`
+- **Files modified:** `src/components/chat/chat-composer.tsx`
+- **Committed in:** `77726e8`
+
+---
+
+**Total deviations:** 1 auto-fixed (Rule 1)
+**Impact on plan:** One-line import; no scope change.
 
 ## Issues Encountered
 
@@ -120,7 +132,7 @@ Same Pusher env as buyer widget (`NEXT_PUBLIC_PUSHER_*`) for live admin thread u
 - FOUND: src/components/chat/admin-chat-inbox.tsx
 - FOUND: src/components/chat/admin-chat-provider.tsx
 - FOUND: src/components/chat/chat-thread.tsx
-- FOUND: 9fc96a3, c978151, 5f70be0
+- FOUND: 9fc96a3, c978151, 5f70be0, 77726e8
 
 ---
 *Phase: 05-realtime-chat*
