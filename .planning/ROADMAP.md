@@ -188,7 +188,27 @@ Plans:
   3. Історія чату доступна після перезавантаження
   4. Адмін бачить список діалогів і відповідає покупцям в одному інтерфейсі
 
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 05-01-PLAN.md — Prisma Conversation/Message, chat.service, validators, Pusher singletons, migrate [BLOCKING]
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 05-02-PLAN.md — API routes (messages POST/GET, pusher auth), rate limit, route tests (CHAT-02, CHAT-03)
+
+**Wave 3** *(blocked on Wave 2 — parallel)*
+
+- [ ] 05-03-PLAN.md — Storefront ChatProvider, FAB, panel, PDP + kabinet entry (CHAT-01, CHAT-02, CHAT-03 UI)
+- [ ] 05-04-PLAN.md — Admin /admin/chaty inbox, enable Чати nav + unread badge (CHAT-04, ADM-05)
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 05-05-PLAN.md — E2E suite, .env.example Pusher docs, phase verification gate
+
+**UI hint**: yes
 
 ### Phase 6: Polish & Launch
 
@@ -216,7 +236,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Catalog & Discovery | 0/6 | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
-| 5. Realtime Chat | 0/TBD | Not started | - |
+| 5. Realtime Chat | 0/5 | Not started | - |
 | 6. Polish & Launch | 0/TBD | Not started | - |
 
 ---
