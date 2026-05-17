@@ -226,7 +226,25 @@ Plans:
   3. Local SEO (meta, JSON-LD, sitemap) перевірені для категорій і товарів
   4. Застосунок задеплоєний на Vercel з production env і smoke-перевіркою
 
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 06-01-PLAN.md — GitHub Actions CI (lint, Vitest, Playwright localhost) + CI secrets checklist
+- [ ] 06-02-PLAN.md — critical-journey E2E + catalog-seo automation (SEO-01/02)
+
+**Wave 2** *(blocked on Wave 1 plan 06-01 for ENV checklist base)*
+
+- [ ] 06-03-PLAN.md — robots.ts + Production .env.example + production env checklist
+
+**Wave 3** *(blocked on 06-02, 06-03)*
+
+- [ ] 06-04-PLAN.md — 06-VERIFICATION.md manual Lighthouse/Rich Results + PERF-01 code pass
+
+**Wave 4** *(blocked on 06-03, 06-04)*
+
+- [ ] 06-05-PLAN.md — smoke-deploy extend + deploy runbook + production smoke
 
 ## Progress
 
@@ -240,7 +258,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
 | 5. Realtime Chat | 5/5 | Complete    | 2026-05-17 |
-| 6. Polish & Launch | 0/TBD | Not started | - |
+| 6. Polish & Launch | 0/5 | Not started | - |
 
 ---
 *Roadmap created: 2026-05-16*
