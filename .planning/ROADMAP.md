@@ -100,11 +100,27 @@
 4. Сторінка `/obrane` (або кабінет) показує доступні товари; sold/draft приховані
 5. Unit tests на storage key і server actions
 
-**Plans:** TBD via `/gsd-plan-phase 9`
+**Plans:** 5 plans in 5 waves
+
+**Wave 1** *(schema + guest storage)*
+- [ ] 09-01-PLAN.md — Prisma `WishlistItem` migrate [BLOCKING] + `guest-storage.ts` Vitest (WISH-01, WISH-03)
+
+**Wave 2** *(server layer)*
+- [ ] 09-02-PLAN.md — wishlist service/actions, no auto-prune, no merge (WISH-02, WISH-03, WISH-04 backend)
+
+**Wave 3** *(toggle UX)*
+- [ ] 09-03-PLAN.md — Storefront Toaster, `WishlistToggleButton`, ProductCard overlay + PDP (WISH-05)
+
+**Wave 4** *(nav + /obrane)*
+- [ ] 09-04-PLAN.md — `WishlistNavLink` all visitors, `/obrane` guest+session, unavailable rows (WISH-01, WISH-02, WISH-04)
+
+**Wave 5** *(cabinet + verification)*
+- [ ] 09-05-PLAN.md — `/kabinet` preview ≤3, Vitest gate, `09-MANUAL-CHECKLIST.md` D-09-24 (WISH-03, WISH-04)
 
 **Notes:**
-- Prisma: `WishlistItem` (userId, productId) unique
+- Prisma: `WishlistItem` (userId, productId) unique — `npx prisma migrate dev --name wishlist_item`
 - Guest key: `appliance-wishlist-guest` (аналог cart pending, **без** merge gate)
+- ROADMAP criterion #4 (hide sold/draft) **superseded by CONTEXT D-09-19** — show «Товар більше недоступний»
 
 ---
 
