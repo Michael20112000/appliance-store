@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { CategoryForm } from "@/components/admin/category-form";
+import { CategoryImageUpload } from "@/components/admin/category-image-upload";
 import { getCategoryById } from "@/server/services/admin-catalog.service";
 
 type PageProps = {
@@ -27,6 +28,28 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
           sortOrder: category.sortOrder,
         }}
       />
+
+      <section
+        aria-labelledby="category-image-heading"
+        className="mt-8 space-y-6 border-t border-border pt-8"
+      >
+        <div className="space-y-2">
+          <h2
+            id="category-image-heading"
+            className="text-lg font-semibold"
+          >
+            Зображення категорії
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Показується на головній у блоці «Категорії». Одне фото на категорію.
+          </p>
+        </div>
+        <CategoryImageUpload
+          categoryId={category.id}
+          initialImagePublicId={category.imagePublicId ?? null}
+          initialImageAlt={category.imageAlt ?? null}
+        />
+      </section>
     </div>
   );
 }
