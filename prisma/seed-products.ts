@@ -7,6 +7,14 @@ function uahToKopiyky(uah: number): number {
   return Math.round(uah * 100);
 }
 
+/** Extra gallery images beyond the first (slug → additional image count). */
+const PRODUCT_EXTRA_IMAGE_COUNT: Record<string, number> = {
+  "iphone-se-2022-64": 3,
+  "apple-iphone-12-64gb": 2,
+  "apple-iphone-13-128gb": 2,
+  "samsung-galaxy-s21-128": 2,
+};
+
 type SeedRow = {
   slug: string;
   title: string;
@@ -84,15 +92,28 @@ export async function seedProducts() {
     const indexInCategory = categoryProductIndex.get(item.categorySlug) ?? 0;
     categoryProductIndex.set(item.categorySlug, indexInCategory + 1);
 
-    let cloudinaryPublicId: string;
-    try {
-      cloudinaryPublicId = await ensureCategorySeedImage(item.categorySlug, indexInCategory);
-    } catch (error) {
-      console.warn(
-        `Seed image for "${item.slug}" failed, skipping image update:`,
-        error instanceof Error ? error.message : error,
-      );
-      cloudinaryPublicId = "";
+    const extraImages = PRODUCT_EXTRA_IMAGE_COUNT[item.slug] ?? 0;
+    const imageCount = 1 + extraImages;
+    const seededImages: { cloudinaryPublicId: string; alt: string; sortOrder: number }[] =
+      [];
+
+    for (let imageIndex = 0; imageIndex < imageCount; imageIndex += 1) {
+      try {
+        const cloudinaryPublicId = await ensureCategorySeedImage(
+          item.categorySlug,
+          indexInCategory + imageIndex,
+        );
+        seededImages.push({
+          cloudinaryPublicId,
+          alt: `${item.title} — ${item.brand}, б/у, Львів`,
+          sortOrder: imageIndex,
+        });
+      } catch (error) {
+        console.warn(
+          `Seed image ${imageIndex} for "${item.slug}" failed:`,
+          error instanceof Error ? error.message : error,
+        );
+      }
     }
 
     const product = await prisma.product.upsert({
@@ -106,14 +127,10 @@ export async function seedProducts() {
         condition: item.condition,
         status: item.status,
         categoryId: category.id,
-        ...(cloudinaryPublicId
+        ...(seededImages.length > 0
           ? {
               images: {
-                create: {
-                  cloudinaryPublicId,
-                  alt: `${item.title} — ${item.brand}, б/у, Львів`,
-                  sortOrder: 0,
-                },
+                create: seededImages,
               },
             }
           : {}),
@@ -129,15 +146,13 @@ export async function seedProducts() {
       },
     });
 
-    if (cloudinaryPublicId) {
+    if (seededImages.length > 0) {
       await prisma.productImage.deleteMany({ where: { productId: product.id } });
-      await prisma.productImage.create({
-        data: {
+      await prisma.productImage.createMany({
+        data: seededImages.map((image) => ({
           productId: product.id,
-          cloudinaryPublicId,
-          alt: `${item.title} — ${item.brand}, б/у, Львів`,
-          sortOrder: 0,
-        },
+          ...image,
+        })),
       });
     }
   }

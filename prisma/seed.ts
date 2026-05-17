@@ -2,6 +2,7 @@ import "dotenv/config";
 import slugify from "slugify";
 import { auth } from "../src/lib/auth";
 import { prisma } from "../src/lib/db";
+import { categoryImageAlt } from "../src/lib/catalog/category-image-alt";
 import { ensureCategorySeedImage } from "./seed-cloudinary";
 import { seedProducts } from "./seed-products";
 
@@ -48,7 +49,10 @@ async function seedCategoryShowcaseImages() {
 
     await prisma.category.updateMany({
       where: { id: category.id, imagePublicId: null },
-      data: { imagePublicId: publicId },
+      data: {
+        imagePublicId: publicId,
+        imageAlt: categoryImageAlt(category.name),
+      },
     });
   }
 }

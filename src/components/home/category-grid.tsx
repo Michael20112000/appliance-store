@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { categoryImageAlt } from "@/lib/catalog/category-image-alt";
 import { OptimizedImage } from "@/components/media/optimized-image";
 import {
   Card,
@@ -19,8 +20,7 @@ export async function CategoryGrid() {
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {categories.map((category) => {
           const imageAlt =
-            category.imageAlt?.trim() ||
-            `${category.name} — категорія, Львів`;
+            category.imageAlt?.trim() || categoryImageAlt(category.name);
 
           return (
             <Link key={category.id} href={`/katalog/${category.slug}`}>

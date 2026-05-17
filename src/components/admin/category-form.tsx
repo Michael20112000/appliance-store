@@ -40,13 +40,10 @@ export function CategoryForm({
     resolver: zodResolver(upsertCategorySchema),
     defaultValues: {
       name: defaultValues?.name ?? "",
-      slug: defaultValues?.slug ?? "",
-      description: defaultValues?.description ?? "",
       sortOrder: defaultValues?.sortOrder ?? 0,
     },
   });
 
-  const slugPreview = form.watch("slug")?.trim();
   const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -106,24 +103,12 @@ export function CategoryForm({
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="slug">Slug</Label>
-        <Input id="slug" placeholder="автоматично з назви" {...form.register("slug")} />
+      {mode === "create" ? (
         <p className="text-xs text-muted-foreground">
-          Використовується в URL: /katalog/
-          {slugPreview || "…"}
+          Slug для URL згенерується автоматично з назви (наприклад, «Холодильники» →
+          kholodylnyky).
         </p>
-        {form.formState.errors.slug ? (
-          <p className="text-sm text-destructive">
-            {form.formState.errors.slug.message}
-          </p>
-        ) : null}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description">Опис</Label>
-        <Input id="description" {...form.register("description")} />
-      </div>
+      ) : null}
 
       <div className="space-y-2">
         <Label htmlFor="sortOrder">Порядок</Label>

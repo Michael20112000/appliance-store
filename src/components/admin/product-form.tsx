@@ -71,7 +71,6 @@ export function ProductForm({
     resolver: zodResolver(upsertProductSchema),
     defaultValues: {
       title: defaultValues?.title ?? "",
-      slug: defaultValues?.slug ?? "",
       description: defaultValues?.description ?? "",
       brand: defaultValues?.brand ?? "",
       categoryId: defaultValues?.categoryId ?? categories[0]?.id ?? "",
@@ -83,7 +82,6 @@ export function ProductForm({
     },
   });
 
-  const slugPreview = form.watch("slug")?.trim();
   const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -155,17 +153,9 @@ export function ProductForm({
           </div>
 
           {mode === "create" ? (
-            <div className="space-y-2 sm:col-span-2">
-              <Label htmlFor="slug">Slug</Label>
-              <Input
-                id="slug"
-                placeholder="автоматично з назви при створенні"
-                {...form.register("slug")}
-              />
-              <p className="text-xs text-muted-foreground">
-                URL: /tovar/{slugPreview || "…"}
-              </p>
-            </div>
+            <p className="text-xs text-muted-foreground sm:col-span-2">
+              Slug для URL згенерується автоматично з назви товару.
+            </p>
           ) : storefrontSlug ? (
             <p className="text-xs text-muted-foreground sm:col-span-2">
               URL: /tovar/{storefrontSlug}

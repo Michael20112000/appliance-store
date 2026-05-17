@@ -62,6 +62,11 @@ export const productImageInputSchema = z.object({
   height: z.number().int().positive().optional(),
 });
 
+export const updateProductStatusSchema = z.object({
+  productId: z.string().cuid("Невірний ідентифікатор товару"),
+  status: adminFormProductStatusSchema,
+});
+
 export const saveProductImagesSchema = z.object({
   productId: z.string().cuid("Невірний ідентифікатор товару"),
   images: z.array(productImageInputSchema).max(8, "Максимум 8 фото"),

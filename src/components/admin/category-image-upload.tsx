@@ -4,10 +4,9 @@ import { useCallback, useState, useTransition } from "react";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import type { CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { updateCategoryImageAction } from "@/server/actions/admin/category.actions";
+import { categoryImageAlt } from "@/lib/catalog/category-image-alt";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 function isUploadWidgetConfigured(): boolean {
   return Boolean(
@@ -18,8 +17,8 @@ function isUploadWidgetConfigured(): boolean {
 
 type CategoryImageUploadProps = {
   categoryId: string;
+  categoryName: string;
   initialImagePublicId: string | null;
-  initialImageAlt: string | null;
 };
 
 function extractUploadInfo(result: CloudinaryUploadWidgetResults) {
@@ -34,36 +33,35 @@ function extractUploadInfo(result: CloudinaryUploadWidgetResults) {
 
 export function CategoryImageUpload({
   categoryId,
+  categoryName,
   initialImagePublicId,
-  initialImageAlt,
 }: CategoryImageUploadProps) {
+  const autoAlt = categoryImageAlt(categoryName);
   const [imagePublicId, setImagePublicId] = useState<string | null>(
     initialImagePublicId,
   );
-  const [alt, setAlt] = useState(initialImageAlt ?? "");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const persistImage = useCallback(
-    (next: { imagePublicId: string | null; imageAlt?: string | null }) => {
+    (next: { imagePublicId: string | null }) => {
+      const previousPublicId = imagePublicId;
       startTransition(async () => {
         setError(null);
         const result = await updateCategoryImageAction({
           categoryId,
           imagePublicId: next.imagePublicId,
-          imageAlt: next.imageAlt ?? (alt.trim() || null),
+          imageAlt: next.imagePublicId ? autoAlt : null,
         });
         if (result && !result.ok) {
           setError("Не вдалося зберегти зображення. Спробуйте ще раз.");
+          setImagePublicId(previousPublicId);
           return;
         }
         setImagePublicId(next.imagePublicId);
-        if (next.imageAlt !== undefined) {
-          setAlt(next.imageAlt ?? "");
-        }
       });
     },
-    [categoryId, alt],
+    [categoryId, autoAlt, imagePublicId],
   );
 
   const handleUploadSuccess = (result: CloudinaryUploadWidgetResults) => {
@@ -71,10 +69,7 @@ export function CategoryImageUpload({
     if (!uploaded) return;
 
     setImagePublicId(uploaded.publicId);
-    persistImage({
-      imagePublicId: uploaded.publicId,
-      imageAlt: alt.trim() || null,
-    });
+    persistImage({ imagePublicId: uploaded.publicId });
   };
 
   const handleRemove = () => {
@@ -82,16 +77,7 @@ export function CategoryImageUpload({
       return;
     }
     setImagePublicId(null);
-    persistImage({ imagePublicId: null, imageAlt: null });
-    setAlt("");
-  };
-
-  const saveAlt = () => {
-    if (!imagePublicId) return;
-    persistImage({
-      imagePublicId,
-      imageAlt: alt.trim() || null,
-    });
+    persistImage({ imagePublicId: null });
   };
 
   if (!isUploadWidgetConfigured()) {
@@ -107,7 +93,7 @@ export function CategoryImageUpload({
   }
 
   return (
-    <section className="space-y-4" aria-busy={isPending}>
+    <section className="flex flex-col gap-4" aria-busy={isPending}>
       {error ? (
         <Alert variant="destructive">
           <AlertDescription>{error}</AlertDescription>
@@ -122,7 +108,7 @@ export function CategoryImageUpload({
         <div className="relative aspect-[4/3] w-40 overflow-hidden rounded-md border border-border">
           <CldImage
             src={imagePublicId}
-            alt={alt.trim() || "Зображення категорії"}
+            alt={autoAlt}
             width={160}
             height={120}
             crop="fill"
@@ -162,19 +148,6 @@ export function CategoryImageUpload({
             {isPending ? "Збереження…" : "Прибрати фото"}
           </Button>
         ) : null}
-      </div>
-
-      <div className="max-w-md space-y-1">
-        <Label htmlFor="category-image-alt">Опис для доступності (alt)</Label>
-        <Input
-          id="category-image-alt"
-          value={alt}
-          onChange={(event) => setAlt(event.target.value)}
-          onBlur={saveAlt}
-          placeholder="Наприклад: Холодильники — б/у техніка, Львів"
-          maxLength={500}
-          disabled={isPending || !imagePublicId}
-        />
       </div>
     </section>
   );

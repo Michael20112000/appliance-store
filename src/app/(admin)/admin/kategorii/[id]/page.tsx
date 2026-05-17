@@ -23,8 +23,6 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
         categoryId={category.id}
         defaultValues={{
           name: category.name,
-          slug: category.slug,
-          description: category.description ?? "",
           sortOrder: category.sortOrder,
         }}
       />
@@ -46,8 +44,8 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
         </div>
         <CategoryImageUpload
           categoryId={category.id}
+          categoryName={category.name}
           initialImagePublicId={category.imagePublicId ?? null}
-          initialImageAlt={category.imageAlt ?? null}
         />
       </section>
     </div>

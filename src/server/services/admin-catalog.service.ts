@@ -113,7 +113,7 @@ export async function updateCategoryImage(input: {
     where: { id: input.categoryId },
     data: {
       imagePublicId: input.imagePublicId,
-      imageAlt: input.imageAlt ?? null,
+      ...(input.imageAlt !== undefined ? { imageAlt: input.imageAlt } : {}),
     },
     select: { id: true, slug: true },
   });

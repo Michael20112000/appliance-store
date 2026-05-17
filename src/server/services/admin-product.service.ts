@@ -227,6 +227,32 @@ export async function createProduct(data: UpsertProductValues) {
   });
 }
 
+export const PRODUCT_STATUS_LOCKED = "PRODUCT_STATUS_LOCKED";
+
+export async function updateProductStatus(
+  productId: string,
+  status: "DRAFT" | "AVAILABLE",
+) {
+  const existing = await prisma.product.findUnique({ where: { id: productId } });
+  if (!existing) {
+    throw new Error(PRODUCT_NOT_FOUND);
+  }
+  if (existing.status === "SOLD") {
+    throw new Error(PRODUCT_STATUS_LOCKED);
+  }
+
+  return prisma.product.update({
+    where: { id: productId },
+    data: { status },
+    select: {
+      id: true,
+      slug: true,
+      status: true,
+      category: { select: { slug: true } },
+    },
+  });
+}
+
 export async function updateProduct(data: UpdateProductValues) {
   const existing = await prisma.product.findUnique({ where: { id: data.id } });
   if (!existing) {

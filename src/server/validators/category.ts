@@ -41,11 +41,22 @@ export const updateCategoryImageSchema = z
     imagePublicId: z.string().trim().min(1).nullable(),
     imageAlt: z.union([z.string().trim().max(500), z.literal("")]).optional(),
   })
-  .transform((data) => ({
-    categoryId: data.categoryId,
-    imagePublicId: data.imagePublicId,
-    imageAlt: data.imageAlt === "" ? null : (data.imageAlt ?? null),
-  }));
+  .transform((data) => {
+    const imageAlt =
+      data.imageAlt !== undefined
+        ? data.imageAlt === ""
+          ? null
+          : data.imageAlt
+        : data.imagePublicId === null
+          ? null
+          : undefined;
+
+    return {
+      categoryId: data.categoryId,
+      imagePublicId: data.imagePublicId,
+      ...(imageAlt !== undefined ? { imageAlt } : {}),
+    };
+  });
 
 export type UpsertCategoryInput = z.input<typeof upsertCategorySchema>;
 export type UpsertCategoryValues = z.output<typeof upsertCategorySchema>;
