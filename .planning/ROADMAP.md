@@ -12,7 +12,7 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 7 | Catalog Filters Fix | 4/4 | Complete   | 2026-05-17 |
-| 8 | Admin UX & Chat Lifecycle | 5/7 | In Progress|  |
+| 8 | Admin UX & Chat Lifecycle | 6/7 | In Progress|  |
 | 9 | Wishlist | Обране для гостя й юзера без merge | WISH-01–05 | 5 |
 | 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | 4 |
 
@@ -62,7 +62,7 @@
 5. Адмін архівує чат → зникає з активного списку, доступний у «Архів»
 6. Адмін видаляє чат після confirm → записів немає в БД
 
-**Plans:** 5/7 plans executed
+**Plans:** 6/7 plans executed
 
 **Wave 1** *(foundation — dashboard fix + sidebar shell)*
 - [x] 08-01-PLAN.md — FIX-01 drafts href; shadcn sidebar/table/pagination/tabs install; AppSidebar layout (ADM-01)
@@ -71,7 +71,7 @@
 - [x] 08-02-PLAN.md — listOrdersAdminPaginated, Zod schema, adminOrdersUrl, Vitest (ADM-02)
 
 **Wave 3** *(blocked on Wave 2 / parallel ADM-03)*
-- [ ] 08-03-PLAN.md — Orders Data Table page, URL sort/pagination (ADM-02)
+- [x] 08-03-PLAN.md — Orders Data Table page, URL sort/pagination (ADM-02)
 - [x] 08-04-PLAN.md — Remove Slug column from categories table (ADM-03)
 
 **Wave 4** *(blocked on Wave 1 — chat schema + services)*

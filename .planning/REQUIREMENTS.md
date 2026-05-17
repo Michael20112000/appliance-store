@@ -18,7 +18,7 @@
 ### Admin UX
 
 - [ ] **ADM-01**: Адмін-оболонка використовує shadcn Sidebar (навігація, mobile collapse)
-- [ ] **ADM-02**: Таблиця замовлень — shadcn Data Table з пагінацією та вибором кількості рядків на сторінці
+- [x] **ADM-02**: Таблиця замовлень — shadcn Data Table з пагінацією та вибором кількості рядків на сторінці
 - [x] **ADM-03**: У таблиці `/admin/kategorii` прибрано колонку Slug
 
 ### Chat Management
@@ -77,7 +77,7 @@ Deferred beyond v1.1.
 | CAT-02 | Phase 7 | Complete |
 | CAT-03 | Phase 7 | Complete |
 | ADM-01 | Phase 8 | Pending |
-| ADM-02 | Phase 8 | Pending |
+| ADM-02 | Phase 8 | Complete |
 | ADM-03 | Phase 8 | Complete |
 | CHAT-05 | Phase 8 | Complete |
 | CHAT-06 | Phase 8 | Complete |
