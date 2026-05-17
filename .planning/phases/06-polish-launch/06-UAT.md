@@ -35,15 +35,14 @@ result: pass
 
 ### 6. Чат (віджет)
 expected: FAB чату → відкрити панель → надіслати повідомлення → воно з'являється в треді; для адміна — повідомлення видно в /admin/chaty (якщо є Pusher на середовищі).
-result: issue
-reported: "чат на мобілі не скролиться"
-severity: major
+result: pass
+note: "Mobile sheet 80dvh, scroll, close X, auto-scroll to latest — verified 2026-05-17"
 
 ## Summary
 
 total: 6
-passed: 5
-issues: 1
+passed: 6
+issues: 0
 pending: 0
 skipped: 0
 blocked: 0
@@ -51,7 +50,7 @@ blocked: 0
 ## Gaps
 
 - truth: "На мобільному повноекранний чат скролиться і має зрозумілу кнопку закриття"
-  status: failed
+  status: resolved
   reason: "User reported: чат на мобілі не скролиться"
   severity: major
   test: 6
