@@ -15,14 +15,6 @@ export async function addCurrentProductToCart(page: Page) {
   await addButton.click();
   await expect(addButton).toBeEnabled({ timeout: 10_000 });
 
-  await expect
-    .poll(
-      async () => {
-        await page.goto("/koszyk");
-        const text = await page.locator("main").textContent();
-        return text?.includes("₴") ?? false;
-      },
-      { timeout: 15_000 },
-    )
-    .toBe(true);
+  const cartLink = page.getByRole("link", { name: /Кошик/i });
+  await expect(cartLink).toContainText(/[1-9]/, { timeout: 15_000 });
 }
