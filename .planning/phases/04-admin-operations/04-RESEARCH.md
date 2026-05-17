@@ -473,16 +473,15 @@ export async function updateCategoryAction(input: unknown) {
 | A5 | Slug stable on product title edit | Slug rules | SEO redirects needed instead |
 | A6 | Cloudinary destroy on product delete is optional MVP | Pitfall 2 | Orphan assets acceptable short-term |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Upload preset name in Cloudinary dashboard**
-   - What we know: Signed uploads can use upload preset configured in Cloudinary console.
-   - What's unclear: Exact preset name / folder policy for this project account.
-   - Recommendation: Document preset name in `.env.example` as `CLOUDINARY_UPLOAD_PRESET` (server-only or public preset name only); create preset restricted to admin folder.
+1. **Upload preset name in Cloudinary dashboard** — **RESOLVED**
+   - **Decision:** Optional env `CLOUDINARY_UPLOAD_PRESET` (preset name string). Sign route includes `upload_preset` in signed params when set. Dev without preset: widget signs timestamp-only upload to account default folder.
+   - **Human-verify:** Create restricted preset in Cloudinary console before production (checkpoint in 04-01).
 
-2. **Hard delete vs soft hide for sold products**
-   - What we know: Orders keep `OrderItem` snapshots; `productId` can be set null on delete.
-   - Recommendation: Default to `DRAFT` hide; hard delete only when guards pass.
+2. **Hard delete vs soft hide for sold products** — **RESOLVED**
+   - **Decision:** Prefer `status: DRAFT` to hide from storefront; hard `deleteProduct` only when no `CartItem` and no `OrderItem` in non-terminal orders (`PRODUCT_IN_CART`, `PRODUCT_IN_ACTIVE_ORDER`).
+   - **SOLD products:** Do not hard-delete; admin sets `DRAFT` or leaves `SOLD` for history.
 
 ## Environment Availability
 

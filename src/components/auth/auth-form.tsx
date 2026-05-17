@@ -32,9 +32,10 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 type AuthFormProps = {
   mode: "login" | "register";
+  redirectTo?: string;
 };
 
-export function AuthForm({ mode }: AuthFormProps) {
+export function AuthForm({ mode, redirectTo }: AuthFormProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const schema = mode === "login" ? loginSchema : registerSchema;
@@ -73,7 +74,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       }
     }
 
-    router.push("/kabinet");
+    router.push(redirectTo ?? "/kabinet");
     router.refresh();
   });
 

@@ -11,6 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { CartNavLink } from "@/components/cart/cart-nav-link";
 import { StoreHeaderAuth } from "@/components/layout/store-header-auth";
 
 export async function StoreHeader() {
@@ -56,7 +57,7 @@ export async function StoreHeader() {
               <SheetHeader>
                 <SheetTitle>Категорії</SheetTitle>
               </SheetHeader>
-              <ul className="mt-4 flex flex-col gap-2">
+              <ul className="mt-4 pl-4 flex flex-col gap-2">
                 {categories.map((category) => (
                   <li key={category.id}>
                     <Link
@@ -70,6 +71,7 @@ export async function StoreHeader() {
               </ul>
             </SheetContent>
           </Sheet>
+          {session?.user ? <CartNavLink userId={session.user.id} /> : null}
           <StoreHeaderAuth session={session} />
         </div>
       </div>
