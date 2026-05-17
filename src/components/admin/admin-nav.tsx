@@ -30,11 +30,24 @@ const navItems = [
     icon: ShoppingBag,
     enabled: true,
   },
+  {
+    href: "/admin/chaty",
+    label: "Чати",
+    icon: MessageSquare,
+    enabled: true,
+  },
 ] as const;
 
-export function AdminNav() {
+type AdminNavProps = {
+  unreadChatCount: number;
+};
+
+export function AdminNav({ unreadChatCount }: AdminNavProps) {
   const pathname = usePathname();
   const router = useRouter();
+
+  const chatBadgeLabel =
+    unreadChatCount > 99 ? "99+" : String(unreadChatCount);
 
   return (
     <nav className="flex h-full flex-col gap-1 text-sm">
@@ -44,6 +57,8 @@ export function AdminNav() {
           item.href === "/admin"
             ? pathname === "/admin"
             : pathname.startsWith(item.href);
+        const isChat = item.href === "/admin/chaty";
+        const showChatBadge = isChat && unreadChatCount > 0;
 
         return (
           <Link
@@ -55,23 +70,22 @@ export function AdminNav() {
                 ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
                 : "text-muted-foreground hover:bg-background/60 hover:text-foreground",
             )}
+            aria-label={
+              showChatBadge
+                ? `Чати, ${unreadChatCount} непрочитаних`
+                : item.label
+            }
           >
             <Icon className="size-4 shrink-0" aria-hidden />
             {item.label}
+            {showChatBadge ? (
+              <Badge variant="destructive" className="ml-auto text-xs">
+                {chatBadgeLabel}
+              </Badge>
+            ) : null}
           </Link>
         );
       })}
-
-      <span
-        className="flex min-h-11 cursor-not-allowed items-center gap-2 rounded-md px-3 py-2 opacity-60"
-        aria-disabled="true"
-      >
-        <MessageSquare className="size-4 shrink-0" aria-hidden />
-        <span>Чати</span>
-        <Badge variant="secondary" className="ml-auto text-xs">
-          Незабаром
-        </Badge>
-      </span>
 
       <div className="mt-auto space-y-1 border-t border-border pt-4">
         <Link
