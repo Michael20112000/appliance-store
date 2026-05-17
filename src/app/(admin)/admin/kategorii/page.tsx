@@ -22,7 +22,6 @@ export default async function AdminCategoriesPage() {
             <thead>
               <tr className="border-b border-border text-left text-muted-foreground">
                 <th className="px-4 py-2 font-medium">Назва</th>
-                <th className="px-4 py-2 font-medium">Slug</th>
                 <th className="px-4 py-2 font-medium">Товарів</th>
                 <th className="px-4 py-2 font-medium">Порядок</th>
                 <th className="px-4 py-2 font-medium" />
@@ -35,9 +34,6 @@ export default async function AdminCategoriesPage() {
                   className="border-b border-border last:border-0"
                 >
                   <td className="px-4 py-2">{category.name}</td>
-                  <td className="px-4 py-2 text-muted-foreground">
-                    {category.slug}
-                  </td>
                   <td className="px-4 py-2">{category._count.products}</td>
                   <td className="px-4 py-2">{category.sortOrder}</td>
                   <td className="px-4 py-2 text-right">
