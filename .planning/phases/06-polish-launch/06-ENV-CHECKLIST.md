@@ -100,3 +100,12 @@ Ordered steps before and after **Production** promote:
 6. **Sanity (optional)** — open `/katalog`, `/uviity` in browser; confirm Ukrainian UI.
 
 **Smoke spec:** `e2e/smoke-deploy.spec.ts` — home, catalog PDP link, `robots.txt`, `sitemap.xml` (public routes only, D-06-21).
+
+## Deployment record (gap closure)
+
+Fill after each deploy. Do not paste secret values.
+
+| Environment | Origin URL | Deploy ID / timestamp | Operator | Notes |
+|-------------|------------|------------------------|----------|-------|
+| Preview | `https://<vercel-preview-host>` | | | Before promote — Lighthouse + Rich Results (06-07) |
+| Production | `https://<production-host>` | | | After promote — env verified + smoke 4/4 (06-08) |

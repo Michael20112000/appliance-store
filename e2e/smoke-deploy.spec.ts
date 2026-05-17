@@ -1,3 +1,12 @@
+/**
+ * Post-deploy smoke — run against a live origin (preview or production).
+ *
+ * Ship blocker (D-06-17): set PLAYWRIGHT_BASE_URL to the deployed https origin.
+ * When unset, playwright.config.ts starts `npm run dev` on localhost (local dev only).
+ *
+ * Example:
+ *   PLAYWRIGHT_BASE_URL=https://your-app.vercel.app npx playwright test e2e/smoke-deploy.spec.ts --reporter=line
+ */
 import { expect, test } from "@playwright/test";
 
 test("home page loads", async ({ page }) => {

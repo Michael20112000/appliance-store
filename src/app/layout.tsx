@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: {
@@ -21,10 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="uk" className={cn("h-full", GeistSans.className, "font-sans", geist.variable)}>
+    <html lang="uk" className={`h-full ${GeistSans.className}`}>
       <body className="min-h-dvh bg-background text-base text-foreground antialiased">
         {children}
       </body>
     </html>
-  )
+  );
 }

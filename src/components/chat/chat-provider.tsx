@@ -10,6 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQueryStates } from "nuqs";
 import { chatParsers, chatUrlKeys } from "@/lib/chat/search-params";
@@ -19,8 +20,19 @@ import {
 } from "@/lib/pusher-client";
 import { markBuyerReadAction } from "@/server/actions/chat.actions";
 import type { MessageDto } from "@/types/chat";
-import { ChatFab } from "@/components/chat/chat-fab";
-import { ChatPanel } from "@/components/chat/chat-panel";
+
+const ChatFab = dynamic(
+  () => import("@/components/chat/chat-fab").then((m) => ({ default: m.ChatFab })),
+  { ssr: false },
+);
+
+const ChatPanel = dynamic(
+  () =>
+    import("@/components/chat/chat-panel").then((m) => ({
+      default: m.ChatPanel,
+    })),
+  { ssr: false },
+);
 
 export type ProductChatContext = {
   productId?: string;

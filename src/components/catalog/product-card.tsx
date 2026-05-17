@@ -22,7 +22,7 @@ export function ProductCard({ product }: ProductCardProps) {
       aria-label={`${product.title}, ${formatPriceKopiyky(product.price)}`}
     >
       <Card className="h-full overflow-hidden transition-shadow group-hover:shadow-md">
-        <div className="relative aspect-[4/3] w-full bg-muted">
+        <div className="relative aspect-[4/3] min-h-48 w-full bg-muted">
           {product.image ? (
             <OptimizedImage
               src={product.image.cloudinaryPublicId}
