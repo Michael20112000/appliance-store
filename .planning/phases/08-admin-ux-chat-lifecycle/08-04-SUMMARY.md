@@ -55,7 +55,7 @@ completed: 2026-05-17
 1. **Task 1: Remove Slug column from categories table** - `3d8ac4e` (feat)
 2. **Task 2: Verify edit form slug unchanged** - verification only (no diff; slug present at line 25)
 
-**Plan metadata:** pending (docs commit after this file)
+**Plan metadata:** `22eb14f` (docs: complete plan)
 
 ## Files Created/Modified
 

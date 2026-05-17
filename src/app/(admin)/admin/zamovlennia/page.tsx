@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { OrderListFilters } from "@/components/admin/order-list-filters";
 import { OrdersDataTable } from "@/components/admin/orders-data-table";
-import { listOrdersAdminPaginated } from "@/server/services/admin-order.service";
+import {
+  getOrderFilterCounts,
+  listOrdersAdminPaginated,
+} from "@/server/services/admin-order.service";
 import { listOrdersAdminSchema } from "@/server/validators/admin-order";
 
 export const metadata: Metadata = {
@@ -21,13 +24,17 @@ type PageProps = {
 export default async function AdminOrdersPage({ searchParams }: PageProps) {
   const rawParams = await searchParams;
   const params = listOrdersAdminSchema.parse(rawParams);
-  const result = await listOrdersAdminPaginated(params);
+  const [result, filterCounts] = await Promise.all([
+    listOrdersAdminPaginated(params),
+    getOrderFilterCounts(),
+  ]);
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Замовлення</h1>
       <OrderListFilters
         active={params.filter}
+        counts={filterCounts}
         pageSize={params.pageSize}
         sort={params.sort}
         dir={params.dir}

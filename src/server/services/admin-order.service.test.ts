@@ -6,6 +6,7 @@ import {
   buildPrismaOrderBy,
   computeTotalPages,
   getAdminDashboardStats,
+  getOrderFilterCounts,
   getAllowedNextStatuses,
   getProductIdsForCancelRevert,
   INVALID_STATUS_TRANSITION,
@@ -171,6 +172,27 @@ describe("computeTotalPages", () => {
 
   it("ceil-divides total by page size", () => {
     expect(computeTotalPages(25, 10)).toBe(3);
+  });
+});
+
+describe("getOrderFilterCounts", () => {
+  it("returns counts for every filter tab", async () => {
+    vi.mocked(prisma.order.count)
+      .mockResolvedValueOnce(100)
+      .mockResolvedValueOnce(81)
+      .mockResolvedValueOnce(12)
+      .mockResolvedValueOnce(5)
+      .mockResolvedValueOnce(2);
+
+    const counts = await getOrderFilterCounts();
+
+    expect(counts).toEqual({
+      all: 100,
+      new: 81,
+      in_progress: 12,
+      completed: 5,
+      cancelled: 2,
+    });
   });
 });
 

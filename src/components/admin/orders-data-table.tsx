@@ -13,15 +13,7 @@ import {
   ArrowUpIcon,
 } from "lucide-react";
 import { OrderStatusBadge } from "@/components/admin/order-status-badge";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { AdminListPagination } from "@/components/admin/admin-list-pagination";
 import {
   Table,
   TableBody,
@@ -41,8 +33,6 @@ import type {
   AdminOrderListDir,
   AdminOrderListSort,
 } from "@/server/validators/admin-order";
-
-const PAGE_SIZES = [10, 20, 50] as const;
 
 type OrdersDataTableProps = {
   data: AdminOrderSummaryDto[];
@@ -83,32 +73,6 @@ function getAriaSort(
 ): "ascending" | "descending" | "none" {
   if (sort !== column) return "none";
   return dir === "asc" ? "ascending" : "descending";
-}
-
-function getPageNumbers(
-  current: number,
-  totalPages: number,
-): Array<number | "ellipsis"> {
-  if (totalPages <= 1) return [1];
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1);
-  }
-
-  const pages = new Set<number>([1, totalPages, current, current - 1, current + 1]);
-  const sorted = [...pages].filter((page) => page >= 1 && page <= totalPages).sort(
-    (a, b) => a - b,
-  );
-
-  const result: Array<number | "ellipsis"> = [];
-  for (let index = 0; index < sorted.length; index++) {
-    const page = sorted[index];
-    const previous = sorted[index - 1];
-    if (index > 0 && page - previous > 1) {
-      result.push("ellipsis");
-    }
-    result.push(page);
-  }
-  return result;
 }
 
 type SortableHeaderProps = {
@@ -274,7 +238,6 @@ export function OrdersDataTable({
     },
   });
 
-  const pageNumbers = getPageNumbers(page, totalPages);
   const sortableColumns: AdminOrderListSort[] = [
     "orderNumber",
     "createdAt",
@@ -332,103 +295,20 @@ export function OrdersDataTable({
         </Table>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-muted-foreground">Рядків на сторінці:</span>
-          <div className="inline-flex overflow-hidden rounded-lg border border-border">
-            {PAGE_SIZES.map((size) => (
-              <Link
-                key={size}
-                href={adminOrdersUrl({
-                  filter,
-                  page: 1,
-                  pageSize: size,
-                  sort,
-                  dir,
-                })}
-                className={cn(
-                  "px-3 py-1.5 transition-colors hover:bg-muted",
-                  pageSize === size && "bg-muted font-medium",
-                )}
-              >
-                {size}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-4">
-          <p className="text-sm text-muted-foreground">
-            Сторінка {page} з {totalPages}
-          </p>
-          {totalPages > 1 ? (
-            <Pagination className="mx-0 w-auto justify-end">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    text="Попередня"
-                    href={
-                      page > 1
-                        ? adminOrdersUrl({
-                            filter,
-                            page: page - 1,
-                            pageSize,
-                            sort,
-                            dir,
-                          })
-                        : undefined
-                    }
-                    aria-disabled={page <= 1}
-                    className={cn(page <= 1 && "pointer-events-none opacity-50")}
-                  />
-                </PaginationItem>
-                {pageNumbers.map((pageNumber, index) =>
-                  pageNumber === "ellipsis" ? (
-                    <PaginationItem key={`ellipsis-${index}`}>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                  ) : (
-                    <PaginationItem key={pageNumber}>
-                      <PaginationLink
-                        href={adminOrdersUrl({
-                          filter,
-                          page: pageNumber,
-                          pageSize,
-                          sort,
-                          dir,
-                        })}
-                        isActive={pageNumber === page}
-                      >
-                        {pageNumber}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ),
-                )}
-                <PaginationItem>
-                  <PaginationNext
-                    text="Наступна"
-                    href={
-                      page < totalPages
-                        ? adminOrdersUrl({
-                            filter,
-                            page: page + 1,
-                            pageSize,
-                            sort,
-                            dir,
-                          })
-                        : undefined
-                    }
-                    aria-disabled={page >= totalPages}
-                    className={cn(
-                      page >= totalPages && "pointer-events-none opacity-50",
-                    )}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          ) : null}
-        </div>
-      </div>
+      <AdminListPagination
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        hrefFor={({ page: nextPage, pageSize: nextPageSize }) =>
+          adminOrdersUrl({
+            filter,
+            page: nextPage,
+            pageSize: nextPageSize,
+            sort,
+            dir,
+          })
+        }
+      />
     </div>
   );
 }

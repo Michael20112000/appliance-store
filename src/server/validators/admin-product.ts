@@ -67,9 +67,14 @@ export const saveProductImagesSchema = z.object({
   images: z.array(productImageInputSchema).max(8, "Максимум 8 фото"),
 });
 
+const adminProductPageSizeSchema = z.coerce
+  .number()
+  .int()
+  .refine((value): value is 10 | 20 | 50 => value === 10 || value === 20 || value === 50);
+
 export const listAdminProductsSchema = z.object({
   page: z.coerce.number().int().min(1).max(1000).default(1),
-  pageSize: z.coerce.number().int().min(1).max(50).default(20),
+  pageSize: adminProductPageSizeSchema.default(20),
   status: productStatusSchema.optional(),
   categoryId: z.string().cuid().optional(),
   q: z.string().max(100).optional(),

@@ -164,6 +164,27 @@ export async function countOrdersAdmin(
   return prisma.order.count({ where: buildOrderWhere(filter) });
 }
 
+export type AdminOrderFilterCounts = Record<AdminOrderListFilter, number>;
+
+const ORDER_FILTER_KEYS: readonly AdminOrderListFilter[] = [
+  "all",
+  "new",
+  "in_progress",
+  "completed",
+  "cancelled",
+] as const;
+
+export async function getOrderFilterCounts(): Promise<AdminOrderFilterCounts> {
+  const counts = await Promise.all(
+    ORDER_FILTER_KEYS.map((filter) => countOrdersAdmin(filter)),
+  );
+
+  return ORDER_FILTER_KEYS.reduce((acc, filter, index) => {
+    acc[filter] = counts[index] ?? 0;
+    return acc;
+  }, {} as AdminOrderFilterCounts);
+}
+
 async function fetchOrderIdsByTotalKopiyky(
   filter: AdminOrderListFilter,
   dir: AdminOrderListDir,

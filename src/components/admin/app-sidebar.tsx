@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ExternalLink } from "lucide-react";
@@ -18,6 +19,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 type AppSidebarProps = {
@@ -27,6 +29,11 @@ type AppSidebarProps = {
 export function AppSidebar({ unreadChatCount }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { setOpenMobile } = useSidebar();
+
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   const chatBadgeLabel =
     unreadChatCount > 99 ? "99+" : String(unreadChatCount);

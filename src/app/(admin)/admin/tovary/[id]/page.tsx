@@ -41,7 +41,6 @@ export default async function AdminEditProductPage({ params }: PageProps) {
         }))}
         defaultValues={{
           title: product.title,
-          slug: product.slug,
           description: product.description ?? "",
           brand: product.brand,
           categoryId: product.categoryId,

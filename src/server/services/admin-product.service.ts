@@ -1,5 +1,6 @@
-import type { Prisma } from "@/generated/prisma/client";
+import type { Prisma, ProductStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
+import { computeTotalPages } from "@/lib/pagination";
 import type {
   ListAdminProductsFilters,
   ProductImageInput,
@@ -111,6 +112,69 @@ async function resolveUniqueProductSlug(
   }
 }
 
+export type ProductStatusFilterKey = "" | ProductStatus;
+
+export type ProductFilterCounts = {
+  status: Record<ProductStatusFilterKey, number>;
+  category: Record<string, number>;
+};
+
+const PRODUCT_STATUS_FILTER_KEYS: readonly ProductStatusFilterKey[] = [
+  "",
+  "DRAFT",
+  "AVAILABLE",
+  "SOLD",
+];
+
+export async function getProductFilterCounts(
+  categoryIds: string[],
+  activeCategoryId?: string,
+  activeStatus?: ProductStatus,
+): Promise<ProductFilterCounts> {
+  const baseForStatus: Prisma.ProductWhereInput = activeCategoryId
+    ? { categoryId: activeCategoryId }
+    : {};
+
+  const statusCountValues = await Promise.all(
+    PRODUCT_STATUS_FILTER_KEYS.map((status) =>
+      prisma.product.count({
+        where: {
+          ...baseForStatus,
+          ...(status ? { status } : {}),
+        },
+      }),
+    ),
+  );
+
+  const status = PRODUCT_STATUS_FILTER_KEYS.reduce(
+    (acc, key, index) => {
+      acc[key] = statusCountValues[index] ?? 0;
+      return acc;
+    },
+    {} as Record<ProductStatusFilterKey, number>,
+  );
+
+  const baseForCategory: Prisma.ProductWhereInput = activeStatus
+    ? { status: activeStatus }
+    : {};
+
+  const [allCategoryCount, ...perCategoryCounts] = await Promise.all([
+    prisma.product.count({ where: baseForCategory }),
+    ...categoryIds.map((categoryId) =>
+      prisma.product.count({
+        where: { ...baseForCategory, categoryId },
+      }),
+    ),
+  ]);
+
+  const category: Record<string, number> = { all: allCategoryCount };
+  categoryIds.forEach((categoryId, index) => {
+    category[categoryId] = perCategoryCounts[index] ?? 0;
+  });
+
+  return { status, category };
+}
+
 export async function listAdminProducts(filters: ListAdminProductsFilters) {
   const where = buildAdminProductWhere(filters);
   const skip = (filters.page - 1) * filters.pageSize;
@@ -126,7 +190,15 @@ export async function listAdminProducts(filters: ListAdminProductsFilters) {
     }),
   ]);
 
-  return { items, total, page: filters.page, pageSize: filters.pageSize };
+  const totalPages = computeTotalPages(total, filters.pageSize);
+
+  return {
+    items,
+    total,
+    page: filters.page,
+    pageSize: filters.pageSize,
+    totalPages,
+  };
 }
 
 export async function getProductAdmin(id: string) {

@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { adminProductsUrl } from "@/lib/admin/products-url";
+import type { AdminPageSize } from "@/lib/pagination";
 import { cn } from "@/lib/utils";
 import type { ProductStatus } from "@/generated/prisma/client";
+import type { ProductFilterCounts } from "@/server/services/admin-product.service";
 
 type CategoryOption = {
   id: string;
@@ -11,6 +14,8 @@ type ProductListFiltersProps = {
   categories: CategoryOption[];
   activeStatus?: ProductStatus;
   activeCategoryId?: string;
+  pageSize: AdminPageSize;
+  counts: ProductFilterCounts;
 };
 
 const STATUS_FILTERS: Array<{ value: ProductStatus | ""; label: string }> = [
@@ -20,75 +25,93 @@ const STATUS_FILTERS: Array<{ value: ProductStatus | ""; label: string }> = [
   { value: "SOLD", label: "Продано" },
 ];
 
-function statusHref(status: ProductStatus | "", categoryId?: string) {
-  const params = new URLSearchParams();
-  if (status) params.set("status", status);
-  if (categoryId) params.set("categoryId", categoryId);
-  const query = params.toString();
-  return query ? `/admin/tovary?${query}` : "/admin/tovary";
-}
-
-function categoryHref(categoryId: string, status?: ProductStatus) {
-  const params = new URLSearchParams();
-  if (status) params.set("status", status);
-  params.set("categoryId", categoryId);
-  return `/admin/tovary?${params.toString()}`;
+function filterLabel(label: string, count: number, showCount = true): string {
+  return showCount ? `${label} (${count})` : label;
 }
 
 export function ProductListFilters({
   categories,
   activeStatus,
   activeCategoryId,
+  pageSize,
+  counts,
 }: ProductListFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      {STATUS_FILTERS.map((filter) => {
-        const active =
-          (filter.value || undefined) === activeStatus ||
-          (!filter.value && !activeStatus);
+    <div className="space-y-4">
+      <section>
+        <h2 className="mb-2 text-sm font-medium">Статус товару</h2>
+        <div className="flex flex-wrap gap-2">
+          {STATUS_FILTERS.map((filter) => {
+            const active =
+              (filter.value || undefined) === activeStatus ||
+              (!filter.value && !activeStatus);
 
-        return (
+            return (
+              <Link
+                key={filter.label}
+                href={adminProductsUrl({
+                  status: filter.value || undefined,
+                  categoryId: activeCategoryId,
+                  page: 1,
+                  pageSize,
+                })}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-sm transition-colors",
+                  active
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:bg-muted",
+                )}
+              >
+                {filterLabel(
+                  filter.label,
+                  counts.status[filter.value],
+                  filter.value !== "",
+                )}
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-2 text-sm font-medium">Категорії</h2>
+        <div className="flex flex-wrap gap-2">
           <Link
-            key={filter.label}
-            href={statusHref(filter.value, activeCategoryId)}
+            href={adminProductsUrl({
+              status: activeStatus,
+              page: 1,
+              pageSize,
+            })}
             className={cn(
               "rounded-full border px-3 py-1 text-sm transition-colors",
-              active
+              !activeCategoryId
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border text-muted-foreground hover:bg-muted",
             )}
           >
-            {filter.label}
+            {filterLabel("Усі категорії", counts.category.all ?? 0, false)}
           </Link>
-        );
-      })}
-      <div className="flex flex-wrap gap-1">
-        <Link
-          href={statusHref(activeStatus ?? "")}
-          className={cn(
-            "rounded-full border px-3 py-1 text-sm",
-            !activeCategoryId
-              ? "border-primary bg-primary text-primary-foreground"
-              : "border-border text-muted-foreground hover:bg-muted",
-          )}
-        >
-          Усі категорії
-        </Link>
-        {categories.map((category) => (
-          <Link
-            key={category.id}
-            href={categoryHref(category.id, activeStatus)}
-            className={cn(
-              "rounded-full border px-3 py-1 text-sm",
-              activeCategoryId === category.id
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border text-muted-foreground hover:bg-muted",
-            )}
-          >
-            {category.name}
-          </Link>
-        ))}
-      </div>
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href={adminProductsUrl({
+                status: activeStatus,
+                categoryId: category.id,
+                page: 1,
+                pageSize,
+              })}
+              className={cn(
+                "rounded-full border px-3 py-1 text-sm transition-colors",
+                activeCategoryId === category.id
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border text-muted-foreground hover:bg-muted",
+              )}
+            >
+              {filterLabel(category.name, counts.category[category.id] ?? 0)}
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

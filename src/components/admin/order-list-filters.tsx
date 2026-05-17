@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { adminOrdersUrl } from "@/lib/admin/orders-url";
 import { cn } from "@/lib/utils";
-import type { AdminOrderListFilter } from "@/server/services/admin-order.service";
+import type {
+  AdminOrderFilterCounts,
+  AdminOrderListFilter,
+} from "@/server/services/admin-order.service";
 import type {
   AdminOrderListDir,
   AdminOrderListSort,
@@ -17,6 +20,7 @@ const filters: Array<{ key: AdminOrderListFilter; label: string }> = [
 
 type OrderListFiltersProps = {
   active: AdminOrderListFilter;
+  counts: AdminOrderFilterCounts;
   pageSize: 10 | 20 | 50;
   sort: AdminOrderListSort;
   dir: AdminOrderListDir;
@@ -24,6 +28,7 @@ type OrderListFiltersProps = {
 
 export function OrderListFilters({
   active,
+  counts,
   pageSize,
   sort,
   dir,
@@ -50,7 +55,7 @@ export function OrderListFilters({
                 : "border-border bg-background text-muted-foreground hover:text-foreground",
             )}
           >
-            {filter.label}
+            {filter.label} ({counts[filter.key]})
           </Link>
         );
       })}

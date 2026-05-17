@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getCldImageUrl } from "next-cloudinary";
 import { ProductListFilters } from "@/components/admin/product-list-filters";
+import { ProductsListPagination } from "@/components/admin/products-list-pagination";
 import { ProductStatusBadge } from "@/components/admin/product-status-badge";
 import { Button } from "@/components/ui/button";
 import { formatPriceKopiyky } from "@/lib/catalog/format";
 import { listCategoriesAdmin } from "@/server/services/admin-catalog.service";
-import { listAdminProducts } from "@/server/services/admin-product.service";
+import {
+  getProductFilterCounts,
+  listAdminProducts,
+} from "@/server/services/admin-product.service";
 import {
   listAdminProductsSchema,
   type ListAdminProductsFilters,
@@ -20,6 +24,7 @@ export const metadata: Metadata = {
 type PageProps = {
   searchParams: Promise<{
     page?: string;
+    pageSize?: string;
     status?: string;
     categoryId?: string;
     q?: string;
@@ -37,6 +42,7 @@ function parseListFilters(
 
   return listAdminProductsSchema.parse({
     page: params.page,
+    pageSize: params.pageSize,
     status,
     categoryId: params.categoryId,
     q: params.q,
@@ -47,9 +53,16 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
   const rawParams = await searchParams;
   const filters = parseListFilters(rawParams);
 
-  const [result, categories] = await Promise.all([
+  const categories = await listCategoriesAdmin();
+  const categoryIds = categories.map((category) => category.id);
+
+  const [result, filterCounts] = await Promise.all([
     listAdminProducts(filters),
-    listCategoriesAdmin(),
+    getProductFilterCounts(
+      categoryIds,
+      filters.categoryId,
+      filters.status,
+    ),
   ]);
 
   return (
@@ -68,6 +81,8 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         }))}
         activeStatus={filters.status}
         activeCategoryId={filters.categoryId}
+        pageSize={filters.pageSize}
+        counts={filterCounts}
       />
 
       {result.items.length === 0 ? (
@@ -75,6 +90,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           Товарів не знайдено. Створіть перший товар або змініть фільтри.
         </p>
       ) : (
+        <div className="space-y-4">
         <div className="overflow-x-auto rounded-lg border border-border bg-background">
           <table className="w-full text-sm">
             <thead>
@@ -147,13 +163,16 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             </tbody>
           </table>
         </div>
+          <ProductsListPagination
+            page={result.page}
+            pageSize={filters.pageSize}
+            totalPages={result.totalPages}
+            status={filters.status}
+            categoryId={filters.categoryId}
+            q={filters.q}
+          />
+        </div>
       )}
-
-      {result.total > result.pageSize ? (
-        <p className="text-xs text-muted-foreground">
-          Показано {result.items.length} з {result.total} товарів
-        </p>
-      ) : null}
     </div>
   );
 }

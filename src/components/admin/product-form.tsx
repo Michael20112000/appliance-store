@@ -154,17 +154,23 @@ export function ProductForm({
             ) : null}
           </div>
 
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="slug">Slug</Label>
-            <Input
-              id="slug"
-              placeholder="автоматично з назви при створенні"
-              {...form.register("slug")}
-            />
-            <p className="text-xs text-muted-foreground">
-              URL: /tovar/{slugPreview || "…"}
+          {mode === "create" ? (
+            <div className="space-y-2 sm:col-span-2">
+              <Label htmlFor="slug">Slug</Label>
+              <Input
+                id="slug"
+                placeholder="автоматично з назви при створенні"
+                {...form.register("slug")}
+              />
+              <p className="text-xs text-muted-foreground">
+                URL: /tovar/{slugPreview || "…"}
+              </p>
+            </div>
+          ) : storefrontSlug ? (
+            <p className="text-xs text-muted-foreground sm:col-span-2">
+              URL: /tovar/{storefrontSlug}
             </p>
-          </div>
+          ) : null}
 
           <div className="space-y-2">
             <Label htmlFor="brand">Бренд</Label>
