@@ -29,7 +29,22 @@
 4. Vitest покриває `parsersToFilters` і `getDistinctBrands(categoryId?)`
 5. Playwright або manual checklist: зміна slider → оновлений grid
 
-**Plans:** TBD via `/gsd-plan-phase 7`
+**Plans:** 4 plans in 3 waves
+
+**Wave 1** *(foundation — service + slider install)*
+- [ ] 07-01-PLAN.md — `getDistinctBrands(categoryId?)`, `getCatalogPriceBounds`, wire pages, shadcn slider
+
+**Wave 2** *(blocked on Wave 1 — interactive UX)*
+- [ ] 07-02-PLAN.md — Dual-thumb Slider, throttle 200ms, mobile filter sheet
+- [ ] 07-03-PLAN.md — Invalid `brend` guard, active filter chips
+
+**Wave 3** *(blocked on Wave 2+3 — verification)*
+- [ ] 07-04-PLAN.md — Vitest expansion, manual checklist, e2e regression
+
+**Cross-cutting constraints:**
+- URL keys `cina-vid`, `cina-do`, `brend`, `сторінка` unchanged
+- Price stored/filtered in kopiyky; UI in UAH step 50
+- No new Playwright price/slider spec (manual checklist only)
 
 ---
 
