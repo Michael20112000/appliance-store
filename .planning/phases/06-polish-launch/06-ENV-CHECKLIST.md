@@ -95,7 +95,7 @@ Ordered steps before and after **Production** promote:
    PLAYWRIGHT_BASE_URL=https://<production-origin> npx playwright test e2e/smoke-deploy.spec.ts --reporter=line
    ```
 
-   Replace `<production-origin>` with the live `https` origin (no trailing slash). When production is not provisioned yet, run against the latest **preview** URL first and re-run on prod after promote (document URL in `06-05-SUMMARY.md`).
+   Replace `<production-origin>` with the live `https` origin (no trailing slash). **Recorded 2026-05-17:** `https://project-r4qzr.vercel.app` — 4/4 pass (`06-08-SUMMARY.md`).
 
 6. **Sanity (optional)** — open `/katalog`, `/uviity` in browser; confirm Ukrainian UI.
 
@@ -108,4 +108,4 @@ Fill after each deploy. Do not paste secret values.
 | Environment | Origin URL | Deploy ID / timestamp | Operator | Notes |
 |-------------|------------|------------------------|----------|-------|
 | Preview | `https://project-r4qzr.vercel.app` | `498b492` · 2026-05-17 | Michael Ivashko | Smoke 4/4 green; Lighthouse **fail** LCP/CLS — promote blocked |
-| Production | `https://project-r4qzr.vercel.app` | | | After promote — env verified + smoke 4/4 (06-08) |
+| Production | `https://project-r4qzr.vercel.app` | 2026-05-17T15:00:00Z | Michael Ivashko | Env verified · 2026-05-17 · MI. Smoke green on production origin (06-08): 4/4 Playwright. CWV Lighthouse still fail on preview — see 06-VERIFICATION. |

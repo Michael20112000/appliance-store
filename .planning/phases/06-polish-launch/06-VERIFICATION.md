@@ -11,7 +11,7 @@
 
 **Deploy:** `498b492` (main) · Vercel deployment `project-r4qzr-6axoptgp4-michael20112000s-projects.vercel.app` (401 without auth — use canonical domain above)
 
-**Production origin (post-promote):** `https://<production-host>`
+**Production origin (post-promote):** `https://project-r4qzr.vercel.app`
 
 ---
 
@@ -123,6 +123,6 @@ npx playwright test e2e/catalog-seo.spec.ts
 | Rich Results (preview) | ☑ Pass (markup; Google tool optional) |
 | robots.txt preview | ☑ Pass |
 | Preview smoke 4/4 | ☑ Pass |
-| Production smoke 4/4 (06-08) | ☐ Blocked until Lighthouse pass |
+| Production smoke 4/4 (06-08) | ☑ Pass · 2026-05-17 (`project-r4qzr.vercel.app`) |
 
 **Підпис / дата оператора:** Michael Ivashko · 2026-05-17 · **preview recorded; promote blocked (CWV)**
