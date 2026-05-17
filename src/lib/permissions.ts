@@ -40,3 +40,23 @@ export async function assertAdminApi(): Promise<Response | null> {
 
   return null;
 }
+
+/** API routes: JSON 401 for unauthenticated buyers (no redirect). */
+export async function assertBuyerApi(): Promise<Response | null> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    return Response.json({ error: "UNAUTHORIZED" }, { status: 401 });
+  }
+
+  return null;
+}
+
+export type ChatSession = {
+  user: {
+    id: string;
+    role?: string | null;
+  };
+};
