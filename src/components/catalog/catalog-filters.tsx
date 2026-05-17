@@ -7,10 +7,13 @@ import { cn } from "@/lib/utils";
 
 type CategoryOption = { slug: string; name: string };
 
+type PriceBounds = { minUah: number; maxUah: number };
+
 type CatalogFiltersProps = {
   brands: string[];
   categories: CategoryOption[];
   activeCategorySlug?: string;
+  priceBounds?: PriceBounds | null;
   className?: string;
 };
 
@@ -18,8 +21,11 @@ export function CatalogFilters({
   brands,
   categories,
   activeCategorySlug,
+  priceBounds,
   className,
 }: CatalogFiltersProps) {
+  void priceBounds;
+
   const [params, setParams] = useQueryStates(catalogParsers, {
     shallow: false,
     urlKeys: catalogUrlKeys,

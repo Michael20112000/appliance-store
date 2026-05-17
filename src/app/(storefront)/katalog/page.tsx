@@ -14,6 +14,7 @@ import {
 } from "@/lib/catalog/search-params";
 import { cn } from "@/lib/utils";
 import {
+  getCatalogPriceBounds,
   getDistinctBrands,
   listCategories,
   listPublicProducts,
@@ -36,9 +37,10 @@ export default async function CatalogPage({ searchParams }: PageProps) {
   const parsed = await catalogSearchParamsCache.parse(searchParams);
   const filters = parsersToFilters(parsed);
 
-  const [categories, brands, result] = await Promise.all([
+  const [categories, brands, priceBounds, result] = await Promise.all([
     listCategories(),
     getDistinctBrands(),
+    getCatalogPriceBounds(),
     listPublicProducts({
       filters,
       page: parsed.storinka,
@@ -57,7 +59,11 @@ export default async function CatalogPage({ searchParams }: PageProps) {
       </p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[240px_1fr]">
-        <CatalogFilters brands={brands} categories={categories} />
+        <CatalogFilters
+          brands={brands}
+          categories={categories}
+          priceBounds={priceBounds}
+        />
         <div>
           <CatalogToolbar total={result.total} />
           <ProductGrid

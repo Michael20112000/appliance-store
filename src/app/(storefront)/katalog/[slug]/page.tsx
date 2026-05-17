@@ -15,6 +15,7 @@ import {
 } from "@/lib/catalog/search-params";
 import { cn } from "@/lib/utils";
 import {
+  getCatalogPriceBounds,
   getCategoryBySlug,
   getDistinctBrands,
   listCategories,
@@ -57,9 +58,10 @@ export default async function CategoryCatalogPage({
     notFound();
   }
 
-  const [categories, brands, result] = await Promise.all([
+  const [categories, brands, priceBounds, result] = await Promise.all([
     listCategories(),
-    getDistinctBrands(),
+    getDistinctBrands(category.id),
+    getCatalogPriceBounds(category.id),
     listPublicProducts({
       categoryId: category.id,
       filters,
@@ -81,6 +83,7 @@ export default async function CategoryCatalogPage({
           brands={brands}
           categories={categories}
           activeCategorySlug={slug}
+          priceBounds={priceBounds}
         />
         <div>
           <CatalogToolbar total={result.total} />
