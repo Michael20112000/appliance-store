@@ -14,7 +14,7 @@
 | 7 | Catalog Filters Fix | 4/4 | Complete   | 2026-05-17 |
 | 8 | Admin UX & Chat Lifecycle | 7/7 | Complete   | 2026-05-17 |
 | 9 | Wishlist | 5/5 | ✅ Complete   | 2026-05-17 |
-| 10 | Category Showcase Images | Картинки категорій на головній + адмін | HOME-01, HOME-02 | — |
+| 10 | Category Showcase Images | 1/4 | In Progress|  |
 
 ### Phase 7: Catalog Filters Fix
 
@@ -138,10 +138,10 @@
 4. Зображення оптимізовані (CldImage, sizes для grid)
 5. Seed/migration не ламає існуючі категорії
 
-**Plans:** 4/4 planned
+**Plans:** 1/4 plans executed
 
 **Wave 1** *(schema + validators)*
-- [ ] 10-01-PLAN.md — Prisma `imagePublicId`/`imageAlt`, migrate [BLOCKING], Zod + Vitest
+- [x] 10-01-PLAN.md — Prisma `imagePublicId`/`imageAlt`, migrate [BLOCKING], Zod + Vitest
 
 **Wave 2** *(blocked on Wave 1 — server layer)*
 - [ ] 10-02-PLAN.md — `updateCategoryImage` service/action, `revalidatePath("/")`

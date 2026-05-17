@@ -36,8 +36,8 @@
 
 ### Homepage Categories
 
-- [ ] **HOME-01**: Картки категорій на головній показують зображення категорії
-- [ ] **HOME-02**: Адмін завантажує/змінює зображення категорії через існуючий signed Cloudinary flow
+- [x] **HOME-01**: Картки категорій на головній показують зображення категорії
+- [x] **HOME-02**: Адмін завантажує/змінює зображення категорії через існуючий signed Cloudinary flow
 
 ## v2 Requirements
 
@@ -86,8 +86,8 @@ Deferred beyond v1.1.
 | WISH-03 | Phase 9 | Complete |
 | WISH-04 | Phase 9 | Complete |
 | WISH-05 | Phase 9 | Complete |
-| HOME-01 | Phase 10 | Pending |
-| HOME-02 | Phase 10 | Pending |
+| HOME-01 | Phase 10 | Complete |
+| HOME-02 | Phase 10 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 16 total
