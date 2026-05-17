@@ -39,8 +39,8 @@ describe("buildPublicProductWhere", () => {
   });
 
   it("applies minPrice only (gte without lte)", () => {
-    const where = buildPublicProductWhere({ minPrice: 130_00 });
-    expect(where.price).toEqual({ gte: 130_00 });
+    const where = buildPublicProductWhere({ minPrice: 1_300_000 });
+    expect(where.price).toEqual({ gte: 1_300_000 });
     expect(where.price).not.toHaveProperty("lte");
   });
 
