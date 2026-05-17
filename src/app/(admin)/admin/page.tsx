@@ -33,7 +33,7 @@ export default async function AdminDashboardPage() {
         <StatCard
           label="Чернетки"
           count={stats.draftProducts}
-          href="/admin/tovary"
+          href="/admin/tovary?status=DRAFT"
         />
       </div>
 
