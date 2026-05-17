@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { Search } from "lucide-react";
 import { useQueryStates } from "nuqs";
+import { ActiveFilterChips } from "@/components/catalog/active-filter-chips";
 import { catalogParsers, catalogUrlKeys } from "@/lib/catalog/search-params";
 import { pluralResultsUa } from "@/lib/catalog/format";
 
@@ -34,7 +35,9 @@ export function CatalogToolbar({ total }: CatalogToolbarProps) {
   }, [query, params.q, setParams]);
 
   return (
-    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-6 flex flex-col gap-4">
+      <ActiveFilterChips />
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="relative max-w-md flex-1">
         <label htmlFor="catalog-search" className="sr-only">
           Пошук товарів
@@ -72,6 +75,7 @@ export function CatalogToolbar({ total }: CatalogToolbarProps) {
           <option value="cina-asc">Ціна ↑</option>
           <option value="cina-desc">Ціна ↓</option>
         </select>
+      </div>
       </div>
     </div>
   );
