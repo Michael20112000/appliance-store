@@ -1,5 +1,33 @@
 # Milestones
 
+## v1.1 Engagement & Fixes (Shipped: 2026-05-17)
+
+**Phases completed:** 4 phases, 20 plans, 40 tasks
+
+**Key accomplishments:**
+
+- Context-scoped brand lists and UAH price bounds from Prisma aggregates, shadcn Slider installed, catalog pages wired for plan 07-02 slider UI
+- Dual-thumb price Slider (50 ₴ step) with throttled `cina-vid`/`cina-do` URL sync and mobile filter sheet reusing the same panel
+- Silent invalid `brend` cleanup on category pages and removable active filter chips (brand, price, condition) synced via nuqs in the catalog toolbar
+- Parser Vitest for one-sided `cina-vid`/`cina-do` bounds, operator manual checklist for five ROADMAP gates, catalog-filters-url e2e regression green
+- Dashboard drafts deep-link to DRAFT products; admin shell migrated to shadcn Sidebar with mobile Sheet trigger, desktop icon collapse, and TanStack Table primitives installed for orders Data Table.
+- Zod URL contract, paginated `listOrdersAdminPaginated` with raw-SQL `totalKopiyky` sort, and `adminOrdersUrl` for plain searchParams links — ready for RSC Data Table in plan 08-03.
+- Admin orders page wired to `listOrdersAdminPaginated` with TanStack Data Table, Link-driven sort/pagination, and filter URL preservation (ADM-02 UI).
+- ADM-03 satisfied: `/admin/kategorii` list table no longer shows Slug; category edit form still exposes slug via CategoryForm.
+- Prisma ConversationStatus migration, chat service archive/delete guards, and admin server actions for CHAT-05/06 backend
+- Active/Archive admin inbox tabs, thread lifecycle menu with Ukrainian delete confirmation, and list refresh after archive/unarchive/delete
+- Buyer sees archived thread history with disabled composer and store-closed banner; API returns 403 CHAT_ARCHIVED; Vitest green and manual Phase 8 checklist added
+- Nullable Category.imagePublicId/imageAlt in Prisma with category_image migration and updateCategoryImageSchema for admin uploads
+- Admin updateCategoryImageAction persists Cloudinary public_id on Category and revalidates homepage `/` plus catalog paths
+- Admin CategoryImageUpload with signed Cloudinary widget, 4:3 preview, and updateCategoryImageAction on upload, remove, and alt blur
+- Homepage CategoryGrid shows Cloudinary images with 4:3 cards, «Без фото» placeholder, optional seed backfill, and operator manual checklist
+
+**Known deferred items at close:** 3 (see STATE.md) — Phase 07 human UAT partial; v1.0 verification/UAT debt (phases 04, 06).
+
+**Post-milestone UX (outside GSD):** auto slug, PDP gallery, admin products table UX.
+
+---
+
 ## v1.0 Appliance Store MVP (Shipped: 2026-05-17)
 
 **Phases completed:** 6 phases, 36 plans, 43 tasks
