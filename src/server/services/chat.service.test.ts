@@ -1,16 +1,21 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import {
+  archiveConversation,
   assertConversationAccess,
+  CHAT_ARCHIVED,
   CHAT_RATE_LIMIT,
   ChatRateLimitError,
   CONVERSATION_NOT_FOUND,
   countUnreadForAdmin,
+  deleteConversation,
   FORBIDDEN,
   getOrCreateConversation,
+  listConversationsForAdmin,
   listMessages,
   parseConversationChannel,
   sendMessage,
+  unarchiveConversation,
 } from "./chat.service";
 
 vi.mock("@/lib/db", () => ({
@@ -21,6 +26,7 @@ vi.mock("@/lib/db", () => ({
       findUniqueOrThrow: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
+      delete: vi.fn(),
       findMany: vi.fn(),
       count: vi.fn(),
     },
@@ -58,6 +64,18 @@ describe("getOrCreateConversation", () => {
     const result = await getOrCreateConversation("buyer-1");
 
     expect(result).toEqual(existing);
+    expect(prisma.conversation.create).not.toHaveBeenCalled();
+  });
+
+  it("returns existing archived conversation without creating a new one", async () => {
+    const archived = { id: "conv-1", userId: "buyer-1", status: "ARCHIVED" };
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+      archived as never,
+    );
+
+    const result = await getOrCreateConversation("buyer-1");
+
+    expect(result).toEqual(archived);
     expect(prisma.conversation.create).not.toHaveBeenCalled();
   });
 
@@ -115,11 +133,32 @@ describe("sendMessage", () => {
     ).rejects.toBeInstanceOf(ChatRateLimitError);
   });
 
+  it("rejects send when conversation is archived", async () => {
+    vi.mocked(prisma.message.count).mockResolvedValue(0);
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce({
+      id: "conv-1",
+      userId: "buyer-1",
+      status: "ARCHIVED",
+    } as never);
+
+    await expect(
+      sendMessage({
+        senderId: "buyer-1",
+        senderRole: "BUYER",
+        conversationId: "conv-1",
+        body: "ще раз",
+      }),
+    ).rejects.toMatchObject({ code: CHAT_ARCHIVED });
+
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+  });
+
   it("creates message and returns MessageDto", async () => {
     vi.mocked(prisma.message.count).mockResolvedValue(0);
     const conversation = {
       id: "conv-1",
       userId: "buyer-1",
+      status: "OPEN",
       contextProductId: null,
       contextProductTitle: null,
     };
@@ -195,7 +234,7 @@ describe("countUnreadForAdmin", () => {
     vi.clearAllMocks();
   });
 
-  it("counts conversations with buyer messages after admin read cursor", async () => {
+  it("counts only OPEN conversations with buyer messages after admin read cursor", async () => {
     vi.mocked(prisma.conversation.count).mockResolvedValueOnce(3);
 
     const count = await countUnreadForAdmin();
@@ -204,11 +243,98 @@ describe("countUnreadForAdmin", () => {
     expect(prisma.conversation.count).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({
+          status: "OPEN",
           lastMessageSender: "BUYER",
           lastMessageAt: { not: null },
         }),
       }),
     );
+  });
+});
+
+describe("listConversationsForAdmin", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("filters conversations by status OPEN", async () => {
+    const lastMessageAt = new Date("2026-05-17T12:00:00.000Z");
+    vi.mocked(prisma.conversation.findMany).mockResolvedValueOnce([
+      {
+        id: "conv-1",
+        userId: "buyer-1",
+        status: "OPEN",
+        lastMessagePreview: "hi",
+        lastMessageAt,
+        lastMessageSender: "BUYER",
+        adminLastReadAt: new Date("2026-05-17T11:00:00.000Z"),
+      },
+    ] as never);
+    vi.mocked(prisma.user.findMany).mockResolvedValueOnce([
+      { id: "buyer-1", name: "Олег", email: "o@example.com" },
+    ] as never);
+
+    const rows = await listConversationsForAdmin({ status: "OPEN" });
+
+    expect(prisma.conversation.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { status: "OPEN" },
+        orderBy: { lastMessageAt: "desc" },
+      }),
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      id: "conv-1",
+      status: "OPEN",
+      buyerName: "Олег",
+      unreadForAdmin: true,
+    });
+  });
+});
+
+describe("conversation lifecycle", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("archiveConversation sets status ARCHIVED", async () => {
+    vi.mocked(prisma.conversation.update).mockResolvedValueOnce({
+      id: "conv-1",
+      status: "ARCHIVED",
+    } as never);
+
+    await archiveConversation("conv-1");
+
+    expect(prisma.conversation.update).toHaveBeenCalledWith({
+      where: { id: "conv-1" },
+      data: { status: "ARCHIVED" },
+    });
+  });
+
+  it("unarchiveConversation sets status OPEN", async () => {
+    vi.mocked(prisma.conversation.update).mockResolvedValueOnce({
+      id: "conv-1",
+      status: "OPEN",
+    } as never);
+
+    await unarchiveConversation("conv-1");
+
+    expect(prisma.conversation.update).toHaveBeenCalledWith({
+      where: { id: "conv-1" },
+      data: { status: "OPEN" },
+    });
+  });
+
+  it("deleteConversation hard-deletes the row", async () => {
+    vi.mocked(prisma.conversation.delete).mockResolvedValueOnce({
+      id: "conv-1",
+    } as never);
+
+    await deleteConversation("conv-1");
+
+    expect(prisma.conversation.delete).toHaveBeenCalledWith({
+      where: { id: "conv-1" },
+    });
   });
 });
 
