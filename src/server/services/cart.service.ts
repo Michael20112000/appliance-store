@@ -140,6 +140,23 @@ export async function mergePendingItems(
   return { merged };
 }
 
+export async function isProductInCart(
+  userId: string,
+  productId: string,
+): Promise<boolean> {
+  const cart = await prisma.cart.findUnique({
+    where: { userId },
+    select: {
+      items: {
+        where: { productId },
+        select: { id: true },
+        take: 1,
+      },
+    },
+  });
+  return (cart?.items.length ?? 0) > 0;
+}
+
 export async function getCartItemCount(userId: string): Promise<number> {
   const cart = await prisma.cart.findUnique({
     where: { userId },

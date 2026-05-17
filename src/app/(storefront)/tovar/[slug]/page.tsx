@@ -14,6 +14,7 @@ import { productMetadata } from "@/lib/catalog/metadata";
 import { buildProductJsonLd } from "@/lib/catalog/product-json-ld";
 import { getEnv } from "@/lib/env";
 import { cn } from "@/lib/utils";
+import { isProductInCart } from "@/server/services/cart.service";
 import { getPublicProductBySlug } from "@/server/services/catalog.service";
 
 type PageProps = {
@@ -38,6 +39,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   const baseUrl = getEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
   const canonicalUrl = `${baseUrl}/tovar/${product.slug}`;
+  const inCart =
+    session?.user?.id != null
+      ? await isProductInCart(session.user.id, product.id)
+      : false;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -84,6 +89,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
               productId={product.id}
               productTitle={product.title}
               hasSession={Boolean(session?.user)}
+              initialInCart={inCart}
             />
             <OpenChatButton
               hasSession={Boolean(session?.user)}

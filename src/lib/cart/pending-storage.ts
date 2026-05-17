@@ -46,6 +46,17 @@ export function addPendingProduct(productId: string) {
   write(data);
 }
 
+export function removePendingProduct(productId: string) {
+  const data = readRaw();
+  const next = data.items.filter((item) => item.productId !== productId);
+  if (next.length === data.items.length) return;
+  write({ v: 1, items: next });
+}
+
+export function hasPendingProduct(productId: string): boolean {
+  return readRaw().items.some((item) => item.productId === productId);
+}
+
 export function clearPending() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(KEY);
