@@ -537,16 +537,15 @@ href={adminOrdersUrl({ filter: filter.key, page: 1, pageSize, sort, dir })}
 | A3 | Admin may still read archived threads but not send (composer hidden) | Pattern 4 | Clarify if store replies should reopen — not in requirements |
 | A4 | Plain `searchParams` preferred over `nuqs` for admin orders | Pattern 2 | Inconsistent with catalog — acceptable per admin precedent |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **`totalKopiyky` sort implementation**
-   - What we know: Required by D-08-11; no DB column.
-   - What's unclear: Accept raw SQL in service vs narrow sort columns.
-   - Recommendation: Implement `$queryRaw` ID ordering for that sort key only; unit test order mapping.
+1. **`totalKopiyky` sort implementation** — RESOLVED
+   - What we knew: Required by D-08-11; no DB column.
+   - Decision: Implement `$queryRaw` ID ordering for `sort=totalKopiyky` only in `listOrdersAdminPaginated` (plan 08-02); unit test order mapping.
 
-2. **Admin reply on archived thread**
-   - What we know: Buyer read-only locked; admin not explicitly forbidden.
-   - Recommendation: Disable `AdminChatComposer` for `ARCHIVED` (symmetry); unarchive action to reply.
+2. **Admin reply on archived thread** — RESOLVED
+   - What we knew: Buyer read-only locked (D-08-23); admin not explicitly forbidden.
+   - Decision: Disable `AdminChatComposer` when `status === ARCHIVED` (plan 08-06); admin uses «Повернути з архіву» to reply.
 
 ## Environment Availability
 
