@@ -8,6 +8,12 @@ const validEnv = {
   DATABASE_URL: "postgresql://localhost/db",
   DIRECT_URL: "postgresql://localhost/db",
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "demo",
+  PUSHER_APP_ID: "123456",
+  PUSHER_KEY: "pusher-key",
+  PUSHER_SECRET: "pusher-secret",
+  PUSHER_CLUSTER: "eu",
+  NEXT_PUBLIC_PUSHER_KEY: "pusher-key",
+  NEXT_PUBLIC_PUSHER_CLUSTER: "eu",
 };
 
 describe("parseEnv", () => {

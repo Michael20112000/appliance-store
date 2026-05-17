@@ -9,6 +9,12 @@ const envSchema = z.object({
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1),
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
+  PUSHER_APP_ID: z.string().optional(),
+  PUSHER_KEY: z.string().optional(),
+  PUSHER_SECRET: z.string().optional(),
+  PUSHER_CLUSTER: z.string().optional(),
+  NEXT_PUBLIC_PUSHER_KEY: z.string().optional(),
+  NEXT_PUBLIC_PUSHER_CLUSTER: z.string().optional(),
   ADMIN_EMAIL: z.string().email().optional(),
   ADMIN_PASSWORD: z.string().min(8).optional(),
   STORE_ADDRESS: z
