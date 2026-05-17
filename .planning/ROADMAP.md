@@ -248,7 +248,7 @@ Plans:
 
 **Wave 5** *(gap closure — blocked on 06-04, 06-05)*
 
-- [ ] 06-06-PLAN.md — CWV perf fixes + verification/checklist URL docs + production build sanity
+- [x] 06-06-PLAN.md — CWV perf fixes + verification/checklist URL docs + production build sanity
 
 **Wave 6** *(gap closure — blocked on 06-06)*
 
