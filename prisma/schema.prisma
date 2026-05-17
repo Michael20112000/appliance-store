@@ -87,6 +87,20 @@ enum ProductStatus {
   DRAFT
 }
 
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  READY_FOR_PICKUP
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
+}
+
+enum DeliveryType {
+  PICKUP
+  LVIV_DELIVERY
+}
+
 model Category {
   id          String    @id @default(cuid())
   name        String
@@ -110,6 +124,8 @@ model Product {
   categoryId  String
   category    Category         @relation(fields: [categoryId], references: [id])
   images      ProductImage[]
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
@@ -131,4 +147,88 @@ model ProductImage {
   height             Int?
 
   @@index([productId, sortOrder])
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  orderNumber     String        @unique
+  userId          String
+  status          OrderStatus   @default(PENDING)
+  deliveryType    DeliveryType
+  deliveryAddress String?
+  customerPhone   String
+  customerName    String
+  notes           String?
+  items           OrderItem[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id            String   @id @default(cuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String?
+  product       Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  titleSnapshot String
+  priceSnapshot Int
+  quantity      Int
+
+  @@index([orderId])
+}
+
+enum MessageSender {
+  BUYER
+  STORE
+}
+
+model Conversation {
+  id                  String         @id @default(cuid())
+  userId              String         @unique
+  contextProductId    String?
+  contextProductTitle String?
+  buyerLastReadAt     DateTime       @default(now())
+  adminLastReadAt     DateTime       @default(now())
+  lastMessageAt       DateTime?
+  lastMessagePreview  String?
+  lastMessageSender   MessageSender?
+  messages            Message[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([updatedAt])
+  @@index([lastMessageAt])
+}
+
+model Message {
+  id             String         @id @default(cuid())
+  conversationId String
+  conversation   Conversation   @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  senderRole     MessageSender
+  body           String
+  createdAt      DateTime       @default(now())
+
+  @@index([conversationId, createdAt])
 }
