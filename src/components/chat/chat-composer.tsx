@@ -145,3 +145,131 @@ export function ChatComposer() {
     </div>
   );
 }
+
+export function AdminChatComposer() {
+  const {
+    selectedConversationId,
+    appendMessage,
+    replaceOptimisticMessage,
+    removeOptimisticMessage,
+  } = useAdminChat();
+
+  const [body, setBody] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSending, setIsSending] = useState(false);
+
+  const trimmed = body.trim();
+  const overLimit = body.length > MAX_LENGTH;
+  const canSend =
+    Boolean(selectedConversationId) &&
+    trimmed.length > 0 &&
+    !overLimit &&
+    !isSending;
+
+  const send = async () => {
+    if (!canSend || !selectedConversationId) return;
+
+    setError(null);
+    setIsSending(true);
+
+    const tempId = `pending-${crypto.randomUUID()}`;
+    const optimistic: MessageDto & { pending: true } = {
+      id: tempId,
+      conversationId: selectedConversationId,
+      body: trimmed,
+      senderRole: "STORE",
+      senderId: "",
+      createdAt: new Date().toISOString(),
+      pending: true,
+    };
+
+    appendMessage(optimistic);
+    setBody("");
+
+    try {
+      const response = await fetch("/api/chat/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          body: trimmed,
+          conversationId: selectedConversationId,
+        }),
+      });
+
+      const payload = (await response.json()) as MessageDto & {
+        error?: string;
+        message?: string;
+      };
+
+      if (!response.ok) {
+        removeOptimisticMessage(tempId);
+        setError(mapSendError(response.status, payload));
+        setBody(trimmed);
+        return;
+      }
+
+      replaceOptimisticMessage(tempId, payload);
+    } catch {
+      removeOptimisticMessage(tempId);
+      setError("Не вдалося надіслати. Спробуйте ще раз.");
+      setBody(trimmed);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      void send();
+    }
+  };
+
+  if (!selectedConversationId) {
+    return null;
+  }
+
+  return (
+    <div className="border-t border-border bg-background p-3">
+      <Label htmlFor="admin-chat-message" className="sr-only">
+        Відповідь покупцю
+      </Label>
+      <div className="flex items-end gap-2">
+        <Textarea
+          id="admin-chat-message"
+          value={body}
+          onChange={(event) => setBody(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Напишіть відповідь…"
+          rows={1}
+          maxLength={MAX_LENGTH}
+          disabled={isSending}
+          aria-invalid={overLimit || Boolean(error)}
+          className="max-h-[120px] min-h-11 resize-none"
+        />
+        <Button
+          type="button"
+          size="icon"
+          className="size-11 shrink-0"
+          disabled={!canSend}
+          aria-label="Надіслати"
+          aria-busy={isSending}
+          onClick={() => void send()}
+        >
+          <Send className="size-4" />
+        </Button>
+      </div>
+      {body.length > 1800 ? (
+        <p className="mt-1 text-xs text-muted-foreground">
+          {body.length}/{MAX_LENGTH}
+        </p>
+      ) : null}
+      {overLimit ? (
+        <p className="mt-1 text-sm text-destructive">
+          Повідомлення занадто довге (максимум 2000 символів).
+        </p>
+      ) : null}
+      {error ? <p className="mt-1 text-sm text-destructive">{error}</p> : null}
+    </div>
+  );
+}

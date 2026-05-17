@@ -1,9 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireBuyer } from "@/lib/permissions";
+import { requireAdmin, requireBuyer } from "@/lib/permissions";
 import {
   getConversationForBuyer,
+  markAdminRead,
   markBuyerRead,
 } from "@/server/services/chat.service";
 
@@ -16,6 +17,14 @@ export async function markBuyerReadAction(conversationId: string) {
   }
 
   await markBuyerRead(conversationId);
+  revalidatePath("/", "layout");
+  return { ok: true as const };
+}
+
+export async function markAdminReadAction(conversationId: string) {
+  await requireAdmin();
+  await markAdminRead(conversationId);
+  revalidatePath("/admin/chaty");
   revalidatePath("/", "layout");
   return { ok: true as const };
 }

@@ -10,9 +10,10 @@ const timeFormatter = new Intl.DateTimeFormat("uk-UA", {
 
 type MessageBubbleProps = {
   message: ChatMessage;
+  buyerDisplayName?: string;
 };
 
-export function MessageBubble({ message }: MessageBubbleProps) {
+export function MessageBubble({ message, buyerDisplayName }: MessageBubbleProps) {
   const isBuyer = message.senderRole === "BUYER";
   const timestamp = message.pending
     ? null
@@ -24,6 +25,10 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         {!isBuyer ? (
           <p className="mb-0.5 text-xs font-semibold text-muted-foreground">
             Магазин
+          </p>
+        ) : buyerDisplayName ? (
+          <p className="mb-0.5 text-xs font-semibold text-muted-foreground">
+            {buyerDisplayName}
           </p>
         ) : null}
         <div

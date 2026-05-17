@@ -10,9 +10,19 @@ type MessageListProps = {
   messages: ChatMessage[];
   isLoading: boolean;
   loadError: string | null;
+  buyerDisplayName?: string;
+  emptyTitle?: string;
+  emptyBody?: string;
 };
 
-export function MessageList({ messages, isLoading, loadError }: MessageListProps) {
+export function MessageList({
+  messages,
+  isLoading,
+  loadError,
+  buyerDisplayName,
+  emptyTitle = "Напишіть нам",
+  emptyBody = "Маєте питання про товар чи замовлення? Ми відповімо тут.",
+}: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,10 +51,8 @@ export function MessageList({ messages, isLoading, loadError }: MessageListProps
   if (messages.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-8 text-center">
-        <p className="text-sm font-semibold">Напишіть нам</p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Маєте питання про товар чи замовлення? Ми відповімо тут.
-        </p>
+        <p className="text-sm font-semibold">{emptyTitle}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{emptyBody}</p>
       </div>
     );
   }
@@ -57,7 +65,11 @@ export function MessageList({ messages, isLoading, loadError }: MessageListProps
         aria-relevant="additions"
       >
         {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
+          <MessageBubble
+            key={message.id}
+            message={message}
+            buyerDisplayName={buyerDisplayName}
+          />
         ))}
         <div ref={bottomRef} />
       </div>
