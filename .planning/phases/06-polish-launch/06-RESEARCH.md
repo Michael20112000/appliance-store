@@ -456,18 +456,13 @@ export default defineConfig({
 | A3 | Node 20 on GHA sufficient for Next 16 | CI | Use LTS matching Vercel default |
 | A4 | Skipped Playwright tests exit 0 on GHA | CI | Confirm with first CI run |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Neon CI branch + GitHub Secrets naming**  
-   - What we know: E2E requires DB; D-06-23 forbids production secrets.  
-   - Unclear: Whether team already has `DATABASE_URL` in GitHub.  
-   - Recommendation: Plan task to create Neon branch `ci` and document secrets in `06-ENV-CHECKLIST.md`.
+1. **Neon CI branch + GitHub Secrets naming** — **RESOLVED:** Use Neon branch `ci` (or dedicated CI branch); GitHub Actions secrets `DATABASE_URL`, `DIRECT_URL`, `BETTER_AUTH_SECRET`, `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` documented in `06-ENV-CHECKLIST.md` § CI (plan 06-01). Never production DB URL.
 
-2. **Confirmation page displays order notes**  
-   - Recommendation: Planner verifies `pidtverdzhennia` page; if no notes UI, critical-journey asserts unique `ASL-` order number only.
+2. **Confirmation page displays order notes** — **RESOLVED:** Confirmation page does not render `notes`; `critical-journey.spec.ts` asserts unique marker via `ASL-` order number in URL and/or `/kabinet` order list (see 06-PATTERNS.md).
 
-3. **Seed PDP slug for Lighthouse**  
-   - Use first available product from `/katalog/kholodylnyky` or document fixed seed slug in VERIFICATION (e.g. first `AVAILABLE` in seed).
+3. **Seed PDP slug for Lighthouse** — **RESOLVED:** Document in `06-VERIFICATION.md` at execution time: first `AVAILABLE` PDP from `/katalog/kholodylnyky` or seed slug `samsung-kholodylnyk` (if present in seed).
 
 ## Environment Availability
 
