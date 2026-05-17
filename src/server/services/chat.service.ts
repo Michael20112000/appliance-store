@@ -148,11 +148,11 @@ export async function listMessages(
   const limit = options.limit ?? DEFAULT_MESSAGE_LIMIT;
   const messages = await prisma.message.findMany({
     where: { conversationId },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
     take: limit,
   });
 
-  return messages.map(mapMessageDto);
+  return messages.reverse().map(mapMessageDto);
 }
 
 async function enforceRateLimit(senderId: string) {

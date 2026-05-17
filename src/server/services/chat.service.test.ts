@@ -182,7 +182,7 @@ describe("listMessages", () => {
     expect(prisma.message.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { conversationId: "conv-1" },
-        orderBy: { createdAt: "asc" },
+        orderBy: { createdAt: "desc" },
         take: 50,
       }),
     );
