@@ -13,9 +13,10 @@ import { Label } from "@/components/ui/label";
 const MAX_IMAGES = 8;
 
 function isUploadWidgetConfigured(): boolean {
-  // Signed uploads use /api/upload/sign (server-only CLOUDINARY_API_KEY/SECRET).
-  // CLOUDINARY_API_KEY is not available in the browser on Vercel.
-  return Boolean(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
+  return Boolean(
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME &&
+      process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  );
 }
 
 type ExistingImage = {
@@ -122,8 +123,9 @@ export function ProductImageUpload({
     return (
       <Alert>
         <AlertDescription>
-          Завантаження фото недоступне: додайте NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-          у середовище (а на сервері — CLOUDINARY_API_KEY і CLOUDINARY_API_SECRET).
+          Завантаження фото недоступне: додайте NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME і
+          NEXT_PUBLIC_CLOUDINARY_API_KEY (той самий ключ що CLOUDINARY_API_KEY) плюс
+          CLOUDINARY_API_SECRET на сервері.
         </AlertDescription>
       </Alert>
     );
