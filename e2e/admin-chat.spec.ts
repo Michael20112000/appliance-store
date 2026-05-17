@@ -7,6 +7,8 @@ test("admin chat inbox loads with enabled nav", async ({ page }) => {
 
   await expect(page.getByRole("heading", { name: "Чати", level: 1 })).toBeVisible();
   await expect(page.getByRole("link", { name: /^Чати/ })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Активні" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Архів" })).toBeVisible();
 
   const firstConversation = page.getByRole("option").first();
   if (await firstConversation.isVisible()) {
