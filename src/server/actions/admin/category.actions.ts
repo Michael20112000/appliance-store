@@ -10,13 +10,16 @@ import {
   createCategory,
   deleteCategory,
   updateCategory,
+  updateCategoryImage,
 } from "@/server/services/admin-catalog.service";
 import {
+  updateCategoryImageSchema,
   updateCategorySchema,
   upsertCategorySchema,
 } from "@/server/validators/category";
 
 function revalidateCategoryPaths(slug?: string) {
+  revalidatePath("/");
   revalidatePath("/admin/kategorii");
   revalidatePath("/katalog");
   if (slug) {
@@ -58,6 +61,19 @@ export async function updateCategoryAction(input: unknown) {
 
   try {
     const category = await updateCategory(data);
+    revalidateCategoryPaths(category.slug);
+    return { ok: true as const };
+  } catch (error) {
+    return mapCategoryError(error);
+  }
+}
+
+export async function updateCategoryImageAction(input: unknown) {
+  await requireAdmin();
+  const data = updateCategoryImageSchema.parse(input);
+
+  try {
+    const category = await updateCategoryImage(data);
     revalidateCategoryPaths(category.slug);
     return { ok: true as const };
   } catch (error) {
