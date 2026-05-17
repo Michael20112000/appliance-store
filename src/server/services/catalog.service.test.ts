@@ -1,5 +1,20 @@
-import { describe, expect, it } from "vitest";
-import { buildPublicProductWhere } from "./catalog.service";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { prisma } from "@/lib/db";
+import {
+  buildCatalogContextWhere,
+  buildPublicProductWhere,
+  getCatalogPriceBounds,
+  getDistinctBrands,
+} from "./catalog.service";
+
+vi.mock("@/lib/db", () => ({
+  prisma: {
+    product: {
+      findMany: vi.fn(),
+      aggregate: vi.fn(),
+    },
+  },
+}));
 
 describe("buildPublicProductWhere", () => {
   it("always filters AVAILABLE status", () => {
@@ -23,6 +38,12 @@ describe("buildPublicProductWhere", () => {
     expect(where.price).toEqual({ gte: 100_00, lte: 500_00 });
   });
 
+  it("applies minPrice only (gte without lte)", () => {
+    const where = buildPublicProductWhere({ minPrice: 130_00 });
+    expect(where.price).toEqual({ gte: 130_00 });
+    expect(where.price).not.toHaveProperty("lte");
+  });
+
   it("applies text search when q length >= 2", () => {
     const where = buildPublicProductWhere({ q: "холод" });
     expect(where.OR).toHaveLength(2);
@@ -36,5 +57,86 @@ describe("buildPublicProductWhere", () => {
   it("applies condition filter", () => {
     const where = buildPublicProductWhere({ conditions: ["GOOD", "FAIR"] });
     expect(where.condition).toEqual({ in: ["GOOD", "FAIR"] });
+  });
+});
+
+describe("buildCatalogContextWhere", () => {
+  it("scopes to AVAILABLE products globally", () => {
+    expect(buildCatalogContextWhere()).toEqual({ status: "AVAILABLE" });
+  });
+
+  it("scopes to AVAILABLE products in a category", () => {
+    expect(buildCatalogContextWhere("cat-phones")).toEqual({
+      status: "AVAILABLE",
+      categoryId: "cat-phones",
+    });
+  });
+});
+
+describe("getDistinctBrands", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("queries all AVAILABLE brands without categoryId", async () => {
+    vi.mocked(prisma.product.findMany).mockResolvedValueOnce([
+      { brand: "Bosch" },
+      { brand: "Samsung" },
+    ] as never);
+
+    const brands = await getDistinctBrands();
+
+    expect(brands).toEqual(["Bosch", "Samsung"]);
+    expect(prisma.product.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { status: "AVAILABLE" },
+        distinct: ["brand"],
+      }),
+    );
+  });
+
+  it("queries brands scoped to categoryId when provided", async () => {
+    vi.mocked(prisma.product.findMany).mockResolvedValueOnce([
+      { brand: "Apple" },
+    ] as never);
+
+    await getDistinctBrands("cat-phones");
+
+    expect(prisma.product.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { status: "AVAILABLE", categoryId: "cat-phones" },
+      }),
+    );
+  });
+});
+
+describe("getCatalogPriceBounds", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns UAH bounds from kopiyky aggregate", async () => {
+    vi.mocked(prisma.product.aggregate).mockResolvedValueOnce({
+      _min: { price: 12_999 },
+      _max: { price: 45_001 },
+    } as never);
+
+    const bounds = await getCatalogPriceBounds();
+
+    expect(bounds).toEqual({ minUah: 129, maxUah: 451 });
+    expect(prisma.product.aggregate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { status: "AVAILABLE" },
+      }),
+    );
+  });
+
+  it("returns null when no products in context", async () => {
+    vi.mocked(prisma.product.aggregate).mockResolvedValueOnce({
+      _min: { price: null },
+      _max: { price: null },
+    } as never);
+
+    expect(await getCatalogPriceBounds("cat-empty")).toBeNull();
   });
 });

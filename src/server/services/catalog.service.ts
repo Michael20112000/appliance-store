@@ -20,6 +20,15 @@ const cardInclude = {
   },
 } satisfies Prisma.ProductInclude;
 
+export function buildCatalogContextWhere(
+  categoryId?: string,
+): Prisma.ProductWhereInput {
+  return {
+    status: PUBLIC_STATUS,
+    ...(categoryId && { categoryId }),
+  };
+}
+
 export function buildPublicProductWhere(
   input: CatalogFilters & { categoryId?: string },
 ): Prisma.ProductWhereInput {
@@ -173,14 +182,35 @@ export async function listCategories() {
   return prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
 }
 
-export async function getDistinctBrands(): Promise<string[]> {
+export async function getDistinctBrands(
+  categoryId?: string,
+): Promise<string[]> {
   const rows = await prisma.product.findMany({
-    where: { status: PUBLIC_STATUS },
+    where: buildCatalogContextWhere(categoryId),
     select: { brand: true },
     distinct: ["brand"],
     orderBy: { brand: "asc" },
   });
   return rows.map((r) => r.brand);
+}
+
+export async function getCatalogPriceBounds(
+  categoryId?: string,
+): Promise<{ minUah: number; maxUah: number } | null> {
+  const agg = await prisma.product.aggregate({
+    where: buildCatalogContextWhere(categoryId),
+    _min: { price: true },
+    _max: { price: true },
+  });
+
+  const minKop = agg._min.price;
+  const maxKop = agg._max.price;
+  if (minKop == null || maxKop == null) return null;
+
+  return {
+    minUah: Math.floor(minKop / 100),
+    maxUah: Math.ceil(maxKop / 100),
+  };
 }
 
 export async function listPublicProductSlugsForSitemap(): Promise<string[]> {
