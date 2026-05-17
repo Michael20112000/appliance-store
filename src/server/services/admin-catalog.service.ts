@@ -1,6 +1,6 @@
 import slugify from "slugify";
 import { prisma } from "@/lib/db";
-import type { UpsertCategoryInput } from "@/server/validators/category";
+import type { UpsertCategoryValues } from "@/server/validators/category";
 
 export const CATEGORY_HAS_PRODUCTS = "CATEGORY_HAS_PRODUCTS";
 export const SLUG_ALREADY_EXISTS = "SLUG_ALREADY_EXISTS";
@@ -58,7 +58,7 @@ export async function getCategoryById(id: string) {
   });
 }
 
-export async function createCategory(data: UpsertCategoryInput) {
+export async function createCategory(data: UpsertCategoryValues) {
   const baseSlug = data.slug?.trim() || slugFromName(data.name);
   const slug = await resolveUniqueSlug(baseSlug);
 
@@ -73,7 +73,7 @@ export async function createCategory(data: UpsertCategoryInput) {
 }
 
 export async function updateCategory(
-  input: UpsertCategoryInput & { id: string },
+  input: UpsertCategoryValues & { id: string },
 ) {
   const existing = await prisma.category.findUnique({ where: { id: input.id } });
   if (!existing) {

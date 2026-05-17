@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/permissions";
+import { AdminNav } from "@/components/admin/admin-nav";
 
 export const metadata: Metadata = {
   title: "Адмін-панель",
@@ -20,7 +21,12 @@ export default async function AdminLayout({
           <p className="font-semibold">Адмін-панель</p>
         </div>
       </header>
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</div>
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-8 sm:grid-cols-[12rem_1fr] sm:px-6">
+        <aside className="rounded-lg border border-border bg-background p-3">
+          <AdminNav />
+        </aside>
+        <main>{children}</main>
+      </div>
     </div>
   );
 }

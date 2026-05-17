@@ -5,22 +5,36 @@ const slugSchema = z
   .trim()
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Латиниця, дефіси");
 
-export const upsertCategorySchema = z.object({
-  name: z.string().trim().min(2, "Вкажіть назву категорії"),
-  slug: z.preprocess(
-    (value) => (value === "" || value == null ? undefined : value),
-    slugSchema.optional(),
-  ),
-  description: z.preprocess(
-    (value) => (value === "" ? undefined : value),
-    z.string().trim().max(2000).optional(),
-  ),
-  sortOrder: z.coerce.number().int().default(0),
-});
+export const upsertCategorySchema = z
+  .object({
+    name: z.string().trim().min(2, "Вкажіть назву категорії"),
+    slug: z.union([slugSchema, z.literal("")]).optional(),
+    description: z.union([z.string().trim().max(2000), z.literal("")]).optional(),
+    sortOrder: z.coerce.number().int().default(0),
+  })
+  .transform((data) => ({
+    name: data.name,
+    sortOrder: data.sortOrder,
+    slug: data.slug === "" ? undefined : data.slug,
+    description: data.description === "" ? undefined : data.description,
+  }));
 
-export const updateCategorySchema = upsertCategorySchema.extend({
-  id: z.string().cuid("Невірний ідентифікатор категорії"),
-});
+export const updateCategorySchema = z
+  .object({
+    id: z.string().cuid("Невірний ідентифікатор категорії"),
+    name: z.string().trim().min(2, "Вкажіть назву категорії"),
+    slug: z.union([slugSchema, z.literal("")]).optional(),
+    description: z.union([z.string().trim().max(2000), z.literal("")]).optional(),
+    sortOrder: z.coerce.number().int().default(0),
+  })
+  .transform((data) => ({
+    id: data.id,
+    name: data.name,
+    sortOrder: data.sortOrder,
+    slug: data.slug === "" ? undefined : data.slug,
+    description: data.description === "" ? undefined : data.description,
+  }));
 
-export type UpsertCategoryInput = z.infer<typeof upsertCategorySchema>;
-export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
+export type UpsertCategoryInput = z.input<typeof upsertCategorySchema>;
+export type UpsertCategoryValues = z.output<typeof upsertCategorySchema>;
+export type UpdateCategoryValues = z.output<typeof updateCategorySchema>;
