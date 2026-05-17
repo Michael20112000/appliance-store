@@ -199,10 +199,13 @@ Plans:
 
 - [ ] 05-02-PLAN.md — API routes (messages POST/GET, pusher auth), rate limit, route tests (CHAT-02, CHAT-03)
 
-**Wave 3** *(blocked on Wave 2 — parallel)*
+**Wave 3** *(blocked on Wave 2)*
 
 - [ ] 05-03-PLAN.md — Storefront ChatProvider, FAB, panel, PDP + kabinet entry (CHAT-01, CHAT-02, CHAT-03 UI)
-- [ ] 05-04-PLAN.md — Admin /admin/chaty inbox, enable Чати nav + unread badge (CHAT-04, ADM-05)
+
+**Wave 3b** *(blocked on 05-03 — shares chat.actions.ts)*
+
+- [ ] 05-04-PLAN.md — Admin /admin/chaty inbox, AdminChatProvider, enable Чати nav + unread badge (CHAT-04, ADM-05)
 
 **Wave 4** *(blocked on Wave 3)*
 

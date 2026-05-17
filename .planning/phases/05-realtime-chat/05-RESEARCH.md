@@ -509,19 +509,16 @@ router.push(`/uviity?callbackUrl=${encodeURIComponent(pathname + search)}`);
 | A4 | EU Pusher cluster available on team's plan | Environment | Latency; pick cluster in dashboard |
 | A5 | No `@tanstack/react-query` for MVP | Standard Stack | May add if optimistic UX gets complex |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Exact rate limit number**  
-   - What we know: D-05-18 requires rate limit; UI copy «хвилину».  
-   - Recommendation: Default 20/min/sender; expose constant in `chat.service`.
+1. **Exact rate limit number** — **RESOLVED**  
+   - Decision: `CHAT_RATE_LIMIT = 20` messages per 60 seconds per sender in `chat.service.ts` (D-05-18).
 
-2. **Initial message batch size**  
-   - What we know: MVP text chat, single thread.  
-   - Recommendation: Last 50 messages on open; `cursor` param for older if needed later.
+2. **Initial message batch size** — **RESOLVED**  
+   - Decision: Return last **50** messages on panel/thread open; defer cursor pagination to v2.
 
-3. **Pusher in CI**  
-   - What we know: Playwright uses conditional skips for Cloudinary.  
-   - Recommendation: `hasPusherSecrets()` helper; realtime E2E optional, persistence E2E required.
+3. **Pusher in CI** — **RESOLVED**  
+   - Decision: `hasPusherSecrets()` in `e2e/helpers/pusher.ts`; persistence E2E required; live realtime E2E optional when secrets present (05-05).
 
 ## Environment Availability
 
