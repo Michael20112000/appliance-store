@@ -17,16 +17,16 @@ export default async function AdminLayout({
 
   return (
     <div className="min-h-dvh bg-muted">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-6xl items-center px-4 py-4 sm:px-6">
-          <p className="font-semibold">Адмін-панель</p>
-        </div>
-      </header>
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-8 sm:grid-cols-[12rem_1fr] sm:px-6">
-        <aside className="rounded-lg border border-border bg-background p-3">
+      <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[240px_1fr]">
+        <aside className="border-b border-border bg-muted p-4 md:border-b-0 md:border-r">
+          <p className="mb-4 px-3 text-sm font-semibold">Адмін-панель</p>
           <AdminNav />
         </aside>
-        <main>{children}</main>
+        <main className="bg-muted p-4 md:p-6">
+          <div className="min-h-[calc(100dvh-2rem)] rounded-lg border border-border bg-background p-4 shadow-sm md:min-h-[calc(100dvh-3rem)] md:p-6">
+            {children}
+          </div>
+        </main>
       </div>
       <Toaster richColors position="top-center" />
     </div>

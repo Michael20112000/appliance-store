@@ -101,6 +101,27 @@ function mapOrderDetail(
   };
 }
 
+export async function getAdminDashboardStats() {
+  const [pendingOrders, availableProducts, draftProducts, recentOrders] =
+    await Promise.all([
+      prisma.order.count({ where: { status: "PENDING" } }),
+      prisma.product.count({ where: { status: "AVAILABLE" } }),
+      prisma.product.count({ where: { status: "DRAFT" } }),
+      prisma.order.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: { items: true },
+      }),
+    ]);
+
+  return {
+    pendingOrders,
+    availableProducts,
+    draftProducts,
+    recentOrders: recentOrders.map(mapOrderSummary),
+  };
+}
+
 export async function listAllOrders(
   filter: AdminOrderListFilter = "all",
 ): Promise<AdminOrderSummaryDto[]> {
