@@ -1,4 +1,7 @@
-import type { MessageSender } from "@/generated/prisma/client";
+import type {
+  ConversationStatus,
+  MessageSender,
+} from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import type {
   ConversationSummaryDto,
@@ -8,6 +11,7 @@ import type {
 export const CONVERSATION_NOT_FOUND = "CONVERSATION_NOT_FOUND";
 export const FORBIDDEN = "FORBIDDEN";
 export const CHAT_RATE_LIMIT = "CHAT_RATE_LIMIT";
+export const CHAT_ARCHIVED = "CHAT_ARCHIVED";
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 20;
@@ -178,10 +182,20 @@ type SendMessageInput = {
   productContext?: ProductContext;
 };
 
+function assertConversationOpen(conversation: { status: ConversationStatus }) {
+  if (conversation.status === "ARCHIVED") {
+    throw new ChatServiceError(
+      CHAT_ARCHIVED,
+      "Діалог закрито магазином. Написати більше не можна.",
+    );
+  }
+}
+
 export async function sendMessage(input: SendMessageInput): Promise<MessageDto> {
   await enforceRateLimit(input.senderId);
 
   const conversation = await resolveConversationForSend(input);
+  assertConversationOpen(conversation);
   const preview = messagePreview(input.body);
   const now = new Date();
 
@@ -252,6 +266,7 @@ export async function markBuyerRead(conversationId: string) {
 export async function countUnreadForAdmin(): Promise<number> {
   return prisma.conversation.count({
     where: {
+      status: "OPEN",
       lastMessageSender: "BUYER",
       lastMessageAt: { not: null },
       AND: [
@@ -265,10 +280,31 @@ export async function countUnreadForAdmin(): Promise<number> {
   });
 }
 
-export async function listConversationsForAdmin(): Promise<
-  ConversationSummaryDto[]
-> {
+export async function archiveConversation(conversationId: string) {
+  await prisma.conversation.update({
+    where: { id: conversationId },
+    data: { status: "ARCHIVED" },
+  });
+}
+
+export async function unarchiveConversation(conversationId: string) {
+  await prisma.conversation.update({
+    where: { id: conversationId },
+    data: { status: "OPEN" },
+  });
+}
+
+export async function deleteConversation(conversationId: string) {
+  await prisma.conversation.delete({
+    where: { id: conversationId },
+  });
+}
+
+export async function listConversationsForAdmin(options: {
+  status: ConversationStatus;
+}): Promise<ConversationSummaryDto[]> {
   const conversations = await prisma.conversation.findMany({
+    where: { status: options.status },
     orderBy: { lastMessageAt: "desc" },
   });
 
@@ -290,6 +326,7 @@ export async function listConversationsForAdmin(): Promise<
     return {
       id: conversation.id,
       userId: conversation.userId,
+      status: conversation.status,
       buyerName: buyer?.name ?? "Покупець",
       buyerEmail: buyer?.email ?? "",
       lastMessagePreview: conversation.lastMessagePreview,

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminChatyPage() {
-  const conversations = await listConversationsForAdmin();
+  const conversations = await listConversationsForAdmin({ status: "OPEN" });
 
   return <AdminChatInbox conversations={conversations} />;
 }

@@ -1,4 +1,7 @@
-import type { MessageSender } from "@/generated/prisma/client";
+import type {
+  ConversationStatus,
+  MessageSender,
+} from "@/generated/prisma/client";
 
 export type MessageDto = {
   id: string;
@@ -12,6 +15,7 @@ export type MessageDto = {
 export type ConversationSummaryDto = {
   id: string;
   userId: string;
+  status: ConversationStatus;
   buyerName: string;
   buyerEmail: string;
   lastMessagePreview: string | null;
