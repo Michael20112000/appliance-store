@@ -1,15 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { useCallback, useMemo, useState } from "react";
 import { useQueryStates } from "nuqs";
+import { Slider } from "@/components/ui/slider";
 import { catalogParsers, catalogUrlKeys } from "@/lib/catalog/search-params";
+import { createThrottle } from "@/lib/catalog/throttle";
 import { cn } from "@/lib/utils";
+
+export const PRICE_STEP_UAH = 50;
+export const PRICE_URL_THROTTLE_MS = 200;
 
 type CategoryOption = { slug: string; name: string };
 
-type PriceBounds = { minUah: number; maxUah: number };
+export type PriceBounds = { minUah: number; maxUah: number };
 
-type CatalogFiltersProps = {
+export type CatalogFiltersPanelProps = {
   brands: string[];
   categories: CategoryOption[];
   activeCategorySlug?: string;
@@ -17,22 +23,128 @@ type CatalogFiltersProps = {
   className?: string;
 };
 
-export function CatalogFilters({
+type CatalogFiltersProps = CatalogFiltersPanelProps;
+
+function snapPriceToStep(value: number, step: number): number {
+  return Math.round(value / step) * step;
+}
+
+function clampPrice(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
+function normalizeThumbRange(
+  values: readonly number[],
+  bounds: PriceBounds,
+): [number, number] {
+  const { minUah: min, maxUah: max } = bounds;
+  let low = clampPrice(
+    snapPriceToStep(values[0] ?? min, PRICE_STEP_UAH),
+    min,
+    max,
+  );
+  let high = clampPrice(
+    snapPriceToStep(values[1] ?? max, PRICE_STEP_UAH),
+    min,
+    max,
+  );
+  if (low > high) [low, high] = [high, low];
+  return [low, high];
+}
+
+function thumbValuesFromParams(
+  cinaVid: number | null,
+  cinaDo: number | null,
+  bounds: PriceBounds,
+): [number, number] {
+  return [cinaVid ?? bounds.minUah, cinaDo ?? bounds.maxUah];
+}
+
+function toSliderValues(
+  value: number | readonly number[],
+): readonly number[] {
+  return typeof value === "number" ? [value] : value;
+}
+
+export function CatalogFiltersPanel({
   brands,
   categories,
   activeCategorySlug,
   priceBounds,
   className,
-}: CatalogFiltersProps) {
-  void priceBounds;
-
+}: CatalogFiltersPanelProps) {
   const [params, setParams] = useQueryStates(catalogParsers, {
     shallow: false,
     urlKeys: catalogUrlKeys,
   });
 
+  const bounds = priceBounds ?? null;
+  const hasPriceBounds = bounds != null;
+
+  const [dragValues, setDragValues] = useState<[number, number] | null>(null);
+
+  const thumbValues = useMemo((): [number, number] => {
+    if (dragValues) return dragValues;
+    if (!bounds) return [0, 0];
+    return thumbValuesFromParams(params.cinaVid, params.cinaDo, bounds);
+  }, [dragValues, bounds, params.cinaVid, params.cinaDo]);
+
+  const throttledPriceUrlSync = useMemo(
+    () => createThrottle(PRICE_URL_THROTTLE_MS),
+    [],
+  );
+
+  const syncPriceToUrl = useCallback(
+    (cinaVid: number, cinaDo: number, immediate: boolean) => {
+      const apply = () => {
+        void setParams({ cinaVid, cinaDo, storinka: 1 });
+      };
+      if (immediate) {
+        throttledPriceUrlSync.flush();
+        apply();
+        return;
+      }
+      throttledPriceUrlSync(apply);
+    },
+    [setParams, throttledPriceUrlSync],
+  );
+
+  const handleMinInput = (raw: string) => {
+    if (!bounds) return;
+    setDragValues(null);
+    if (!raw) {
+      void setParams({ cinaVid: null, storinka: 1 });
+      return;
+    }
+    const cinaVid = clampPrice(
+      snapPriceToStep(Number(raw), PRICE_STEP_UAH),
+      bounds.minUah,
+      bounds.maxUah,
+    );
+    let cinaDo = params.cinaDo;
+    if (cinaDo != null && cinaVid > cinaDo) cinaDo = cinaVid;
+    void setParams({ cinaVid, cinaDo, storinka: 1 });
+  };
+
+  const handleMaxInput = (raw: string) => {
+    if (!bounds) return;
+    setDragValues(null);
+    if (!raw) {
+      void setParams({ cinaDo: null, storinka: 1 });
+      return;
+    }
+    const cinaDo = clampPrice(
+      snapPriceToStep(Number(raw), PRICE_STEP_UAH),
+      bounds.minUah,
+      bounds.maxUah,
+    );
+    let cinaVid = params.cinaVid;
+    if (cinaVid != null && cinaDo < cinaVid) cinaVid = cinaDo;
+    void setParams({ cinaVid, cinaDo, storinka: 1 });
+  };
+
   return (
-    <aside className={cn("space-y-6", className)}>
+    <div className={cn("space-y-6", className)}>
       <section>
         <h2 className="mb-2 text-sm font-medium">Категорія</h2>
         <ul className="space-y-1 text-sm">
@@ -83,34 +195,60 @@ export function CatalogFilters({
 
       <section>
         <h2 className="mb-2 text-sm font-medium">Ціна, ₴</h2>
-        <div className="grid grid-cols-2 gap-2">
-          <input
-            type="number"
-            min={0}
-            placeholder="Від"
-            className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
-            value={params.cinaVid ?? ""}
-            onChange={(e) =>
-              setParams({
-                cinaVid: e.target.value ? Number(e.target.value) : null,
-                storinka: 1,
-              })
-            }
-          />
-          <input
-            type="number"
-            min={0}
-            placeholder="До"
-            className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
-            value={params.cinaDo ?? ""}
-            onChange={(e) =>
-              setParams({
-                cinaDo: e.target.value ? Number(e.target.value) : null,
-                storinka: 1,
-              })
-            }
-          />
-        </div>
+        {!hasPriceBounds ? (
+          <p className="text-sm text-muted-foreground">
+            Немає товарів для фільтра ціни
+          </p>
+        ) : (
+          <>
+            <Slider
+              className="mt-3"
+              min={bounds.minUah}
+              max={bounds.maxUah}
+              step={PRICE_STEP_UAH}
+              value={thumbValues}
+              aria-label="Діапазон ціни"
+              onValueChange={(value) => {
+                const [low, high] = normalizeThumbRange(
+                  toSliderValues(value),
+                  bounds,
+                );
+                setDragValues([low, high]);
+                syncPriceToUrl(low, high, false);
+              }}
+              onValueCommitted={(value) => {
+                const [low, high] = normalizeThumbRange(
+                  toSliderValues(value),
+                  bounds,
+                );
+                setDragValues(null);
+                syncPriceToUrl(low, high, true);
+              }}
+            />
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <input
+                type="number"
+                min={bounds.minUah}
+                max={bounds.maxUah}
+                step={PRICE_STEP_UAH}
+                placeholder="Від"
+                className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
+                value={params.cinaVid ?? ""}
+                onChange={(e) => handleMinInput(e.target.value)}
+              />
+              <input
+                type="number"
+                min={bounds.minUah}
+                max={bounds.maxUah}
+                step={PRICE_STEP_UAH}
+                placeholder="До"
+                className="rounded-md border border-input bg-background px-2 py-1.5 text-sm"
+                value={params.cinaDo ?? ""}
+                onChange={(e) => handleMaxInput(e.target.value)}
+              />
+            </div>
+          </>
+        )}
       </section>
 
       <section>
@@ -146,19 +284,28 @@ export function CatalogFilters({
       <button
         type="button"
         className="text-sm text-primary hover:underline"
-        onClick={() =>
-          setParams({
+        onClick={() => {
+          setDragValues(null);
+          void setParams({
             q: "",
             brend: null,
             cinaVid: null,
             cinaDo: null,
             stan: [],
             storinka: 1,
-          })
-        }
+          });
+        }}
       >
         Скинути фільтри
       </button>
+    </div>
+  );
+}
+
+export function CatalogFilters(props: CatalogFiltersProps) {
+  return (
+    <aside className={cn("hidden lg:block", props.className)}>
+      <CatalogFiltersPanel {...props} />
     </aside>
   );
 }
