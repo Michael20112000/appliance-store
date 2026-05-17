@@ -16,7 +16,7 @@
 - [x] **Phase 3: Cart & Checkout** — Кошик, оформлення замовлення (самовивіз / Львів), історія замовлень
 - [x] **Phase 4: Admin Operations** — CRUD категорій і товарів, замовлення, RBAC для `/admin` (completed 2026-05-17)
 - [x] **Phase 5: Realtime Chat** — Чат покупець ↔ магазин з persistence і адмін-інбоксом (completed 2026-05-17)
-- [ ] **Phase 6: Polish & Launch** — Продуктивність, стабільність, E2E, deploy hardening (plans done; verification gaps 2026-05-17)
+- [ ] **Phase 6: Polish & Launch** — Продуктивність, стабільність, E2E, deploy hardening (gap closure plans 06-06..08 pending)
 
 ## Phase Details
 
@@ -226,7 +226,7 @@ Plans:
   3. Local SEO (meta, JSON-LD, sitemap) перевірені для категорій і товарів
   4. Застосунок задеплоєний на Vercel з production env і smoke-перевіркою
 
-**Plans**: 5 plans
+**Plans**: 8 plans
 
 Plans:
 **Wave 1**
@@ -246,6 +246,18 @@ Plans:
 
 - [x] 06-05-PLAN.md — smoke-deploy extend + deploy runbook + production smoke
 
+**Wave 5** *(gap closure — blocked on 06-04, 06-05)*
+
+- [ ] 06-06-PLAN.md — CWV perf fixes + verification/checklist URL docs + production build sanity
+
+**Wave 6** *(gap closure — blocked on 06-06)*
+
+- [ ] 06-07-PLAN.md — Vercel preview Lighthouse + Rich Results operator gate
+
+**Wave 7** *(gap closure — blocked on 06-07)*
+
+- [ ] 06-08-PLAN.md — Production promote + env confirm + PLAYWRIGHT_BASE_URL smoke proof
+
 ## Progress
 
 **Execution Order:**
@@ -258,7 +270,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
 | 5. Realtime Chat | 5/5 | Complete    | 2026-05-17 |
-| 6. Polish & Launch | 5/5 | Gaps found | 2026-05-17 |
+| 6. Polish & Launch | 5/8 | Gap closure planned | 2026-05-17 |
 
 ---
 *Roadmap created: 2026-05-16*
