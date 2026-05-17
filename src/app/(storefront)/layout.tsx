@@ -4,6 +4,7 @@ import { ChatProviderGate } from "@/components/chat/chat-provider-gate";
 import { CartPendingMergeGate } from "@/components/cart/cart-pending-merge-gate";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { StoreHeader } from "@/components/layout/store-header";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function StorefrontLayout({
   children,
@@ -19,6 +20,7 @@ export default function StorefrontLayout({
             <ChatProviderGate>
               <CartPendingMergeGate />
               {children}
+              <Analytics />
             </ChatProviderGate>
           </Suspense>
         </NuqsAdapter>
