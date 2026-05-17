@@ -2,6 +2,7 @@ import "dotenv/config";
 import slugify from "slugify";
 import { auth } from "../src/lib/auth";
 import { prisma } from "../src/lib/db";
+import { ensureCategorySeedImage } from "./seed-cloudinary";
 import { seedProducts } from "./seed-products";
 
 const categories = [
@@ -22,6 +23,32 @@ async function seedCategories() {
       where: { slug },
       create: { name, slug, sortOrder },
       update: { name, sortOrder },
+    });
+  }
+}
+
+/** Sets imagePublicId from seed pool only when still null (D-10-12). */
+async function seedCategoryShowcaseImages() {
+  const categories = await prisma.category.findMany({
+    where: { imagePublicId: null },
+    orderBy: { sortOrder: "asc" },
+  });
+
+  for (const category of categories) {
+    let publicId: string;
+    try {
+      publicId = await ensureCategorySeedImage(category.slug, 0);
+    } catch (error) {
+      console.warn(
+        `Category image seed for "${category.slug}" failed:`,
+        error instanceof Error ? error.message : error,
+      );
+      continue;
+    }
+
+    await prisma.category.updateMany({
+      where: { id: category.id, imagePublicId: null },
+      data: { imagePublicId: publicId },
     });
   }
 }
@@ -54,9 +81,12 @@ async function seedAdmin() {
 
 async function main() {
   await seedCategories();
+  await seedCategoryShowcaseImages();
   await seedAdmin();
   await seedProducts();
-  console.log("Seed complete: categories + admin + catalog products + Cloudinary images");
+  console.log(
+    "Seed complete: categories + category images + admin + catalog products + Cloudinary images",
+  );
 }
 
 main()
