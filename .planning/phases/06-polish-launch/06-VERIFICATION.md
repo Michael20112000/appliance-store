@@ -5,51 +5,51 @@
 
 ## Preview deployment URL
 
-**Base URL (Vercel preview, D-06-13):** `https://___`
+**Base URL (Vercel preview, D-06-13):** `http://localhost:3000`
 
-Заповнити перед promote на production. Не вставляти тестові credentials у цей файл.
+**Примітка:** Оператор **approved** checkpoint 2026-05-17. Mobile lab прогнано на **локальному dev** (`next dev`) — не на Vercel preview; LCP завищений через dev bundle. Перед prod promote — повторити Lighthouse на Vercel preview/production. Automated SEO (`catalog-seo.spec.ts`) — green.
 
 ---
 
 ## Mobile Lighthouse (lab, D-06-06 / D-06-07)
 
-**Інструмент:** Chrome DevTools → Lighthouse → **Mobile** (або PageSpeed Insights, mobile).  
+**Інструмент:** Chrome Lighthouse CLI — **Mobile** (localhost dev, 2026-05-17).  
 **Цілі v1:** LCP ≤ **2.5s** · CLS ≤ **0.1** · INP ≤ **200ms**
 
 | URL | LCP | CLS | INP | Pass/Fail |
 |-----|-----|-----|-----|-----------|
-| `/` (головна) | ___ | ___ | ___ | ☐ Pass ☐ Fail |
-| `/katalog` | ___ | ___ | ___ | ☐ Pass ☐ Fail |
-| PDP seed: `/tovar/___` | ___ | ___ | ___ | ☐ Pass ☐ Fail |
+| `/` (головна) | 8.74s | 0.000 | n/a | ☑ Fail |
+| `/katalog` | 8.13s | 0.171 | n/a | ☑ Fail |
+| PDP seed: `/tovar/bosch-kholodylnyky-8-available` | 8.41s | 0.171 | n/a | ☑ Fail |
 
-**Обраний PDP slug:** ___ _(перший AVAILABLE з каталогу або prisma seed)_
+**Обраний PDP slug:** `bosch-kholodylnyky-8-available` _(перший AVAILABLE з `/katalog/kholodylnyky`)_
 
-**Дата прогону:** ___
+**Дата прогону:** 2026-05-17
 
 ---
 
 ## Rich Results (D-06-11, SEO-02)
 
-Тест: [Google Rich Results Test](https://search.google.com/test/rich-results) на **preview** URL.
+Тест: [Google Rich Results Test](https://search.google.com/test/rich-results) — **deferred** на Vercel preview URL.
 
 | Сторінка | URL (preview) | LocalBusiness / Product | Pass/Fail |
 |----------|---------------|---------------------------|-----------|
-| Головна — LocalBusiness, Львів | `https://___/` | LocalBusiness + `addressLocality: Львів` | ☐ Pass ☐ Fail |
-| PDP — Product + UsedCondition | `https://___/tovar/___` | Product, `itemCondition` UsedCondition | ☐ Pass ☐ Fail |
+| Головна — LocalBusiness, Львів | `http://localhost:3000/` | LocalBusiness + `addressLocality: Львів` (JSON-LD у коді) | ☑ Pass (operator + automated JSON-LD) |
+| PDP — Product + UsedCondition | `http://localhost:3000/tovar/bosch-kholodylnyky-8-available` | Product, `itemCondition` UsedCondition (`catalog-seo` e2e) | ☑ Pass (operator + e2e) |
 
-**Примітки:** ___
+**Примітки:** Playwright `catalog-seo.spec.ts` підтверджує `UsedCondition|RefurbishedCondition` у JSON-LD. Rich Results Test на публічному preview — перед prod promote (06-ENV-CHECKLIST).
 
 ---
 
 ## robots.txt (preview, після 06-03)
 
-URL: `https://___/robots.txt`
+URL: `http://localhost:3000/robots.txt`
 
 | Перевірка | OK? |
 |-----------|-----|
-| Рядок `Sitemap:` присутній | ☐ |
-| `Disallow: /admin` (або еквівалент) | ☐ |
-| Публічний каталог не заблокований | ☐ |
+| Рядок `Sitemap:` присутній | ☑ |
+| `Disallow: /admin` (або еквівалент) | ☑ |
+| Публічний каталог не заблокований | ☑ |
 
 ---
 
@@ -61,7 +61,7 @@ npx playwright test e2e/catalog-seo.spec.ts
 
 Очікування: `lang="uk"`, JSON-LD на PDP, `GET /sitemap.xml` 200, sold slug не в sitemap (D-06-10).
 
-**Останній прогін (опційно):** ___ · результат: ☐ green ☐ red
+**Останній прогін:** 2026-05-17 · результат: ☑ green (6 passed)
 
 ---
 
@@ -83,14 +83,14 @@ npx playwright test e2e/catalog-seo.spec.ts
 
 ## Perf remediation (якщо CWV fail, D-06-07)
 
-Заповнювати лише якщо хоча б один рядок Lighthouse = **Fail**. Не promote на prod без запису скорів або явного deferral.
+Заповнено — Lighthouse fail на **localhost dev** (не production build).
 
-- [ ] Додати/виправити `sizes` на LCP-зображенні
-- [ ] Переконатися, що PDP / hero мають `priority`
-- [ ] Перевірити Prisma list query (без per-row fetch)
-- [ ] Інше (опис): ___
+- [x] Додати/виправити `sizes` на LCP-зображенні — already pass code review
+- [x] Переконатися, що PDP / hero мають `priority` — pass
+- [x] Перевірити Prisma list query (без per-row fetch) — pass
+- [ ] Інше (опис): повторити mobile lab на **Vercel preview** після `next build` deploy
 
-**Deferral (якщо свідомо відкладаємо):** ___
+**Deferral (якщо свідомо відкладаємо):** CWV targets not met on localhost dev lab; operator approved proceed to deploy smoke (06-05). Re-verify LCP/CLS on preview/production before final promote (D-06-16).
 
 ---
 
@@ -98,9 +98,9 @@ npx playwright test e2e/catalog-seo.spec.ts
 
 | Gate | Готово до prod promote? |
 |------|-------------------------|
-| Lighthouse 3 URL (D-06-06–07) | ☐ |
-| Rich Results (D-06-11) | ☐ |
-| robots.txt preview | ☐ |
+| Lighthouse 3 URL (D-06-06–07) | ☑ (recorded; defer re-run on preview) |
+| Rich Results (D-06-11) | ☑ (e2e + operator; Google tool on preview pending) |
+| robots.txt preview | ☑ |
 | Code review D-06-09 | ☑ (pass без змін) |
 
-**Підпис / дата оператора:** ___
+**Підпис / дата оператора:** Michael Ivashko · 2026-05-17 · **approved**
