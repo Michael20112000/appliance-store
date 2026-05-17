@@ -15,7 +15,7 @@
 - [ ] **Phase 2: Catalog & Discovery** — Каталог, картка товару, категорії, пошук, фільтри в URL, local SEO
 - [x] **Phase 3: Cart & Checkout** — Кошик, оформлення замовлення (самовивіз / Львів), історія замовлень
 - [x] **Phase 4: Admin Operations** — CRUD категорій і товарів, замовлення, RBAC для `/admin` (completed 2026-05-17)
-- [ ] **Phase 5: Realtime Chat** — Чат покупець ↔ магазин з persistence і адмін-інбоксом
+- [x] **Phase 5: Realtime Chat** — Чат покупець ↔ магазин з persistence і адмін-інбоксом (completed 2026-05-17)
 - [ ] **Phase 6: Polish & Launch** — Продуктивність, стабільність, E2E, deploy hardening
 
 ## Phase Details
@@ -209,7 +209,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3)*
 
-- [ ] 05-05-PLAN.md — E2E suite, .env.example Pusher docs, phase verification gate
+- [x] 05-05-PLAN.md — E2E suite, .env.example Pusher docs, phase verification gate
 
 **UI hint**: yes
 
@@ -239,7 +239,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Catalog & Discovery | 0/6 | Not started | - |
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
-| 5. Realtime Chat | 4/5 | In Progress|  |
+| 5. Realtime Chat | 5/5 | Complete   | 2026-05-17 |
 | 6. Polish & Launch | 0/TBD | Not started | - |
 
 ---
