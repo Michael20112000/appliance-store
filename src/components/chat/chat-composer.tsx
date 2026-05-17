@@ -2,6 +2,7 @@
 
 import { useState, type KeyboardEvent } from "react";
 import { Send } from "lucide-react";
+import { useAdminChat } from "@/components/chat/admin-chat-provider";
 import { useChat } from "@/components/chat/chat-provider";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
