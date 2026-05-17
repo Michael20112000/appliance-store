@@ -2,6 +2,7 @@ import "dotenv/config";
 import slugify from "slugify";
 import { auth } from "../src/lib/auth";
 import { prisma } from "../src/lib/db";
+import { seedProducts } from "./seed-products";
 
 const categories = [
   { name: "Пральні машини", sortOrder: 1 },
@@ -54,7 +55,8 @@ async function seedAdmin() {
 async function main() {
   await seedCategories();
   await seedAdmin();
-  console.log("Seed complete: 8 categories + admin user");
+  await seedProducts();
+  console.log("Seed complete: 8 categories + admin + demo products");
 }
 
 main()

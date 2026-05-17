@@ -11,6 +11,11 @@ const envSchema = z.object({
   CLOUDINARY_API_SECRET: z.string().optional(),
   ADMIN_EMAIL: z.string().email().optional(),
   ADMIN_PASSWORD: z.string().min(8).optional(),
+  STORE_ADDRESS: z
+    .string()
+    .optional()
+    .default("м. Львів, Україна"),
+  STORE_PHONE: z.string().optional(),
 });
 
 export type AppEnv = z.infer<typeof envSchema>;

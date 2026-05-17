@@ -30,6 +30,9 @@ export async function StoreHeader() {
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
+          <Link href="/katalog" className={navLinkClass}>
+            Каталог
+          </Link>
           {categories.slice(0, 4).map((category) => (
             <Link
               key={category.id}

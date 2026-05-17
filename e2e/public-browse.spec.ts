@@ -7,7 +7,5 @@ test("guest can browse home and category stub", async ({ page }) => {
   await expect(categoryLinks).toHaveCount(8);
 
   await page.goto("/katalog/kholodylnyky");
-  await expect(
-    page.locator("main").getByText("Незабаром", { exact: true }),
-  ).toBeVisible();
+  await expect(page.locator('main a[href^="/tovar/"]').first()).toBeVisible();
 });

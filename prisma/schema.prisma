@@ -75,12 +75,60 @@ model Verification {
   @@map("verification")
 }
 
+enum ProductCondition {
+  LIKE_NEW
+  GOOD
+  FAIR
+}
+
+enum ProductStatus {
+  AVAILABLE
+  SOLD
+  DRAFT
+}
+
 model Category {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
-  slug        String   @unique
+  slug        String    @unique
   description String?
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Product {
+  id          String           @id @default(cuid())
+  title       String
+  slug        String           @unique
+  description String?
+  brand       String
+  price       Int
+  condition   ProductCondition
+  status      ProductStatus    @default(DRAFT)
+  categoryId  String
+  category    Category         @relation(fields: [categoryId], references: [id])
+  images      ProductImage[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([status, categoryId])
+  @@index([status, brand])
+  @@index([status, price])
+  @@index([status, condition])
+  @@index([status, createdAt])
+}
+
+model ProductImage {
+  id                 String  @id @default(cuid())
+  productId          String
+  product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cloudinaryPublicId String
+  alt                String?
+  sortOrder          Int     @default(0)
+  width              Int?
+  height             Int?
+
+  @@index([productId, sortOrder])
 }

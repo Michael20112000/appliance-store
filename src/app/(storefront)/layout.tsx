@@ -1,3 +1,4 @@
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { StoreHeader } from "@/components/layout/store-header";
 
@@ -10,7 +11,7 @@ export default function StorefrontLayout({
     <>
       <StoreHeader />
       <main id="main-content" className="flex-1">
-        {children}
+        <NuqsAdapter>{children}</NuqsAdapter>
       </main>
       <StoreFooter />
     </>
