@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/admin", label: "Панель", enabled: true },
   { href: "/admin/kategorii", label: "Категорії", enabled: true },
-  { href: "#", label: "Товари", enabled: false },
+  { href: "/admin/tovary", label: "Товари", enabled: true },
   { href: "/admin/zamovlennia", label: "Замовлення", enabled: true },
 ] as const;
 
