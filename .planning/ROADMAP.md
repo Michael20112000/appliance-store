@@ -236,7 +236,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 plan 06-01 for ENV checklist base)*
 
-- [ ] 06-03-PLAN.md — robots.ts + Production .env.example + production env checklist
+- [x] 06-03-PLAN.md — robots.ts + Production .env.example + production env checklist
 
 **Wave 3** *(blocked on 06-02, 06-03)*
 
@@ -258,7 +258,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Cart & Checkout | 0/TBD | Not started | - |
 | 4. Admin Operations | 5/5 | Complete   | 2026-05-17 |
 | 5. Realtime Chat | 5/5 | Complete    | 2026-05-17 |
-| 6. Polish & Launch | 2/5 | In Progress|  |
+| 6. Polish & Launch | 3/5 | In Progress|  |
 
 ---
 *Roadmap created: 2026-05-16*
