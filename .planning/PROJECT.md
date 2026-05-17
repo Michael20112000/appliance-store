@@ -2,50 +2,59 @@
 
 ## What This Is
 
-Онлайн-магазин **б/у побутової техніки** у Львові. Один магазин продає свій асортимент: покупець переглядає каталог, фільтрує, кладе в кошик, оформлює замовлення (самовивіз або доставка по Львову), за потреби спілкується з магазином у real-time чаті. Інтерфейс — **легкий, повітряний**, українською. Адмінка: повний CRUD товарів і категорій, замовлення, чати з клієнтами.
+Онлайн-магазин **б/у побутової техніки** у Львові (v1.0 shipped). Покупець переглядає каталог, фільтрує, оформлює замовлення (самовивіз або доставка по Львову), спілкується з магазином у real-time чаті. Адмінка: CRUD товарів і категорій, замовлення, чати. UI — легкий, повітряний, українською.
+
+**Live:** https://project-r4qzr.vercel.app
 
 ## Core Value
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
+## Current State (v1.0 shipped 2026-05-17)
+
+- Next.js 16 App Router, Prisma + Neon PostgreSQL, Better Auth, shadcn/ui, Cloudinary, Pusher
+- GitHub Actions: lint + Vitest + Playwright on localhost
+- Deploy smoke 4/4 on live origin
+- **Tech debt:** mobile Lighthouse CWV above targets on preview (LCP/CLS); Phase 04 human UAT partial
+
 ## Requirements
 
-### Validated
+### Validated (v1.0)
 
-(None yet — ship to validate)
+- ✓ Каталог б/у техніки з категоріями — v1.0
+- ✓ CRUD категорій і товарів з адмінки — v1.0
+- ✓ Пошук і фільтри (URL-sync) — v1.0
+- ✓ Кошик і checkout без онлайн-оплати — v1.0
+- ✓ Доставка: самовивіз + Львів — v1.0
+- ✓ Auth: каталог без логіну; кошик/чат з логіном — v1.0
+- ✓ Real-time чат покупець ↔ магазин — v1.0
+- ✓ Адмін: товари, категорії, замовлення, чати — v1.0
+- ✓ UI українською, адаптив, SEO (meta, JSON-LD, sitemap, robots) — v1.0
+- ✓ CI + deploy hardening — v1.0
 
-### Active
+### Active (next milestone)
 
-- [ ] Каталог б/у техніки з початковими категоріями (пральні, холодильники, морозильники, ТВ, плити, духові, варильні поверхні, сушарки)
-- [ ] CRUD категорій з адмінки (створення / видалення / редагування)
-- [ ] CRUD товарів з адмінки (фото через Cloudinary, бренд, ціна, стан, опис)
-- [ ] Пошук і фільтри: категорія, бренд, діапазон ціни, стан (condition)
-- [ ] Кошик і checkout (без онлайн-оплати на v1 — оплата на місці / пізніше)
-- [ ] Доставка: самовивіз + доставка по Львову
-- [ ] Опційна авторизація: каталог без логіну; для кошика / чату — логін
-- [ ] Real-time чат покупець ↔ магазин (менеджер)
-- [ ] Адмін: товари, категорії, замовлення, чати
-- [ ] UI: легкий, повітряний дизайн; якісний UX, SEO, продуктивність
+- [ ] Core Web Vitals: LCP ≤2.5s, CLS ≤0.1 on `/`, `/katalog`, PDP (preview/production lab)
+- [ ] Custom production domain (optional)
+- [ ] Google Search Console (post-launch, D-06-12)
 
 ### Out of Scope
 
-- Маркетплейс з багатьма продавцями — один магазин, один продавець
+- Маркетплейс з багатьма продавцями — один магазин
 - Нова техніка — тільки б/у
-- Онлайн-оплата (Stripe/LiqPay) на v1 — лише оформлення замовлення
+- Онлайн-оплата v1 — лише оформлення замовлення
 - Доставка за межі Львова на v1
-- Багатомовність — тільки українська інтерфейс
+- Багатомовність — тільки українська
 
 ## Context
 
-- Локація та аудиторія: **Львів**, україномовні покупці
-- Категорії на старті: Пральні машини, Холодильники, Морозильні камери, Телевізори, Плити, Духові шафи, Варильні поверхні, Сушарки для одягу
-- MVP = повний набір: каталог, адмінка, кошик, чат, фільтри (не урізана версія)
-- «Хороший» продукт = сильний **дизайн/UX**, **SEO**, **технічна якість** (швидкість, стабільність)
+- Локація: **Львів**, україномовні покупці
+- ~119 commits, MVP built 2026-05-16 → 2026-05-17
+- Planning archive: `.planning/milestones/v1.0-ROADMAP.md`
 
 ## Constraints
 
-- **Tech stack**: Next.js (App Router) + TypeScript, Prisma + PostgreSQL, Tailwind CSS, shadcn/ui, Cloudinary (зображення), Better Auth
-- **Realtime**: потрібен для чату (конкретний транспорт — на етапі research/plan)
+- **Stack**: Next.js + TypeScript, Prisma + PostgreSQL, Tailwind, shadcn/ui, Cloudinary, Better Auth, Pusher
 - **Locale**: UI лише українською
 - **Business**: single-store, used appliances only
 
@@ -53,30 +62,20 @@
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Single-store (не маркетплейс) | Один магазин у Львові | — Pending |
-| Тільки б/у товари | Фокус асортименту + фільтр condition | — Pending |
-| Checkout без онлайн-оплати v1 | Швидший запуск, оплата офлайн | — Pending |
-| Auth опційний для перегляду | Нижчий бар'єр входу | — Pending |
-| Доставка: самовивіз + Львів | Локальний бізнес | — Pending |
-| Stack: Next + Prisma + shadcn + Cloudinary + Better Auth | Задано замовником | — Pending |
-| MVP = full feature set | Явний запит на все одразу | — Pending |
+| Single-store | Один магазин у Львові | ✓ Good |
+| Тільки б/у | Фокус + condition filter | ✓ Good |
+| Checkout без онлайн-оплати v1 | Швидший запуск | ✓ Good |
+| Guest cart merge on login | localStorage pending → merge action | ✓ Good |
+| Pusher for chat | Realtime buyer ↔ store | ✓ Good |
+| Order numbers ASL-YYYYMMDD-#### | Readable ops | ✓ Good |
+| Native overflow scroll on mobile chat Sheet | ScrollArea touch issues | ✓ Good (06-09) |
 
-## Evolution
+<details>
+<summary>Pre-v1.0 planning snapshot (2026-05-16)</summary>
 
-This document evolves at phase transitions and milestone boundaries.
+Original MVP scope and stack decisions captured at project init. See `milestones/v1.0-REQUIREMENTS.md` for REQ-ID traceability.
 
-**After each phase transition** (via `/gsd-transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone** (via `/gsd-complete-milestone`):
-1. Full review of all sections
-2. Core Value check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state
+</details>
 
 ---
-*Last updated: 2026-05-16 after initialization*
+*Last updated: 2026-05-17 after v1.0 milestone*

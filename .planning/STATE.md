@@ -2,41 +2,39 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: milestone_complete
-stopped_at: Milestone complete (Phase 06 was final phase)
-last_updated: 2026-05-17T14:59:42.517Z
-last_activity: 2026-05-17 -- Phase 06 execution started
+status: Awaiting next milestone
+stopped_at: v1.0 milestone archived
+last_updated: "2026-05-17T15:05:00.000Z"
+last_activity: 2026-05-17 — Milestone v1.0 completed and archived
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 6
   total_plans: 36
-  completed_plans: 31
-  percent: 67
+  completed_plans: 36
+  percent: 100
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-16)
+See: .planning/PROJECT.md (updated 2026-05-17)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** Planning next milestone (`/gsd-new-milestone`)
 
 ## Current Position
 
-Phase: 06
-Plan: Not started
-Status: Milestone complete
-Last activity: 2026-05-17
-
-Progress: [████████░░] 81%
+Phase: Milestone v1.0 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-17 — Milestone v1.0 completed and archived
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 31
+- Total plans completed: 36
 - Average duration: —
 - Total execution time: —
 
@@ -78,12 +76,21 @@ None yet.
 
 ## Deferred Items
 
-| Category | Item | Status | Deferred At |
-|----------|------|--------|-------------|
-| *(none)* | | | |
+Items acknowledged at v1.0 milestone close on 2026-05-17:
+
+| Category | Item | Status |
+|----------|------|--------|
+| verification | Phase 06 PHASE-VERIFICATION CWV gaps | gaps_found (smoke shipped) |
+| verification | Phase 04 VERIFICATION human_needed | human_needed |
+| uat | Phase 04 HUMAN-UAT 2 pending scenarios | partial |
+| debug | mobile-chat-scroll | resolved in 06-09 (session archived) |
 
 ## Session Continuity
 
 Last session: 2026-05-17T12:20:36.371Z
 Stopped at: Phase 6 context gathered
 Resume file: .planning/phases/06-polish-launch/06-CONTEXT.md
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
