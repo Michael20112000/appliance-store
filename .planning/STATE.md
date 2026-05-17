@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Engagement & Fixes
-status: milestone_complete
-stopped_at: Milestone complete (Phase 10 was final phase)
-last_updated: 2026-05-17T19:59:59.748Z
-last_activity: 2026-05-17
+status: Awaiting next milestone
+stopped_at: Phase 9 complete
+last_updated: "2026-05-17T20:01:07.480Z"
+last_activity: 2026-05-17 — Milestone v1.1 completed and archived
 progress:
   total_phases: 4
   completed_phases: 4
   total_plans: 20
-  completed_plans: 51
+  completed_plans: 20
   percent: 100
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-17)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** Planning next milestone (`/gsd-new-milestone`)
 
 ## Current Position
 
-Phase: 10
-Plan: Not started
-Status: Milestone complete
-Last activity: 2026-05-17
+Phase: —
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-17 — Milestone v1.1 archived
 
 ## Performance Metrics
 
@@ -68,7 +68,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Plan Phase 10 (`/gsd-plan-phase 10`)
+None.
 
 ### Blockers/Concerns
 
@@ -76,14 +76,15 @@ None.
 
 ## Deferred Items
 
-Items acknowledged at v1.0 milestone close on 2026-05-17:
+Items acknowledged at milestone close:
 
-| Category | Item | Status |
-|----------|------|--------|
-| verification | Phase 06 PHASE-VERIFICATION CWV gaps | gaps_found (smoke shipped) |
-| verification | Phase 04 VERIFICATION human_needed | human_needed |
-| uat | Phase 04 HUMAN-UAT 2 pending scenarios | partial |
-| debug | mobile-chat-scroll | resolved in 06-09 (session archived) |
+| Category | Item | Milestone | Status |
+|----------|------|---------|--------|
+| verification | Phase 06 PHASE-VERIFICATION CWV gaps | v1.0 | gaps_found |
+| verification | Phase 04 VERIFICATION human_needed | v1.0 | human_needed |
+| uat | Phase 04 HUMAN-UAT 2 pending scenarios | v1.0 | partial |
+| uat | Phase 07 HUMAN-UAT 5 pending scenarios | v1.1 | partial |
+| debug | mobile-chat-scroll | v1.0 | resolved (06-09) |
 
 ## Session Continuity
 
@@ -93,6 +94,4 @@ Resume file: None
 
 ## Operator Next Steps
 
-1. `/gsd-discuss-phase 10` or `/gsd-plan-phase 10` — category images on homepage + admin
-2. Commit uncommitted code from phase 9 + catalog fixes if not yet committed
-3. After phase 10: `/gsd-complete-milestone` for v1.1
+- Start the next milestone with /gsd-new-milestone

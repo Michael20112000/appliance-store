@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Онлайн-магазин **б/у побутової техніки** у Львові (v1.0 shipped). Покупець переглядає каталог, фільтрує, оформлює замовлення (самовивіз або доставка по Львову), спілкується з магазином у real-time чаті. Адмінка: CRUD товарів і категорій, замовлення, чати. UI — легкий, повітряний, українською.
+Онлайн-магазин **б/у побутової техніки** у Львові. Покупець переглядає каталог з фільтрами (ціна, бренд, стан), оформлює замовлення (самовивіз або доставка по Львову), додає в обране, спілкується з магазином у real-time чаті. Адмінка на shadcn Sidebar: CRUD товарів і категорій (з фото), замовлення, чати з архівом. UI — легкий, повітряний, українською.
 
 **Live:** https://project-r4qzr.vercel.app
 
@@ -10,17 +10,13 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: v1.1 Engagement & Fixes
+## Current State
 
-**Goal:** Wishlist для гостя й залогіненого (без merge), виправлення багів каталогу й адмінки, UX-полірування через shadcn (Sidebar, Slider, Data Table), зображення категорій на головній.
+**Shipped:** v1.0 MVP (2026-05-17) + **v1.1 Engagement & Fixes** (2026-05-17)
 
-**Target features:**
-- Wishlist: гість (localStorage) + залогінений (БД), **без** об'єднання при логіні
-- Каталог: Slider для ціни, робочий price filter, бренди лише в межах категорії
-- Адмін: shadcn Sidebar, Data Table для замовлень (пагінація + page size), прибрати Slug у таблиці категорій, керування станами чатів
-- Баг: кнопка «Чернетки» → `/admin/tovary?status=DRAFT`
-- Головна: картинки категорій, редагування через адмінку
-- Аналітика Vercel — вже підключена, окремої фази немає
+**Next:** Planning v1.2+ via `/gsd-new-milestone`
+
+Post-v1.1 UX (not in GSD plans): auto slug на create, PDP gallery + Dialog/Carousel, admin products table row-click + status dropdown.
 
 ## Requirements
 
@@ -36,39 +32,41 @@
 - ✓ Адмін: товари, категорії, замовлення, чати — v1.0
 - ✓ UI українською, адаптив, SEO — v1.0
 - ✓ CI + deploy — v1.0
-- ✓ Vercel Analytics на storefront — v1.1 prep (2026-05-17)
+- ✓ Vercel Analytics — v1.0
 
-### Active (v1.1)
+### Validated (v1.1)
 
-See `.planning/REQUIREMENTS.md` for REQ-IDs and traceability.
+- ✓ FIX-01 — чернетки dashboard → `/admin/tovary?status=DRAFT`
+- ✓ CAT-01/02/03 — Slider ціни, серверний фільтр, бренди per-category
+- ✓ ADM-01/02/03 — Sidebar, orders Data Table, без Slug у списку категорій
+- ✓ CHAT-05/06 — архів і видалення чатів
+- ✓ WISH-01…05 — wishlist гість + БД, merge при логіні, `/obrane`
+- ✓ HOME-01/02 — зображення категорій на головній + адмін upload
 
-### Out of Scope (v1.1)
+### Active
 
-- Відгуки / модерація коментарів — descoped
-- Core Web Vitals / Lighthouse / perf milestone
-- Wishlist merge при логіні
-- Нова адмін-функціональність поза чатами, замовленнями, категоріями
+_(Немає — визначаються наступним milestone через `/gsd-new-milestone`)_
+
+### Out of Scope
+
+- Відгуки (REV-01/02) — v2
+- Core Web Vitals / Lighthouse milestone (PERF-01) — v2
+- GSC / custom domain (SEO-01/02) — v2
 - Онлайн-оплата, доставка за межі Львова, маркетплейс
-- GSC / custom domain (окремий milestone за потреби)
-
-### Out of Scope (project)
-
-- Маркетплейс з багатьма продавцями — один магазин
-- Нова техніка — тільки б/у
-- Багатомовність — тільки українська
+- Багатомовність
 
 ## Context
 
 - Локація: **Львів**, україномовні покупці
-- v1.0 shipped 2026-05-17; planning archive: `.planning/milestones/v1.0-*`
-- Відомі баги v1.1: ціна-фільтр не відсікає товари; бренди глобальні замість per-category; чернетки href без query
+- Stack: Next.js 16, Prisma, PostgreSQL, Tailwind, shadcn/ui, Cloudinary, Better Auth, Pusher
+- Milestones archived: `.planning/milestones/v1.0-*`, `v1.1-*`
+- Preview: https://project-r4qzr.vercel.app (mobile Lighthouse still above targets — v1.0 debt)
 
 ## Constraints
 
-- **Stack**: Next.js + TypeScript, Prisma + PostgreSQL, Tailwind, shadcn/ui, Cloudinary, Better Auth, Pusher
 - **Locale**: UI лише українською
 - **Business**: single-store, used appliances only
-- **UI**: нові патерни адмінки — shadcn Sidebar, Slider, Data Table
+- **UI**: shadcn Sidebar, Slider, Data Table, Dialog, Carousel
 
 ## Key Decisions
 
@@ -79,33 +77,18 @@ See `.planning/REQUIREMENTS.md` for REQ-IDs and traceability.
 | Checkout без онлайн-оплати v1 | Швидший запуск | ✓ Good |
 | Guest cart merge on login | localStorage pending → merge action | ✓ Good |
 | Pusher for chat | Realtime buyer ↔ store | ✓ Good |
-| Wishlist **no merge** on login | Окремі списки гість/юзер — явна вимога v1.1 | — Pending |
-| Відгуки v1.1 | Descoped після обговорення | — N/A |
-| Perf/CWV v1.1 | Out of scope | — N/A |
-
-## Evolution
-
-This document evolves at phase transitions and milestone boundaries.
-
-**After each phase transition** (via `/gsd-transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone** (via `/gsd-complete-milestone`):
-1. Full review of all sections
-2. Core Value check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state
+| Wishlist merge on login | Як кошик — один список після входу | ✓ Good (v1.1) |
+| Slug auto з назви | Адмін не редагує slug | ✓ Good (post-v1.1) |
+| Category image на головній | HOME-01/02 | ✓ Good (v1.1) |
+| Відгуки v1.1 | Descoped | — N/A |
+| Perf/CWV milestone | Out of scope v1.1 | — Deferred v2 |
 
 <details>
-<summary>Pre-v1.0 planning snapshot (2026-05-16)</summary>
+<summary>Pre-v1.1 planning snapshot (2026-05-17)</summary>
 
-Original MVP scope and stack decisions captured at project init. See `milestones/v1.0-REQUIREMENTS.md` for REQ-ID traceability.
+Original v1.1 scope: wishlist, catalog filters, admin UX, category images. See `milestones/v1.1-REQUIREMENTS.md`.
 
 </details>
 
 ---
-*Last updated: 2026-05-17 — milestone v1.1 started*
+*Last updated: 2026-05-17 after v1.1 milestone shipped*
