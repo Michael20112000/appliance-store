@@ -56,7 +56,7 @@ async function main() {
   await seedCategories();
   await seedAdmin();
   await seedProducts();
-  console.log("Seed complete: 8 categories + admin + demo products");
+  console.log("Seed complete: categories + admin + catalog products + Cloudinary images");
 }
 
 main()

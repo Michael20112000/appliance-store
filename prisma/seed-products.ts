@@ -1,127 +1,122 @@
-import slugify from "slugify";
-import type { ProductCondition, ProductStatus } from "../src/generated/prisma/client";
-import { HERO_PUBLIC_ID } from "../src/lib/demo-assets";
+import type { ProductStatus } from "../src/generated/prisma/client";
 import { prisma } from "../src/lib/db";
-
-const BRANDS = ["Samsung", "Bosch", "LG", "Indesit", "Whirlpool", "Electrolux"] as const;
-const CONDITIONS: ProductCondition[] = ["LIKE_NEW", "GOOD", "FAIR"];
-
-function imagePublicId(index: number): string {
-  const fromEnv = process.env.SEED_CLOUDINARY_PUBLIC_IDS?.split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (fromEnv?.length) {
-    return fromEnv[index % fromEnv.length]!;
-  }
-  return HERO_PUBLIC_ID;
-}
+import { ensureCategorySeedImage } from "./seed-cloudinary";
+import { CATEGORY_CATALOG, DEMO_STATUS_PRODUCTS } from "./seed-catalog-data";
 
 function uahToKopiyky(uah: number): number {
   return Math.round(uah * 100);
 }
 
-type SeedProduct = {
+type SeedRow = {
+  slug: string;
   title: string;
   brand: string;
   priceUah: number;
-  condition: ProductCondition;
+  condition: (typeof CATEGORY_CATALOG)[number]["products"][number]["condition"];
   status: ProductStatus;
   categorySlug: string;
   description: string;
 };
 
-function buildProductsForCategory(
-  categorySlug: string,
-  categoryName: string,
-  startIndex: number,
-): SeedProduct[] {
-  const items: SeedProduct[] = [];
-  for (let i = 0; i < 4; i++) {
-    const n = startIndex + i;
-    const brand = BRANDS[n % BRANDS.length]!;
-    items.push({
-      title: `${brand} ${categoryName} ${n + 1}`,
-      brand,
-      priceUah: 2500 + n * 750 + (i % 3) * 500,
-      condition: CONDITIONS[i % CONDITIONS.length]!,
-      status: "AVAILABLE",
-      categorySlug,
-      description: `Б/у ${categoryName.toLowerCase()} у відмінному стані. Перевірено в магазині у Львові. Модель ${n + 1}.`,
-    });
-  }
-  return items;
+/** Removes the previous generic 4-per-category seed batch. */
+async function removeLegacySeedProducts() {
+  const legacy = await prisma.product.findMany({
+    where: {
+      description: {
+        contains: "Перевірено в магазині у Львові. Модель",
+      },
+    },
+    select: { id: true },
+  });
+  if (legacy.length === 0) return;
+
+  const ids = legacy.map((p) => p.id);
+  await prisma.cartItem.deleteMany({ where: { productId: { in: ids } } });
+  await prisma.product.deleteMany({ where: { id: { in: ids } } });
 }
 
 export async function seedProducts() {
+  await removeLegacySeedProducts();
+
   const categories = await prisma.category.findMany({
     orderBy: { sortOrder: "asc" },
   });
+  const categoryBySlug = new Map(categories.map((c) => [c.slug, c]));
 
-  const catalog: SeedProduct[] = [];
-  categories.forEach((cat, idx) => {
-    catalog.push(...buildProductsForCategory(cat.slug, cat.name, idx * 4));
-  });
+  const catalog: SeedRow[] = CATEGORY_CATALOG.flatMap(({ categorySlug, products }) =>
+    products.map((p) => ({
+      ...p,
+      status: "AVAILABLE" as const,
+      categorySlug,
+    })),
+  );
 
-  if (categories[0]) {
+  for (const demo of DEMO_STATUS_PRODUCTS) {
     catalog.push({
-      title: "Samsung Холодильник SOLD demo",
-      brand: "Samsung",
-      priceUah: 8900,
-      condition: "GOOD",
-      status: "SOLD",
-      categorySlug: categories[0].slug,
-      description: "Проданий товар для тестів CAT-07.",
-    });
-    catalog.push({
-      title: "Bosch Холодильник SOLD demo 2",
-      brand: "Bosch",
-      priceUah: 7200,
-      condition: "FAIR",
-      status: "SOLD",
-      categorySlug: categories[0].slug,
-      description: "Другий проданий товар для тестів.",
-    });
-    catalog.push({
-      title: "LG Холодильник DRAFT demo",
-      brand: "LG",
-      priceUah: 6500,
-      condition: "LIKE_NEW",
-      status: "DRAFT",
-      categorySlug: categories[0].slug,
-      description: "Чернетка — не показується в публічному каталозі.",
+      slug: demo.slug,
+      title: demo.title,
+      brand: demo.brand,
+      priceUah: demo.priceUah,
+      condition: demo.condition,
+      status: demo.status,
+      categorySlug: demo.categorySlug,
+      description: demo.description,
     });
   }
 
-  let imageIndex = 0;
-  for (const item of catalog) {
-    const category = categories.find((c) => c.slug === item.categorySlug);
-    if (!category) continue;
+  const catalogSlugs = catalog.map((item) => item.slug);
+  await prisma.product.deleteMany({
+    where: {
+      slug: { notIn: catalogSlugs },
+      status: { in: ["AVAILABLE", "DRAFT"] },
+    },
+  });
 
-    const baseSlug = slugify(item.title, {
-      lower: true,
-      strict: true,
-      locale: "uk",
-    });
-    const slug = `${baseSlug}-${item.status.toLowerCase()}`;
+  const categoryProductIndex = new Map<string, number>();
+
+  for (const item of catalog) {
+    const category = categoryBySlug.get(item.categorySlug);
+    if (!category) {
+      console.warn(`Skip seed product "${item.slug}": unknown category ${item.categorySlug}`);
+      continue;
+    }
+
+    const indexInCategory = categoryProductIndex.get(item.categorySlug) ?? 0;
+    categoryProductIndex.set(item.categorySlug, indexInCategory + 1);
+
+    let cloudinaryPublicId: string;
+    try {
+      cloudinaryPublicId = await ensureCategorySeedImage(item.categorySlug, indexInCategory);
+    } catch (error) {
+      console.warn(
+        `Seed image for "${item.slug}" failed, skipping image update:`,
+        error instanceof Error ? error.message : error,
+      );
+      cloudinaryPublicId = "";
+    }
 
     const product = await prisma.product.upsert({
-      where: { slug },
+      where: { slug: item.slug },
       create: {
         title: item.title,
-        slug,
+        slug: item.slug,
         description: item.description,
         brand: item.brand,
         price: uahToKopiyky(item.priceUah),
         condition: item.condition,
         status: item.status,
         categoryId: category.id,
-        images: {
-          create: {
-            cloudinaryPublicId: imagePublicId(imageIndex++),
-            alt: `${item.title} — ${item.brand}, б/у, Львів`,
-            sortOrder: 0,
-          },
-        },
+        ...(cloudinaryPublicId
+          ? {
+              images: {
+                create: {
+                  cloudinaryPublicId,
+                  alt: `${item.title} — ${item.brand}, б/у, Львів`,
+                  sortOrder: 0,
+                },
+              },
+            }
+          : {}),
       },
       update: {
         title: item.title,
@@ -134,16 +129,21 @@ export async function seedProducts() {
       },
     });
 
-    const publicId = imagePublicId(imageIndex);
-    await prisma.productImage.deleteMany({ where: { productId: product.id } });
-    await prisma.productImage.create({
-      data: {
-        productId: product.id,
-        cloudinaryPublicId: publicId,
-        alt: `${item.title} — ${item.brand}, б/у, Львів`,
-        sortOrder: 0,
-      },
-    });
-    imageIndex++;
+    if (cloudinaryPublicId) {
+      await prisma.productImage.deleteMany({ where: { productId: product.id } });
+      await prisma.productImage.create({
+        data: {
+          productId: product.id,
+          cloudinaryPublicId,
+          alt: `${item.title} — ${item.brand}, б/у, Львів`,
+          sortOrder: 0,
+        },
+      });
+    }
   }
+}
+
+export function countCatalogProducts(): { available: number; total: number } {
+  const available = CATEGORY_CATALOG.reduce((n, c) => n + c.products.length, 0);
+  return { available, total: available + DEMO_STATUS_PRODUCTS.length };
 }
