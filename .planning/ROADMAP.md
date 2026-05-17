@@ -112,7 +112,30 @@ Plans:
   3. Користувач оформлює замовлення з телефоном і способом отримання (самовивіз або доставка по Львову)
   4. Після оформлення користувач бачить підтвердження без онлайн-оплати та історію замовлень у кабінеті
 
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Prisma Cart/Order models, cart.service, order.service skeleton, validators, unit tests
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 03-02-PLAN.md — requireBuyer, cart.actions, PDP add-to-cart, localStorage pending merge (AUTH-03, CART-01, CART-03)
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 03-03-PLAN.md — /koszyk page + cart UI components (CART-02, AUTH-03)
+
+**Wave 4** *(blocked on Wave 1 + Wave 3)*
+
+- [ ] 03-04-PLAN.md — /zamovlennia checkout, atomic SOLD transaction, /zamovlennia/pidtverdzhennia/[orderNumber] (CHK-01–03)
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 03-05-PLAN.md — /kabinet order history, header cart badge, Playwright e2e (CHK-04)
+
+**Validation:** `03-VALIDATION.md`
 
 ### Phase 4: Admin Operations
 
