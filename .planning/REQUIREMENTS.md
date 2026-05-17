@@ -23,8 +23,8 @@
 
 ### Chat Management
 
-- [ ] **CHAT-05**: Адмін може архівувати діалог (прихований з активного inbox, історія збережена)
-- [ ] **CHAT-06**: Адмін може остаточно видалити діалог після підтвердження (повідомлення видаляються каскадно)
+- [x] **CHAT-05**: Адмін може архівувати діалог (прихований з активного inbox, історія збережена)
+- [x] **CHAT-06**: Адмін може остаточно видалити діалог після підтвердження (повідомлення видаляються каскадно)
 
 ### Wishlist
 
@@ -79,8 +79,8 @@ Deferred beyond v1.1.
 | ADM-01 | Phase 8 | Pending |
 | ADM-02 | Phase 8 | Pending |
 | ADM-03 | Phase 8 | Complete |
-| CHAT-05 | Phase 8 | Pending |
-| CHAT-06 | Phase 8 | Pending |
+| CHAT-05 | Phase 8 | Complete |
+| CHAT-06 | Phase 8 | Complete |
 | WISH-01 | Phase 9 | Pending |
 | WISH-02 | Phase 9 | Pending |
 | WISH-03 | Phase 9 | Pending |
