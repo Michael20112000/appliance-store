@@ -1,7 +1,15 @@
-import type { OrderStatus, Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+import type { OrderStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
+import type {
+  AdminOrderListDir,
+  AdminOrderListSort,
+  ListOrdersAdminParams,
+} from "@/server/validators/admin-order";
 import type { OrderDetailDto, OrderSummaryDto } from "@/types/order";
+
+export type { AdminOrderListDir, AdminOrderListSort };
 
 export { ORDER_STATUS_LABELS_UA };
 
@@ -66,6 +74,34 @@ export function getProductIdsForCancelRevert(
     .filter((id): id is string => id != null);
 }
 
+export function buildOrderWhere(
+  filter: AdminOrderListFilter,
+): Prisma.OrderWhereInput {
+  const statuses =
+    filter === "all" ? undefined : [...FILTER_STATUS_MAP[filter]];
+  return statuses ? { status: { in: statuses } } : {};
+}
+
+export function buildPrismaOrderBy(
+  sort: AdminOrderListSort,
+  dir: AdminOrderListDir,
+): Prisma.OrderOrderByWithRelationInput {
+  switch (sort) {
+    case "orderNumber":
+      return { orderNumber: dir };
+    case "status":
+      return { status: dir };
+    case "createdAt":
+    default:
+      return { createdAt: dir };
+  }
+}
+
+export function computeTotalPages(total: number, pageSize: number): number {
+  if (total === 0) return 1;
+  return Math.ceil(total / pageSize);
+}
+
 function mapOrderSummary(
   order: Prisma.OrderGetPayload<{ include: { items: true } }>,
 ): AdminOrderSummaryDto {
@@ -122,14 +158,110 @@ export async function getAdminDashboardStats() {
   };
 }
 
+export async function countOrdersAdmin(
+  filter: AdminOrderListFilter,
+): Promise<number> {
+  return prisma.order.count({ where: buildOrderWhere(filter) });
+}
+
+async function fetchOrderIdsByTotalKopiyky(
+  filter: AdminOrderListFilter,
+  dir: AdminOrderListDir,
+  skip: number,
+  take: number,
+): Promise<string[]> {
+  const statuses =
+    filter === "all" ? undefined : [...FILTER_STATUS_MAP[filter]];
+  const orderDirection = dir === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+
+  const rows =
+    statuses == null
+      ? await prisma.$queryRaw<Array<{ id: string }>>`
+          SELECT o.id
+          FROM "Order" o
+          LEFT JOIN "OrderItem" oi ON oi."orderId" = o.id
+          GROUP BY o.id
+          ORDER BY COALESCE(SUM(oi."priceSnapshot" * oi.quantity), 0) ${orderDirection}
+          OFFSET ${skip}
+          LIMIT ${take}
+        `
+      : await prisma.$queryRaw<Array<{ id: string }>>`
+          SELECT o.id
+          FROM "Order" o
+          LEFT JOIN "OrderItem" oi ON oi."orderId" = o.id
+          WHERE o.status IN (${Prisma.join(statuses)})
+          GROUP BY o.id
+          ORDER BY COALESCE(SUM(oi."priceSnapshot" * oi.quantity), 0) ${orderDirection}
+          OFFSET ${skip}
+          LIMIT ${take}
+        `;
+
+  return rows.map((row) => row.id);
+}
+
+async function fetchOrdersPreservingIdOrder(
+  ids: string[],
+): Promise<AdminOrderSummaryDto[]> {
+  if (ids.length === 0) return [];
+
+  const orders = await prisma.order.findMany({
+    where: { id: { in: ids } },
+    include: { items: true },
+  });
+
+  const byId = new Map(orders.map((order) => [order.id, order]));
+  return ids
+    .map((id) => byId.get(id))
+    .filter((order): order is NonNullable<typeof order> => order != null)
+    .map(mapOrderSummary);
+}
+
+export async function listOrdersAdminPaginated(params: ListOrdersAdminParams) {
+  const where = buildOrderWhere(params.filter);
+  const skip = (params.page - 1) * params.pageSize;
+
+  const total = await countOrdersAdmin(params.filter);
+  const totalPages = computeTotalPages(total, params.pageSize);
+
+  if (params.sort === "totalKopiyky") {
+    const ids = await fetchOrderIdsByTotalKopiyky(
+      params.filter,
+      params.dir,
+      skip,
+      params.pageSize,
+    );
+    const items = await fetchOrdersPreservingIdOrder(ids);
+    return {
+      items,
+      total,
+      page: params.page,
+      pageSize: params.pageSize,
+      totalPages,
+    };
+  }
+
+  const orders = await prisma.order.findMany({
+    where,
+    orderBy: buildPrismaOrderBy(params.sort, params.dir),
+    skip,
+    take: params.pageSize,
+    include: { items: true },
+  });
+
+  return {
+    items: orders.map(mapOrderSummary),
+    total,
+    page: params.page,
+    pageSize: params.pageSize,
+    totalPages,
+  };
+}
+
 export async function listAllOrders(
   filter: AdminOrderListFilter = "all",
 ): Promise<AdminOrderSummaryDto[]> {
-  const statuses =
-    filter === "all" ? undefined : [...FILTER_STATUS_MAP[filter]];
-
   const orders = await prisma.order.findMany({
-    where: statuses ? { status: { in: statuses } } : undefined,
+    where: buildOrderWhere(filter),
     orderBy: { createdAt: "desc" },
     include: { items: true },
   });

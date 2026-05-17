@@ -1,11 +1,15 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import {
   assertTransitionAllowed,
+  buildOrderWhere,
+  buildPrismaOrderBy,
+  computeTotalPages,
   getAdminDashboardStats,
   getAllowedNextStatuses,
   getProductIdsForCancelRevert,
   INVALID_STATUS_TRANSITION,
+  listOrdersAdminPaginated,
   revertSoldProductsOnCancel,
 } from "./admin-order.service";
 
@@ -18,8 +22,20 @@ vi.mock("@/lib/db", () => ({
     product: {
       count: vi.fn(),
     },
+    $queryRaw: vi.fn(),
   },
 }));
+
+const sampleOrder = {
+  id: "order-1",
+  orderNumber: "ASL-20260517-0001",
+  status: "PENDING",
+  deliveryType: "PICKUP",
+  customerName: "Test Buyer",
+  customerPhone: "+380000000000",
+  createdAt: new Date("2026-05-17T10:00:00.000Z"),
+  items: [{ priceSnapshot: 100_00, quantity: 2 }],
+};
 
 describe("getAdminDashboardStats", () => {
   it("returns pending, product counts, and recent orders", async () => {
@@ -117,6 +133,125 @@ describe("revertSoldProductsOnCancel", () => {
       where: { id: "p2", status: "SOLD" },
       data: { status: "AVAILABLE" },
     });
+  });
+});
+
+describe("buildOrderWhere", () => {
+  it("returns empty where for all filter", () => {
+    expect(buildOrderWhere("all")).toEqual({});
+  });
+
+  it("maps new filter to PENDING statuses", () => {
+    expect(buildOrderWhere("new")).toEqual({
+      status: { in: ["PENDING"] },
+    });
+  });
+
+  it("maps in_progress filter to active statuses", () => {
+    expect(buildOrderWhere("in_progress")).toEqual({
+      status: {
+        in: ["CONFIRMED", "READY_FOR_PICKUP", "OUT_FOR_DELIVERY"],
+      },
+    });
+  });
+});
+
+describe("buildPrismaOrderBy", () => {
+  it("maps orderNumber sort to prisma orderBy", () => {
+    expect(buildPrismaOrderBy("orderNumber", "asc")).toEqual({
+      orderNumber: "asc",
+    });
+  });
+});
+
+describe("computeTotalPages", () => {
+  it("returns 1 for empty total", () => {
+    expect(computeTotalPages(0, 10)).toBe(1);
+  });
+
+  it("ceil-divides total by page size", () => {
+    expect(computeTotalPages(25, 10)).toBe(3);
+  });
+});
+
+describe("listOrdersAdminPaginated", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns one page with total and totalPages", async () => {
+    vi.mocked(prisma.order.count).mockResolvedValueOnce(25);
+    vi.mocked(prisma.order.findMany).mockResolvedValueOnce(
+      Array.from({ length: 10 }, (_, index) => ({
+        ...sampleOrder,
+        id: `order-${index + 1}`,
+        orderNumber: `ASL-20260517-000${index + 1}`,
+      })) as never,
+    );
+
+    const result = await listOrdersAdminPaginated({
+      filter: "all",
+      page: 1,
+      pageSize: 10,
+      sort: "createdAt",
+      dir: "desc",
+    });
+
+    expect(result.items).toHaveLength(10);
+    expect(result.total).toBe(25);
+    expect(result.totalPages).toBe(3);
+    expect(prisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        skip: 0,
+        take: 10,
+        orderBy: { createdAt: "desc" },
+      }),
+    );
+  });
+
+  it("uses orderNumber asc orderBy for that sort column", async () => {
+    vi.mocked(prisma.order.count).mockResolvedValueOnce(1);
+    vi.mocked(prisma.order.findMany).mockResolvedValueOnce([sampleOrder] as never);
+
+    await listOrdersAdminPaginated({
+      filter: "all",
+      page: 1,
+      pageSize: 20,
+      sort: "orderNumber",
+      dir: "asc",
+    });
+
+    expect(prisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        orderBy: { orderNumber: "asc" },
+      }),
+    );
+  });
+
+  it("uses raw SQL ids for totalKopiyky sort then preserves order", async () => {
+    vi.mocked(prisma.order.count).mockResolvedValueOnce(2);
+    vi.mocked(prisma.$queryRaw).mockResolvedValueOnce([
+      { id: "order-b" },
+      { id: "order-a" },
+    ]);
+    vi.mocked(prisma.order.findMany).mockResolvedValueOnce([
+      { ...sampleOrder, id: "order-a", orderNumber: "A" },
+      { ...sampleOrder, id: "order-b", orderNumber: "B" },
+    ] as never);
+
+    const result = await listOrdersAdminPaginated({
+      filter: "all",
+      page: 1,
+      pageSize: 20,
+      sort: "totalKopiyky",
+      dir: "desc",
+    });
+
+    expect(prisma.$queryRaw).toHaveBeenCalled();
+    expect(prisma.order.findMany).not.toHaveBeenCalledWith(
+      expect.objectContaining({ orderBy: expect.anything() }),
+    );
+    expect(result.items.map((item) => item.id)).toEqual(["order-b", "order-a"]);
   });
 });
 
