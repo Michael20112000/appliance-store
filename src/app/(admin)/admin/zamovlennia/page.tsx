@@ -1,50 +1,54 @@
 import type { Metadata } from "next";
 import { OrderListFilters } from "@/components/admin/order-list-filters";
-import { OrdersTable } from "@/components/admin/orders-table";
-import {
-  listAllOrders,
-  type AdminOrderListFilter,
-} from "@/server/services/admin-order.service";
+import { OrdersDataTable } from "@/components/admin/orders-data-table";
+import { listOrdersAdminPaginated } from "@/server/services/admin-order.service";
+import { listOrdersAdminSchema } from "@/server/validators/admin-order";
 
 export const metadata: Metadata = {
   title: "Замовлення",
 };
 
-const VALID_FILTERS = new Set<AdminOrderListFilter>([
-  "all",
-  "new",
-  "in_progress",
-  "completed",
-  "cancelled",
-]);
-
-function parseFilter(value: string | undefined): AdminOrderListFilter {
-  if (value && VALID_FILTERS.has(value as AdminOrderListFilter)) {
-    return value as AdminOrderListFilter;
-  }
-  return "all";
-}
-
 type PageProps = {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{
+    filter?: string;
+    page?: string;
+    pageSize?: string;
+    sort?: string;
+    dir?: string;
+  }>;
 };
 
 export default async function AdminOrdersPage({ searchParams }: PageProps) {
-  const { filter: filterParam } = await searchParams;
-  const filter = parseFilter(filterParam);
-  const orders = await listAllOrders(filter);
+  const rawParams = await searchParams;
+  const params = listOrdersAdminSchema.parse(rawParams);
+  const result = await listOrdersAdminPaginated(params);
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Замовлення</h1>
-      <OrderListFilters active={filter} />
-      {orders.length === 0 && filter === "all" ? (
+      <OrderListFilters
+        active={params.filter}
+        pageSize={params.pageSize}
+        sort={params.sort}
+        dir={params.dir}
+      />
+      {result.total === 0 && params.filter === "all" ? (
         <p className="text-sm text-muted-foreground">
           Замовлень ще немає. Коли покупець оформить замовлення, воно з&apos;явиться
           тут.
         </p>
+      ) : result.total === 0 ? (
+        <p className="text-sm text-muted-foreground">Нічого не знайдено</p>
       ) : (
-        <OrdersTable orders={orders} />
+        <OrdersDataTable
+          data={result.items}
+          filter={params.filter}
+          page={result.page}
+          pageSize={result.pageSize}
+          totalPages={result.totalPages}
+          sort={params.sort}
+          dir={params.dir}
+        />
       )}
     </div>
   );
