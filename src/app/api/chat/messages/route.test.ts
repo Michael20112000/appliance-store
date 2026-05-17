@@ -199,7 +199,7 @@ describe("POST /api/chat/messages", () => {
     expect(trigger).not.toHaveBeenCalled();
   });
 
-  it("returns 503 when Pusher is not configured", async () => {
+  it("returns 201 when Pusher is not configured but message was saved", async () => {
     getSession.mockResolvedValue({
       user: { id: "buyer-1", role: "buyer" },
     });
@@ -209,10 +209,10 @@ describe("POST /api/chat/messages", () => {
 
     const res = await postMessages({ body: "Hi" });
 
-    expect(res.status).toBe(503);
-    await expect(res.json()).resolves.toEqual({
-      error: "PUSHER_NOT_CONFIGURED",
-    });
+    expect(res.status).toBe(201);
+    await expect(res.json()).resolves.toEqual(messageDto);
+    expect(sendMessage).toHaveBeenCalled();
+    expect(trigger).not.toHaveBeenCalled();
   });
 });
 

@@ -13,7 +13,10 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQueryStates } from "nuqs";
 import { chatParsers, chatUrlKeys } from "@/lib/chat/search-params";
-import { getPusherClient } from "@/lib/pusher-client";
+import {
+  getPusherClient,
+  isPusherClientConfigured,
+} from "@/lib/pusher-client";
 import { markBuyerReadAction } from "@/server/actions/chat.actions";
 import type { MessageDto } from "@/types/chat";
 import { ChatFab } from "@/components/chat/chat-fab";
@@ -223,7 +226,7 @@ export function ChatProvider({
   }, [clearUnreadFromStore, conversationId, fetchMessages, hasSession, isOpen]);
 
   useEffect(() => {
-    if (!isOpen || !hasSession || !conversationId) {
+    if (!isOpen || !hasSession || !conversationId || !isPusherClientConfigured()) {
       return;
     }
 

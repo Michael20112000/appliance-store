@@ -16,6 +16,9 @@ test("admin RBAC", async ({ page }) => {
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/uviity/);
 
+  await page.goto("/admin/chaty");
+  await expect(page).toHaveURL(/\/uviity/);
+
   const buyerSign = await page.request.post("/api/upload/sign", {
     data: { paramsToSign: { timestamp: Math.floor(Date.now() / 1000) } },
   });
@@ -27,7 +30,7 @@ test("admin RBAC", async ({ page }) => {
   await loginAsAdmin(page);
   await page.goto("/admin");
   await expect(page.getByText("Панель керування")).toBeVisible();
-  await expect(page.getByText("Незабаром")).toBeVisible();
+  await expect(page.getByRole("link", { name: /^Чати/ })).toBeVisible();
 
   test.skip(!hasCloudinarySecrets(), "Cloudinary secrets required for admin sign route");
 

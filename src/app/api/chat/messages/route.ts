@@ -95,11 +95,17 @@ export async function POST(request: Request) {
             : undefined,
         });
 
-    await getPusherServer().trigger(
-      conversationChannel(message.conversationId),
-      "message:new",
-      pusherPayload(message),
-    );
+    try {
+      await getPusherServer().trigger(
+        conversationChannel(message.conversationId),
+        "message:new",
+        pusherPayload(message),
+      );
+    } catch (error) {
+      if (!(error instanceof PusherNotConfiguredError)) {
+        throw error;
+      }
+    }
 
     return Response.json(message, { status: 201 });
   } catch (error) {
@@ -111,12 +117,6 @@ export async function POST(request: Request) {
     }
     if (error instanceof ChatServiceError) {
       return mapChatServiceError(error);
-    }
-    if (error instanceof PusherNotConfiguredError) {
-      return Response.json(
-        { error: "PUSHER_NOT_CONFIGURED" },
-        { status: 503 },
-      );
     }
     throw error;
   }

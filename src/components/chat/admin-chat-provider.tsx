@@ -11,7 +11,10 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { getPusherClient } from "@/lib/pusher-client";
+import {
+  getPusherClient,
+  isPusherClientConfigured,
+} from "@/lib/pusher-client";
 import type { ConversationSummaryDto, MessageDto } from "@/types/chat";
 
 export type AdminChatMessage = MessageDto & {
@@ -186,7 +189,7 @@ export function AdminChatProvider({
   }, [fetchMessages, selectedConversationId]);
 
   useEffect(() => {
-    if (!selectedConversationId) return;
+    if (!selectedConversationId || !isPusherClientConfigured()) return;
 
     let cancelled = false;
     const channelName = `private-conversation-${selectedConversationId}`;
