@@ -11,8 +11,8 @@
 
 ### Catalog
 
-- [ ] **CAT-01**: Користувач обирає діапазон ціни через shadcn Slider (від/до, ₴) на `/katalog` і `/katalog/[slug]`
-- [ ] **CAT-02**: Фільтр ціни коректно відсікає товари поза діапазоном (серверна фільтрація + URL sync)
+- [x] **CAT-01**: Користувач обирає діапазон ціни через shadcn Slider (від/до, ₴) на `/katalog` і `/katalog/[slug]`
+- [x] **CAT-02**: Фільтр ціни коректно відсікає товари поза діапазоном (серверна фільтрація + URL sync)
 - [x] **CAT-03**: Список брендів у фільтрі залежить від контексту: на категорії — лише бренди цієї категорії; на загальному каталозі — бренди всіх доступних товарів
 
 ### Admin UX
@@ -73,8 +73,8 @@ Deferred beyond v1.1.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | FIX-01 | Phase 8 | Pending |
-| CAT-01 | Phase 7 | Pending |
-| CAT-02 | Phase 7 | Pending |
+| CAT-01 | Phase 7 | Complete |
+| CAT-02 | Phase 7 | Complete |
 | CAT-03 | Phase 7 | Complete |
 | ADM-01 | Phase 8 | Pending |
 | ADM-02 | Phase 8 | Pending |
