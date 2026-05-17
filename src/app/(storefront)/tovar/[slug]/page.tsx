@@ -15,6 +15,8 @@ import { buildProductJsonLd } from "@/lib/catalog/product-json-ld";
 import { getEnv } from "@/lib/env";
 import { cn } from "@/lib/utils";
 import { isProductInCart } from "@/server/services/cart.service";
+import { isProductInWishlist } from "@/server/services/wishlist.service";
+import { WishlistToggleButton } from "@/components/wishlist/wishlist-toggle-button";
 import { getPublicProductBySlug } from "@/server/services/catalog.service";
 
 type PageProps = {
@@ -42,6 +44,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const inCart =
     session?.user?.id != null
       ? await isProductInCart(session.user.id, product.id)
+      : false;
+  const inWishlist =
+    session?.user?.id != null
+      ? await isProductInWishlist(session.user.id, product.id)
       : false;
 
   return (
@@ -90,6 +96,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
               productTitle={product.title}
               hasSession={Boolean(session?.user)}
               initialInCart={inCart}
+            />
+            <WishlistToggleButton
+              productId={product.id}
+              productTitle={product.title}
+              hasSession={Boolean(session?.user)}
+              initialInWishlist={inWishlist}
+              variant="inline"
             />
             <OpenChatButton
               hasSession={Boolean(session?.user)}

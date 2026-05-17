@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Toaster } from "sonner";
 import { ChatProviderGate } from "@/components/chat/chat-provider-gate";
 import { CartPendingMergeGate } from "@/components/cart/cart-pending-merge-gate";
 import { StoreFooter } from "@/components/layout/store-footer";
@@ -26,6 +27,7 @@ export default function StorefrontLayout({
         </NuqsAdapter>
       </main>
       <StoreFooter />
+      <Toaster richColors position="top-center" closeButton />
     </>
   );
 }

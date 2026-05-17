@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { getWishlistedProductIds } from "@/server/services/wishlist.service";
 import { CatalogBrandParamGuard } from "@/components/catalog/catalog-brand-param-guard";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { CatalogFiltersSheet } from "@/components/catalog/catalog-filters-sheet";
@@ -65,6 +68,10 @@ export default async function CategoryCatalogPage({
       ? { ...rawParsed, brend: null, storinka: 1 }
       : rawParsed;
   const filters = parsersToFilters(parsed);
+  const session = await auth.api.getSession({ headers: await headers() });
+  const wishlistedProductIds = session?.user
+    ? new Set(await getWishlistedProductIds(session.user.id))
+    : undefined;
 
   const [categories, priceBounds, result] = await Promise.all([
     listCategories(),
@@ -103,6 +110,8 @@ export default async function CategoryCatalogPage({
           <CatalogToolbar total={result.total} />
           <ProductGrid
             products={result.items}
+            hasSession={Boolean(session?.user)}
+            wishlistedProductIds={wishlistedProductIds}
             empty={
               <div className="rounded-lg border border-dashed p-10 text-center">
                 <h2 className="text-lg font-medium">
