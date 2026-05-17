@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CatalogBrandParamGuard } from "@/components/catalog/catalog-brand-param-guard";
 import { CatalogFilters } from "@/components/catalog/catalog-filters";
 import { CatalogFiltersSheet } from "@/components/catalog/catalog-filters-sheet";
 import { CatalogToolbar } from "@/components/catalog/catalog-toolbar";
@@ -87,6 +88,7 @@ export default async function CategoryCatalogPage({
           priceBounds={priceBounds}
         />
         <div>
+          <CatalogBrandParamGuard brands={brands} />
           <CatalogFiltersSheet
             brands={brands}
             categories={categories}
