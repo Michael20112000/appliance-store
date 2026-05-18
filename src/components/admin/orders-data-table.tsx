@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   flexRender,
   getCoreRowModel,
@@ -23,6 +24,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatPriceKopiyky } from "@/lib/catalog/format";
+import {
+  adminClickableRowClassName,
+  getAdminClickableRowProps,
+} from "@/lib/admin/clickable-table-row";
 import { adminOrdersUrl } from "@/lib/admin/orders-url";
 import { cn } from "@/lib/utils";
 import type {
@@ -129,6 +134,7 @@ export function OrdersDataTable({
   sort,
   dir,
 }: OrdersDataTableProps) {
+  const router = useRouter();
   const columns: ColumnDef<AdminOrderSummaryDto>[] = [
     {
       accessorKey: "orderNumber",
@@ -211,18 +217,6 @@ export function OrdersDataTable({
       ),
       cell: ({ row }) => <OrderStatusBadge status={row.original.status} />,
     },
-    {
-      id: "actions",
-      header: () => <span className="sr-only">Дії</span>,
-      cell: ({ row }) => (
-        <Link
-          href={`/admin/zamovlennia/${row.original.orderNumber}`}
-          className="text-primary hover:underline"
-        >
-          Відкрити
-        </Link>
-      ),
-    },
   ];
 
   const table = useReactTable({
@@ -282,15 +276,30 @@ export function OrdersDataTable({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="border-b border-border last:border-0">
+            {table.getRowModel().rows.map((row) => {
+              const href = `/admin/zamovlennia/${row.original.orderNumber}`;
+              const rowProps = getAdminClickableRowProps({
+                href,
+                onNavigate: (target) => router.push(target),
+              });
+
+              return (
+              <TableRow
+                key={row.id}
+                {...rowProps}
+                className={cn(
+                  "border-b border-border last:border-0",
+                  adminClickableRowClassName,
+                )}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="px-4 py-2">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
+              );
+            })}
           </TableBody>
         </Table>
       </div>
