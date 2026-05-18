@@ -116,7 +116,20 @@ Plans:
 3. Ті самі server actions що ⋮ у `chat-thread.tsx`
 4. Лівий клік лишається відкриттям треда; меню не ламає mobile long-press де недоступно
 
-**Plans:** TBD (`/gsd-plan-phase 14`)
+**Plans:** 3 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 14-01-PLAN.md — Install shadcn `context-menu` component
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 14-02-PLAN.md — Shared lifecycle hook + menu items + refactor `chat-thread.tsx`
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 14-03-PLAN.md — Inbox ContextMenu (desktop only) + e2e + manual checklist
 
 ---
 
