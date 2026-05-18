@@ -1,6 +1,11 @@
 import { Prisma } from "@/generated/prisma/client";
 import type { OrderStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
+import {
+  assertTransitionAllowed,
+  getAllowedNextStatuses,
+  INVALID_STATUS_TRANSITION,
+} from "@/lib/order/status-transitions";
 import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
 import type {
   AdminOrderListDir,
@@ -13,17 +18,8 @@ export type { AdminOrderListDir, AdminOrderListSort };
 
 export { ORDER_STATUS_LABELS_UA };
 
-export const INVALID_STATUS_TRANSITION = "INVALID_STATUS_TRANSITION";
+export { assertTransitionAllowed, getAllowedNextStatuses, INVALID_STATUS_TRANSITION };
 export const ORDER_NOT_FOUND = "ORDER_NOT_FOUND";
-
-const ALLOWED_TRANSITIONS: Record<OrderStatus, readonly OrderStatus[]> = {
-  PENDING: ["CONFIRMED", "CANCELLED"],
-  CONFIRMED: ["READY_FOR_PICKUP", "OUT_FOR_DELIVERY", "CANCELLED"],
-  READY_FOR_PICKUP: ["COMPLETED", "CANCELLED"],
-  OUT_FOR_DELIVERY: ["COMPLETED", "CANCELLED"],
-  COMPLETED: [],
-  CANCELLED: [],
-};
 
 export type AdminOrderListFilter =
   | "all"
@@ -50,21 +46,6 @@ export type AdminOrderSummaryDto = OrderSummaryDto & {
 export type AdminOrderDetailDto = OrderDetailDto & {
   id: string;
 };
-
-export function assertTransitionAllowed(
-  from: OrderStatus,
-  to: OrderStatus,
-): void {
-  if (from === to) return;
-  const allowed = ALLOWED_TRANSITIONS[from];
-  if (!allowed.includes(to)) {
-    throw new Error(INVALID_STATUS_TRANSITION);
-  }
-}
-
-export function getAllowedNextStatuses(from: OrderStatus): OrderStatus[] {
-  return [...ALLOWED_TRANSITIONS[from]];
-}
 
 export function getProductIdsForCancelRevert(
   items: Array<{ productId: string | null }>,

@@ -1,7 +1,7 @@
 ---
 phase: 11-admin-list-row-ux
 verified: 2026-05-18T14:25:00Z
-status: human_needed
+status: passed
 score: 12/12 must-haves verified (automated)
 human_verification:
   - test: "Run 11-MANUAL-CHECKLIST.md (orders, categories, products, dashboard, keyboard)"

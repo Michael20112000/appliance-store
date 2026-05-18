@@ -13,7 +13,7 @@ import {
   ArrowUpDownIcon,
   ArrowUpIcon,
 } from "lucide-react";
-import { OrderStatusBadge } from "@/components/admin/order-status-badge";
+import { OrderListStatusSelect } from "@/components/admin/order-list-status-select";
 import { AdminListPagination } from "@/components/admin/admin-list-pagination";
 import {
   Table,
@@ -215,7 +215,12 @@ export function OrdersDataTable({
           dir={dir}
         />
       ),
-      cell: ({ row }) => <OrderStatusBadge status={row.original.status} />,
+      cell: ({ row }) => (
+        <OrderListStatusSelect
+          orderId={row.original.id}
+          status={row.original.status}
+        />
+      ),
     },
   ];
 
