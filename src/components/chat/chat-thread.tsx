@@ -1,27 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef } from "react";
 import { ArrowLeft, MoreVertical } from "lucide-react";
-import { toast } from "sonner";
 import { useAdminChat } from "@/components/chat/admin-chat-provider";
 import { AdminChatComposer } from "@/components/chat/chat-composer";
+import { ConversationLifecycleDeleteDialog } from "@/components/chat/conversation-lifecycle-delete-dialog";
+import { ConversationLifecycleMenuItems } from "@/components/chat/conversation-lifecycle-menu-items";
 import { MessageList } from "@/components/chat/message-list";
+import { useConversationLifecycleActions } from "@/components/chat/use-conversation-lifecycle-actions";
 import { markAdminReadAction } from "@/server/actions/chat.actions";
-import {
-  archiveConversationAction,
-  deleteConversationAction,
-  unarchiveConversationAction,
-} from "@/server/actions/admin/chat.actions";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -36,7 +23,6 @@ type ChatThreadProps = {
 
 export function ChatThread({ onBack }: ChatThreadProps) {
   const {
-    view,
     selectedConversationId,
     selectedConversation,
     messages,
@@ -46,13 +32,13 @@ export function ChatThread({ onBack }: ChatThreadProps) {
     refetchMessages,
     markConversationReadLocally,
     refreshAfterRead,
-    clearSelectionAndRefresh,
-    refreshInbox,
   } = useAdminChat();
 
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [pending, startTransition] = useTransition();
   const markedReadRef = useRef<string | null>(null);
+
+  const lifecycle = useConversationLifecycleActions(
+    selectedConversationId ?? "",
+  );
 
   useEffect(() => {
     if (!selectedConversationId) {
@@ -92,43 +78,7 @@ export function ChatThread({ onBack }: ChatThreadProps) {
   const buyerDisplayName =
     selectedConversation.buyerName || selectedConversation.buyerEmail;
   const isArchived = selectedConversation.status === "ARCHIVED";
-
-  const handleArchive = () => {
-    startTransition(async () => {
-      try {
-        await archiveConversationAction(selectedConversationId);
-        toast.success("Діалог архівовано");
-        clearSelectionAndRefresh();
-      } catch {
-        toast.error("Не вдалося архівувати діалог");
-      }
-    });
-  };
-
-  const handleUnarchive = () => {
-    startTransition(async () => {
-      try {
-        await unarchiveConversationAction(selectedConversationId);
-        toast.success("Діалог повернуто в активні");
-        refreshInbox();
-      } catch {
-        toast.error("Не вдалося повернути діалог з архіву");
-      }
-    });
-  };
-
-  const handleDelete = () => {
-    startTransition(async () => {
-      try {
-        await deleteConversationAction(selectedConversationId);
-        toast.success("Діалог видалено");
-        setDeleteOpen(false);
-        clearSelectionAndRefresh();
-      } catch {
-        toast.error("Не вдалося видалити діалог");
-      }
-    });
-  };
+  const { pending, deleteOpen, setDeleteOpen } = lifecycle;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -169,23 +119,15 @@ export function ChatThread({ onBack }: ChatThreadProps) {
             <MoreVertical className="size-4" aria-hidden />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {view === "active" && selectedConversation.status === "OPEN" ? (
-              <DropdownMenuItem onClick={handleArchive} disabled={pending}>
-                Архівувати
-              </DropdownMenuItem>
-            ) : null}
-            {view === "archive" && isArchived ? (
-              <DropdownMenuItem onClick={handleUnarchive} disabled={pending}>
-                Повернути з архіву
-              </DropdownMenuItem>
-            ) : null}
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => setDeleteOpen(true)}
-              disabled={pending}
-            >
-              Видалити назавжди
-            </DropdownMenuItem>
+            <ConversationLifecycleMenuItems
+              Item={DropdownMenuItem}
+              view={lifecycle.view}
+              status={selectedConversation.status}
+              pending={pending}
+              onArchive={lifecycle.handleArchive}
+              onUnarchive={lifecycle.handleUnarchive}
+              onRequestDelete={() => setDeleteOpen(true)}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -216,27 +158,12 @@ export function ChatThread({ onBack }: ChatThreadProps) {
 
       {!isArchived ? <AdminChatComposer /> : null}
 
-      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Видалити діалог назавжди?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Усі повідомлення буде видалено без можливості відновлення.
-              Покупець більше не побачить цей діалог.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={pending}>Скасувати</AlertDialogCancel>
-            <AlertDialogAction
-              variant="destructive"
-              disabled={pending}
-              onClick={handleDelete}
-            >
-              Видалити
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConversationLifecycleDeleteDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        pending={pending}
+        onConfirm={lifecycle.handleDelete}
+      />
     </div>
   );
 }
