@@ -102,7 +102,15 @@ Each task was committed atomically:
 - **Verification:** `npm run test:e2e -- e2e/admin-products.spec.ts e2e/checkout.spec.ts` — 3 passed
 - **Committed in:** `3fa4dcf`
 
-**2. [Rule 3 - Blocking] Seed clears cart lines before orphan product delete**
+**2. [Rule 1 - Bug] editProductFormSchema instead of updateProductSchema.omit**
+- **Found during:** Post-plan E2E verification
+- **Issue:** `updateProductSchema.omit` throws at runtime (Zod transform schemas have no `.omit`); admin create/edit page crashed.
+- **Fix:** Export `editProductFormSchema` with `editQuantitySchema` (min 0) from `admin-product.ts`; form imports it for edit mode.
+- **Files modified:** `src/server/validators/admin-product.ts`, `src/components/admin/product-form.tsx`, `admin-product.test.ts`
+- **Verification:** vitest 13 passed; e2e admin-products + checkout 3 passed
+- **Commit:** `33bccae`
+
+**3. [Rule 3 - Blocking] Seed clears cart lines before orphan product delete**
 - **Found during:** Task 3 (e2e globalSetup re-seed after checkout test)
 - **Issue:** `product.deleteMany` failed with `CartItem_productId_fkey` when E2E products remained in carts.
 - **Fix:** `cartItem.deleteMany` for orphan products before `product.deleteMany`.
