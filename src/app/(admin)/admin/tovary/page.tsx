@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import { AdminProductsTable } from "@/components/admin/admin-products-table";
 import { ProductListFilters } from "@/components/admin/product-list-filters";
 import { ProductsListPagination } from "@/components/admin/products-list-pagination";
@@ -68,6 +69,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Товари</h1>
         <Button render={<Link href="/admin/tovary/novyi" />}>
+          <Plus className="size-4" aria-hidden />
           Додати товар
         </Button>
       </div>

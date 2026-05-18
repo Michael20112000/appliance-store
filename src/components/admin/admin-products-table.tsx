@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import { getCldImageUrl } from "next-cloudinary";
 import type { ProductStatus } from "@/generated/prisma/client";
 import { ProductListStatusSelect } from "@/components/admin/product-list-status-select";
+import {
+  adminClickableRowClassName,
+  getAdminClickableRowProps,
+} from "@/lib/admin/clickable-table-row";
 import { formatPriceKopiyky } from "@/lib/catalog/format";
 import { cn } from "@/lib/utils";
 
@@ -51,21 +55,19 @@ export function AdminProductsTable({ items }: AdminProductsTableProps) {
                 })
               : null;
 
+            const href = `/admin/tovary/${product.id}`;
+            const rowProps = getAdminClickableRowProps({
+              href,
+              onNavigate: (target) => router.push(target),
+            });
+
             return (
               <tr
                 key={product.id}
-                role="link"
-                tabIndex={0}
-                onClick={() => router.push(`/admin/tovary/${product.id}`)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    router.push(`/admin/tovary/${product.id}`);
-                  }
-                }}
+                {...rowProps}
                 className={cn(
-                  "cursor-pointer border-b border-border transition-colors last:border-0",
-                  "hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none",
+                  "border-b border-border last:border-0",
+                  adminClickableRowClassName,
                 )}
               >
                 <td className="px-3 py-2">
