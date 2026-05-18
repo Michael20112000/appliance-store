@@ -55,7 +55,20 @@ Plans:
 3. Таблиця товарів сортується по колонках (URL або client pattern як orders)
 4. Vitest/e2e smoke для sort URL або table headers
 
-**Plans:** TBD (`/gsd-plan-phase 12`)
+**Plans:** 3 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 12-01-PLAN.md — Verify ADM-ORD-02 (OrderListStatusSelect) + Vitest stopPropagation
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 12-02-PLAN.md — Products sort backend: validator, Prisma orderBy, products-url + tests
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 12-03-PLAN.md — Products sort UI headers + wire page/filters/pagination + manual checklist
 
 ---
 
