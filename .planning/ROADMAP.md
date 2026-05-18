@@ -26,9 +26,17 @@
 **Plans:** 5 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 11-01-PLAN.md — Shared clickable-row helper + Vitest + client hook
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 11-02-PLAN.md — Products table refactor + Plus on «Додати товар»
 - [ ] 11-03-PLAN.md — Orders table row-click; remove «Відкрити»
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 11-04-PLAN.md — Categories client table + Plus CTA
 - [ ] 11-05-PLAN.md — Dashboard recent orders + manual checklist
 

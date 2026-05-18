@@ -515,15 +515,11 @@ const props = getAdminClickableRowProps({
 
 **If empty of unverified claims:** A1–A3 are low-risk implementation details; no user confirmation required.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Single file vs hook file for client wrapper**  
-   - What we know: Pure helper must stay testable without `"use client"`.  
-   - What's unclear: Whether team prefers `use-admin-clickable-row.ts` separate or colocated.  
-   - Recommendation: Separate file — keeps `clickable-table-row.test.ts` importing pure module only.
+1. **Single file vs hook file for client wrapper** — **RESOLVED:** Separate `src/lib/admin/use-admin-clickable-row.ts` so `clickable-table-row.test.ts` imports only the pure module (Plan 11-01).
 
-2. **Dashboard Plus icon (D-11-11)**  
-   - Recommendation: Skip in MVP tasks; add in polish task if time.
+2. **Dashboard Plus icon (D-11-11)** — **RESOLVED:** Skip on dashboard outline «Додати товар»; not a phase blocker (Plan 11-05, D-11-11 discretion).
 
 ## Environment Availability
 
