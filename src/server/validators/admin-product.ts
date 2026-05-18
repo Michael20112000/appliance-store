@@ -77,12 +77,23 @@ const adminProductPageSizeSchema = z.coerce
   .int()
   .refine((value): value is 10 | 20 | 50 => value === 10 || value === 20 || value === 50);
 
+export const adminProductListSortSchema = z.enum([
+  "title",
+  "category",
+  "price",
+  "status",
+]);
+
+export const adminProductListDirSchema = z.enum(["asc", "desc"]);
+
 export const listAdminProductsSchema = z.object({
   page: z.coerce.number().int().min(1).max(1000).default(1),
   pageSize: adminProductPageSizeSchema.default(20),
   status: productStatusSchema.optional(),
   categoryId: z.string().cuid().optional(),
   q: z.string().max(100).optional(),
+  sort: adminProductListSortSchema.optional(),
+  dir: adminProductListDirSchema.default("desc"),
 });
 
 export type UpsertProductInput = z.input<typeof upsertProductSchema>;
@@ -90,3 +101,5 @@ export type UpsertProductValues = z.output<typeof upsertProductSchema>;
 export type UpdateProductValues = z.output<typeof updateProductSchema>;
 export type ProductImageInput = z.output<typeof productImageInputSchema>;
 export type ListAdminProductsFilters = z.output<typeof listAdminProductsSchema>;
+export type AdminProductListSort = z.output<typeof adminProductListSortSchema>;
+export type AdminProductListDir = z.output<typeof adminProductListDirSchema>;

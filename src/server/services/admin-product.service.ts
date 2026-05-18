@@ -2,6 +2,8 @@ import type { Prisma, ProductStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import { computeTotalPages } from "@/lib/pagination";
 import type {
+  AdminProductListDir,
+  AdminProductListSort,
   ListAdminProductsFilters,
   ProductImageInput,
   UpdateProductValues,
@@ -175,6 +177,24 @@ export async function getProductFilterCounts(
   return { status, category };
 }
 
+export function buildPrismaProductOrderBy(
+  sort: AdminProductListSort | undefined,
+  dir: AdminProductListDir,
+): Prisma.ProductOrderByWithRelationInput {
+  switch (sort) {
+    case "title":
+      return { title: dir };
+    case "category":
+      return { category: { name: dir } };
+    case "price":
+      return { price: dir };
+    case "status":
+      return { status: dir };
+    default:
+      return { updatedAt: "desc" };
+  }
+}
+
 export async function listAdminProducts(filters: ListAdminProductsFilters) {
   const where = buildAdminProductWhere(filters);
   const skip = (filters.page - 1) * filters.pageSize;
@@ -184,7 +204,7 @@ export async function listAdminProducts(filters: ListAdminProductsFilters) {
     prisma.product.findMany({
       where,
       include: adminListInclude,
-      orderBy: { updatedAt: "desc" },
+      orderBy: buildPrismaProductOrderBy(filters.sort, filters.dir),
       skip,
       take: filters.pageSize,
     }),

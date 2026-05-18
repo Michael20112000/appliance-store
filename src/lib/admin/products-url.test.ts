@@ -39,4 +39,27 @@ describe("adminProductsUrl", () => {
       }),
     ).toBe("/admin/tovary?status=DRAFT");
   });
+
+  it("includes sort and dir when sort is active", () => {
+    expect(adminProductsUrl({ sort: "title", dir: "asc" })).toBe(
+      "/admin/tovary?sort=title&dir=asc",
+    );
+  });
+
+  it("omits dir when sort is set with default desc", () => {
+    expect(adminProductsUrl({ sort: "price", dir: "desc" })).toBe(
+      "/admin/tovary?sort=price",
+    );
+  });
+
+  it("preserves sort on pagination and filters", () => {
+    expect(
+      adminProductsUrl({
+        page: 3,
+        sort: "price",
+        dir: "desc",
+        status: "DRAFT",
+      }),
+    ).toBe("/admin/tovary?status=DRAFT&page=3&sort=price");
+  });
 });

@@ -51,4 +51,24 @@ describe("listAdminProductsSchema", () => {
     });
     expect(result.status).toBe("SOLD");
   });
+
+  it("accepts valid sort and dir", () => {
+    const result = listAdminProductsSchema.parse({
+      sort: "title",
+      dir: "asc",
+    });
+    expect(result.sort).toBe("title");
+    expect(result.dir).toBe("asc");
+  });
+
+  it("rejects invalid sort", () => {
+    expect(() =>
+      listAdminProductsSchema.parse({ sort: "invalid" }),
+    ).toThrow();
+  });
+
+  it("defaults dir to desc when sort is provided", () => {
+    const result = listAdminProductsSchema.parse({ sort: "price" });
+    expect(result.dir).toBe("desc");
+  });
 });
