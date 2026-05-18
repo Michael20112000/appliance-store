@@ -147,7 +147,19 @@ Plans:
 4. URL param `storinka` (або існуючий) синхронізований з nuqs
 5. e2e або Vitest: empty category hidden; pagination changes page
 
-**Plans:** TBD (`/gsd-plan-phase 15`)
+**Plans:**
+
+**Wave 1**
+
+- [ ] 15-01-PLAN.md — `CATALOG_PAGE_SIZE`, `categoriesWithAvailableProducts`, sitemap filter
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 15-02-PLAN.md — Hide empty categories + Badge labels (CAT-04, CAT-05)
+
+**Wave 3** *(blocked on Wave 1 completion; may run parallel with Wave 2)*
+
+- [ ] 15-03-PLAN.md — Pagination 16 + nuqs clamp + e2e (CAT-06)
 
 ---
 
