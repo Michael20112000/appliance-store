@@ -1,34 +1,33 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Engagement & Fixes
-status: Awaiting next milestone
-stopped_at: Phase 9 complete
-last_updated: "2026-05-17T20:01:07.480Z"
-last_activity: 2026-05-17 — Milestone v1.1 completed and archived
+milestone: v1.2
+milestone_name: Polish & UX
+status: planning
+last_updated: "2026-05-18T10:47:01.328Z"
+last_activity: 2026-05-18
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 20
-  completed_plans: 20
-  percent: 100
+  total_phases: 6
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-17)
+See: .planning/PROJECT.md (updated 2026-05-18)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Planning next milestone (`/gsd-new-milestone`)
+**Current focus:** Milestone v1.2 — Phase 11 Admin List Row UX
 
 ## Current Position
 
-Phase: —
+Phase: 11 — Admin List Row UX (not started)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-17 — Milestone v1.1 archived
+Status: Ready to plan
+Last activity: 2026-05-18 — Milestone v1.2 roadmap approved
 
 ## Performance Metrics
 
