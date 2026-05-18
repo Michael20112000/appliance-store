@@ -80,12 +80,18 @@ Plans:
 
 **Success criteria:**
 
-1. Prisma поле quantity (або stock) на Product; міграція застосована
-2. Create/edit form: поле кількості з валідацією (≥0 або ≥1 за домовленістю)
-3. Admin list або edit показує залишок; storefront без змін відображення
-4. Зменшення quantity при продажі — out of scope unless already tied to SOLD status
+1. Prisma поле `quantity` на Product; міграція застосована (D-13-01–02)
+2. Create/edit form: поле «Кількість» — create min 1 default 1; edit min 0 max 999 (D-13-08–11)
+3. Admin list показує колонку «Кількість» без сорту; storefront без відображення quantity (D-13-12–13)
+4. Checkout атомарно decrement quantity; SOLD лише при quantity === 0 (D-13-04–07)
 
-**Plans:** TBD (`/gsd-plan-phase 13`)
+**Plans:** 4 plans
+
+Plans:
+- [ ] 13-01-PLAN.md — Prisma schema + migration + generate (blocking)
+- [ ] 13-02-PLAN.md — Checkout decrement, cart/catalog/wishlist guards, unit tests
+- [ ] 13-03-PLAN.md — Admin Zod + admin-product.service persistence
+- [ ] 13-04-PLAN.md — Admin form/table UI + e2e
 
 ---
 
