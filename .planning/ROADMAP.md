@@ -99,7 +99,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 13-04-PLAN.md — Admin form/table UI + e2e
+- [x] 13-04-PLAN.md — Admin form/table UI + e2e
 
 ---
 
