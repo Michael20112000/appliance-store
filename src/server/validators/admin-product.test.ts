@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  editProductFormSchema,
   listAdminProductsSchema,
   productImageInputSchema,
   updateProductSchema,
@@ -58,6 +59,13 @@ describe("upsertProductSchema", () => {
     expect(() =>
       upsertProductSchema.parse({ ...validUpsert, quantity: 1000 }),
     ).toThrow();
+  });
+});
+
+describe("editProductFormSchema", () => {
+  it("accepts quantity 0 without product id", () => {
+    const result = editProductFormSchema.parse({ ...validUpsert, quantity: 0 });
+    expect(result.quantity).toBe(0);
   });
 });
 

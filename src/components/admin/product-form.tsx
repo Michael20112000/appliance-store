@@ -11,12 +11,10 @@ import {
   updateProductAction,
 } from "@/server/actions/admin/product.actions";
 import {
-  updateProductSchema,
+  editProductFormSchema,
   upsertProductSchema,
   type UpsertProductInput,
 } from "@/server/validators/admin-product";
-
-const editProductFormSchema = updateProductSchema.omit({ id: true });
 import { conditionLabelUa } from "@/lib/catalog/format";
 import { ProductImageUpload } from "@/components/admin/product-image-upload";
 import { Alert, AlertDescription } from "@/components/ui/alert";

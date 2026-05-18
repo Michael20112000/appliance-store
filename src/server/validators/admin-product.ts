@@ -8,23 +8,43 @@ const slugSchema = z
 
 export const adminFormProductStatusSchema = z.enum(["DRAFT", "AVAILABLE"]);
 
-export const upsertProductSchema = z
-  .object({
-    title: z.string().trim().min(2, "Вкажіть назву товару"),
-    slug: z.union([slugSchema, z.literal("")]).optional(),
-    description: z.union([z.string().trim().max(10_000), z.literal("")]).optional(),
-    brand: z.string().trim().min(1, "Вкажіть бренд"),
-    categoryId: z.string().cuid("Оберіть категорію"),
-    condition: productConditionSchema,
-    status: adminFormProductStatusSchema,
-    priceUah: z.coerce.number().int().positive("Ціна має бути додатною"),
-    quantity: z.coerce
-      .number()
-      .int()
-      .min(1, "Кількість має бути не менше 1")
-      .max(999, "Максимум 999 одиниць"),
-  })
-  .transform((data) => ({
+const adminProductFormFields = {
+  title: z.string().trim().min(2, "Вкажіть назву товару"),
+  slug: z.union([slugSchema, z.literal("")]).optional(),
+  description: z.union([z.string().trim().max(10_000), z.literal("")]).optional(),
+  brand: z.string().trim().min(1, "Вкажіть бренд"),
+  categoryId: z.string().cuid("Оберіть категорію"),
+  condition: productConditionSchema,
+  status: adminFormProductStatusSchema,
+  priceUah: z.coerce.number().int().positive("Ціна має бути додатною"),
+} as const;
+
+const createQuantitySchema = z.coerce
+  .number()
+  .int()
+  .min(1, "Кількість має бути не менше 1")
+  .max(999, "Максимум 999 одиниць");
+
+const editQuantitySchema = z.coerce
+  .number()
+  .int()
+  .min(0, "Кількість не може бути від'ємною")
+  .max(999, "Максимум 999 одиниць");
+
+function normalizeAdminProductFormFields<
+  T extends {
+    title: string;
+    brand: string;
+    categoryId: string;
+    condition: z.infer<typeof productConditionSchema>;
+    status: z.infer<typeof adminFormProductStatusSchema>;
+    priceUah: number;
+    quantity: number;
+    slug?: string;
+    description?: string;
+  },
+>(data: T) {
+  return {
     title: data.title,
     brand: data.brand,
     categoryId: data.categoryId,
@@ -34,36 +54,33 @@ export const upsertProductSchema = z
     quantity: data.quantity,
     slug: data.slug === "" ? undefined : data.slug,
     description: data.description === "" ? undefined : data.description,
-  }));
+  };
+}
+
+export const upsertProductSchema = z
+  .object({
+    ...adminProductFormFields,
+    quantity: createQuantitySchema,
+  })
+  .transform(normalizeAdminProductFormFields);
+
+/** Client edit form — same fields as create, quantity 0 allowed (write-off). */
+export const editProductFormSchema = z
+  .object({
+    ...adminProductFormFields,
+    quantity: editQuantitySchema,
+  })
+  .transform(normalizeAdminProductFormFields);
 
 export const updateProductSchema = z
   .object({
     id: z.string().cuid("Невірний ідентифікатор товару"),
-    title: z.string().trim().min(2, "Вкажіть назву товару"),
-    slug: z.union([slugSchema, z.literal("")]).optional(),
-    description: z.union([z.string().trim().max(10_000), z.literal("")]).optional(),
-    brand: z.string().trim().min(1, "Вкажіть бренд"),
-    categoryId: z.string().cuid("Оберіть категорію"),
-    condition: productConditionSchema,
-    status: adminFormProductStatusSchema,
-    priceUah: z.coerce.number().int().positive("Ціна має бути додатною"),
-    quantity: z.coerce
-      .number()
-      .int()
-      .min(0, "Кількість не може бути від'ємною")
-      .max(999, "Максимум 999 одиниць"),
+    ...adminProductFormFields,
+    quantity: editQuantitySchema,
   })
   .transform((data) => ({
     id: data.id,
-    title: data.title,
-    brand: data.brand,
-    categoryId: data.categoryId,
-    condition: data.condition,
-    status: data.status,
-    priceUah: data.priceUah,
-    quantity: data.quantity,
-    slug: data.slug === "" ? undefined : data.slug,
-    description: data.description === "" ? undefined : data.description,
+    ...normalizeAdminProductFormFields(data),
   }));
 
 export const productImageInputSchema = z.object({
