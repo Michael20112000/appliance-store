@@ -27,6 +27,7 @@ export type AdminProductListItem = {
   title: string;
   brand: string;
   price: number;
+  quantity: number;
   status: ProductStatus;
   category: { name: string };
   images: {
@@ -45,12 +46,15 @@ type AdminProductsTableProps = {
   q?: string;
 };
 
-const SORTABLE_COLUMNS = [
+const SORTABLE_COLUMNS_BEFORE_QUANTITY = [
   { key: "title" as const, label: "Назва" },
   { key: "category" as const, label: "Категорія" },
   { key: "price" as const, label: "Ціна" },
+] as const;
+
+const SORTABLE_COLUMNS_AFTER_QUANTITY = [
   { key: "status" as const, label: "Статус" },
-];
+] as const;
 
 export function AdminProductsTable({
   items,
@@ -81,7 +85,23 @@ export function AdminProductsTable({
         <thead>
           <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
             <th className="px-3 py-2 font-medium">Фото</th>
-            {SORTABLE_COLUMNS.map((column) => (
+            {SORTABLE_COLUMNS_BEFORE_QUANTITY.map((column) => (
+              <th
+                key={column.key}
+                className="px-3 py-2 font-medium"
+                aria-sort={getAriaSort(column.key, sort, dir)}
+              >
+                <AdminSortableTableHeader
+                  href={sortHeaderHref(column.key)}
+                  label={column.label}
+                  column={column.key}
+                  sort={sort}
+                  dir={dir}
+                />
+              </th>
+            ))}
+            <th className="px-3 py-2 font-medium">Кількість</th>
+            {SORTABLE_COLUMNS_AFTER_QUANTITY.map((column) => (
               <th
                 key={column.key}
                 className="px-3 py-2 font-medium"
@@ -149,6 +169,7 @@ export function AdminProductsTable({
                 <td className="px-3 py-2 tabular-nums">
                   {formatPriceKopiyky(product.price)}
                 </td>
+                <td className="px-3 py-2 tabular-nums">{product.quantity}</td>
                 <td className="px-3 py-2">
                   <ProductListStatusSelect
                     productId={product.id}
