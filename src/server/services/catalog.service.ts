@@ -25,6 +25,7 @@ export function buildCatalogContextWhere(
 ): Prisma.ProductWhereInput {
   return {
     status: PUBLIC_STATUS,
+    quantity: { gte: 1 },
     ...(categoryId && { categoryId }),
   };
 }
@@ -36,6 +37,7 @@ export function buildPublicProductWhere(
 
   return {
     status: PUBLIC_STATUS,
+    quantity: { gte: 1 },
     ...(input.categoryId && { categoryId: input.categoryId }),
     ...(filters.brand && { brand: filters.brand }),
     ...(filters.conditions?.length && {

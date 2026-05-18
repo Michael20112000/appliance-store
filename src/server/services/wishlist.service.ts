@@ -109,7 +109,7 @@ export async function addToWishlist(userId: string, productId: string) {
   }
 
   const product = await prisma.product.findFirst({
-    where: { id: productId, status: PUBLIC_STATUS },
+    where: { id: productId, status: PUBLIC_STATUS, quantity: { gte: 1 } },
     select: { id: true },
   });
 

@@ -17,9 +17,10 @@ vi.mock("@/lib/db", () => ({
 }));
 
 describe("buildPublicProductWhere", () => {
-  it("always filters AVAILABLE status", () => {
+  it("always filters AVAILABLE status with stock", () => {
     const where = buildPublicProductWhere({});
     expect(where.status).toBe("AVAILABLE");
+    expect(where.quantity).toEqual({ gte: 1 });
   });
 
   it("filters by categoryId", () => {
@@ -61,13 +62,17 @@ describe("buildPublicProductWhere", () => {
 });
 
 describe("buildCatalogContextWhere", () => {
-  it("scopes to AVAILABLE products globally", () => {
-    expect(buildCatalogContextWhere()).toEqual({ status: "AVAILABLE" });
+  it("scopes to AVAILABLE in-stock products globally", () => {
+    expect(buildCatalogContextWhere()).toEqual({
+      status: "AVAILABLE",
+      quantity: { gte: 1 },
+    });
   });
 
-  it("scopes to AVAILABLE products in a category", () => {
+  it("scopes to AVAILABLE in-stock products in a category", () => {
     expect(buildCatalogContextWhere("cat-phones")).toEqual({
       status: "AVAILABLE",
+      quantity: { gte: 1 },
       categoryId: "cat-phones",
     });
   });
@@ -89,7 +94,7 @@ describe("getDistinctBrands", () => {
     expect(brands).toEqual(["Bosch", "Samsung"]);
     expect(prisma.product.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { status: "AVAILABLE" },
+        where: { status: "AVAILABLE", quantity: { gte: 1 } },
         distinct: ["brand"],
       }),
     );
@@ -104,7 +109,11 @@ describe("getDistinctBrands", () => {
 
     expect(prisma.product.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { status: "AVAILABLE", categoryId: "cat-phones" },
+        where: {
+          status: "AVAILABLE",
+          quantity: { gte: 1 },
+          categoryId: "cat-phones",
+        },
       }),
     );
   });
@@ -126,7 +135,7 @@ describe("getCatalogPriceBounds", () => {
     expect(bounds).toEqual({ minUah: 129, maxUah: 451 });
     expect(prisma.product.aggregate).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { status: "AVAILABLE" },
+        where: { status: "AVAILABLE", quantity: { gte: 1 } },
       }),
     );
   });
