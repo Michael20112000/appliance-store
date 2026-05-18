@@ -122,6 +122,7 @@ model Product {
   description String?
   brand       String
   price       Int
+  quantity    Int              @default(1)
   condition   ProductCondition
   status      ProductStatus    @default(DRAFT)
   categoryId  String
