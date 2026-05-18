@@ -27,6 +27,8 @@ type PageProps = {
     status?: string;
     categoryId?: string;
     q?: string;
+    sort?: string;
+    dir?: string;
   }>;
 };
 
@@ -45,6 +47,8 @@ function parseListFilters(
     status,
     categoryId: params.categoryId,
     q: params.q,
+    sort: params.sort,
+    dir: params.dir,
   });
 }
 
@@ -82,6 +86,8 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         activeStatus={filters.status}
         activeCategoryId={filters.categoryId}
         pageSize={filters.pageSize}
+        sort={filters.sort}
+        dir={filters.dir}
         counts={filterCounts}
       />
 
@@ -91,7 +97,15 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         </p>
       ) : (
         <div className="flex flex-col gap-4">
-          <AdminProductsTable items={result.items} />
+          <AdminProductsTable
+            items={result.items}
+            sort={filters.sort}
+            dir={filters.dir}
+            pageSize={filters.pageSize}
+            status={filters.status}
+            categoryId={filters.categoryId}
+            q={filters.q}
+          />
           <ProductsListPagination
             page={result.page}
             pageSize={filters.pageSize}
@@ -99,6 +113,8 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             status={filters.status}
             categoryId={filters.categoryId}
             q={filters.q}
+            sort={filters.sort}
+            dir={filters.dir}
           />
         </div>
       )}

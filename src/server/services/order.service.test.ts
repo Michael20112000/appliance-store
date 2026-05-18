@@ -1,8 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { generateOrderNumber } from "./order.service";
 
 describe("generateOrderNumber", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("produces ASL-YYYYMMDD-#### pattern", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-17T12:00:00Z"));
+
     const tx = {
       order: {
         findFirst: async () => ({ orderNumber: "ASL-20260517-0003" }),

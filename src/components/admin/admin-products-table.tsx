@@ -3,13 +3,24 @@
 import { useRouter } from "next/navigation";
 import { getCldImageUrl } from "next-cloudinary";
 import type { ProductStatus } from "@/generated/prisma/client";
+import {
+  AdminSortableTableHeader,
+  getAriaSort,
+  nextSortDir,
+} from "@/components/admin/admin-sortable-table-header";
 import { ProductListStatusSelect } from "@/components/admin/product-list-status-select";
 import {
   adminClickableRowClassName,
   getAdminClickableRowProps,
 } from "@/lib/admin/clickable-table-row";
+import { adminProductsUrl } from "@/lib/admin/products-url";
 import { formatPriceKopiyky } from "@/lib/catalog/format";
+import type { AdminPageSize } from "@/lib/pagination";
 import { cn } from "@/lib/utils";
+import type {
+  AdminProductListDir,
+  AdminProductListSort,
+} from "@/server/validators/admin-product";
 
 export type AdminProductListItem = {
   id: string;
@@ -26,10 +37,43 @@ export type AdminProductListItem = {
 
 type AdminProductsTableProps = {
   items: AdminProductListItem[];
+  sort?: AdminProductListSort;
+  dir: AdminProductListDir;
+  pageSize: AdminPageSize;
+  status?: ProductStatus;
+  categoryId?: string;
+  q?: string;
 };
 
-export function AdminProductsTable({ items }: AdminProductsTableProps) {
+const SORTABLE_COLUMNS = [
+  { key: "title" as const, label: "Назва" },
+  { key: "category" as const, label: "Категорія" },
+  { key: "price" as const, label: "Ціна" },
+  { key: "status" as const, label: "Статус" },
+];
+
+export function AdminProductsTable({
+  items,
+  sort,
+  dir,
+  pageSize,
+  status,
+  categoryId,
+  q,
+}: AdminProductsTableProps) {
   const router = useRouter();
+
+  function sortHeaderHref(column: AdminProductListSort) {
+    return adminProductsUrl({
+      sort: column,
+      dir: nextSortDir(sort, dir, column),
+      page: 1,
+      pageSize,
+      status,
+      categoryId,
+      q,
+    });
+  }
 
   return (
     <div className="overflow-x-auto rounded-lg border border-border bg-background">
@@ -37,10 +81,21 @@ export function AdminProductsTable({ items }: AdminProductsTableProps) {
         <thead>
           <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
             <th className="px-3 py-2 font-medium">Фото</th>
-            <th className="px-3 py-2 font-medium">Назва</th>
-            <th className="px-3 py-2 font-medium">Категорія</th>
-            <th className="px-3 py-2 font-medium">Ціна</th>
-            <th className="px-3 py-2 font-medium">Статус</th>
+            {SORTABLE_COLUMNS.map((column) => (
+              <th
+                key={column.key}
+                className="px-3 py-2 font-medium"
+                aria-sort={getAriaSort(column.key, sort, dir)}
+              >
+                <AdminSortableTableHeader
+                  href={sortHeaderHref(column.key)}
+                  label={column.label}
+                  column={column.key}
+                  sort={sort}
+                  dir={dir}
+                />
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>

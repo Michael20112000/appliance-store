@@ -4,6 +4,10 @@ import { AdminListPagination } from "@/components/admin/admin-list-pagination";
 import { adminProductsUrl } from "@/lib/admin/products-url";
 import type { AdminPageSize } from "@/lib/pagination";
 import type { ProductStatus } from "@/generated/prisma/client";
+import type {
+  AdminProductListDir,
+  AdminProductListSort,
+} from "@/server/validators/admin-product";
 
 type ProductsListPaginationProps = {
   page: number;
@@ -12,6 +16,8 @@ type ProductsListPaginationProps = {
   status?: ProductStatus;
   categoryId?: string;
   q?: string;
+  sort?: AdminProductListSort;
+  dir?: AdminProductListDir;
 };
 
 export function ProductsListPagination({
@@ -21,6 +27,8 @@ export function ProductsListPagination({
   status,
   categoryId,
   q,
+  sort,
+  dir,
 }: ProductsListPaginationProps) {
   return (
     <AdminListPagination
@@ -34,6 +42,8 @@ export function ProductsListPagination({
           status,
           categoryId,
           q,
+          sort,
+          dir,
         })
       }
     />

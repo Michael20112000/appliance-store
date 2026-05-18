@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   flexRender,
@@ -8,12 +7,12 @@ import {
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
-import {
-  ArrowDownIcon,
-  ArrowUpDownIcon,
-  ArrowUpIcon,
-} from "lucide-react";
 import { OrderListStatusSelect } from "@/components/admin/order-list-status-select";
+import {
+  AdminSortableTableHeader,
+  getAriaSort,
+  nextSortDir,
+} from "@/components/admin/admin-sortable-table-header";
 import { AdminListPagination } from "@/components/admin/admin-list-pagination";
 import {
   Table,
@@ -60,26 +59,6 @@ function deliveryLabel(deliveryType: AdminOrderSummaryDto["deliveryType"]): stri
   return deliveryType === "PICKUP" ? "Самовивіз" : "Доставка по Львову";
 }
 
-function nextSortDir(
-  currentSort: AdminOrderListSort,
-  currentDir: AdminOrderListDir,
-  column: AdminOrderListSort,
-): AdminOrderListDir {
-  if (currentSort === column) {
-    return currentDir === "asc" ? "desc" : "asc";
-  }
-  return "desc";
-}
-
-function getAriaSort(
-  column: AdminOrderListSort,
-  sort: AdminOrderListSort,
-  dir: AdminOrderListDir,
-): "ascending" | "descending" | "none" {
-  if (sort !== column) return "none";
-  return dir === "asc" ? "ascending" : "descending";
-}
-
 type SortableHeaderProps = {
   column: AdminOrderListSort;
   label: string;
@@ -97,7 +76,6 @@ function SortableHeader({
   sort,
   dir,
 }: SortableHeaderProps) {
-  const isActive = sort === column;
   const href = adminOrdersUrl({
     filter,
     page: 1,
@@ -107,21 +85,13 @@ function SortableHeader({
   });
 
   return (
-    <Link
+    <AdminSortableTableHeader
       href={href}
-      className="inline-flex items-center gap-1 hover:text-foreground"
-    >
-      {label}
-      {isActive ? (
-        dir === "asc" ? (
-          <ArrowUpIcon className="size-3.5" aria-hidden />
-        ) : (
-          <ArrowDownIcon className="size-3.5" aria-hidden />
-        )
-      ) : (
-        <ArrowUpDownIcon className="size-3.5 opacity-50" aria-hidden />
-      )}
-    </Link>
+      label={label}
+      column={column}
+      sort={sort}
+      dir={dir}
+    />
   );
 }
 

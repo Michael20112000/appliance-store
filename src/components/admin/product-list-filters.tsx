@@ -4,6 +4,10 @@ import type { AdminPageSize } from "@/lib/pagination";
 import { cn } from "@/lib/utils";
 import type { ProductStatus } from "@/generated/prisma/client";
 import type { ProductFilterCounts } from "@/server/services/admin-product.service";
+import type {
+  AdminProductListDir,
+  AdminProductListSort,
+} from "@/server/validators/admin-product";
 
 type CategoryOption = {
   id: string;
@@ -15,6 +19,8 @@ type ProductListFiltersProps = {
   activeStatus?: ProductStatus;
   activeCategoryId?: string;
   pageSize: AdminPageSize;
+  sort?: AdminProductListSort;
+  dir?: AdminProductListDir;
   counts: ProductFilterCounts;
 };
 
@@ -34,6 +40,8 @@ export function ProductListFilters({
   activeStatus,
   activeCategoryId,
   pageSize,
+  sort,
+  dir,
   counts,
 }: ProductListFiltersProps) {
   return (
@@ -54,6 +62,8 @@ export function ProductListFilters({
                   categoryId: activeCategoryId,
                   page: 1,
                   pageSize,
+                  sort,
+                  dir,
                 })}
                 className={cn(
                   "rounded-full border px-3 py-1 text-sm transition-colors",
@@ -81,6 +91,8 @@ export function ProductListFilters({
               status: activeStatus,
               page: 1,
               pageSize,
+              sort,
+              dir,
             })}
             className={cn(
               "rounded-full border px-3 py-1 text-sm transition-colors",
@@ -99,6 +111,8 @@ export function ProductListFilters({
                 categoryId: category.id,
                 page: 1,
                 pageSize,
+                sort,
+                dir,
               })}
               className={cn(
                 "rounded-full border px-3 py-1 text-sm transition-colors",

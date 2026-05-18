@@ -14,7 +14,6 @@ export default defineConfig({
       "src/**/*.test.tsx",
       "prisma/**/*.test.ts",
     ],
-    environmentMatchGlobs: [["src/**/*.test.tsx", "jsdom"]],
   },
   resolve: {
     alias: {
