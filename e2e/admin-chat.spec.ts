@@ -23,3 +23,53 @@ test("admin chat inbox loads with enabled nav", async ({ page }) => {
     });
   }
 });
+
+test("right-click on inbox row opens lifecycle menu on desktop", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await loginAsAdmin(page);
+  await page.goto("/admin/chaty");
+
+  const firstConversation = page.getByRole("option").first();
+  if (!(await firstConversation.isVisible())) {
+    test.skip(true, "No conversations in inbox seed data");
+  }
+
+  await firstConversation.click({ button: "right" });
+  await expect(
+    page.getByRole("menuitem", { name: "Архівувати" }),
+  ).toBeVisible();
+});
+
+test("right-click on inbox row does not open menu on mobile", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await loginAsAdmin(page);
+  await page.goto("/admin/chaty");
+
+  const firstConversation = page.getByRole("option").first();
+  if (!(await firstConversation.isVisible())) {
+    test.skip(true, "No conversations in inbox seed data");
+  }
+
+  await firstConversation.click({ button: "right" });
+  await expect(page.getByRole("menuitem")).toHaveCount(0);
+});
+
+test("left-click selects conversation and opens composer", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await loginAsAdmin(page);
+  await page.goto("/admin/chaty");
+
+  const firstConversation = page.getByRole("option").first();
+  if (!(await firstConversation.isVisible())) {
+    test.skip(true, "No conversations in inbox seed data");
+  }
+
+  await firstConversation.click();
+  await expect(page.locator("#admin-chat-message")).toBeVisible({
+    timeout: 15_000,
+  });
+});

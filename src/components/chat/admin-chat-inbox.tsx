@@ -96,6 +96,7 @@ function AdminChatInboxInner() {
           <ConversationList
             conversations={conversations}
             selectedId={selectedConversationId}
+            enableContextMenu={!isMobile}
             onSelect={setSelectedConversationId}
             showUnreadHighlight={view === "active"}
             emptyTitle={emptyTitle}
