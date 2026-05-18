@@ -24,7 +24,7 @@
 
 ### Admin — Chat
 
-- [ ] **ADM-CHAT-01**: ПКМ по чату в списку `/admin/chaty` відкриває context menu: архівувати / розархівувати / видалити (той самий набір, що ⋮ у відкритому треді)
+- [x] **ADM-CHAT-01**: ПКМ по чату в списку `/admin/chaty` відкриває context menu: архівувати / розархівувати / видалити (той самий набір, що ⋮ у відкритому треді)
 
 ### Storefront — Catalog
 
@@ -83,7 +83,7 @@ Deferred beyond v1.2.
 | ADM-ORD-02 | Phase 12 | Complete |
 | ADM-PRD-02 | Phase 12 | Complete |
 | ADM-PRD-03 | Phase 13 | Complete |
-| ADM-CHAT-01 | Phase 14 | Pending |
+| ADM-CHAT-01 | Phase 14 | Complete |
 | CAT-04 | Phase 15 | Pending |
 | CAT-05 | Phase 15 | Pending |
 | CAT-06 | Phase 15 | Pending |

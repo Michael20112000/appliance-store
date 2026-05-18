@@ -121,15 +121,15 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 14-01-PLAN.md — Install shadcn `context-menu` component
+- [x] 14-01-PLAN.md — Install shadcn `context-menu` component
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 14-02-PLAN.md — Shared lifecycle hook + menu items + refactor `chat-thread.tsx`
+- [x] 14-02-PLAN.md — Shared lifecycle hook + menu items + refactor `chat-thread.tsx`
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 14-03-PLAN.md — Inbox ContextMenu (desktop only) + e2e + manual checklist
+- [x] 14-03-PLAN.md — Inbox ContextMenu (desktop only) + e2e + manual checklist
 
 ---
 
