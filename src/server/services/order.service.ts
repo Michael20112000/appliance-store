@@ -85,6 +85,45 @@ export async function generateOrderNumber(
   return `${prefix}${String(next).padStart(4, "0")}`;
 }
 
+function isPrismaRecordNotFound(error: unknown): boolean {
+  return (
+    error !== null &&
+    typeof error === "object" &&
+    "code" in error &&
+    error.code === "P2025"
+  );
+}
+
+export async function reserveProductUnitForCheckout(
+  tx: Prisma.TransactionClient,
+  productId: string,
+): Promise<void> {
+  let updated: { quantity: number };
+  try {
+    updated = await tx.product.update({
+      where: {
+        id: productId,
+        status: "AVAILABLE",
+        quantity: { gte: 1 },
+      },
+      data: { quantity: { decrement: 1 } },
+      select: { quantity: true },
+    });
+  } catch (error) {
+    if (isPrismaRecordNotFound(error)) {
+      throw new Error("PRODUCT_UNAVAILABLE");
+    }
+    throw error;
+  }
+
+  if (updated.quantity === 0) {
+    await tx.product.update({
+      where: { id: productId },
+      data: { status: "SOLD" },
+    });
+  }
+}
+
 export async function createOrderFromCart(
   userId: string,
   input: CheckoutInput,
@@ -113,14 +152,7 @@ export async function createOrderFromCart(
     });
 
     for (const line of cart.items) {
-      const updated = await tx.product.updateMany({
-        where: { id: line.productId, status: "AVAILABLE" },
-        data: { status: "SOLD" },
-      });
-
-      if (updated.count === 0) {
-        throw new Error("PRODUCT_UNAVAILABLE");
-      }
+      await reserveProductUnitForCheckout(tx, line.productId);
 
       await tx.orderItem.create({
         data: {
