@@ -13,6 +13,7 @@ const validUpsert = {
   condition: "GOOD" as const,
   status: "DRAFT" as const,
   priceUah: 4500,
+  quantity: 1,
 };
 
 const validUpdate = {
@@ -23,12 +24,7 @@ const validUpdate = {
 describe("upsertProductSchema", () => {
   it("accepts valid product input with price in UAH", () => {
     const result = upsertProductSchema.parse({
-      title: "Холодильник Samsung",
-      brand: "Samsung",
-      categoryId: "clxxxxxxxxxxxxxxxxxxxxxxxxx",
-      condition: "GOOD",
-      status: "DRAFT",
-      priceUah: 4500,
+      ...validUpsert,
     });
     expect(result.priceUah).toBe(4500);
     expect(result.status).toBe("DRAFT");
@@ -37,12 +33,12 @@ describe("upsertProductSchema", () => {
   it("rejects SOLD status in admin form", () => {
     expect(() =>
       upsertProductSchema.parse({
+        ...validUpsert,
         title: "Test",
         brand: "B",
-        categoryId: "clxxxxxxxxxxxxxxxxxxxxxxxxx",
-        condition: "GOOD",
         status: "SOLD",
         priceUah: 100,
+        quantity: 1,
       }),
     ).toThrow();
   });

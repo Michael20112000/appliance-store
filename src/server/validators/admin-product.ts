@@ -18,6 +18,11 @@ export const upsertProductSchema = z
     condition: productConditionSchema,
     status: adminFormProductStatusSchema,
     priceUah: z.coerce.number().int().positive("Ціна має бути додатною"),
+    quantity: z.coerce
+      .number()
+      .int()
+      .min(1, "Кількість має бути не менше 1")
+      .max(999, "Максимум 999 одиниць"),
   })
   .transform((data) => ({
     title: data.title,
@@ -26,6 +31,7 @@ export const upsertProductSchema = z
     condition: data.condition,
     status: data.status,
     priceUah: data.priceUah,
+    quantity: data.quantity,
     slug: data.slug === "" ? undefined : data.slug,
     description: data.description === "" ? undefined : data.description,
   }));
@@ -41,6 +47,11 @@ export const updateProductSchema = z
     condition: productConditionSchema,
     status: adminFormProductStatusSchema,
     priceUah: z.coerce.number().int().positive("Ціна має бути додатною"),
+    quantity: z.coerce
+      .number()
+      .int()
+      .min(0, "Кількість не може бути від'ємною")
+      .max(999, "Максимум 999 одиниць"),
   })
   .transform((data) => ({
     id: data.id,
@@ -50,6 +61,7 @@ export const updateProductSchema = z
     condition: data.condition,
     status: data.status,
     priceUah: data.priceUah,
+    quantity: data.quantity,
     slug: data.slug === "" ? undefined : data.slug,
     description: data.description === "" ? undefined : data.description,
   }));
