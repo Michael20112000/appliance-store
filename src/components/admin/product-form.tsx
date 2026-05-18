@@ -11,9 +11,12 @@ import {
   updateProductAction,
 } from "@/server/actions/admin/product.actions";
 import {
+  updateProductSchema,
   upsertProductSchema,
   type UpsertProductInput,
 } from "@/server/validators/admin-product";
+
+const editProductFormSchema = updateProductSchema.omit({ id: true });
 import { conditionLabelUa } from "@/lib/catalog/format";
 import { ProductImageUpload } from "@/components/admin/product-image-upload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -68,7 +71,9 @@ export function ProductForm({
   const isSold = currentStatus === "SOLD";
 
   const form = useForm<UpsertProductInput>({
-    resolver: zodResolver(upsertProductSchema),
+    resolver: zodResolver(
+      mode === "edit" ? editProductFormSchema : upsertProductSchema,
+    ),
     defaultValues: {
       title: defaultValues?.title ?? "",
       description: defaultValues?.description ?? "",
