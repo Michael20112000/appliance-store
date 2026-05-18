@@ -23,7 +23,14 @@
 3. «Додати товар» з Plus; рядки товарів з `cursor-pointer` (існуючий row-click збережено)
 4. Клікабельні admin rows мають focus/hover стани для клавіатури
 
-**Plans:** TBD (`/gsd-plan-phase 11`)
+**Plans:** 5 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — Shared clickable-row helper + Vitest + client hook
+- [ ] 11-02-PLAN.md — Products table refactor + Plus on «Додати товар»
+- [ ] 11-03-PLAN.md — Orders table row-click; remove «Відкрити»
+- [ ] 11-04-PLAN.md — Categories client table + Plus CTA
+- [ ] 11-05-PLAN.md — Dashboard recent orders + manual checklist
 
 ---
 
