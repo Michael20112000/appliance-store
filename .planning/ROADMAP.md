@@ -95,7 +95,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [ ] 13-02-PLAN.md — Checkout decrement, cart/catalog/wishlist guards, unit tests
-- [ ] 13-03-PLAN.md — Admin Zod + admin-product.service persistence
+- [x] 13-03-PLAN.md — Admin Zod + admin-product.service persistence
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
