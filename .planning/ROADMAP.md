@@ -90,7 +90,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 13-01-PLAN.md — Prisma schema + migration + generate (blocking)
+- [x] 13-01-PLAN.md — Prisma schema + migration + generate (blocking)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 

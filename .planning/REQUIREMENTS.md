@@ -82,7 +82,7 @@ Deferred beyond v1.2.
 | UX-02 | Phase 11 | Complete |
 | ADM-ORD-02 | Phase 12 | Complete |
 | ADM-PRD-02 | Phase 12 | Complete |
-| ADM-PRD-03 | Phase 13 | Pending |
+| ADM-PRD-03 | Phase 13 | In Progress |
 | ADM-CHAT-01 | Phase 14 | Pending |
 | CAT-04 | Phase 15 | Pending |
 | CAT-05 | Phase 15 | Pending |
