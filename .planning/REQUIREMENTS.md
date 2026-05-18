@@ -8,17 +8,17 @@
 
 ### Admin — Orders
 
-- [ ] **ADM-ORD-01**: Адмін відкриває замовлення кліком по рядку таблиці `/admin/zamovlennia` (колонка «Відкрити» прибрана)
+- [x] **ADM-ORD-01**: Адмін відкриває замовлення кліком по рядку таблиці `/admin/zamovlennia` (колонка «Відкрити» прибрана)
 - [ ] **ADM-ORD-02**: Адмін змінює статус замовлення з таблиці — клік по бейджу відкриває shadcn Select або DropdownMenu з дозволеними переходами
 
 ### Admin — Categories
 
-- [ ] **ADM-CAT-01**: Кнопка «Додати категорію» має іконку Plus (lucide)
-- [ ] **ADM-CAT-02**: Адмін відкриває редагування категорії кліком по рядку (кнопка «Редагувати» прибрана)
+- [x] **ADM-CAT-01**: Кнопка «Додати категорію» має іконку Plus (lucide)
+- [x] **ADM-CAT-02**: Адмін відкриває редагування категорії кліком по рядку (кнопка «Редагувати» прибрана)
 
 ### Admin — Products
 
-- [ ] **ADM-PRD-01**: Кнопка «Додати товар» має іконку Plus
+- [x] **ADM-PRD-01**: Кнопка «Додати товар» має іконку Plus
 - [ ] **ADM-PRD-02**: Таблиця `/admin/tovary` підтримує сортування по колонках (як orders Data Table)
 - [ ] **ADM-PRD-03**: Адмін вказує кількість одиниць товару при створенні/редагуванні; залишок видно в адмінці (список і/або форма), на storefront не показується
 
@@ -35,7 +35,7 @@
 ### UX / Design System
 
 - [ ] **UX-01**: Усі storefront і admin `<select>` замінені на shadcn `Select` (мінімум: `catalog-toolbar`, `catalog-filters`, `product-form`)
-- [ ] **UX-02**: Клікабельні рядки таблиць і списків мають `cursor-pointer` і keyboard access де доречно
+- [x] **UX-02**: Клікабельні рядки таблиць і списків мають `cursor-pointer` і keyboard access де доречно
 
 ### Polish (verify)
 
@@ -75,11 +75,11 @@ Deferred beyond v1.2.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ADM-ORD-01 | Phase 11 | Pending |
-| ADM-CAT-01 | Phase 11 | Pending |
-| ADM-CAT-02 | Phase 11 | Pending |
-| ADM-PRD-01 | Phase 11 | Pending |
-| UX-02 | Phase 11 | Pending |
+| ADM-ORD-01 | Phase 11 | Complete |
+| ADM-CAT-01 | Phase 11 | Complete |
+| ADM-CAT-02 | Phase 11 | Complete |
+| ADM-PRD-01 | Phase 11 | Complete |
+| UX-02 | Phase 11 | Complete |
 | ADM-ORD-02 | Phase 12 | Pending |
 | ADM-PRD-02 | Phase 12 | Pending |
 | ADM-PRD-03 | Phase 13 | Pending |

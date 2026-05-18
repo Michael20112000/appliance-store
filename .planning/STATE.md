@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Polish & UX
-status: executing
-stopped_at: Phase 11 context gathered
-last_updated: "2026-05-18T11:16:48.650Z"
-last_activity: 2026-05-18 -- Phase 11 planning complete
+status: ready_to_plan
+stopped_at: Phase 11 complete (5/5) — ready to discuss Phase 12
+last_updated: 2026-05-18T11:22:52.115Z
+last_activity: 2026-05-18 -- Phase 11 execution started
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 5
-  completed_plans: 0
+  completed_plans: 56
   percent: 0
 ---
 
@@ -21,20 +21,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-18)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone v1.2 — Phase 11 Admin List Row UX
+**Current focus:** Phase 12 — admin tables — status & sort
 
 ## Current Position
 
-Phase: 11 — Admin List Row UX (not started)
-Plan: —
-Status: Ready to execute
-Last activity: 2026-05-18 -- Phase 11 planning complete
+Phase: 12
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-05-18
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 54
+- Total plans completed: 59
 - Average duration: —
 - Total execution time: —
 
@@ -46,6 +46,7 @@ Last activity: 2026-05-18 -- Phase 11 planning complete
 | 08 | 7 | — | — |
 | 09 | 5 | — | — |
 | 10 | 4 | - | - |
+| 11 | 5 | - | - |
 
 **Recent Trend:**
 
