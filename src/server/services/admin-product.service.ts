@@ -242,6 +242,7 @@ export async function createProduct(data: UpsertProductValues) {
       condition: data.condition,
       status: data.status ?? "DRAFT",
       price: priceUahToKopiyky(data.priceUah),
+      quantity: data.quantity,
     },
     include: adminDetailInclude,
   });
@@ -284,8 +285,16 @@ export async function updateProduct(data: UpdateProductValues) {
     slug = await resolveUniqueProductSlug(data.slug.trim(), data.id);
   }
 
-  const status =
+  let status =
     existing.status === "SOLD" ? existing.status : data.status;
+
+  if (
+    existing.status !== "SOLD" &&
+    data.quantity === 0 &&
+    status === "AVAILABLE"
+  ) {
+    status = "SOLD";
+  }
 
   return prisma.product.update({
     where: { id: data.id },
@@ -298,6 +307,7 @@ export async function updateProduct(data: UpdateProductValues) {
       condition: data.condition,
       status,
       price: priceUahToKopiyky(data.priceUah),
+      quantity: data.quantity,
     },
     include: adminDetailInclude,
   });
