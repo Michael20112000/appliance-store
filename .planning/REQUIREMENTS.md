@@ -9,7 +9,7 @@
 ### Admin — Orders
 
 - [x] **ADM-ORD-01**: Адмін відкриває замовлення кліком по рядку таблиці `/admin/zamovlennia` (колонка «Відкрити» прибрана)
-- [ ] **ADM-ORD-02**: Адмін змінює статус замовлення з таблиці — клік по бейджу відкриває shadcn Select або DropdownMenu з дозволеними переходами
+- [x] **ADM-ORD-02**: Адмін змінює статус замовлення з таблиці — клік по бейджу відкриває shadcn Select або DropdownMenu з дозволеними переходами
 
 ### Admin — Categories
 
@@ -19,7 +19,7 @@
 ### Admin — Products
 
 - [x] **ADM-PRD-01**: Кнопка «Додати товар» має іконку Plus
-- [ ] **ADM-PRD-02**: Таблиця `/admin/tovary` підтримує сортування по колонках (як orders Data Table)
+- [x] **ADM-PRD-02**: Таблиця `/admin/tovary` підтримує сортування по колонках (як orders Data Table)
 - [ ] **ADM-PRD-03**: Адмін вказує кількість одиниць товару при створенні/редагуванні; залишок видно в адмінці (список і/або форма), на storefront не показується
 
 ### Admin — Chat
@@ -80,8 +80,8 @@ Deferred beyond v1.2.
 | ADM-CAT-02 | Phase 11 | Complete |
 | ADM-PRD-01 | Phase 11 | Complete |
 | UX-02 | Phase 11 | Complete |
-| ADM-ORD-02 | Phase 12 | Pending |
-| ADM-PRD-02 | Phase 12 | Pending |
+| ADM-ORD-02 | Phase 12 | Complete |
+| ADM-PRD-02 | Phase 12 | Complete |
 | ADM-PRD-03 | Phase 13 | Pending |
 | ADM-CHAT-01 | Phase 14 | Pending |
 | CAT-04 | Phase 15 | Pending |

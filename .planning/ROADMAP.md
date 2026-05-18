@@ -60,15 +60,15 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 12-01-PLAN.md — Verify ADM-ORD-02 (OrderListStatusSelect) + Vitest stopPropagation
+- [x] 12-01-PLAN.md — Verify ADM-ORD-02 (OrderListStatusSelect) + Vitest stopPropagation
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 12-02-PLAN.md — Products sort backend: validator, Prisma orderBy, products-url + tests
+- [x] 12-02-PLAN.md — Products sort backend: validator, Prisma orderBy, products-url + tests
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 12-03-PLAN.md — Products sort UI headers + wire page/filters/pagination + manual checklist
+- [x] 12-03-PLAN.md — Products sort UI headers + wire page/filters/pagination + manual checklist
 
 ---
 
