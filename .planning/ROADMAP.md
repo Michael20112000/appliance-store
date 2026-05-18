@@ -2,25 +2,134 @@
 
 ## Milestones
 
+- 🚧 **v1.2 Polish & UX** — Phases 11–16 (planning 2026-05-18)
 - ✅ **v1.1 Engagement & Fixes** — Phases 7–10 (shipped 2026-05-17) — [archive](milestones/v1.1-ROADMAP.md) · [requirements](milestones/v1.1-REQUIREMENTS.md)
 - ✅ **v1.0 Appliance Store MVP** — Phases 1–6 (shipped 2026-05-17) — [archive](milestones/v1.0-ROADMAP.md) · [requirements](milestones/v1.0-REQUIREMENTS.md)
 
 ## Phases
 
+### v1.2 Polish & UX
+
+#### Phase 11: Admin List Row UX
+
+**Goal:** Єдиний патерн адмін-таблиць — клік по рядку, plus на CTA, без зайвих action-колонок.
+
+**Requirements:** ADM-ORD-01, ADM-CAT-01, ADM-CAT-02, ADM-PRD-01, UX-02
+
+**Success criteria:**
+
+1. Замовлення відкриваються кліком по рядку; «Відкрити» відсутня
+2. Категорії відкриваються кліком по рядку; «Редагувати» відсутня; «Додати категорію» з Plus
+3. «Додати товар» з Plus; рядки товарів з `cursor-pointer` (існуючий row-click збережено)
+4. Клікабельні admin rows мають focus/hover стани для клавіатури
+
+**Plans:** TBD (`/gsd-plan-phase 11`)
+
+---
+
+#### Phase 12: Admin Tables — Status & Sort
+
+**Goal:** Inline зміна статусу замовлення та сортування таблиці товарів.
+
+**Requirements:** ADM-ORD-02, ADM-PRD-02
+
+**Success criteria:**
+
+1. Клік по бейджу статусу в orders table відкриває shadcn control; зміна статусу зберігається з валідацією переходів
+2. Select статусу не тригерить navigation row-click (`stopPropagation`)
+3. Таблиця товарів сортується по колонках (URL або client pattern як orders)
+4. Vitest/e2e smoke для sort URL або table headers
+
+**Plans:** TBD (`/gsd-plan-phase 12`)
+
+---
+
+#### Phase 13: Product Stock Quantity
+
+**Goal:** Облік кількості однакових одиниць товару лише в адмінці.
+
+**Requirements:** ADM-PRD-03
+
+**Success criteria:**
+
+1. Prisma поле quantity (або stock) на Product; міграція застосована
+2. Create/edit form: поле кількості з валідацією (≥0 або ≥1 за домовленістю)
+3. Admin list або edit показує залишок; storefront без змін відображення
+4. Зменшення quantity при продажі — out of scope unless already tied to SOLD status
+
+**Plans:** TBD (`/gsd-plan-phase 13`)
+
+---
+
+#### Phase 14: Admin Chat Context Menu
+
+**Goal:** Швидкий lifecycle чату зі списку без відкриття треда.
+
+**Requirements:** ADM-CHAT-01
+
+**Success criteria:**
+
+1. ПКМ по рядку чату в inbox відкриває DropdownMenu/context menu
+2. Пункти: архівувати / розархівувати (за статусом) / видалити з підтвердженням
+3. Ті самі server actions що ⋮ у `chat-thread.tsx`
+4. Лівий клік лишається відкриттям треда; меню не ламає mobile long-press де недоступно
+
+**Plans:** TBD (`/gsd-plan-phase 14`)
+
+---
+
+#### Phase 15: Storefront Catalog Polish
+
+**Goal:** Чистіший каталог — без порожніх категорій, badge counts, пагінація 16.
+
+**Requirements:** CAT-04, CAT-05, CAT-06
+
+**Success criteria:**
+
+1. Категорії з 0 AVAILABLE товарів не в header, homepage grid, catalog sidebar
+2. Count у sidebar — shadcn Badge
+3. `/katalog` і category pages: max 16 products, pagination UI як admin tovary
+4. URL param `storinka` (або існуючий) синхронізований з nuqs
+5. e2e або Vitest: empty category hidden; pagination changes page
+
+**Plans:** TBD (`/gsd-plan-phase 15`)
+
+---
+
+#### Phase 16: Shadcn Select Audit & Verify
+
+**Goal:** Консистентні shadcn контроли; верифікація gallery і auto slug.
+
+**Requirements:** UX-01, POL-01, POL-02
+
+**Success criteria:**
+
+1. Немає native `<select>` у `src/components` та admin forms (grep clean)
+2. `catalog-toolbar` sort — shadcn Select
+3. PDP gallery: multi-image, dialog, mobile — manual checklist pass
+4. Create product/category: slug auto; create UI без slug input
+5. `npm run build` і тести green
+
+**Plans:** TBD (`/gsd-plan-phase 16`)
+
+---
+
 <details>
 <summary>✅ v1.1 Engagement & Fixes (Phases 7–10) — SHIPPED 2026-05-17</summary>
 
-- [x] Phase 7: Catalog Filters Fix (4/4 plans) — completed 2026-05-17
-- [x] Phase 8: Admin UX & Chat Lifecycle (7/7 plans) — completed 2026-05-17
-- [x] Phase 9: Wishlist (5/5 plans) — completed 2026-05-17
-- [x] Phase 10: Category Showcase Images (4/4 plans) — completed 2026-05-17
+- [x] Phase 7: Catalog Filters Fix (4/4 plans)
+- [x] Phase 8: Admin UX & Chat Lifecycle (7/7 plans)
+- [x] Phase 9: Wishlist (5/5 plans)
+- [x] Phase 10: Category Showcase Images (4/4 plans)
+
+See [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md).
 
 </details>
 
 <details>
 <summary>✅ v1.0 Appliance Store MVP (Phases 1–6) — SHIPPED 2026-05-17</summary>
 
-See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) for full phase breakdown.
+See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md).
 
 </details>
 
@@ -28,8 +137,9 @@ See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) for full phase brea
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
+| v1.2 Polish & UX | 6 (11–16) | 0 | 🚧 Planning |
 | v1.1 Engagement & Fixes | 4 | 20 | ✅ Shipped 2026-05-17 |
 | v1.0 MVP | 6 | 36 | ✅ Shipped 2026-05-17 |
 
 ---
-*Roadmap updated: 2026-05-17 — v1.1 shipped; awaiting next milestone*
+*Roadmap updated: 2026-05-18 — v1.2 milestone initialized*
