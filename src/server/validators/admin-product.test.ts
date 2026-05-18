@@ -2,8 +2,23 @@ import { describe, expect, it } from "vitest";
 import {
   listAdminProductsSchema,
   productImageInputSchema,
+  updateProductSchema,
   upsertProductSchema,
 } from "./admin-product";
+
+const validUpsert = {
+  title: "Холодильник Samsung",
+  brand: "Samsung",
+  categoryId: "clxxxxxxxxxxxxxxxxxxxxxxxxx",
+  condition: "GOOD" as const,
+  status: "DRAFT" as const,
+  priceUah: 4500,
+};
+
+const validUpdate = {
+  ...validUpsert,
+  id: "clxxxxxxxxxxxxxxxxxxxxxxxy",
+};
 
 describe("upsertProductSchema", () => {
   it("accepts valid product input with price in UAH", () => {
@@ -29,6 +44,36 @@ describe("upsertProductSchema", () => {
         status: "SOLD",
         priceUah: 100,
       }),
+    ).toThrow();
+  });
+
+  it("accepts quantity 1 on create", () => {
+    const result = upsertProductSchema.parse({ ...validUpsert, quantity: 1 });
+    expect(result.quantity).toBe(1);
+  });
+
+  it("rejects quantity 0 on create", () => {
+    expect(() =>
+      upsertProductSchema.parse({ ...validUpsert, quantity: 0 }),
+    ).toThrow();
+  });
+
+  it("rejects quantity over 999 on create", () => {
+    expect(() =>
+      upsertProductSchema.parse({ ...validUpsert, quantity: 1000 }),
+    ).toThrow();
+  });
+});
+
+describe("updateProductSchema", () => {
+  it("accepts quantity 0 on edit", () => {
+    const result = updateProductSchema.parse({ ...validUpdate, quantity: 0 });
+    expect(result.quantity).toBe(0);
+  });
+
+  it("rejects quantity over 999 on edit", () => {
+    expect(() =>
+      updateProductSchema.parse({ ...validUpdate, quantity: 1000 }),
     ).toThrow();
   });
 });
