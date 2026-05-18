@@ -73,11 +73,16 @@ export async function seedProducts() {
   }
 
   const catalogSlugs = catalog.map((item) => item.slug);
+  const orphanProductWhere = {
+    slug: { notIn: catalogSlugs },
+    status: { in: ["AVAILABLE", "DRAFT"] as const },
+  };
+
+  await prisma.cartItem.deleteMany({
+    where: { product: orphanProductWhere },
+  });
   await prisma.product.deleteMany({
-    where: {
-      slug: { notIn: catalogSlugs },
-      status: { in: ["AVAILABLE", "DRAFT"] },
-    },
+    where: orphanProductWhere,
   });
 
   const categoryProductIndex = new Map<string, number>();

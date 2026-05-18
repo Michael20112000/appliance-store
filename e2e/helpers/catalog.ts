@@ -13,8 +13,12 @@ export async function openFirstCatalogProduct(page: Page) {
 export async function addCurrentProductToCart(page: Page) {
   const addButton = page.getByRole("button", { name: /Додати в кошик/i });
   await addButton.click();
-  await expect(addButton).toBeEnabled({ timeout: 10_000 });
 
-  const cartLink = page.getByRole("link", { name: /Кошик/i });
-  await expect(cartLink).toContainText(/[1-9]/, { timeout: 15_000 });
+  await expect(
+    page.getByRole("button", { name: /уже в кошику/i }),
+  ).toBeVisible({ timeout: 10_000 });
+
+  await expect(
+    page.getByRole("link", { name: /Кошик,\s*\d+ товар/i }),
+  ).toBeVisible({ timeout: 15_000 });
 }
