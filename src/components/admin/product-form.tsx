@@ -79,6 +79,7 @@ export function ProductForm({
         defaultValues?.status ??
         (currentStatus === "AVAILABLE" ? "AVAILABLE" : "DRAFT"),
       priceUah: defaultValues?.priceUah ?? 0,
+      quantity: defaultValues?.quantity ?? 1,
     },
   });
 
@@ -219,8 +220,32 @@ export function ProductForm({
             ) : null}
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="quantity">Кількість</Label>
+            <Input
+              id="quantity"
+              type="number"
+              min={mode === "create" ? 1 : 0}
+              max={999}
+              step={1}
+              inputMode="numeric"
+              className="tabular-nums"
+              {...form.register("quantity", { valueAsNumber: true })}
+            />
+            {mode === "create" ? (
+              <p className="text-xs text-muted-foreground">
+                Скільки однакових одиниць у цьому оголошенні.
+              </p>
+            ) : null}
+            {form.formState.errors.quantity ? (
+              <p className="text-sm text-destructive">
+                {form.formState.errors.quantity.message}
+              </p>
+            ) : null}
+          </div>
+
           {!isSold ? (
-            <div className="space-y-2">
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="status">Статус</Label>
               <select
                 id="status"
