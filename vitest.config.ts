@@ -9,7 +9,12 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts", "prisma/**/*.test.ts"],
+    include: [
+      "src/**/*.test.ts",
+      "src/**/*.test.tsx",
+      "prisma/**/*.test.ts",
+    ],
+    environmentMatchGlobs: [["src/**/*.test.tsx", "jsdom"]],
   },
   resolve: {
     alias: {
