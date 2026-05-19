@@ -24,7 +24,7 @@
 3. API повертає помилку при спробі недопустимого переходу
 4. Vitest покриває матрицю delivery × status
 
-**Plans:** 1/1
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] `22-01-PLAN.md` — delivery-aware status lib, server enforcement, admin selects + Vitest
