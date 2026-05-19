@@ -117,20 +117,26 @@ Plans:
 
 #### Phase 21: Bugfix stabilization
 
-**Goal:** Закрити відкриті баги оператора на `main` хвилями — без ad-hoc правок у чаті.
+**Goal:** Verify-only close: підтвердити стабільність `main` після waves 1–2 intake (BUG-12…17 вже на гілці); без re-implement.
 
-**Requirements:** (per intake) — див. `.planning/BUGFIX-WORKFLOW.md`
+**Requirements:** (per intake) — див. `.planning/BUGFIX-WORKFLOW.md`, `bugfix-intake-2026-05-19.md`
 
 **Success criteria:**
 
-1. Intake wave 1 заповнений (`bugfix-intake-*.md`)
-2. `21-01-PLAN.md` виконаний; усі blocker/major з wave 1 → done
-3. CI / `npm run build` green
-4. Manual checklist для змінених surface
+1. Intake waves 1–2 (`bugfix-intake-2026-05-19.md`) залишаються `done` після verify
+2. `21-01-PLAN.md` виконаний; CI green (`npm run build`, `npm test`)
+3. `21-MANUAL-CHECKLIST.md` пройдений (BUG-12…17 + guest + multi-qty)
+4. Intake `status: completed`; код не чіпається без регресії (мінімальний fix лише Task 4)
 
-**Status:** 🚧 Planning — awaiting intake
+**Status:** 📋 Planned — ready to execute
 
-**Plans:** TBD after `/gsd-plan-phase 21`
+**Plans:**
+
+**Wave 1** *(no dependencies)*
+
+| Plan | Objective |
+|------|-----------|
+| 21-01 | Verify-only: automated CI, static audit, manual checklist, optional regression fix |
 
 ---
 

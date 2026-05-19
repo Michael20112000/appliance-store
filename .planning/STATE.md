@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.4-stabilization
 milestone_name: Bugfix stabilization
-status: verifying
+status: executing
 stopped_at: Phase 21 context gathered
-last_updated: "2026-05-19T14:04:04.087Z"
-last_activity: "2026-05-19 — waves 1–2 intake done; operator: keep main stable"
+last_updated: "2026-05-19T14:11:40.004Z"
+last_activity: 2026-05-19 -- Phase 21 planning complete
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 7
+  total_plans: 8
   completed_plans: 7
   percent: 60
 ---
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 ## Current Position
 
-Phase: 21 (bugfix-stabilization) — PLANNING  
-Plan: 0 of TBD  
-Status: Context ready — verify-only plan next  
-Last activity: 2026-05-19 — waves 1–2 intake done; operator: keep main stable
+Phase: 21 (bugfix-stabilization) — PLANNED  
+Plan: 1 of 1 (21-01 verify-only)  
+Status: Ready to execute
+Last activity: 2026-05-19 -- Phase 21 planning complete
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -53,8 +53,7 @@ Last activity: 2026-05-19 — waves 1–2 intake done; operator: keep main stabl
 
 ### Pending Todos
 
-- `/gsd-plan-phase 21` — verify-only `21-01-PLAN` + `21-MANUAL-CHECKLIST.md`
-- Then: `/gsd-execute-phase 21` (smoke only unless regression found)
+- `/gsd-execute-phase 21` — CI + `21-MANUAL-CHECKLIST.md` (smoke only unless regression)
 
 ### Blockers/Concerns
 
@@ -76,6 +75,6 @@ Resume file: .planning/phases/21-bugfix-stabilization/21-CONTEXT.md
 
 ## Operator Next Steps
 
-1. `/gsd-plan-phase 21` — verify-only plan (no feature work unless regression)
-2. `/gsd-execute-phase 21` — CI + manual checklist
+1. `/gsd-execute-phase 21` — CI + manual checklist
+2. `/gsd-verify-work` — conversational UAT after execute
 3. Нові баги пізніше → новий `bugfix-intake-YYYY-MM-DD.md`, не блокує закриття 21
