@@ -18,7 +18,7 @@ export default async function AdminLayout({
   const unreadChatCount = await countUnreadForAdmin();
 
   return (
-    <div className="min-h-dvh bg-muted">
+    <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-muted">
       <AdminSidebarShell unreadChatCount={unreadChatCount}>
         {children}
       </AdminSidebarShell>
