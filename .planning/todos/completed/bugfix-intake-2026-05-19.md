@@ -1,6 +1,6 @@
 ---
 title: Bugfix intake — 2026-05-19
-status: open
+status: completed
 milestone: v1.4-stabilization
 source: operator QA
 phase: 21
