@@ -43,7 +43,10 @@ Plans:
 2. Список категорій має колонку «Товари» → «Переглянути» з правильним `categoryId`
 3. Row-click edit категорії не зламаний
 
-**Plans:** 0/0
+**Plans:** 0/1
+
+Plans:
+- [ ] `23-01-PLAN.md` — edit toolbar icons (ADM-CAT-03), list «Товари» link column + Vitest (ADM-CAT-04)
 
 ---
 
