@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Incremental polish & operator UX
-status: ready_to_plan
-stopped_at: Phase 24 complete (1/1) — ready to discuss Phase 25
-last_updated: 2026-05-19T16:02:19.878Z
-last_activity: 2026-05-19 -- Phase 24 execution started
+status: planning
+stopped_at: Phase 25 context gathered
+last_updated: "2026-05-19T16:05:51.638Z"
+last_activity: 2026-05-19
 progress:
   total_phases: 6
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 3
   completed_plans: 3
-  percent: 33
+  percent: 50
 ---
 
 # Project State
@@ -78,9 +78,9 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 
 ## Session Continuity
 
-Last session: 2026-05-19T15:33:37.763Z
-Stopped at: Phase 24 context gathered
-Resume file: .planning/phases/24-product-edit-auto-save-ux/24-CONTEXT.md
+Last session: 2026-05-19T16:05:51.628Z
+Stopped at: Phase 25 context gathered
+Resume file: .planning/phases/25-homepage-empty-categories/25-CONTEXT.md
 
 ## Operator Next Steps
 
