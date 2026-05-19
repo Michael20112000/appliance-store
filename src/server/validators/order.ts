@@ -1,9 +1,5 @@
 import { z } from "zod";
-
-const uaPhoneSchema = z
-  .string()
-  .trim()
-  .regex(/^\d{10,15}$/, "Вкажіть номер телефону — лише цифри, від 10 до 15");
+import { uaPhoneSchema } from "./phone";
 
 export const deliveryTypeSchema = z.enum(["PICKUP", "LVIV_DELIVERY"]);
 
