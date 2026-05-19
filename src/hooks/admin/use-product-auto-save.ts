@@ -44,6 +44,7 @@ export function useProductAutoSave({
     undefined,
   );
   const debounceRef = useRef(createDebounce(DEBOUNCE_MS));
+  const saveChainRef = useRef(Promise.resolve());
   const watchedValues = useWatch({ control });
   const watchedRef = useRef(watchedValues);
   watchedRef.current = watchedValues;
@@ -63,37 +64,46 @@ export function useProductAutoSave({
     };
   }, [initialValues]);
 
-  const runSave = useCallback(async () => {
+  const runSave = useCallback(() => {
     if (!enabled) return;
 
-    const parsed = editProductFormSchema.safeParse(watchedRef.current);
-    if (!parsed.success) return;
+    saveChainRef.current = saveChainRef.current
+      .then(async () => {
+        const parsed = editProductFormSchema.safeParse(watchedRef.current);
+        if (!parsed.success) return;
 
-    const serialized = JSON.stringify(parsed.data);
-    if (serialized === snapshotRef.current) return;
+        const serialized = JSON.stringify(parsed.data);
+        if (serialized === snapshotRef.current) return;
 
-    const generation = ++generationRef.current;
-    setStatus("saving");
+        const generation = ++generationRef.current;
+        setStatus("saving");
 
-    const result = await updateProductAction({
-      id: productId,
-      ...parsed.data,
-    });
+        const result = await updateProductAction({
+          id: productId,
+          ...parsed.data,
+        });
 
-    if (generation !== generationRef.current) return;
+        if (generation !== generationRef.current) return;
 
-    if (!result.ok) {
-      toast.error(errorMessages[result.error] ?? errorMessages.UNKNOWN);
-      setStatus("idle");
-      return;
-    }
+        if (!result.ok) {
+          toast.error(errorMessages[result.error] ?? errorMessages.UNKNOWN);
+          setStatus("idle");
+          return;
+        }
 
-    snapshotRef.current = serialized;
-    setStatus("saved");
-    if (savedTimeoutRef.current) {
-      clearTimeout(savedTimeoutRef.current);
-    }
-    savedTimeoutRef.current = setTimeout(() => setStatus("idle"), SAVED_DISPLAY_MS);
+        snapshotRef.current = serialized;
+        setStatus("saved");
+        if (savedTimeoutRef.current) {
+          clearTimeout(savedTimeoutRef.current);
+        }
+        savedTimeoutRef.current = setTimeout(
+          () => setStatus("idle"),
+          SAVED_DISPLAY_MS,
+        );
+      })
+      .catch(() => {
+        setStatus("idle");
+      });
   }, [enabled, productId]);
 
   const serializedWatch = JSON.stringify(watchedValues);
@@ -101,7 +111,7 @@ export function useProductAutoSave({
   useEffect(() => {
     if (!enabled) return;
     debounceRef.current(() => {
-      void runSave();
+      runSave();
     });
   }, [enabled, serializedWatch, runSave]);
 

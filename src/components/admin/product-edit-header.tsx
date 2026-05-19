@@ -7,12 +7,14 @@ type ProductEditHeaderProps = {
   categoryId: string | null;
   saveStatus: SaveStatus;
   deleteButton: React.ReactNode;
+  onNavigateBack?: () => void;
 };
 
 export function ProductEditHeader({
   categoryId,
   saveStatus,
   deleteButton,
+  onNavigateBack,
 }: ProductEditHeaderProps) {
   const backHref = categoryId
     ? adminProductsUrl({ categoryId })
@@ -22,6 +24,7 @@ export function ProductEditHeader({
     <header className="space-y-3">
       <Link
         href={backHref}
+        onClick={onNavigateBack}
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" aria-hidden />

@@ -111,7 +111,7 @@ describe("useProductAutoSave", () => {
     expect(updateProductAction).toHaveBeenCalledTimes(1);
   });
 
-  it("ignores stale responses", async () => {
+  it("serializes overlapping saves so later requests run after earlier ones finish", async () => {
     let resolveFirst: (value: { ok: true }) => void = () => {};
     const firstPromise = new Promise<{ ok: true }>((resolve) => {
       resolveFirst = resolve;
@@ -130,6 +130,7 @@ describe("useProductAutoSave", () => {
       vi.advanceTimersByTime(500);
       await Promise.resolve();
     });
+    expect(updateProductAction).toHaveBeenCalledTimes(1);
 
     await act(async () => {
       result.current.form.setValue("title", "Друга зміна");
@@ -138,23 +139,17 @@ describe("useProductAutoSave", () => {
       vi.advanceTimersByTime(500);
       await Promise.resolve();
     });
-
-    expect(updateProductAction).toHaveBeenCalledTimes(2);
+    expect(updateProductAction).toHaveBeenCalledTimes(1);
 
     await act(async () => {
       resolveFirst({ ok: true });
       await Promise.resolve();
     });
 
-    await act(async () => {
-      result.current.form.setValue("title", "Друга зміна");
-    });
-    await act(async () => {
-      vi.advanceTimersByTime(500);
-      await Promise.resolve();
-    });
-
     expect(updateProductAction).toHaveBeenCalledTimes(2);
+    expect(vi.mocked(updateProductAction).mock.calls[1]?.[0]).toMatchObject({
+      title: "Друга зміна",
+    });
   });
 
   it("flush runs save before debounce elapses", async () => {

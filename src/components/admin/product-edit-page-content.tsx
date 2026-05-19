@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ProductCondition } from "@/generated/prisma/client";
 import type { SaveStatus } from "@/hooks/admin/use-product-auto-save";
 import type { UpsertProductInput } from "@/server/validators/admin-product";
@@ -45,6 +45,7 @@ export function ProductEditPageContent({
   images,
 }: ProductEditPageContentProps) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const flushRef = useRef<(() => void) | null>(null);
 
   const formDefaults: UpsertProductInput = {
     title: defaultValues.title,
@@ -61,6 +62,7 @@ export function ProductEditPageContent({
       <ProductEditHeader
         categoryId={categoryId}
         saveStatus={saveStatus}
+        onNavigateBack={() => flushRef.current?.()}
         deleteButton={
           <ProductEditDeleteButton
             productId={productId}
@@ -75,6 +77,9 @@ export function ProductEditPageContent({
         defaultValues={formDefaults}
         images={images}
         onSaveStatusChange={setSaveStatus}
+        onAutoSaveFlushReady={(flush) => {
+          flushRef.current = flush;
+        }}
       />
     </div>
   );

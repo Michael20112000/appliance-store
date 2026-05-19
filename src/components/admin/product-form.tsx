@@ -60,6 +60,7 @@ type ProductFormProps = {
   defaultValues?: Partial<UpsertProductInput>;
   images?: ProductImageRow[];
   onSaveStatusChange?: (status: SaveStatus) => void;
+  onAutoSaveFlushReady?: (flush: () => void) => void;
 };
 
 export function ProductForm({
@@ -69,6 +70,7 @@ export function ProductForm({
   defaultValues,
   images = [],
   onSaveStatusChange,
+  onAutoSaveFlushReady,
 }: ProductFormProps) {
   const [error, setError] = useState<string | null>(null);
   const productTitle = defaultValues?.title ?? "";
@@ -102,6 +104,12 @@ export function ProductForm({
       onSaveStatusChange?.(autoSave.status);
     }
   }, [autoSave.status, mode, onSaveStatusChange]);
+
+  useEffect(() => {
+    if (mode === "edit") {
+      onAutoSaveFlushReady?.(autoSave.flush);
+    }
+  }, [autoSave.flush, mode, onAutoSaveFlushReady]);
 
   const isSubmitting = form.formState.isSubmitting;
 
