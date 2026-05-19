@@ -121,12 +121,12 @@ Plans:
 2. Smoke: guest checkout, admin orders, purge empty state
 3. Intake v1.5 рядки → done після verify фаз 22–26
 
-**Plans:** 0/3 plans
+**Plans:** 3/3 plans complete
 
 Plans:
-- [ ] `27-01-PLAN.md` — UAT artifacts: 27/19 MANUAL-CHECKLIST, 26-HUMAN-UAT, 27-UAT-REPORT stub
-- [ ] `27-02-PLAN.md` — Automated gate + operator manual UAT (purge, smoke, 25/26 human, intake BUG-18…23)
-- [ ] `27-03-PLAN.md` — Finalize report, UAT-01 complete, phase.complete, archive intake
+- [x] `27-01-PLAN.md` — UAT artifacts: 27/19 MANUAL-CHECKLIST, 26-HUMAN-UAT, 27-UAT-REPORT stub
+- [x] `27-02-PLAN.md` — Automated gate + operator manual UAT (purge, smoke, 25/26 human, intake BUG-18…23)
+- [x] `27-03-PLAN.md` — Finalize report, UAT-01 complete, phase.complete, archive intake
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 phase: 25-homepage-empty-categories
-status: human_needed
+status: passed
 verified: 2026-05-19
 score: 8/8
 requirements:
@@ -9,7 +9,7 @@ requirements:
 
 # Phase 25 Verification
 
-**Status:** human_needed — automated must-haves pass; manual parity checks remain.
+**Status:** passed — automated must-haves and `25-HUMAN-UAT.md` resolved in phase 27.
 
 ## Must-Have Verification
 

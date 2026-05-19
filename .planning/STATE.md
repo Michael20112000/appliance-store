@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Incremental polish & operator UX
-status: executing
-stopped_at: Phase 27 context gathered
-last_updated: "2026-05-19T17:36:54.756Z"
+status: milestone_complete
+stopped_at: Milestone complete (Phase 27 was final phase)
+last_updated: 2026-05-19T18:00:27.082Z
 last_activity: 2026-05-19 -- Phase 27 execution started
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 8
-  completed_plans: 5
-  percent: 63
+  completed_plans: 8
+  percent: 83
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 27 — human-uat-closure
+**Current focus:** Milestone complete
 
 ## Current Position
 
-Phase: 27 (human-uat-closure) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 27
-Last activity: 2026-05-19 -- Phase 27 execution started
+Phase: 27
+Plan: Not started
+Status: Milestone complete
+Last activity: 2026-05-19
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 

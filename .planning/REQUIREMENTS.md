@@ -33,7 +33,7 @@
 
 ### Quality — UAT
 
-- [ ] **UAT-01**: Пройдено manual UAT для Phase 19 (purge + empty DB) і зафіксовано результат; за потреби `/gsd-verify-work` для критичних storefront/admin flows
+- [x] **UAT-01**: Пройдено manual UAT для Phase 19 (purge + empty DB) і зафіксовано результат; за потреби `/gsd-verify-work` для критичних storefront/admin flows
 
 ## Future Requirements (post–v1.5)
 
@@ -74,7 +74,7 @@
 | FOOT-02 | Phase 26 | Complete |
 | FOOT-03 | Phase 26 | Complete |
 | FOOT-04 | Phase 26 | Complete |
-| UAT-01 | Phase 27 | Pending |
+| UAT-01 | Phase 27 | Complete |
 
 **Coverage:**
 

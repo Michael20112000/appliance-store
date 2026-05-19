@@ -1,31 +1,39 @@
 ---
 phase: 27-human-uat-closure
-date: TBD
-db_baseline: TBD
-uat01_status: pending
-operator: TBD
+date: 2026-05-19
+db_baseline: purge + optional seed
+uat01_status: passed
+operator: Michael Ivashko
 ---
 
 # 27-UAT-REPORT — UAT-01 closure (v1.5)
 
 ## Executive summary
 
-TBD — pass/fail for UAT-01 after operator session (plan 27-02).
+**UAT-01: PASS.** Operator approved manual session 2026-05-19. Automated gate green except documented P2 `seed.test.ts`. No open P0. v1.5 intake BUG-18…23 verified. Legacy phases 04, 07, 18 remain deferred (D-03).
 
 ## DB baseline
 
 | Item | Value |
 |------|-------|
-| Purge run | Pending — operator Task 2 (19-MANUAL-CHECKLIST) |
-| Seed run | Not yet (optional after purge or before catalog smoke) |
-| DATABASE_URL host (redacted) | See `.env` — dev Neon branch (operator confirms not production) |
-| Notes | Automated gate run 2026-05-19 before manual purge block |
+| Purge run | `CONFIRM_DB_PURGE=yes npm run db:purge` — pass |
+| Seed run | `npx prisma db seed` (after purge, for catalog/smoke) — pass |
+| DATABASE_URL host (redacted) | Dev Neon branch (operator confirmed) |
+| Notes | Footer contacts may persist after purge per D-08 (StorePhone/Email/Address/CallbackRequest) |
 
 ## §19 purge (19-MANUAL-CHECKLIST)
 
 | Route / step | Result |
 |--------------|--------|
-| TBD | TBD |
+| Prerequisites (dev, admin login) | Pass |
+| Purge command | Pass |
+| `/` — no `#kategorii` | Pass |
+| `/katalog` | Pass |
+| `/katalog/[slug]` | Pass |
+| `/admin/kategorii` — empty | Pass |
+| `/admin/tovary` — empty | Pass |
+| `/koszyk` guest — empty cart, no login redirect | Pass |
+| `/admin` dashboard — no orders | Pass |
 
 ## §Automated gate
 
@@ -39,36 +47,38 @@ TBD — pass/fail for UAT-01 after operator session (plan 27-02).
 
 ### Guest checkout (D-16)
 
-TBD
+Pass — guest cart → `/koszyk` → `/zamovlennia` → confirmation with order number.
 
 ### Admin orders (D-17)
 
-TBD
+Pass — pickup: no «Доставляється»; Lviv delivery: no «Готово до самовивозу»; illegal transitions not persisted.
 
 ## §v1.5 phases 22–26
 
 | Phase | Requirement | Result |
 |-------|-------------|--------|
-| 22 | ORD-03/04 delivery-aware status | TBD |
-| 23 | Admin category polish | TBD |
-| 24 | Product edit UX | TBD (24-HUMAN-UAT resolved) |
-| 25 | HOME-03 | TBD |
-| 26 | FOOT-01…04 | TBD |
+| 22 | ORD-03/04 delivery-aware status | Pass |
+| 23 | ADM-CAT-03/04 category polish | Pass |
+| 24 | ADM-PRD-05 product edit UX | Pass (24-HUMAN-UAT resolved) |
+| 25 | HOME-03 empty categories | Pass (25-HUMAN-UAT resolved) |
+| 26 | FOOT-01…04 footer/mobile | Pass (26-HUMAN-UAT resolved) |
 
 ## §Intake BUG-18…23
 
 | BUG | Status | Notes |
 |-----|--------|-------|
-| BUG-18 | TBD | |
-| BUG-19 | TBD | |
-| BUG-20 | TBD | |
-| BUG-21 | TBD | |
-| BUG-22 | TBD | |
-| BUG-23 | TBD | |
+| BUG-18 | verified | Admin order status matrix |
+| BUG-19 | verified | Category edit toolbar icons |
+| BUG-20 | verified | Product edit UX (phase 24) |
+| BUG-21 | verified | Categories «Товари» column |
+| BUG-22 | verified | Homepage categories HOME-03 |
+| BUG-23 | verified | Footer + mobile drawer FOOT |
 
 ## §P1 fixes applied
 
-TBD — files changed in 27-02 or «none».
+| File | Fix |
+|------|-----|
+| `src/lib/db.ts` | Recreate stale dev `PrismaClient` singleton when phase-26 delegates (`storePhone`, etc.) missing — fixed footer `findMany` crash after generate/HMR |
 
 ## §P2 deferred
 
@@ -82,7 +92,7 @@ TBD — files changed in 27-02 or «none».
 
 | Field | Value |
 |-------|-------|
-| Date | TBD |
-| Operator | TBD |
-| UAT-01 recommendation | Ship / Hold / Blocked |
-| Open P0 | TBD |
+| Date | 2026-05-19 |
+| Operator | Michael Ivashko |
+| UAT-01 recommendation | **Ship** |
+| Open P0 | None |
