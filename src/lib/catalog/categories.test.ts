@@ -13,4 +13,16 @@ describe("categoriesWithAvailableProducts", () => {
       { slug: "c", productCount: 1 },
     ]);
   });
+
+  it("preserves input order after filtering", () => {
+    const input = [
+      { slug: "first", productCount: 1 },
+      { slug: "empty", productCount: 0 },
+      { slug: "last", productCount: 3 },
+    ];
+    expect(categoriesWithAvailableProducts(input).map((c) => c.slug)).toEqual([
+      "first",
+      "last",
+    ]);
+  });
 });
