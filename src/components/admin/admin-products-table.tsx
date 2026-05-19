@@ -8,6 +8,7 @@ import {
   getAriaSort,
   nextSortDir,
 } from "@/components/admin/admin-sortable-table-header";
+import { ProductListDeleteButton } from "@/components/admin/product-list-delete-button";
 import { ProductListStatusSelect } from "@/components/admin/product-list-status-select";
 import {
   adminClickableRowClassName,
@@ -116,6 +117,9 @@ export function AdminProductsTable({
                 />
               </th>
             ))}
+            <th className="px-3 py-2 font-medium w-[4.5rem] whitespace-nowrap">
+              Дії
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -175,6 +179,9 @@ export function AdminProductsTable({
                     productId={product.id}
                     status={product.status}
                   />
+                </td>
+                <td className="px-3 py-2 text-right">
+                  <ProductListDeleteButton productId={product.id} />
                 </td>
               </tr>
             );
