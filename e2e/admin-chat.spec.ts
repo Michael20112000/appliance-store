@@ -73,3 +73,34 @@ test("left-click selects conversation and opens composer", async ({ page }) => {
     timeout: 15_000,
   });
 });
+
+test("admin chat inbox has no document scroll on desktop", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await loginAsAdmin(page);
+  await page.goto("/admin/chaty");
+
+  await expect(
+    page.getByRole("heading", { name: "Чати", level: 1 }),
+  ).toBeVisible();
+
+  const assertNoDocumentScroll = async () => {
+    const hasDocumentScroll = await page.evaluate(() => {
+      const root = document.documentElement;
+      return root.scrollHeight > root.clientHeight + 2;
+    });
+    expect(hasDocumentScroll).toBe(false);
+  };
+
+  await assertNoDocumentScroll();
+
+  const firstConversation = page.getByRole("option").first();
+  if (await firstConversation.isVisible()) {
+    await firstConversation.click();
+    await expect(page.locator("#admin-chat-message")).toBeVisible({
+      timeout: 15_000,
+    });
+    await assertNoDocumentScroll();
+  }
+});
