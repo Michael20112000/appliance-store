@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- 🚧 **v1.5 Incremental polish & operator UX** — Phases 22–27 (planning) — [requirements](REQUIREMENTS.md)
 - ✅ **v1.4 Bugfix stabilization** — Phase 21 (shipped 2026-05-19) — [archive](milestones/v1.4-ROADMAP.md) · [requirements](milestones/v1.4-REQUIREMENTS.md)
 - ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19) — [archive](milestones/v1.3-ROADMAP.md) · [requirements](milestones/v1.3-REQUIREMENTS.md)
 - ✅ **v1.2 Polish & UX** — Phases 11–16 (shipped 2026-05-19) — [archive](milestones/v1.2-ROADMAP.md) · [requirements](milestones/v1.2-REQUIREMENTS.md)
@@ -10,59 +11,110 @@
 
 ## Phases
 
-<details>
-<summary>✅ v1.4 Bugfix stabilization (Phase 21) — SHIPPED 2026-05-19</summary>
+### Phase 22: Delivery-aware order status
 
-- [x] Phase 21: Bugfix stabilization (1/1 plan) — verify-only, BUG-12…17
+**Goal:** Адмін не може випадково поставити статус доставки для самовивозу і навпаки.
 
-See [milestones/v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md).
+**Requirements:** ORD-03, ORD-04
 
-</details>
+**Success criteria:**
 
-<details>
-<summary>✅ v1.3 Fixes & Admin UX (Phases 17–20) — SHIPPED 2026-05-19</summary>
+1. Для замовлення `PICKUP` у select немає `OUT_FOR_DELIVERY`
+2. Для замовлення `LVIV_DELIVERY` у select немає `READY_FOR_PICKUP`
+3. API повертає помилку при спробі недопустимого переходу
+4. Vitest покриває матрицю delivery × status
 
-- [x] Phase 17: Admin Chat Inbox Layout (3/3 plans)
-- [x] Phase 18: Product Delete from List (2/2 plans)
-- [x] Phase 19: Database Purge & Empty States (2/2 plans)
-- [x] Phase 20: Guest Checkout (shipped inline)
+**Plans:** 0/0
 
-See [milestones/v1.3-ROADMAP.md](milestones/v1.3-ROADMAP.md).
+---
 
-</details>
+### Phase 23: Admin category polish
 
-<details>
-<summary>✅ v1.2 Polish & UX (Phases 11–16) — SHIPPED 2026-05-19</summary>
+**Goal:** Швидша навігація між категоріями і товарами в адмінці.
 
-- [x] Phase 11: Admin List Row UX (5/5 plans)
-- [x] Phase 12: Admin Tables — Status & Sort (3/3 plans)
-- [x] Phase 13: Product Stock Quantity (4/4 plans)
-- [x] Phase 14: Admin Chat Context Menu (3/3 plans)
-- [x] Phase 15: Storefront Catalog Polish (3/3 plans)
-- [x] Phase 16: Shadcn Select Audit & Verify (3/3 plans)
+**Requirements:** ADM-CAT-03, ADM-CAT-04
 
-See [milestones/v1.2-ROADMAP.md](milestones/v1.2-ROADMAP.md).
+**Success criteria:**
 
-</details>
+1. На edit category кнопки мають іконки (lucide) з aria-label
+2. Список категорій має колонку «Товари» → «Переглянути» з правильним `categoryId`
+3. Row-click edit категорії не зламаний
 
-<details>
-<summary>✅ v1.1 Engagement & Fixes (Phases 7–10) — SHIPPED 2026-05-17</summary>
+**Plans:** 0/0
 
-See [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md).
+---
 
-</details>
+### Phase 24: Product edit auto-save UX
 
-<details>
-<summary>✅ v1.0 Appliance Store MVP (Phases 1–6) — SHIPPED 2026-05-17</summary>
+**Goal:** Редагування товару без зайвих кліків «Зберегти» і з зрозумілою навігацією.
 
-See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md).
+**Requirements:** ADM-PRD-05
 
-</details>
+**Success criteria:**
+
+1. «Назад» над заголовком «Редагувати товар»
+2. Зміни полів зберігаються автоматично (throttle), toast при помилці
+3. Немає кнопок «Зберегти» і «На вітрині»
+4. Видалити — icon trash top-right, confirm dialog як на list
+
+**Plans:** 0/0
+
+---
+
+### Phase 25: Homepage empty categories
+
+**Goal:** Головна не показує порожні категорії — як навігація в хедері.
+
+**Requirements:** HOME-03
+
+**Success criteria:**
+
+1. `CategoryGrid` використовує той самий filter, що `categoriesWithAvailableProducts`
+2. Після purge/seed порожні категорії не рендеряться
+3. Build + існуючі catalog tests green
+
+**Plans:** 0/0
+
+---
+
+### Phase 26: Footer & mobile contact
+
+**Goal:** Покупець бачить контакти і може залишити номер для дзвінка з футера або мобільного меню.
+
+**Requirements:** FOOT-01, FOOT-02, FOOT-03, FOOT-04
+
+**Success criteria:**
+
+1. Footer: телефон (tel:), email (mailto:), форма callback
+2. Mobile drawer: під категоріями — та сама форма
+3. Mobile drawer: біля категорії показано `productCount` для available товарів
+4. Валідація телефону (UA) + success/error feedback
+
+**Plans:** 0/0
+
+---
+
+### Phase 27: Human UAT closure
+
+**Goal:** Закрити відкладений operator UAT після purge та критичні flows v1.5.
+
+**Requirements:** UAT-01
+
+**Success criteria:**
+
+1. `19-MANUAL-CHECKLIST.md` пройдено або задокументовано gap
+2. Smoke: guest checkout, admin orders, purge empty state
+3. Intake v1.5 рядки → done після verify фаз 22–26
+
+**Plans:** 0/0
+
+---
 
 ## Progress
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
+| v1.5 Incremental polish | 6 (22–27) | 0 | 🚧 Planning |
 | v1.4 Bugfix stabilization | 1 (21) | 1 | ✅ Shipped 2026-05-19 |
 | v1.3 Fixes & Admin UX | 4 (17–20) | 7 | ✅ Shipped 2026-05-19 |
 | v1.2 Polish & UX | 6 (11–16) | 21 | ✅ Shipped 2026-05-19 |
