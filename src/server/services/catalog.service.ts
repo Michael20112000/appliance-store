@@ -213,6 +213,7 @@ export async function listCategoriesWithProductCounts() {
   return {
     totalProductCount: counts.total,
     categories: categories.map((category) => ({
+      id: category.id,
       slug: category.slug,
       name: category.name,
       productCount: counts.byCategoryId[category.id] ?? 0,

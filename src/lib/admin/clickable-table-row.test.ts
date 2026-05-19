@@ -2,7 +2,14 @@ import { describe, expect, it, vi } from "vitest";
 import {
   adminClickableRowClassName,
   getAdminClickableRowProps,
+  suppressAdminRowNavigation,
 } from "./clickable-table-row";
+
+function mockTarget(closestResult: Element | null): HTMLElement {
+  return {
+    closest: vi.fn(() => closestResult),
+  } as unknown as HTMLElement;
+}
 
 describe("getAdminClickableRowProps", () => {
   const href = "/admin/tovary/test-id";
@@ -16,8 +23,23 @@ describe("getAdminClickableRowProps", () => {
 
   it("onClick invokes onNavigate with href", () => {
     const props = getAdminClickableRowProps({ href, onNavigate });
-    props.onClick();
+    props.onClick({ target: mockTarget(null) });
     expect(onNavigate).toHaveBeenCalledWith(href);
+  });
+
+  it("onClick skips navigation when suppressed", () => {
+    onNavigate.mockClear();
+    suppressAdminRowNavigation();
+    const props = getAdminClickableRowProps({ href, onNavigate });
+    props.onClick({ target: mockTarget(null) });
+    expect(onNavigate).not.toHaveBeenCalled();
+  });
+
+  it("onClick skips navigation when target is interactive", () => {
+    onNavigate.mockClear();
+    const props = getAdminClickableRowProps({ href, onNavigate });
+    props.onClick({ target: mockTarget({} as Element) });
+    expect(onNavigate).not.toHaveBeenCalled();
   });
 
   it("onKeyDown Enter invokes onNavigate with href", () => {

@@ -34,7 +34,7 @@ export async function StoreHeader() {
           </Link>
           {headerNavCategories.map((category) => (
             <Link
-              key={category.id}
+              key={category.slug}
               href={`/katalog/${category.slug}`}
               className={navLinkClass}
             >

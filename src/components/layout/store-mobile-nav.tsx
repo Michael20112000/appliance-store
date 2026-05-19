@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/sheet";
 
 type MobileNavCategory = {
-  id: string;
   slug: string;
   name: string;
+  productCount?: number;
 };
 
 export function StoreMobileNav({
@@ -45,7 +45,7 @@ export function StoreMobileNav({
         </SheetHeader>
         <ul className="mt-4 flex flex-col gap-2 pl-4">
           {categories.map((category) => (
-            <li key={category.id}>
+            <li key={category.slug}>
               <Link
                 href={`/katalog/${category.slug}`}
                 className="block min-h-11 py-2 text-sm"
