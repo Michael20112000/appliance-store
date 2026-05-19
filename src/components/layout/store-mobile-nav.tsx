@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MenuIcon } from "lucide-react";
+import { CallbackRequestForm } from "@/components/layout/callback-request-form";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -48,14 +51,22 @@ export function StoreMobileNav({
             <li key={category.slug}>
               <Link
                 href={`/katalog/${category.slug}`}
-                className="block min-h-11 py-2 text-sm"
+                className="flex min-h-11 w-full items-center justify-between gap-3 py-2 text-sm"
                 onClick={() => setOpen(false)}
               >
-                {category.name}
+                <span>{category.name}</span>
+                <Badge
+                  variant="secondary"
+                  className="shrink-0 tabular-nums text-muted-foreground"
+                >
+                  {category.productCount ?? 0}
+                </Badge>
               </Link>
             </li>
           ))}
         </ul>
+        <Separator className="my-6" />
+        <CallbackRequestForm compact idPrefix="drawer" />
       </SheetContent>
     </Sheet>
   );
