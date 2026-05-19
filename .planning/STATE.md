@@ -2,33 +2,33 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Polish & UX
-status: milestone_complete
-stopped_at: Milestone complete (Phase 16 was final phase)
-last_updated: 2026-05-19T08:58:13.064Z
-last_activity: 2026-05-19 -- Phase 16 execution started
+status: Awaiting next milestone
+stopped_at: Phase 16 planned — 3 plans
+last_updated: "2026-05-19T09:00:57.623Z"
+last_activity: 2026-05-19 — Milestone v1.2 completed and archived
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 21
-  completed_plans: 72
-  percent: 83
+  completed_plans: 21
+  percent: 100
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-18)
+See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** Awaiting next milestone
 
 ## Current Position
 
-Phase: 16
-Plan: Not started
-Status: Milestone complete
-Last activity: 2026-05-19
+Phase: Milestone v1.2 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-19 — Milestone v1.2 completed and archived
 
 ## Performance Metrics
 
@@ -90,14 +90,18 @@ Items acknowledged at milestone close:
 | verification | Phase 04 VERIFICATION human_needed | v1.0 | human_needed |
 | uat | Phase 04 HUMAN-UAT 2 pending scenarios | v1.0 | partial |
 | uat | Phase 07 HUMAN-UAT 5 pending scenarios | v1.1 | partial |
+| uat | Phase 10 HUMAN-UAT resolved (0 open) | v1.1 | resolved |
+| verification | Phase 12 VERIFICATION human_needed | v1.2 | human_needed |
+| verification | Phase 13 VERIFICATION human_needed | v1.2 | human_needed |
 | debug | mobile-chat-scroll | v1.0 | resolved (06-09) |
 
 ## Session Continuity
 
-Last session: 2026-05-19T12:00:00.000Z
-Stopped at: Phase 16 planned — 3 plans
-Resume file: .planning/phases/16-shadcn-select-audit-verify/16-01-PLAN.md
+Last session: 2026-05-19T09:00:57.623Z
+Stopped at: Milestone v1.2 shipped and archived
+Resume file: —
 
 ## Operator Next Steps
 
-- /gsd-execute-phase 16 — run Wave 1 plans (16-01, 16-02) then 16-03 verify gate
+- `/gsd-new-milestone` — define v1.3 or v2 scope
+- `/gsd-progress` — full project status

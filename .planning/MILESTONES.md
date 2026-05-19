@@ -1,5 +1,33 @@
 # Milestones
 
+## v1.2 Polish & UX (Shipped: 2026-05-19)
+
+**Phases completed:** 6 phases, 21 plans, 15 tasks
+
+**Key accomplishments:**
+
+- Shared admin clickable-row contract with Vitest coverage and a client hook for router navigation.
+- Products admin table refactored to shared clickable rows; «Додати товар» shows Plus icon.
+- Orders table: removed «Відкрити» column; body rows navigate to order detail via shared helper.
+- Categories list: client table with row-click edit route, no «Редагувати» column, Plus on create.
+- Dashboard «Останні замовлення» uses client table with row-click; «Відкрити» removed; manual checklist in place.
+- Product.quantity added to PostgreSQL with NOT NULL DEFAULT 1; migration applied and Prisma 7.8.0 client regenerated for downstream services.
+- Atomic checkout decrements `Product.quantity` with conditional SOLD; cart, catalog, and wishlist reject or hide zero-stock AVAILABLE listings without exposing quantity on storefront.
+- Zod enforces create quantity 1–999 and edit 0–999; admin create/update persist `quantity` and zero-stock AVAILABLE listings become SOLD.
+- Admin form and products table expose integer stock (Кількість); Playwright verifies create/list/checkout decrement while storefront catalog and PDP stay quantity-free.
+- Installed shadcn `context-menu` primitives for desktop inbox right-click menus.
+- Extracted archive/unarchive/delete lifecycle into shared modules; thread ⋮ unchanged for users.
+- Desktop ПКМ on `/admin/chaty` inbox rows opens lifecycle menu; mobile uses thread ⋮ only.
+- Shared catalog page size (16) and non-empty category filter wired into service layer and sitemap.
+- Storefront navigation and catalog sidebar hide empty categories and show shadcn Badge counts.
+- Catalog listing paginates 16 products per page with admin-style controls and URL clamp for `сторінка`.
+- Storefront catalog sort/brand and admin product-form selects migrated to shadcn Select with nuqs and RHF Controller.
+- Verification gate: zero native selects in components, slug UI compliant, build and tests green.
+
+**Known deferred items at close:** 8 (see STATE.md) — prior-milestone UAT/verification debt (phases 04, 06, 07) plus phases 12–13 human_needed verification docs.
+
+---
+
 ## v1.1 Engagement & Fixes (Shipped: 2026-05-17)
 
 **Phases completed:** 4 phases, 20 plans, 40 tasks
