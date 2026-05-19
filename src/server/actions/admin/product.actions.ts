@@ -132,3 +132,21 @@ export async function deleteProductAction(id: string) {
     return mapProductError(error);
   }
 }
+
+export async function deleteProductFromListAction(id: string) {
+  await requireAdmin();
+
+  if (!id || typeof id !== "string") {
+    return { ok: false as const, error: "UNKNOWN" as const };
+  }
+
+  try {
+    await deleteProduct(id);
+    revalidateAdminProductPaths();
+    revalidatePath("/katalog");
+    revalidatePath("/");
+    return { ok: true as const };
+  } catch (error) {
+    return mapProductError(error);
+  }
+}
