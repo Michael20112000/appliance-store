@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     "Б/у побутова техніка у Львові — пральні машини, холодильники, телевізори та інше.",
 };
 
-export default function HomePage() {
-  const store = getStoreNap();
+export default async function HomePage() {
+  const store = await getStoreNap();
 
   return (
     <>
