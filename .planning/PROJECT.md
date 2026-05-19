@@ -10,15 +10,26 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone
+## Current Milestone: v1.5 Incremental polish & operator UX
 
-**None** — v1.4 shipped 2026-05-19. Start next scope with `/gsd-new-milestone`.
+**Goal:** Виправити delivery-aware статуси замовлень, допиляти адмінку (категорії/товари), вирівняти вітрину (порожні категорії, футер, mobile drawer) і закрити відкладений human UAT.
+
+**Target features:**
+
+- Delivery-aware статуси замовлень в адмінці (ORD-03/04)
+- Адмін категорії: іконки на edit, колонка «Товари» (ADM-CAT-03/04)
+- Адмін товар: auto-save, «Назад», trash delete (ADM-PRD-05)
+- Головна: приховати порожні категорії (HOME-03)
+- Футер + mobile: контакти, callback, counts (FOOT-01…04)
+- Human UAT closure (UAT-01)
 
 ## Current State
 
 **Shipped:** v1.0 → v1.4 (2026-05-19)
 
-**Latest (v1.4):** Verify-only stabilization — BUG-12…17 (category sort, quantity-only products, inventory on order status, guest checkout parity); intake workflow on `main`.
+**In progress:** v1.5 planning — phases 22–27
+
+**Latest (v1.4):** Verify-only stabilization — BUG-12…17; intake workflow on `main`.
 
 **v1.3 delivered:** admin chat internal scroll, product delete from list, `db:purge` + empty DB tolerance, guest checkout without registration.
 
@@ -73,9 +84,14 @@
 
 - ✓ BUG-12…17 — operator bugfix intake (quantity model, inventory transitions, category UX) — v1.4 verify-only
 
-### Active (next milestone)
+### Active (v1.5)
 
-_Define via `/gsd-new-milestone`._
+- ORD-03/04 — delivery-aware order status (admin + server)
+- ADM-CAT-03/04 — category edit icons, list «Товари» link
+- ADM-PRD-05 — product edit auto-save UX
+- HOME-03 — homepage hide empty categories
+- FOOT-01…04 — footer + mobile callback + category counts
+- UAT-01 — Phase 19 purge UAT + verify-work checkpoint
 
 ### Out of Scope
 
@@ -133,4 +149,4 @@ v1.2 scope: admin row UX, orders status, stock qty, chat RCM, catalog polish, sh
 </details>
 
 ---
-*Last updated: 2026-05-19 after v1.4 milestone archive*
+*Last updated: 2026-05-19 — milestone v1.5 started*

@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4-stabilization
-milestone_name: Bugfix stabilization
-status: Awaiting next milestone
-stopped_at: Phase 21 context gathered
-last_updated: "2026-05-19T14:25:26.049Z"
-last_activity: 2026-05-19 — Milestone v1.4 completed and archived
+milestone: v1.5
+milestone_name: Incremental polish & operator UX
+status: planning
+last_updated: "2026-05-19T14:50:06.435Z"
+last_activity: 2026-05-19
 progress:
-  total_phases: 5
-  completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
-  percent: 80
+  total_phases: 6
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Planning next milestone (`/gsd-new-milestone`)
+**Current focus:** Milestone v1.5 — Phase 22 next (`/gsd-discuss-phase 22`)
 
 ## Current Position
 
-Phase: Milestone v1.4 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-19 — Milestone v1.4 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-19 — Milestone v1.5 started
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -78,12 +77,12 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 
 ## Session Continuity
 
-Last session: 2026-05-19T14:04:04.077Z
-Stopped at: Phase 21 context gathered
-Resume file: .planning/phases/21-bugfix-stabilization/21-CONTEXT.md
+Last session: 2026-05-19
+Stopped at: Milestone v1.5 initialized (phases 22–27)
+Resume file: `.planning/ROADMAP.md` Phase 22
 
 ## Operator Next Steps
 
-1. `/gsd-new-milestone` — наступний scope (requirements + roadmap)
-2. `/gsd-verify-work` — опційний conversational UAT
-3. Нові баги → `bugfix-intake-YYYY-MM-DD.md` + execute workflow
+1. `/gsd-discuss-phase 22` — delivery-aware order status
+2. `/gsd-plan-phase 22` — або plan без discuss
+3. Intake: `.planning/todos/pending/bugfix-intake-2026-05-19-v1.5.md`
