@@ -27,7 +27,7 @@
 **Plans:** 1/1 plans complete
 
 Plans:
-- [ ] `22-01-PLAN.md` — delivery-aware status lib, server enforcement, admin selects + Vitest
+- [x] `22-01-PLAN.md` — delivery-aware status lib, server enforcement, admin selects + Vitest
 
 ---
 
