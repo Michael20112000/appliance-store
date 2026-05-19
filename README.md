@@ -35,6 +35,19 @@ Full setup notes: [`.planning/phases/06-polish-launch/06-ENV-CHECKLIST.md`](.pla
 
 Local gate (same as phase 6): `npm test && npm run test:e2e`.
 
+## Оператор: очистка БД (dev/staging)
+
+Повне видалення бізнес-даних (каталог, кошики, замовлення, чат) з PostgreSQL. Таблиці Better Auth (**User**, **Session**, **Account**, **Verification**) не чіпаються — адмін лишається з тими ж обліковими даними.
+
+1. **Бекап** — `pg_dump` або Neon branch snapshot (автоматично не робиться).
+2. **Purge** — `CONFIRM_DB_PURGE=yes npm run db:purge` (dev/staging). Альтернатива: `npm run db:purge -- --confirm`.
+3. **Production** — лише навмисно: додатково `ALLOW_PRODUCTION_PURGE=yes`.
+4. **Опційно seed** — окремо `npx prisma db seed` (purge **не** запускає seed). Увага: seed викликає `seedProducts` (80+ товарів і завантаження в Cloudinary), це не «порожня» БД.
+5. **Наповнення** — нові товари через `/admin/tovary`; логін адміна без змін, якщо рядки User на місці.
+6. **Тести** — `npm test` / `prisma/seed.test.ts` очікують засіяні дані; після purge спочатку `npx prisma db seed`, інакше тести впадуть.
+
+Cloudinary не очищується — зображення в медіатеці можуть лишитися сиротами.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

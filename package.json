@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "db:purge": "tsx prisma/purge-business-data.ts",
     "test:e2e": "playwright test",
     "postinstall": "prisma generate"
   },
