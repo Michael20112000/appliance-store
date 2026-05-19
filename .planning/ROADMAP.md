@@ -56,7 +56,16 @@ Plans:
 4. Reuse `deleteProductAction` / guards; Vitest на stopPropagation або component test
 5. e2e або manual: delete → row зникає після refresh/revalidate
 
-**Plans:** TBD (`/gsd-plan-phase 18`)
+**Plans:** 2 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 18-01-PLAN.md — List delete action + ProductListDeleteButton + «Дії» column
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 18-02-PLAN.md — Vitest stopPropagation + manual checklist
 
 ---
 
