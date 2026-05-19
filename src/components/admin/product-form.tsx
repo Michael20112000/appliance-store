@@ -1,21 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ProductCondition } from "@/generated/prisma/client";
-import {
-  createProductAction,
-  deleteProductAction,
-  updateProductAction,
-} from "@/server/actions/admin/product.actions";
+import { createProductAction } from "@/server/actions/admin/product.actions";
 import {
   editProductFormSchema,
   upsertProductSchema,
   type UpsertProductInput,
 } from "@/server/validators/admin-product";
 import { conditionLabelUa } from "@/lib/catalog/format";
+import {
+  useProductAutoSave,
+  type SaveStatus,
+} from "@/hooks/admin/use-product-auto-save";
 import { ProductImageUpload } from "@/components/admin/product-image-upload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -56,37 +56,52 @@ type ProductImageRow = {
 type ProductFormProps = {
   mode: "create" | "edit";
   productId?: string;
-  storefrontSlug?: string;
   categories: CategoryOption[];
   defaultValues?: Partial<UpsertProductInput>;
   images?: ProductImageRow[];
+  onSaveStatusChange?: (status: SaveStatus) => void;
 };
 
 export function ProductForm({
   mode,
   productId,
-  storefrontSlug,
   categories,
   defaultValues,
   images = [],
+  onSaveStatusChange,
 }: ProductFormProps) {
   const [error, setError] = useState<string | null>(null);
   const productTitle = defaultValues?.title ?? "";
+
+  const resolvedDefaults: UpsertProductInput = {
+    title: defaultValues?.title ?? "",
+    description: defaultValues?.description ?? "",
+    brand: defaultValues?.brand ?? "",
+    categoryId: defaultValues?.categoryId ?? categories[0]?.id ?? "",
+    condition: defaultValues?.condition ?? "GOOD",
+    priceUah: defaultValues?.priceUah ?? 0,
+    quantity: defaultValues?.quantity ?? 1,
+  };
 
   const form = useForm<UpsertProductInput>({
     resolver: zodResolver(
       mode === "edit" ? editProductFormSchema : upsertProductSchema,
     ),
-    defaultValues: {
-      title: defaultValues?.title ?? "",
-      description: defaultValues?.description ?? "",
-      brand: defaultValues?.brand ?? "",
-      categoryId: defaultValues?.categoryId ?? categories[0]?.id ?? "",
-      condition: defaultValues?.condition ?? "GOOD",
-      priceUah: defaultValues?.priceUah ?? 0,
-      quantity: defaultValues?.quantity ?? 1,
-    },
+    defaultValues: resolvedDefaults,
   });
+
+  const autoSave = useProductAutoSave({
+    control: form.control,
+    productId: productId ?? "",
+    enabled: mode === "edit" && Boolean(productId),
+    initialValues: resolvedDefaults,
+  });
+
+  useEffect(() => {
+    if (mode === "edit") {
+      onSaveStatusChange?.(autoSave.status);
+    }
+  }, [autoSave.status, mode, onSaveStatusChange]);
 
   const isSubmitting = form.formState.isSubmitting;
 
@@ -98,41 +113,16 @@ export function ProductForm({
       if (result && !result.ok) {
         setError(errorMessages[result.error] ?? errorMessages.UNKNOWN);
       }
-      return;
-    }
-
-    if (!productId) {
-      setError(errorMessages.UNKNOWN);
-      return;
-    }
-
-    const result = await updateProductAction({ id: productId, ...values });
-    if (result && !result.ok) {
-      setError(errorMessages[result.error] ?? errorMessages.UNKNOWN);
     }
   });
 
-  const onDelete = async () => {
-    if (!productId) return;
-    if (
-      !window.confirm(
-        "Видалити товар? Дію не можна скасувати, якщо товар не в кошику чи активному замовленні.",
-      )
-    ) {
-      return;
-    }
-
-    setError(null);
-    const result = await deleteProductAction(productId);
-    if (result && !result.ok) {
-      setError(errorMessages[result.error] ?? errorMessages.UNKNOWN);
-    }
-  };
+  const titleRegister = form.register("title");
+  const descriptionRegister = form.register("description");
 
   return (
     <div className="space-y-8">
       <form onSubmit={onSubmit} className="max-w-2xl space-y-6">
-        {error ? (
+        {mode === "create" && error ? (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
@@ -141,7 +131,14 @@ export function ProductForm({
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="title">Назва</Label>
-            <Input id="title" {...form.register("title")} />
+            <Input
+              id="title"
+              {...titleRegister}
+              onBlur={(event) => {
+                void titleRegister.onBlur(event);
+                if (mode === "edit") autoSave.flush();
+              }}
+            />
             {form.formState.errors.title ? (
               <p className="text-sm text-destructive">
                 {form.formState.errors.title.message}
@@ -257,49 +254,35 @@ export function ProductForm({
             ) : null}
           </div>
 
-
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="description">Опис</Label>
             <textarea
               id="description"
               rows={5}
               className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs"
-              {...form.register("description")}
+              {...descriptionRegister}
+              onBlur={(event) => {
+                void descriptionRegister.onBlur(event);
+                if (mode === "edit") autoSave.flush();
+              }}
             />
           </div>
         </div>
 
-        <div className="sticky bottom-0 -mx-4 flex flex-wrap items-center gap-3 border-t border-border bg-background px-4 py-4 sm:mx-0 sm:rounded-lg sm:border sm:px-4">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Збереження…" : "Зберегти"}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            render={<Link href="/admin/tovary" />}
-          >
-            Скасувати
-          </Button>
-          {mode === "edit" && storefrontSlug ? (
+        {mode === "create" ? (
+          <div className="sticky bottom-0 -mx-4 flex flex-wrap items-center gap-3 border-t border-border bg-background px-4 py-4 sm:mx-0 sm:rounded-lg sm:border sm:px-4">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Збереження…" : "Зберегти"}
+            </Button>
             <Button
               type="button"
               variant="outline"
-              render={<Link href={`/tovar/${storefrontSlug}`} target="_blank" />}
+              render={<Link href="/admin/tovary" />}
             >
-              На вітрині
+              Скасувати
             </Button>
-          ) : null}
-          {mode === "edit" ? (
-            <Button
-              type="button"
-              variant="destructive"
-              disabled={isSubmitting}
-              onClick={onDelete}
-            >
-              Видалити
-            </Button>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </form>
 
       {mode === "edit" && productId ? (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductForm } from "@/components/admin/product-form";
+import { ProductEditPageContent } from "@/components/admin/product-edit-page-content";
 import { ProductOrdersSection } from "@/components/admin/product-orders-section";
 import { listCategoriesAdmin } from "@/server/services/admin-catalog.service";
 import {
@@ -34,11 +34,9 @@ export default async function AdminEditProductPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Редагувати товар</h1>
-      <ProductForm
-        mode="edit"
+      <ProductEditPageContent
         productId={product.id}
-        storefrontSlug={product.quantity > 0 ? product.slug : undefined}
+        categoryId={product.categoryId}
         categories={categories.map((category) => ({
           id: category.id,
           name: category.name,
