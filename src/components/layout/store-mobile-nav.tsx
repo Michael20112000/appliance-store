@@ -46,12 +46,12 @@ export function StoreMobileNav({
         <SheetHeader>
           <SheetTitle>Категорії</SheetTitle>
         </SheetHeader>
-        <ul className="mt-4 flex flex-col gap-2 pl-4">
+        <ul className="mt-4 flex flex-col gap-2 px-4">
           {categories.map((category) => (
             <li key={category.slug}>
               <Link
                 href={`/katalog/${category.slug}`}
-                className="flex min-h-11 w-full items-center justify-between gap-3 py-2 text-sm"
+                className="flex min-h-11 w-full items-center gap-3 py-2 text-sm"
                 onClick={() => setOpen(false)}
               >
                 <span>{category.name}</span>
@@ -66,7 +66,9 @@ export function StoreMobileNav({
           ))}
         </ul>
         <Separator className="my-6" />
-        <CallbackRequestForm compact idPrefix="drawer" />
+        <div className="px-4">
+          <CallbackRequestForm compact idPrefix="drawer" />
+        </div>
       </SheetContent>
     </Sheet>
   );
