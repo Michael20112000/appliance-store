@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- 🚧 **v1.5 Incremental polish & operator UX** — Phases 22–27 (planning) — [requirements](REQUIREMENTS.md)
+- ✅ **v1.5 Incremental polish & operator UX** — Phases 22–27 (shipped 2026-05-19) — [requirements](REQUIREMENTS.md)
 - ✅ **v1.4 Bugfix stabilization** — Phase 21 (shipped 2026-05-19) — [archive](milestones/v1.4-ROADMAP.md) · [requirements](milestones/v1.4-REQUIREMENTS.md)
 - ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19) — [archive](milestones/v1.3-ROADMAP.md) · [requirements](milestones/v1.3-REQUIREMENTS.md)
 - ✅ **v1.2 Polish & UX** — Phases 11–16 (shipped 2026-05-19) — [archive](milestones/v1.2-ROADMAP.md) · [requirements](milestones/v1.2-REQUIREMENTS.md)
@@ -134,7 +134,7 @@ Plans:
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
-| v1.5 Incremental polish | 6 (22–27) | 1 | 🚧 Planning |
+| v1.5 Incremental polish | 6 (22–27) | 8 | ✅ Shipped 2026-05-19 |
 | v1.4 Bugfix stabilization | 1 (21) | 1 | ✅ Shipped 2026-05-19 |
 | v1.3 Fixes & Admin UX | 4 (17–20) | 7 | ✅ Shipped 2026-05-19 |
 | v1.2 Polish & UX | 6 (11–16) | 21 | ✅ Shipped 2026-05-19 |

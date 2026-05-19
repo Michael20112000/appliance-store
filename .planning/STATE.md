@@ -5,13 +5,13 @@ milestone_name: Incremental polish & operator UX
 status: milestone_complete
 stopped_at: Milestone complete (Phase 27 was final phase)
 last_updated: 2026-05-19T18:00:27.082Z
-last_activity: 2026-05-19 -- Phase 27 execution started
+last_activity: 2026-05-19 -- Phase 27 complete; v1.5 milestone shipped
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 8
   completed_plans: 8
-  percent: 83
+  percent: 100
 ---
 
 # Project State
@@ -25,8 +25,8 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 ## Current Position
 
-Phase: 27
-Plan: Not started
+Phase: 27 (complete)
+Plan: 3/3 complete
 Status: Milestone complete
 Last activity: 2026-05-19
 
@@ -64,7 +64,7 @@ Last activity: 2026-05-19
 | Item | Notes |
 |------|--------|
 | `git stash@{0}` | Catalog pagination, seed tweaks — not on main |
-| Phase 19 human UAT | Admin routes after purge |
+| Phase 19 human UAT | Satisfied via `19-MANUAL-CHECKLIST.md` in phase 27 (2026-05-19) |
 | CWV targets | v2 PERF-01 |
 
 Items acknowledged at v1.4 milestone close (2026-05-19):
@@ -72,7 +72,7 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 | Category | Item | Status |
 |----------|------|--------|
 | uat_gaps | Phase 04, 07 HUMAN-UAT partial | deferred |
-| uat_gaps | Phase 19 HUMAN-UAT partial | deferred |
+| uat_gaps | Phase 19 purge UAT | closed in phase 27 |
 | verification_gaps | Phases 04, 06, 07, 12, 13, 18, 19 VERIFICATION | human_needed / gaps_found |
 | todos | bugfix-intake-TEMPLATE.md | template only |
 
@@ -84,6 +84,6 @@ Resume file: .planning/phases/27-human-uat-closure/27-CONTEXT.md
 
 ## Operator Next Steps
 
-1. `/gsd-execute-phase 22` — delivery-aware order status
-2. `/gsd-plan-phase 23` — admin category polish
-3. Intake: `.planning/todos/pending/bugfix-intake-2026-05-19-v1.5.md`
+1. `/gsd-complete-milestone` — archive v1.5 and plan next milestone
+2. Optional: `/gsd-verify-work 27` — conversational UAT follow-up
+3. Intake archived: `.planning/todos/completed/bugfix-intake-2026-05-19-v1.5.md`
