@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type MouseEvent } from "react";
-import type { OrderStatus } from "@/generated/prisma/client";
+import type { DeliveryType, OrderStatus } from "@/generated/prisma/client";
 import { toast } from "sonner";
 import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
 import { updateOrderStatusAction } from "@/server/actions/admin/order.actions";
-import { getAllowedNextStatuses } from "@/lib/order/status-transitions";
+import { getAllowedNextStatusesForDelivery } from "@/lib/order/status-transitions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,11 +34,13 @@ const errorMessages: Record<string, string> = {
 type OrderListStatusSelectProps = {
   orderId: string;
   status: OrderStatus;
+  deliveryType: DeliveryType;
 };
 
 export function OrderListStatusSelect({
   orderId,
   status,
+  deliveryType,
 }: OrderListStatusSelectProps) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -47,7 +49,7 @@ export function OrderListStatusSelect({
     null,
   );
 
-  const allowedNext = getAllowedNextStatuses(status);
+  const allowedNext = getAllowedNextStatusesForDelivery(status, deliveryType);
   const options = allowedNext.filter((value) => value !== status);
 
   const stopRowNav = (event: MouseEvent) => event.stopPropagation();

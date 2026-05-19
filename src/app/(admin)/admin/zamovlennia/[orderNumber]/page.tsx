@@ -5,7 +5,7 @@ import { formatPriceKopiyky } from "@/lib/catalog/format";
 import { OrderStatusBadge } from "@/components/admin/order-status-badge";
 import { OrderStatusSelect } from "@/components/admin/order-status-select";
 import {
-  getAllowedNextStatuses,
+  getAllowedNextStatusesForDelivery,
   getOrderAdmin,
 } from "@/server/services/admin-order.service";
 
@@ -33,7 +33,10 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const allowedNextStatuses = getAllowedNextStatuses(order.status);
+  const allowedNextStatuses = getAllowedNextStatusesForDelivery(
+    order.status,
+    order.deliveryType,
+  );
 
   return (
     <div className="space-y-8">

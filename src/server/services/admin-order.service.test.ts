@@ -10,6 +10,7 @@ import {
   getAllowedNextStatuses,
   INVALID_STATUS_TRANSITION,
   listOrdersAdminPaginated,
+  updateOrderStatus,
 } from "./admin-order.service";
 
 vi.mock("@/lib/db", () => ({
@@ -22,7 +23,16 @@ vi.mock("@/lib/db", () => ({
       count: vi.fn(),
     },
     $queryRaw: vi.fn(),
+    $transaction: vi.fn(),
   },
+}));
+
+vi.mock("@/server/services/product-inventory", () => ({
+  INSUFFICIENT_STOCK: "INSUFFICIENT_STOCK",
+  releaseProductUnitsForOrder: vi.fn(),
+  reserveProductUnitsForOrder: vi.fn(),
+  shouldReleaseInventoryOnTransition: vi.fn(() => false),
+  shouldReserveInventoryOnTransition: vi.fn(() => false),
 }));
 
 const sampleOrder = {
@@ -238,6 +248,56 @@ describe("listOrdersAdminPaginated", () => {
       expect.objectContaining({ orderBy: expect.anything() }),
     );
     expect(result.items.map((item) => item.id)).toEqual(["order-b", "order-a"]);
+  });
+});
+
+describe("updateOrderStatus", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("rejects OUT_FOR_DELIVERY for PICKUP at CONFIRMED", async () => {
+    vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
+      const tx = {
+        order: {
+          findUnique: vi.fn().mockResolvedValue({
+            id: "order-1",
+            orderNumber: "ASL-1",
+            status: "CONFIRMED",
+            deliveryType: "PICKUP",
+            items: [],
+          }),
+          update: vi.fn(),
+        },
+      };
+      return fn(tx as never);
+    });
+
+    await expect(
+      updateOrderStatus("order-1", "OUT_FOR_DELIVERY"),
+    ).rejects.toThrow(INVALID_STATUS_TRANSITION);
+  });
+
+  it("rejects READY_FOR_PICKUP for LVIV_DELIVERY at CONFIRMED", async () => {
+    vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
+      const tx = {
+        order: {
+          findUnique: vi.fn().mockResolvedValue({
+            id: "order-2",
+            orderNumber: "ASL-2",
+            status: "CONFIRMED",
+            deliveryType: "LVIV_DELIVERY",
+            items: [],
+          }),
+          update: vi.fn(),
+        },
+      };
+      return fn(tx as never);
+    });
+
+    await expect(
+      updateOrderStatus("order-2", "READY_FOR_PICKUP"),
+    ).rejects.toThrow(INVALID_STATUS_TRANSITION);
   });
 });
 

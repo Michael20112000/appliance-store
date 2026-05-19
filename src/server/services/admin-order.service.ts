@@ -3,7 +3,9 @@ import type { OrderStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import {
   assertTransitionAllowed,
+  assertTransitionAllowedForDelivery,
   getAllowedNextStatuses,
+  getAllowedNextStatusesForDelivery,
   INVALID_STATUS_TRANSITION,
 } from "@/lib/order/status-transitions";
 import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
@@ -25,7 +27,13 @@ export type { AdminOrderListDir, AdminOrderListSort };
 
 export { ORDER_STATUS_LABELS_UA };
 
-export { assertTransitionAllowed, getAllowedNextStatuses, INVALID_STATUS_TRANSITION };
+export {
+  assertTransitionAllowed,
+  assertTransitionAllowedForDelivery,
+  getAllowedNextStatuses,
+  getAllowedNextStatusesForDelivery,
+  INVALID_STATUS_TRANSITION,
+};
 export const ORDER_NOT_FOUND = "ORDER_NOT_FOUND";
 
 export type AdminOrderListFilter =
@@ -302,7 +310,11 @@ export async function updateOrderStatus(
       throw new Error(ORDER_NOT_FOUND);
     }
 
-    assertTransitionAllowed(order.status, newStatus);
+    assertTransitionAllowedForDelivery(
+      order.status,
+      newStatus,
+      order.deliveryType,
+    );
 
     if (shouldReserveInventoryOnTransition(order.status, newStatus)) {
       await reserveProductUnitsForOrder(tx, order.items);

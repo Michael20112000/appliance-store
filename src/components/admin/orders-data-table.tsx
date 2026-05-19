@@ -189,6 +189,7 @@ export function OrdersDataTable({
         <OrderListStatusSelect
           orderId={row.original.id}
           status={row.original.status}
+          deliveryType={row.original.deliveryType}
         />
       ),
     },
