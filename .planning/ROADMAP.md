@@ -2,7 +2,8 @@
 
 ## Milestones
 
-- 🚧 **v1.3 Fixes & Admin UX** — Phases 17–19 (planning 2026-05-19)
+- 🚧 **v1.4 Bugfix stabilization** — Phase 21 (intake-first, 2026-05-19)
+- ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19)
 - ✅ **v1.2 Polish & UX** — Phases 11–16 (shipped 2026-05-19) — [archive](milestones/v1.2-ROADMAP.md) · [requirements](milestones/v1.2-REQUIREMENTS.md)
 - ✅ **v1.1 Engagement & Fixes** — Phases 7–10 (shipped 2026-05-17) — [archive](milestones/v1.1-ROADMAP.md) · [requirements](milestones/v1.1-REQUIREMENTS.md)
 - ✅ **v1.0 Appliance Store MVP** — Phases 1–6 (shipped 2026-05-17) — [archive](milestones/v1.0-ROADMAP.md) · [requirements](milestones/v1.0-REQUIREMENTS.md)
@@ -114,6 +115,25 @@ Plans:
 
 ---
 
+#### Phase 21: Bugfix stabilization
+
+**Goal:** Закрити відкриті баги оператора на `main` хвилями — без ad-hoc правок у чаті.
+
+**Requirements:** (per intake) — див. `.planning/BUGFIX-WORKFLOW.md`
+
+**Success criteria:**
+
+1. Intake wave 1 заповнений (`bugfix-intake-*.md`)
+2. `21-01-PLAN.md` виконаний; усі blocker/major з wave 1 → done
+3. CI / `npm run build` green
+4. Manual checklist для змінених surface
+
+**Status:** 🚧 Planning — awaiting intake
+
+**Plans:** TBD after `/gsd-plan-phase 21`
+
+---
+
 <details>
 <summary>✅ v1.2 Polish & UX (Phases 11–16) — SHIPPED 2026-05-19</summary>
 
@@ -146,7 +166,8 @@ See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md).
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
-| v1.3 Fixes & Admin UX | 3 (17–19) | 0 | 🚧 Planning |
+| v1.4 Bugfix stabilization | 1 (21) | 0 | 🚧 Planning |
+| v1.3 Fixes & Admin UX | 4 (17–20) | 7 | ✅ Shipped 2026-05-19 |
 | v1.2 Polish & UX | 6 (11–16) | 21 | ✅ Shipped 2026-05-19 |
 | v1.1 Engagement & Fixes | 4 (7–10) | 20 | ✅ Shipped 2026-05-17 |
 | v1.0 MVP | 6 (1–6) | 36 | ✅ Shipped 2026-05-17 |

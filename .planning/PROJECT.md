@@ -122,4 +122,4 @@ v1.2 scope: admin row UX, orders status, stock qty, chat RCM, catalog polish, sh
 </details>
 
 ---
-*Last updated: 2026-05-19 — milestone v1.3 Fixes & Admin UX started*
+*Last updated: 2026-05-19 — v1.3 shipped on main; v1.4 bugfix stabilization (phase 21) started*
