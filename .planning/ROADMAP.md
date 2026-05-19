@@ -151,15 +151,15 @@ Plans:
 
 **Wave 1**
 
-- [ ] 15-01-PLAN.md — `CATALOG_PAGE_SIZE`, `categoriesWithAvailableProducts`, sitemap filter
+- [x] 15-01-PLAN.md — `CATALOG_PAGE_SIZE`, `categoriesWithAvailableProducts`, sitemap filter
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 15-02-PLAN.md — Hide empty categories + Badge labels (CAT-04, CAT-05)
+- [x] 15-02-PLAN.md — Hide empty categories + Badge labels (CAT-04, CAT-05)
 
 **Wave 3** *(blocked on Wave 1 completion; may run parallel with Wave 2)*
 
-- [ ] 15-03-PLAN.md — Pagination 16 + nuqs clamp + e2e (CAT-06)
+- [x] 15-03-PLAN.md — Pagination 16 + nuqs clamp + e2e (CAT-06)
 
 ---
 
@@ -177,7 +177,23 @@ Plans:
 4. Create product/category: slug auto; create UI без slug input
 5. `npm run build` і тести green
 
-**Plans:** TBD (`/gsd-plan-phase 16`)
+**Plans:** 3 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 16-01-PLAN.md — Storefront catalog sort + brand shadcn Select (UX-01)
+- [ ] 16-02-PLAN.md — Admin product-form RHF Select migration (UX-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 16-03-PLAN.md — Slug verify, gallery manual checklist, grep + build gate (POL-01, POL-02, UX-01)
+
+**Cross-cutting constraints:**
+
+- Zero native `<select>` in `src/components` after Wave 1 (grep gate in 16-03)
+- nuqs `storinka: 1` on catalog filter changes preserved
+- Gallery verify manual-only; no Playwright in phase
 
 ---
 
