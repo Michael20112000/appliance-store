@@ -251,3 +251,36 @@ model Message {
 
   @@index([conversationId, createdAt])
 }
+
+model StorePhone {
+  id        String @id @default(cuid())
+  digits    String
+  label     String?
+  sortOrder Int    @default(0)
+}
+
+model StoreEmail {
+  id        String @id @default(cuid())
+  email     String
+  label     String?
+  sortOrder Int    @default(0)
+}
+
+model StoreAddress {
+  id        String  @id @default(cuid())
+  text      String
+  mapUrl    String?
+  latitude  Float?
+  longitude Float?
+  label     String?
+  sortOrder Int     @default(0)
+}
+
+model CallbackRequest {
+  id        String   @id @default(cuid())
+  phone     String
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([ipAddress, createdAt])
+}

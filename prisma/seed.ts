@@ -57,6 +57,26 @@ async function seedCategoryShowcaseImages() {
   }
 }
 
+async function seedStoreContacts() {
+  const phoneCount = await prisma.storePhone.count();
+  if (phoneCount > 0) return;
+
+  const envPhone = process.env.STORE_PHONE?.replace(/\D/g, "");
+  const envAddress = process.env.STORE_ADDRESS?.trim();
+
+  if (envPhone && envPhone.length >= 10) {
+    await prisma.storePhone.create({
+      data: { digits: envPhone.slice(0, 15), sortOrder: 0 },
+    });
+  }
+
+  if (envAddress) {
+    await prisma.storeAddress.create({
+      data: { text: envAddress, sortOrder: 0 },
+    });
+  }
+}
+
 async function seedAdmin() {
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;
@@ -86,6 +106,7 @@ async function seedAdmin() {
 async function main() {
   await seedCategories();
   await seedCategoryShowcaseImages();
+  await seedStoreContacts();
   await seedAdmin();
   await seedProducts();
   console.log(
