@@ -4,6 +4,13 @@ import { useEffect, useState, useTransition } from "react";
 import { Search } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { ActiveFilterChips } from "@/components/catalog/active-filter-chips";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { catalogParsers, catalogUrlKeys } from "@/lib/catalog/search-params";
 import { pluralResultsUa } from "@/lib/catalog/format";
 
@@ -38,7 +45,7 @@ export function CatalogToolbar({ total }: CatalogToolbarProps) {
     <div className="mb-6 flex flex-col gap-4">
       <ActiveFilterChips />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="relative max-w-md flex-1">
+      <div className="relative flex-1">
         <label htmlFor="catalog-search" className="sr-only">
           Пошук товарів
         </label>
@@ -60,21 +67,25 @@ export function CatalogToolbar({ total }: CatalogToolbarProps) {
             Знайдено: {pluralResultsUa(total)}
           </span>
         )}
-        <select
-          className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+        <Select
           value={params.sort}
-          onChange={(e) =>
+          onValueChange={(value) => {
+            if (!value) return;
             setParams({
-              sort: e.target.value as "novi" | "cina-asc" | "cina-desc",
+              sort: value as "novi" | "cina-asc" | "cina-desc",
               storinka: 1,
-            })
-          }
-          aria-label="Сортування"
+            });
+          }}
         >
-          <option value="novi">Новіші</option>
-          <option value="cina-asc">Ціна ↑</option>
-          <option value="cina-desc">Ціна ↓</option>
-        </select>
+          <SelectTrigger className="w-36" aria-label="Сортування">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="novi">Новіші</SelectItem>
+            <SelectItem value="cina-asc">Ціна ↑</SelectItem>
+            <SelectItem value="cina-desc">Ціна ↓</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       </div>
     </div>
