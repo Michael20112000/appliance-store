@@ -83,7 +83,16 @@ Plans:
 4. Dashboard показує нулі / empty copy, не ламається
 5. Operator runs purge on dev/staging; smoke checklist signed
 
-**Plans:** TBD (`/gsd-plan-phase 19`)
+**Plans:** 2 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 19-01-PLAN.md — Purge script, db:purge, guards, README, Vitest
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 19-02-PLAN.md — Manual checklist + empty-DB smoke (fix-only if 500)
 
 ---
 
