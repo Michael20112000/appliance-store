@@ -24,7 +24,7 @@ const errorMessages: Record<string, string> = {
   PRODUCT_IN_ACTIVE_ORDER:
     "Товар у активному замовленні — завершіть або скасуйте замовлення.",
   PRODUCT_NOT_FOUND: "Товар не знайдено.",
-  UNKNOWN: "Не вдалося зберегти товар. Спробуйте ще раз.",
+  UNKNOWN: "Не вдалося видалити товар. Спробуйте ще раз.",
 };
 
 type ProductEditDeleteButtonProps = {
