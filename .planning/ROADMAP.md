@@ -2,143 +2,34 @@
 
 ## Milestones
 
-- ✅ **v1.4 Bugfix stabilization** — Phase 21 (shipped 2026-05-19)
-- ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19)
+- ✅ **v1.4 Bugfix stabilization** — Phase 21 (shipped 2026-05-19) — [archive](milestones/v1.4-ROADMAP.md) · [requirements](milestones/v1.4-REQUIREMENTS.md)
+- ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19) — [archive](milestones/v1.3-ROADMAP.md) · [requirements](milestones/v1.3-REQUIREMENTS.md)
 - ✅ **v1.2 Polish & UX** — Phases 11–16 (shipped 2026-05-19) — [archive](milestones/v1.2-ROADMAP.md) · [requirements](milestones/v1.2-REQUIREMENTS.md)
 - ✅ **v1.1 Engagement & Fixes** — Phases 7–10 (shipped 2026-05-17) — [archive](milestones/v1.1-ROADMAP.md) · [requirements](milestones/v1.1-REQUIREMENTS.md)
 - ✅ **v1.0 Appliance Store MVP** — Phases 1–6 (shipped 2026-05-17) — [archive](milestones/v1.0-ROADMAP.md) · [requirements](milestones/v1.0-REQUIREMENTS.md)
 
 ## Phases
 
-### v1.3 Fixes & Admin UX
+<details>
+<summary>✅ v1.4 Bugfix stabilization (Phase 21) — SHIPPED 2026-05-19</summary>
 
-#### Phase 17: Admin Chat Inbox Layout
+- [x] Phase 21: Bugfix stabilization (1/1 plan) — verify-only, BUG-12…17
 
-**Goal:** Адмін на `/admin/chaty` скролить список чатів і тред всередині панелі, а не всю сторінку.
+See [milestones/v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md).
 
-**Requirements:** ADM-CHAT-02
+</details>
 
-**Success criteria:**
+<details>
+<summary>✅ v1.3 Fixes & Admin UX (Phases 17–20) — SHIPPED 2026-05-19</summary>
 
-1. Desktop: grid inbox має `max-h` / `h` прив’язаний до viewport (мінус header/tabs); `min-h-0` на flex/grid chain
-2. Ліва колонка (`ConversationList`): `overflow-y-auto`, список не розтягує document height
-3. Права колонка (`ChatThread` + `MessageList`): messages area `flex-1 min-h-0 overflow-y-auto`; composer лишається внизу колонки
-4. Mobile split view (list ↔ thread) зберігає той самий internal-scroll патерн у активній панелі
-5. Manual checklist: 10+ діалогів, довгий тред — page scroll не потрібен для читання історії
+- [x] Phase 17: Admin Chat Inbox Layout (3/3 plans)
+- [x] Phase 18: Product Delete from List (2/2 plans)
+- [x] Phase 19: Database Purge & Empty States (2/2 plans)
+- [x] Phase 20: Guest Checkout (shipped inline)
 
-**Plans:** 3 plans
+See [milestones/v1.3-ROADMAP.md](milestones/v1.3-ROADMAP.md).
 
-Plans:
-**Wave 1**
-
-- [x] 17-01-PLAN.md — Admin shell + inbox flex height chain
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 17-02-PLAN.md — Column scroll, mobile native scroll, isPanelOpen
-
-**Wave 3** *(blocked on Wave 2 completion)*
-
-- [x] 17-03-PLAN.md — Manual checklist + Playwright scroll gate + sign-off
-
----
-
-#### Phase 18: Product Delete from List
-
-**Goal:** Видалення товару з таблиці `/admin/tovary` без row-navigation.
-
-**Requirements:** ADM-PRD-04
-
-**Success criteria:**
-
-1. Остання колонка «Дії» з ghost/icon кнопкою Trash; `aria-label` українською
-2. `stopPropagation` на delete control; row-click на інші комірки лишається
-3. Confirm dialog (існуючий copy з product-form); toast success/error
-4. Reuse `deleteProductAction` / guards; Vitest на stopPropagation або component test
-5. e2e або manual: delete → row зникає після refresh/revalidate
-
-**Plans:** 2 plans
-
-Plans:
-**Wave 1**
-
-- [x] 18-01-PLAN.md — List delete action + ProductListDeleteButton + «Дії» column
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 18-02-PLAN.md — Vitest stopPropagation + manual checklist
-
----
-
-#### Phase 19: Database Purge & Empty States
-
-**Goal:** Чиста БД для реального наповнення; застосунок не падає без даних.
-
-**Requirements:** DATA-01, DATA-02
-
-**Success criteria:**
-
-1. `prisma` script (напр. `db:purge` або `seed --purge`) видаляє business tables у безпечному FK order; README/comment для оператора
-2. Admin user(s) залишаються або документовано як створити admin після purge
-3. `/`, `/katalog`, `/katalog/[slug]`, кошик, `/admin`, `/admin/tovary`, `/admin/kategorii`, `/admin/zamovlennia`, `/admin/chaty` — без unhandled errors при 0 rows
-4. Dashboard показує нулі / empty copy, не ламається
-5. Operator runs purge on dev/staging; smoke checklist signed
-
-**Plans:** 2 plans
-
-Plans:
-**Wave 1**
-
-- [x] 19-01-PLAN.md — Purge script, db:purge, guards, README, Vitest
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 19-02-PLAN.md — Manual checklist + empty-DB smoke (fix-only if 500)
-
----
-
-#### Phase 20: Guest Checkout (no registration)
-
-**Goal:** Оформлення замовлення без реєстрації — кошик у браузері, checkout з контактами.
-
-**Requirements:** GUEST-01
-
-**Success criteria:**
-
-1. «Додати в кошик» для гостя не редіректить на `/uviity`
-2. `/koszyk` і `/zamovlennia` доступні без сесії (guest views)
-3. `Order` без `userId` + `guestAccessToken`; підтвердження для гостя
-4. Header: `GuestCartNavLink` з badge
-5. Logged-in flow і merge pending on login без регресії
-
-**Status:** ✅ Shipped inline 2026-05-19 (restored from WIP stash)
-
----
-
-#### Phase 21: Bugfix stabilization
-
-**Goal:** Verify-only close: підтвердити стабільність `main` після waves 1–2 intake (BUG-12…17 вже на гілці); без re-implement.
-
-**Requirements:** (per intake) — див. `.planning/BUGFIX-WORKFLOW.md`, `bugfix-intake-2026-05-19.md`
-
-**Success criteria:**
-
-1. Intake waves 1–2 (`bugfix-intake-2026-05-19.md`) залишаються `done` після verify
-2. `21-01-PLAN.md` виконаний; CI green (`npm run build`, `npm test`)
-3. `21-MANUAL-CHECKLIST.md` пройдений (BUG-12…17 + guest + multi-qty)
-4. Intake `status: completed`; код не чіпається без регресії (мінімальний fix лише Task 4)
-
-**Status:** ✅ Complete (2026-05-19)
-
-**Plans:**
-
-**Wave 1** *(no dependencies)*
-
-| Plan | Objective | Status |
-|------|-----------|--------|
-| 21-01 | Verify-only: automated CI, static audit, manual checklist, optional regression fix | ✅ |
-
----
+</details>
 
 <details>
 <summary>✅ v1.2 Polish & UX (Phases 11–16) — SHIPPED 2026-05-19</summary>

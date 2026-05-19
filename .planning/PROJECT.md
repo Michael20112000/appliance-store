@@ -10,23 +10,21 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: v1.3 Fixes & Admin UX
+## Current Milestone
 
-**Goal:** Стабільний адмін-чат з внутрішнім скролом, видалення товару зі списку, чиста БД для наповнення реальними даними + empty-state стійкість.
-
-**Target features:**
-- `/admin/chaty`: фіксована висота панелі; список діалогів і тред скроляться всередині (не росте вся сторінка)
-- `/admin/tovary`: іконка кошика в останній колонці, `stopPropagation` — без переходу на edit при delete
-- Повне очищення бізнес-даних у БД (товари, категорії, замовлення, чати тощо); фікси UI при порожній БД
-- Без: відгуків, SEO/GSC, Lighthouse milestone, нових storefront-фіч
+**None** — v1.4 shipped 2026-05-19. Start next scope with `/gsd-new-milestone`.
 
 ## Current State
 
-**Shipped:** v1.0 MVP + v1.1 Engagement & Fixes + **v1.2 Polish & UX** (2026-05-19)
+**Shipped:** v1.0 → v1.4 (2026-05-19)
 
-**In progress:** v1.3 Fixes & Admin UX — requirements and roadmap defined 2026-05-19.
+**Latest (v1.4):** Verify-only stabilization — BUG-12…17 (category sort, quantity-only products, inventory on order status, guest checkout parity); intake workflow on `main`.
 
-**v1.2 delivered:** admin row-click UX, order status inline select, product table sort, stock quantity (admin-only), chat inbox context menu, catalog polish (empty categories, badges, pagination 16), shadcn Select audit, PDP gallery + slug policy verified.
+**v1.3 delivered:** admin chat internal scroll, product delete from list, `db:purge` + empty DB tolerance, guest checkout without registration.
+
+**v1.2 delivered:** admin row-click UX, stock quantity (admin-only), chat context menu, catalog polish, shadcn Select audit.
+
+**Operator:** Real catalog data after optional purge + seed; bugfixes via `BUGFIX-WORKFLOW.md` intake files.
 
 ## Requirements
 
@@ -63,12 +61,21 @@
 - ✓ UX-01/02 — shadcn Select everywhere in components; clickable rows
 - ✓ POL-01/02 — PDP gallery verified; auto slug on create
 
-### Active (v1.3)
+### Validated (v1.3)
 
-- ADM-CHAT-02 — admin chat inbox + thread fixed-height internal scroll
-- ADM-PRD-04 — delete product from `/admin/tovary` table (trash icon, stopPropagation)
-- DATA-01 — purge all business entities from database (operator-run)
-- DATA-02 — storefront + admin tolerate empty database without errors
+- ✓ ADM-CHAT-02 — admin chat inbox internal scroll — v1.3
+- ✓ ADM-PRD-04 — delete product from list — v1.3
+- ✓ GUEST-01 — guest checkout (localStorage cart + token) — v1.3
+- ✓ DATA-01 — `db:purge` business data — v1.3
+- ✓ DATA-02 — empty DB UX — v1.3
+
+### Validated (v1.4)
+
+- ✓ BUG-12…17 — operator bugfix intake (quantity model, inventory transitions, category UX) — v1.4 verify-only
+
+### Active (next milestone)
+
+_Define via `/gsd-new-milestone`._
 
 ### Out of Scope
 
@@ -83,7 +90,8 @@
 
 - Локація: **Львів**, україномовні покупці
 - Stack: Next.js 16, Prisma, PostgreSQL, Tailwind, shadcn/ui, Cloudinary, Better Auth, Pusher
-- Milestones archived: `.planning/milestones/v1.0-*`, `v1.1-*`, `v1.2-*`
+- Milestones archived: `.planning/milestones/v1.0-*` … `v1.4-*`
+- Bugfix process: `.planning/BUGFIX-WORKFLOW.md`
 - Preview: https://project-r4qzr.vercel.app
 
 ## Constraints
@@ -109,6 +117,9 @@
 | Hide empty categories storefront | Не показувати «0 товарів» | ✓ Good (v1.2) |
 | Shared clickable-row helper | Єдиний патерн admin tables | ✓ Good (v1.2) |
 | shadcn Select + nuqs sentinel | Консистентні контроли, `__all__` для brand | ✓ Good (v1.2) |
+| Bugfix intake → plan → execute | Уникати ad-hoc multi-bug регресій | ✓ Good (v1.4) |
+| Quantity-only listing | `ProductStatus` прибрано; reserve на CONFIRMED | ✓ Good (v1.4) |
+| db:purge separate from seed | Операторський контроль наповнення | ✓ Good (v1.3) |
 
 ## Evolution
 
@@ -122,4 +133,4 @@ v1.2 scope: admin row UX, orders status, stock qty, chat RCM, catalog polish, sh
 </details>
 
 ---
-*Last updated: 2026-05-19 — v1.3 shipped on main; v1.4 bugfix stabilization (phase 21) started*
+*Last updated: 2026-05-19 after v1.4 milestone archive*

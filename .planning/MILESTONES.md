@@ -1,5 +1,24 @@
 # Milestones
 
+## v1.4 Bugfix stabilization (Shipped: 2026-05-19)
+
+**Phases completed:** 5 phases, 8 plans, 16 tasks
+
+**Key accomplishments:**
+
+- Admin shell and `/admin/chaty` establish a flex-1/min-h-0 viewport chain so the inbox grid fills space under fixed H1 + tabs without calc(100dvh) hacks.
+- Admin chat list and thread columns scroll inside bounded panels; MessageList uses native scroll on mobile and auto-scroll when a conversation is open.
+- ADM-CHAT-02 verified via manual checklist approval, Playwright scroll gate, and post-fix regression on admin list pages.
+- Inline product delete on `/admin/tovary` with list-safe server action, confirm dialog, and «Дії» column without breaking row navigation.
+- Vitest locks delete control row-navigation isolation; manual checklist documents DB/session delete flows.
+- Guarded `db:purge` wipes all business PostgreSQL rows in FK order while Better Auth tables stay intact.
+- Storefront survives full business purge with existing empty UX; manual checklist signed for public routes.
+- BUG-12…17 verified on main; CI green after minimal test fixes; intake wave 1–2 closed.
+
+**Known deferred items at close:** 12 (see STATE.md Deferred Items) — legacy UAT/verification from phases 04–07, 12–13, 18–19; template todo only.
+
+---
+
 ## v1.2 Polish & UX (Shipped: 2026-05-19)
 
 **Phases completed:** 6 phases, 21 plans, 15 tasks

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4-stabilization
 milestone_name: Bugfix stabilization
-status: milestone_complete
-stopped_at: Milestone complete (Phase 21 was final phase)
-last_updated: 2026-05-19T14:22:56.695Z
-last_activity: 2026-05-19 -- Phase 21 complete; v1.4 milestone shipped
+status: Awaiting next milestone
+stopped_at: Phase 21 context gathered
+last_updated: "2026-05-19T14:25:26.049Z"
+last_activity: 2026-05-19 — Milestone v1.4 completed and archived
 progress:
   total_phases: 5
-  completed_phases: 5
+  completed_phases: 4
   total_plans: 8
   completed_plans: 8
-  percent: 100
+  percent: 80
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** Planning next milestone (`/gsd-new-milestone`)
 
 ## Current Position
 
-Phase: 21 (bugfix-stabilization) — complete
-Plan: 1/1 (21-01)
-Status: Milestone v1.4 complete
-Last activity: 2026-05-19
+Phase: Milestone v1.4 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-19 — Milestone v1.4 completed and archived
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -67,6 +67,15 @@ Last activity: 2026-05-19
 | Phase 19 human UAT | Admin routes after purge |
 | CWV targets | v2 PERF-01 |
 
+Items acknowledged at v1.4 milestone close (2026-05-19):
+
+| Category | Item | Status |
+|----------|------|--------|
+| uat_gaps | Phase 04, 07 HUMAN-UAT partial | deferred |
+| uat_gaps | Phase 19 HUMAN-UAT partial | deferred |
+| verification_gaps | Phases 04, 06, 07, 12, 13, 18, 19 VERIFICATION | human_needed / gaps_found |
+| todos | bugfix-intake-TEMPLATE.md | template only |
+
 ## Session Continuity
 
 Last session: 2026-05-19T14:04:04.077Z
@@ -75,6 +84,6 @@ Resume file: .planning/phases/21-bugfix-stabilization/21-CONTEXT.md
 
 ## Operator Next Steps
 
-1. `/gsd-verify-work` — conversational UAT (optional)
-2. `/gsd-complete-milestone` — archive v1.4 when ready
-3. Нові баги → новий `bugfix-intake-YYYY-MM-DD.md` (не блокує v1.4 close)
+1. `/gsd-new-milestone` — наступний scope (requirements + roadmap)
+2. `/gsd-verify-work` — опційний conversational UAT
+3. Нові баги → `bugfix-intake-YYYY-MM-DD.md` + execute workflow
