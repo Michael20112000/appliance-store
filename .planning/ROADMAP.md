@@ -24,7 +24,10 @@
 3. API повертає помилку при спробі недопустимого переходу
 4. Vitest покриває матрицю delivery × status
 
-**Plans:** 0/0
+**Plans:** 1/1
+
+Plans:
+- [ ] `22-01-PLAN.md` — delivery-aware status lib, server enforcement, admin selects + Vitest
 
 ---
 
@@ -114,7 +117,7 @@
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
-| v1.5 Incremental polish | 6 (22–27) | 0 | 🚧 Planning |
+| v1.5 Incremental polish | 6 (22–27) | 1 | 🚧 Planning |
 | v1.4 Bugfix stabilization | 1 (21) | 1 | ✅ Shipped 2026-05-19 |
 | v1.3 Fixes & Admin UX | 4 (17–20) | 7 | ✅ Shipped 2026-05-19 |
 | v1.2 Polish & UX | 6 (11–16) | 21 | ✅ Shipped 2026-05-19 |

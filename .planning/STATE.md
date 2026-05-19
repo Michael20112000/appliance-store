@@ -2,13 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Incremental polish & operator UX
-status: planning
-last_updated: "2026-05-19T14:50:06.435Z"
-last_activity: 2026-05-19
+status: executing
+stopped_at: Milestone v1.5 initialized (phases 22–27)
+last_updated: "2026-05-19T15:00:16.470Z"
+last_activity: 2026-05-19 -- Phase 22 planning complete
 progress:
   total_phases: 6
   completed_phases: 0
-  total_plans: 0
+  total_plans: 1
   completed_plans: 0
   percent: 0
 ---
@@ -20,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone v1.5 — Phase 22 next (`/gsd-discuss-phase 22`)
+**Current focus:** Milestone v1.5 — Phase 22 planned → `/gsd-execute-phase 22`
 
 ## Current Position
 
 Phase: Not started (defining requirements)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-19 — Milestone v1.5 started
+Status: Ready to execute
+Last activity: 2026-05-19 -- Phase 22 planning complete
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -83,6 +84,6 @@ Resume file: `.planning/ROADMAP.md` Phase 22
 
 ## Operator Next Steps
 
-1. `/gsd-discuss-phase 22` — delivery-aware order status
-2. `/gsd-plan-phase 22` — або plan без discuss
+1. `/gsd-execute-phase 22` — delivery-aware order status
+2. `/gsd-plan-phase 23` — admin category polish
 3. Intake: `.planning/todos/pending/bugfix-intake-2026-05-19-v1.5.md`
