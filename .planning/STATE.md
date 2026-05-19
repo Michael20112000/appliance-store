@@ -25,8 +25,8 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
+Phase: 22 — Delivery-aware order status
+Plan: 22-01 ready
 Status: Ready to execute
 Last activity: 2026-05-19 -- Phase 22 planning complete
 
