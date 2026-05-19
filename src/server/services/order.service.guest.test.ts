@@ -12,7 +12,7 @@ describe("createOrderFromGuestCart", () => {
 
     const result = await createOrderFromGuestCart({
       customerName: "Гість Тест",
-      customerPhone: "+380501234567",
+      customerPhone: "380501234567",
       deliveryType: "PICKUP",
       productIds: [product!.id],
     });
@@ -42,7 +42,7 @@ describe("createOrderFromGuestCart", () => {
         userId: null,
         guestAccessToken: token,
         customerName: "Null userId",
-        customerPhone: "+380501234567",
+        customerPhone: "380501234567",
         deliveryType: "PICKUP",
       },
     });
