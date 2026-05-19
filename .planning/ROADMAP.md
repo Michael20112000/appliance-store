@@ -25,7 +25,12 @@
 4. Mobile split view (list ↔ thread) зберігає той самий internal-scroll патерн у активній панелі
 5. Manual checklist: 10+ діалогів, довгий тред — page scroll не потрібен для читання історії
 
-**Plans:** TBD (`/gsd-plan-phase 17`)
+**Plans:** 3 plans
+
+Plans:
+- [ ] 17-01-PLAN.md — Admin shell + inbox flex height chain
+- [ ] 17-02-PLAN.md — Column scroll, mobile native scroll, isPanelOpen
+- [ ] 17-03-PLAN.md — Manual checklist + Playwright scroll gate + sign-off
 
 ---
 
