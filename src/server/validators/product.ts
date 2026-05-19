@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const productConditionSchema = z.enum(["LIKE_NEW", "GOOD", "FAIR"]);
-export const productStatusSchema = z.enum(["AVAILABLE", "SOLD", "DRAFT"]);
 
 export const catalogFiltersSchema = z.object({
   q: z.string().max(100).optional(),

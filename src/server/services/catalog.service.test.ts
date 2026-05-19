@@ -17,16 +17,16 @@ vi.mock("@/lib/db", () => ({
 }));
 
 describe("buildPublicProductWhere", () => {
-  it("always filters AVAILABLE status with stock", () => {
+  it("always filters in-stock products", () => {
     const where = buildPublicProductWhere({});
-    expect(where.status).toBe("AVAILABLE");
     expect(where.quantity).toEqual({ gte: 1 });
+    expect(where.status).toBeUndefined();
   });
 
   it("filters by categoryId", () => {
     const where = buildPublicProductWhere({ categoryId: "cat-1" });
     expect(where.categoryId).toBe("cat-1");
-    expect(where.status).toBe("AVAILABLE");
+    expect(where.quantity).toEqual({ gte: 1 });
   });
 
   it("applies brand and price filters", () => {
@@ -62,16 +62,14 @@ describe("buildPublicProductWhere", () => {
 });
 
 describe("buildCatalogContextWhere", () => {
-  it("scopes to AVAILABLE in-stock products globally", () => {
+  it("scopes to in-stock products globally", () => {
     expect(buildCatalogContextWhere()).toEqual({
-      status: "AVAILABLE",
       quantity: { gte: 1 },
     });
   });
 
-  it("scopes to AVAILABLE in-stock products in a category", () => {
+  it("scopes to in-stock products in a category", () => {
     expect(buildCatalogContextWhere("cat-phones")).toEqual({
-      status: "AVAILABLE",
       quantity: { gte: 1 },
       categoryId: "cat-phones",
     });
@@ -94,7 +92,7 @@ describe("getDistinctBrands", () => {
     expect(brands).toEqual(["Bosch", "Samsung"]);
     expect(prisma.product.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { status: "AVAILABLE", quantity: { gte: 1 } },
+        where: { quantity: { gte: 1 } },
         distinct: ["brand"],
       }),
     );
@@ -110,7 +108,6 @@ describe("getDistinctBrands", () => {
     expect(prisma.product.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: {
-          status: "AVAILABLE",
           quantity: { gte: 1 },
           categoryId: "cat-phones",
         },
@@ -135,7 +132,7 @@ describe("getCatalogPriceBounds", () => {
     expect(bounds).toEqual({ minUah: 129, maxUah: 451 });
     expect(prisma.product.aggregate).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { status: "AVAILABLE", quantity: { gte: 1 } },
+        where: { quantity: { gte: 1 } },
       }),
     );
   });

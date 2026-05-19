@@ -8,10 +8,8 @@ import {
   getAdminDashboardStats,
   getOrderFilterCounts,
   getAllowedNextStatuses,
-  getProductIdsForCancelRevert,
   INVALID_STATUS_TRANSITION,
   listOrdersAdminPaginated,
-  revertSoldProductsOnCancel,
 } from "./admin-order.service";
 
 vi.mock("@/lib/db", () => ({
@@ -49,8 +47,8 @@ describe("getAdminDashboardStats", () => {
     const stats = await getAdminDashboardStats();
 
     expect(stats.pendingOrders).toBe(4);
-    expect(stats.availableProducts).toBe(12);
-    expect(stats.draftProducts).toBe(2);
+    expect(stats.inStockProducts).toBe(12);
+    expect(stats.outOfStockProducts).toBe(2);
     expect(stats.recentOrders).toEqual([]);
   });
 });
@@ -100,53 +98,6 @@ describe("getAllowedNextStatuses", () => {
       "CONFIRMED",
       "CANCELLED",
     ]);
-  });
-});
-
-describe("getProductIdsForCancelRevert", () => {
-  it("collects only items with productId", () => {
-    const ids = getProductIdsForCancelRevert([
-      { productId: "prod-1" },
-      { productId: null },
-      { productId: "prod-2" },
-    ]);
-    expect(ids).toEqual(["prod-1", "prod-2"]);
-  });
-});
-
-describe("revertSoldProductsOnCancel", () => {
-  it("restores quantity and sets AVAILABLE when stock returns after cancel", async () => {
-    const update = vi.fn().mockImplementation(async (args: {
-      data?: { quantity?: { increment: number }; status?: string };
-    }) => {
-      if (args.data?.status) {
-        return {};
-      }
-      return { quantity: 1, status: "SOLD" };
-    });
-    const tx = { product: { update } };
-
-    await revertSoldProductsOnCancel(tx as never, [
-      { productId: "p1", quantity: 1 },
-      { productId: null, quantity: 1 },
-      { productId: "p2", quantity: 1 },
-    ]);
-
-    expect(update).toHaveBeenCalledTimes(4);
-    expect(update).toHaveBeenCalledWith({
-      where: { id: "p1" },
-      data: { quantity: { increment: 1 } },
-      select: { quantity: true, status: true },
-    });
-    expect(update).toHaveBeenCalledWith({
-      where: { id: "p1" },
-      data: { status: "AVAILABLE" },
-    });
-    expect(update).toHaveBeenCalledWith({
-      where: { id: "p2" },
-      data: { quantity: { increment: 1 } },
-      select: { quantity: true, status: true },
-    });
   });
 });
 

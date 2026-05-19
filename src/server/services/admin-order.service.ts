@@ -13,6 +13,13 @@ import type {
   ListOrdersAdminParams,
 } from "@/server/validators/admin-order";
 import type { OrderDetailDto, OrderSummaryDto } from "@/types/order";
+import {
+  INSUFFICIENT_STOCK,
+  releaseProductUnitsForOrder,
+  reserveProductUnitsForOrder,
+  shouldReleaseInventoryOnTransition,
+  shouldReserveInventoryOnTransition,
+} from "@/server/services/product-inventory";
 
 export type { AdminOrderListDir, AdminOrderListSort };
 
@@ -47,13 +54,11 @@ export type AdminOrderDetailDto = OrderDetailDto & {
   id: string;
 };
 
-export function getProductIdsForCancelRevert(
-  items: Array<{ productId: string | null }>,
-): string[] {
-  return items
-    .map((item) => item.productId)
-    .filter((id): id is string => id != null);
-}
+export { INSUFFICIENT_STOCK };
+export {
+  shouldReleaseInventoryOnTransition,
+  shouldReserveInventoryOnTransition,
+} from "@/server/services/product-inventory";
 
 export function buildOrderWhere(
   filter: AdminOrderListFilter,
@@ -119,11 +124,11 @@ function mapOrderDetail(
 }
 
 export async function getAdminDashboardStats() {
-  const [pendingOrders, availableProducts, draftProducts, recentOrders] =
+  const [pendingOrders, inStockProducts, outOfStockProducts, recentOrders] =
     await Promise.all([
       prisma.order.count({ where: { status: "PENDING" } }),
-      prisma.product.count({ where: { status: "AVAILABLE" } }),
-      prisma.product.count({ where: { status: "DRAFT" } }),
+      prisma.product.count({ where: { quantity: { gte: 1 } } }),
+      prisma.product.count({ where: { quantity: 0 } }),
       prisma.order.findMany({
         take: 5,
         orderBy: { createdAt: "desc" },
@@ -133,8 +138,8 @@ export async function getAdminDashboardStats() {
 
   return {
     pendingOrders,
-    availableProducts,
-    draftProducts,
+    inStockProducts,
+    outOfStockProducts,
     recentOrders: recentOrders.map(mapOrderSummary),
   };
 }
@@ -283,32 +288,6 @@ export async function getOrderAdmin(
   return mapOrderDetail(order);
 }
 
-export async function revertSoldProductsOnCancel(
-  tx: Prisma.TransactionClient,
-  items: Array<{ productId: string | null; quantity: number }>,
-): Promise<void> {
-  for (const item of items) {
-    if (item.productId == null || item.quantity < 1) {
-      continue;
-    }
-
-    const product = await tx.product.update({
-      where: { id: item.productId },
-      data: {
-        quantity: { increment: item.quantity },
-      },
-      select: { quantity: true, status: true },
-    });
-
-    if (product.quantity > 0 && product.status === "SOLD") {
-      await tx.product.update({
-        where: { id: item.productId },
-        data: { status: "AVAILABLE" },
-      });
-    }
-  }
-}
-
 export async function updateOrderStatus(
   orderId: string,
   newStatus: OrderStatus,
@@ -325,8 +304,12 @@ export async function updateOrderStatus(
 
     assertTransitionAllowed(order.status, newStatus);
 
-    if (newStatus === "CANCELLED") {
-      await revertSoldProductsOnCancel(tx, order.items);
+    if (shouldReserveInventoryOnTransition(order.status, newStatus)) {
+      await reserveProductUnitsForOrder(tx, order.items);
+    }
+
+    if (shouldReleaseInventoryOnTransition(order.status, newStatus)) {
+      await releaseProductUnitsForOrder(tx, order.items);
     }
 
     await tx.order.update({

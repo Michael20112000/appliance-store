@@ -1,4 +1,4 @@
-import type { ProductCondition, ProductStatus } from "@/generated/prisma/client";
+import type { ProductCondition } from "@/generated/prisma/client";
 
 export type WishlistLineDto = {
   productId: string;
@@ -7,7 +7,6 @@ export type WishlistLineDto = {
   brand: string;
   priceKopiyky: number;
   condition: ProductCondition;
-  status: ProductStatus;
   available: boolean;
   image: {
     cloudinaryPublicId: string;

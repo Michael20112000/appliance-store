@@ -7,21 +7,21 @@ describe("adminProductsUrl", () => {
     expect(adminProductsUrl({})).toBe("/admin/tovary");
   });
 
-  it("includes status and categoryId filters", () => {
+  it("includes stock and categoryId filters", () => {
     expect(
       adminProductsUrl({
-        status: "DRAFT",
+        stock: "out_of_stock",
         categoryId: "clxxxxxxxxxxxxxxxxxxxxxxxxx",
       }),
     ).toBe(
-      "/admin/tovary?status=DRAFT&categoryId=clxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "/admin/tovary?stock=out_of_stock&categoryId=clxxxxxxxxxxxxxxxxxxxxxxxxx",
     );
   });
 
   it("omits page when page is 1", () => {
     expect(
-      adminProductsUrl({ status: "AVAILABLE", page: 1, pageSize: 50 }),
-    ).toBe("/admin/tovary?status=AVAILABLE&pageSize=50");
+      adminProductsUrl({ stock: "in_stock", page: 1, pageSize: 50 }),
+    ).toBe("/admin/tovary?stock=in_stock&pageSize=50");
   });
 
   it("includes page when greater than 1", () => {
@@ -33,11 +33,11 @@ describe("adminProductsUrl", () => {
   it("resets page in URL when filter changes with page 1", () => {
     expect(
       adminProductsUrl({
-        status: "DRAFT",
+        stock: "in_stock",
         page: 1,
         pageSize: 20,
       }),
-    ).toBe("/admin/tovary?status=DRAFT");
+    ).toBe("/admin/tovary?stock=in_stock");
   });
 
   it("includes sort and dir when sort is active", () => {
@@ -58,8 +58,8 @@ describe("adminProductsUrl", () => {
         page: 3,
         sort: "price",
         dir: "desc",
-        status: "DRAFT",
+        stock: "in_stock",
       }),
-    ).toBe("/admin/tovary?status=DRAFT&page=3&sort=price");
+    ).toBe("/admin/tovary?stock=in_stock&page=3&sort=price");
   });
 });

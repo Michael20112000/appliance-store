@@ -11,10 +11,10 @@ import {
   listAdminProducts,
 } from "@/server/services/admin-product.service";
 import {
+  adminProductStockFilterSchema,
   listAdminProductsSchema,
   type ListAdminProductsFilters,
 } from "@/server/validators/admin-product";
-import type { ProductStatus } from "@/generated/prisma/client";
 
 export const metadata: Metadata = {
   title: "Товари",
@@ -24,7 +24,7 @@ type PageProps = {
   searchParams: Promise<{
     page?: string;
     pageSize?: string;
-    status?: string;
+    stock?: string;
     categoryId?: string;
     q?: string;
     sort?: string;
@@ -35,16 +35,13 @@ type PageProps = {
 function parseListFilters(
   params: Awaited<PageProps["searchParams"]>,
 ): ListAdminProductsFilters {
-  const status =
-    params.status &&
-    ["DRAFT", "AVAILABLE", "SOLD"].includes(params.status)
-      ? (params.status as ProductStatus)
-      : undefined;
+  const stockParsed = adminProductStockFilterSchema.safeParse(params.stock);
+  const stock = stockParsed.success ? stockParsed.data : undefined;
 
   return listAdminProductsSchema.parse({
     page: params.page,
     pageSize: params.pageSize,
-    status,
+    stock,
     categoryId: params.categoryId,
     q: params.q,
     sort: params.sort,
@@ -64,7 +61,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
     getProductFilterCounts(
       categoryIds,
       filters.categoryId,
-      filters.status,
+      filters.stock ?? "",
     ),
   ]);
 
@@ -83,7 +80,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           id: category.id,
           name: category.name,
         }))}
-        activeStatus={filters.status}
+        activeStock={filters.stock}
         activeCategoryId={filters.categoryId}
         pageSize={filters.pageSize}
         sort={filters.sort}
@@ -102,7 +99,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             sort={filters.sort}
             dir={filters.dir}
             pageSize={filters.pageSize}
-            status={filters.status}
+            stock={filters.stock}
             categoryId={filters.categoryId}
             q={filters.q}
           />
@@ -110,7 +107,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             page={result.page}
             pageSize={filters.pageSize}
             totalPages={result.totalPages}
-            status={filters.status}
+            stock={filters.stock}
             categoryId={filters.categoryId}
             q={filters.q}
             sort={filters.sort}

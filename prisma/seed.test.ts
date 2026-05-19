@@ -46,8 +46,8 @@ describe("seed data", () => {
     }
   });
 
-  it("has SOLD products for CAT-07 tests", async () => {
-    const count = await prisma.product.count({ where: { status: "SOLD" } });
+  it("has out-of-stock demo products for CAT-07 tests", async () => {
+    const count = await prisma.product.count({ where: { quantity: 0 } });
     expect(count).toBeGreaterThanOrEqual(2);
   });
 });

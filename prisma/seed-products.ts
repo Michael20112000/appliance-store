@@ -1,4 +1,3 @@
-import type { ProductStatus } from "../src/generated/prisma/client";
 import { prisma } from "../src/lib/db";
 import { ensureCategorySeedImage } from "./seed-cloudinary";
 import { CATEGORY_CATALOG, DEMO_STATUS_PRODUCTS } from "./seed-catalog-data";
@@ -21,7 +20,7 @@ type SeedRow = {
   brand: string;
   priceUah: number;
   condition: (typeof CATEGORY_CATALOG)[number]["products"][number]["condition"];
-  status: ProductStatus;
+  quantity: number;
   categorySlug: string;
   description: string;
 };
@@ -54,7 +53,7 @@ export async function seedProducts() {
   const catalog: SeedRow[] = CATEGORY_CATALOG.flatMap(({ categorySlug, products }) =>
     products.map((p) => ({
       ...p,
-      status: "AVAILABLE" as const,
+      quantity: 1,
       categorySlug,
     })),
   );
@@ -66,7 +65,7 @@ export async function seedProducts() {
       brand: demo.brand,
       priceUah: demo.priceUah,
       condition: demo.condition,
-      status: demo.status,
+      quantity: demo.quantity,
       categorySlug: demo.categorySlug,
       description: demo.description,
     });
@@ -75,7 +74,6 @@ export async function seedProducts() {
   const catalogSlugs = catalog.map((item) => item.slug);
   const orphanProductWhere = {
     slug: { notIn: catalogSlugs },
-    status: { in: ["AVAILABLE", "DRAFT"] as const },
   };
 
   await prisma.cartItem.deleteMany({
@@ -130,7 +128,7 @@ export async function seedProducts() {
         brand: item.brand,
         price: uahToKopiyky(item.priceUah),
         condition: item.condition,
-        status: item.status,
+        quantity: item.quantity,
         categoryId: category.id,
         ...(seededImages.length > 0
           ? {
@@ -146,7 +144,7 @@ export async function seedProducts() {
         brand: item.brand,
         price: uahToKopiyky(item.priceUah),
         condition: item.condition,
-        status: item.status,
+        quantity: item.quantity,
         categoryId: category.id,
       },
     });

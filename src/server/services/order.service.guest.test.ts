@@ -5,7 +5,7 @@ import { createOrderFromGuestCart } from "./order.service";
 describe("createOrderFromGuestCart", () => {
   it("creates order without userId for guest checkout", async () => {
     const product = await prisma.product.findFirst({
-      where: { status: "AVAILABLE", quantity: { gte: 1 } },
+      where: { quantity: { gte: 1 } },
       select: { id: true },
     });
     expect(product).toBeTruthy();
@@ -28,7 +28,7 @@ describe("createOrderFromGuestCart", () => {
 
   it("accepts explicit userId null in prisma create", async () => {
     const product = await prisma.product.findFirst({
-      where: { status: "AVAILABLE", quantity: { gte: 1 } },
+      where: { quantity: { gte: 1 } },
       select: { id: true },
     });
     expect(product).toBeTruthy();

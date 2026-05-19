@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/permissions";
 import {
   INVALID_STATUS_TRANSITION,
+  INSUFFICIENT_STOCK,
   ORDER_NOT_FOUND,
   updateOrderStatus,
 } from "@/server/services/admin-order.service";
@@ -17,6 +18,8 @@ export async function updateOrderStatusAction(input: unknown) {
     const { orderNumber } = await updateOrderStatus(data.orderId, data.status);
     revalidatePath("/admin/zamovlennia");
     revalidatePath(`/admin/zamovlennia/${orderNumber}`);
+    revalidatePath("/admin/tovary");
+    revalidatePath("/katalog");
     revalidatePath("/kabinet");
     return { ok: true as const, orderNumber };
   } catch (error) {
@@ -29,6 +32,9 @@ export async function updateOrderStatusAction(input: unknown) {
       }
       if (error.message === ORDER_NOT_FOUND) {
         return { ok: false as const, error: "ORDER_NOT_FOUND" as const };
+      }
+      if (error.message === INSUFFICIENT_STOCK) {
+        return { ok: false as const, error: "INSUFFICIENT_STOCK" as const };
       }
     }
     return { ok: false as const, error: "UNKNOWN" as const };

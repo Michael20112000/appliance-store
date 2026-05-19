@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label";
 
 const errorMessages: Record<string, string> = {
   INVALID_STATUS_TRANSITION: "Недопустима зміна статусу для цього замовлення.",
+  INSUFFICIENT_STOCK: "Недостатньо товару на складі для підтвердження.",
   ORDER_NOT_FOUND: "Замовлення не знайдено.",
   UNKNOWN: "Не вдалося оновити статус. Спробуйте ще раз.",
 };

@@ -1,13 +1,13 @@
 ---
-title: Bugfix intake — 2026-05-19 (wave 1)
+title: Bugfix intake — 2026-05-19
 status: open
 milestone: v1.4-stabilization
 source: operator QA
 phase: 21
-wave: 1
+wave: 2
 ---
 
-# Bugfix intake — wave 1
+# Bugfix intake — wave 1 (done)
 
 **Environment:** local `http://localhost:3000`  
 **Branch:** main  
@@ -30,7 +30,31 @@ wave: 1
 - URL: `/admin/tovary?categoryId=<cuid>`
 - Фільтр на сторінці товарів уже має підтримувати `categoryId` (перевірити при implement).
 
+# Bugfix intake — wave 2
+
+| ID | Area | Severity | Steps to reproduce | Expected | Actual | Status |
+|----|------|----------|-------------------|----------|--------|--------|
+| BUG-14 | Admin product form + model | major | Створити/редагувати товар | Немає статусу чернетка/в наявності/продано; лише **кількість** (0 = розпродано, >0 = в наявності); створений адміном товар одразу на вітрині | Поле статусу DRAFT/AVAILABLE; SOLD окремо від qty | done |
+| BUG-15 | Checkout + order status | major | Оформити замовлення → підтвердити / скасувати | Списання qty при **CONFIRMED** (−1 за одиницю); при **CANCELLED** після резерву — повернення +1; при **COMPLETED** без змін | Списання при checkout; SOLD enum при qty=0 | done |
+| BUG-16 | Admin `/admin/tovary` | minor | Відкрити список товарів | Без колонки статусів | Колонка + inline select статусу | done |
+| BUG-17 | Admin `/admin/tovary/[id]` | minor | Відкрити картку товару | Список замовлень по товару з посиланням на `/admin/zamovlennia/{orderNumber}` | Немає блоку замовлень | done |
+
+## BUG-14 — логіка наявності
+
+- Один listing = одна модель, **quantity** = кількість однакових одиниць.
+- `quantity > 0` → в наявності (вітрина + можна в кошик).
+- `quantity === 0` → розпродано (приховано з вітрини).
+- Enum `ProductStatus` (DRAFT / AVAILABLE / SOLD) **прибрати**.
+
+## BUG-15 — резерв через статус замовлення
+
+- `PENDING` → `CONFIRMED`: `quantity -= item.quantity` (атомарно, помилка якщо не вистачає).
+- `* → CANCELLED` (якщо до цього був резерв, не з PENDING): `quantity += item.quantity`.
+- `→ COMPLETED`: без змін qty.
+- Checkout **не** зменшує qty (лише перевірка `quantity >= 1`).
+
 ## After triage
 
-- [x] Grouped into phase 21 plan wave: 1 (2 items)
+- [x] Wave 1 grouped into phase 21 plan wave: 1 (2 items)
+- [x] Wave 2 grouped into phase 21 plan wave: 2 (4 items)
 - [ ] Duplicates: none

@@ -8,7 +8,6 @@ import type {
 } from "@/types/catalog";
 import { catalogFiltersSchema, listProductsSchema } from "../validators/product";
 
-const PUBLIC_STATUS = "AVAILABLE" as const;
 const DEFAULT_PAGE_SIZE = 24;
 
 const cardInclude = {
@@ -24,7 +23,6 @@ export function buildCatalogContextWhere(
   categoryId?: string,
 ): Prisma.ProductWhereInput {
   return {
-    status: PUBLIC_STATUS,
     quantity: { gte: 1 },
     ...(categoryId && { categoryId }),
   };
@@ -36,7 +34,6 @@ export function buildPublicProductWhere(
   const filters = catalogFiltersSchema.parse(input);
 
   return {
-    status: PUBLIC_STATUS,
     quantity: { gte: 1 },
     ...(input.categoryId && { categoryId: input.categoryId }),
     ...(filters.brand && { brand: filters.brand }),
@@ -139,7 +136,7 @@ export async function getPublicProductBySlug(
   slug: string,
 ): Promise<PublicProductDetail | null> {
   const product = await prisma.product.findFirst({
-    where: { slug, status: PUBLIC_STATUS },
+    where: { slug, quantity: { gte: 1 } },
     include: {
       category: { select: { name: true, slug: true } },
       images: {
@@ -254,7 +251,7 @@ export async function getCatalogPriceBounds(
 
 export async function listPublicProductSlugsForSitemap(): Promise<string[]> {
   const rows = await prisma.product.findMany({
-    where: { status: PUBLIC_STATUS },
+    where: { quantity: { gte: 1 } },
     select: { slug: true },
     orderBy: { updatedAt: "desc" },
   });

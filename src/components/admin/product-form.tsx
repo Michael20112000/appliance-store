@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ProductCondition, ProductStatus } from "@/generated/prisma/client";
+import type { ProductCondition } from "@/generated/prisma/client";
 import {
   createProductAction,
   deleteProductAction,
@@ -57,7 +57,6 @@ type ProductFormProps = {
   mode: "create" | "edit";
   productId?: string;
   storefrontSlug?: string;
-  currentStatus?: ProductStatus;
   categories: CategoryOption[];
   defaultValues?: Partial<UpsertProductInput>;
   images?: ProductImageRow[];
@@ -67,7 +66,6 @@ export function ProductForm({
   mode,
   productId,
   storefrontSlug,
-  currentStatus,
   categories,
   defaultValues,
   images = [],
@@ -85,9 +83,6 @@ export function ProductForm({
       brand: defaultValues?.brand ?? "",
       categoryId: defaultValues?.categoryId ?? categories[0]?.id ?? "",
       condition: defaultValues?.condition ?? "GOOD",
-      status:
-        defaultValues?.status ??
-        (currentStatus === "AVAILABLE" ? "AVAILABLE" : "DRAFT"),
       priceUah: defaultValues?.priceUah ?? 0,
       quantity: defaultValues?.quantity ?? 1,
     },
@@ -262,28 +257,6 @@ export function ProductForm({
             ) : null}
           </div>
 
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="status">Статус</Label>
-            <Controller
-              name="status"
-              control={form.control}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Оберіть статус">
-                      {field.value === "AVAILABLE"
-                        ? "В наявності"
-                        : "Чернетка"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="DRAFT">Чернетка</SelectItem>
-                    <SelectItem value="AVAILABLE">В наявності</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
 
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="description">Опис</Label>
@@ -307,7 +280,7 @@ export function ProductForm({
           >
             Скасувати
           </Button>
-          {mode === "edit" && storefrontSlug && currentStatus !== "DRAFT" ? (
+          {mode === "edit" && storefrontSlug ? (
             <Button
               type="button"
               variant="outline"

@@ -12,7 +12,6 @@ const validUpsert = {
   brand: "Samsung",
   categoryId: "clxxxxxxxxxxxxxxxxxxxxxxxxx",
   condition: "GOOD" as const,
-  status: "DRAFT" as const,
   priceUah: 4500,
   quantity: 1,
 };
@@ -28,20 +27,7 @@ describe("upsertProductSchema", () => {
       ...validUpsert,
     });
     expect(result.priceUah).toBe(4500);
-    expect(result.status).toBe("DRAFT");
-  });
-
-  it("rejects SOLD status in admin form", () => {
-    expect(() =>
-      upsertProductSchema.parse({
-        ...validUpsert,
-        title: "Test",
-        brand: "B",
-        status: "SOLD",
-        priceUah: 100,
-        quantity: 1,
-      }),
-    ).toThrow();
+    expect(result.quantity).toBe(1);
   });
 
   it("accepts quantity 1 on create", () => {
@@ -93,12 +79,12 @@ describe("productImageInputSchema", () => {
 });
 
 describe("listAdminProductsSchema", () => {
-  it("allows optional status filter including SOLD", () => {
+  it("allows optional stock filter", () => {
     const result = listAdminProductsSchema.parse({
       page: 1,
-      status: "SOLD",
+      stock: "out_of_stock",
     });
-    expect(result.status).toBe("SOLD");
+    expect(result.stock).toBe("out_of_stock");
   });
 
   it("accepts valid sort and dir", () => {

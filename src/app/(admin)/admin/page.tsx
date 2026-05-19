@@ -19,13 +19,13 @@ export default async function AdminDashboardPage() {
         />
         <StatCard
           label="Товари в наявності"
-          count={stats.availableProducts}
-          href="/admin/tovary"
+          count={stats.inStockProducts}
+          href="/admin/tovary?stock=in_stock"
         />
         <StatCard
-          label="Чернетки"
-          count={stats.draftProducts}
-          href="/admin/tovary?status=DRAFT"
+          label="Розпродано"
+          count={stats.outOfStockProducts}
+          href="/admin/tovary?stock=out_of_stock"
         />
       </div>
 

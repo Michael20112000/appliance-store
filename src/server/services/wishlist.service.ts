@@ -1,9 +1,8 @@
-import type { Prisma, ProductStatus } from "@/generated/prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { WISHLIST_MAX_ITEMS } from "@/lib/wishlist/constants";
 import { prisma } from "@/lib/db";
 import type { WishlistLineDto, WishlistViewDto } from "@/types/wishlist";
-
-const PUBLIC_STATUS = "AVAILABLE" as const;
+import { isProductPurchasable } from "./product-availability";
 
 export const WISHLIST_MAX_ERROR = "WISHLIST_MAX";
 
@@ -33,10 +32,6 @@ type ProductWithImage = Prisma.ProductGetPayload<{
   };
 }>;
 
-export function isWishlistProductAvailable(status: ProductStatus | string): boolean {
-  return status === PUBLIC_STATUS;
-}
-
 function mapWishlistItem(item: WishlistItemWithProduct): WishlistLineDto {
   const image = item.product.images[0];
   return {
@@ -46,8 +41,7 @@ function mapWishlistItem(item: WishlistItemWithProduct): WishlistLineDto {
     brand: item.product.brand,
     priceKopiyky: item.product.price,
     condition: item.product.condition,
-    status: item.product.status,
-    available: isWishlistProductAvailable(item.product.status),
+    available: isProductPurchasable(item.product.quantity),
     image: image
       ? { cloudinaryPublicId: image.cloudinaryPublicId, alt: image.alt }
       : null,
@@ -64,8 +58,7 @@ function mapResolvedProduct(product: ProductWithImage): WishlistLineDto {
     brand: product.brand,
     priceKopiyky: product.price,
     condition: product.condition,
-    status: product.status,
-    available: isWishlistProductAvailable(product.status),
+    available: isProductPurchasable(product.quantity),
     image: image
       ? { cloudinaryPublicId: image.cloudinaryPublicId, alt: image.alt }
       : null,
@@ -109,7 +102,7 @@ export async function addToWishlist(userId: string, productId: string) {
   }
 
   const product = await prisma.product.findFirst({
-    where: { id: productId, status: PUBLIC_STATUS, quantity: { gte: 1 } },
+    where: { id: productId, quantity: { gte: 1 } },
     select: { id: true },
   });
 

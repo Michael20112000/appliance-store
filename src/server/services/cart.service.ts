@@ -3,8 +3,6 @@ import { prisma } from "@/lib/db";
 import type { CartLineDto, CartViewDto } from "@/types/cart";
 import { isProductPurchasable } from "./product-availability";
 
-const PUBLIC_STATUS = "AVAILABLE" as const;
-
 const cartLineInclude = {
   product: {
     include: {
@@ -22,7 +20,7 @@ type CartItemWithProduct = Prisma.CartItemGetPayload<{
 }>;
 
 function mapLine(item: CartItemWithProduct): CartLineDto | null {
-  if (!isProductPurchasable(item.product.status, item.product.quantity)) {
+  if (!isProductPurchasable(item.product.quantity)) {
     return null;
   }
 
@@ -93,7 +91,7 @@ export async function getCartForUser(userId: string): Promise<CartViewDto> {
 
 export async function addToCart(userId: string, productId: string) {
   const product = await prisma.product.findFirst({
-    where: { id: productId, status: PUBLIC_STATUS, quantity: { gte: 1 } },
+    where: { id: productId, quantity: { gte: 1 } },
     select: { id: true },
   });
 
@@ -174,8 +172,8 @@ export async function clearCart(userId: string) {
   await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
 }
 
-export function canAddProductToCart(status: string, quantity: number): boolean {
-  return isProductPurchasable(status, quantity);
+export function canAddProductToCart(quantity: number): boolean {
+  return isProductPurchasable(quantity);
 }
 
 export async function resolveGuestCartProducts(
@@ -205,7 +203,7 @@ export async function resolveGuestCartProducts(
     if (!product) {
       continue;
     }
-    if (!isProductPurchasable(product.status, product.quantity)) {
+    if (!isProductPurchasable(product.quantity)) {
       removedTitles.push(product.title);
       continue;
     }

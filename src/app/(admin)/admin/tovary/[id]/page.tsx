@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductForm } from "@/components/admin/product-form";
+import { ProductOrdersSection } from "@/components/admin/product-orders-section";
 import { listCategoriesAdmin } from "@/server/services/admin-catalog.service";
-import { getProductAdmin } from "@/server/services/admin-product.service";
+import {
+  getProductAdmin,
+  listOrdersForProductAdmin,
+} from "@/server/services/admin-product.service";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -18,9 +22,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function AdminEditProductPage({ params }: PageProps) {
   const { id } = await params;
-  const [product, categories] = await Promise.all([
+  const [product, categories, orders] = await Promise.all([
     getProductAdmin(id),
     listCategoriesAdmin(),
+    listOrdersForProductAdmin(id),
   ]);
 
   if (!product) {
@@ -33,8 +38,7 @@ export default async function AdminEditProductPage({ params }: PageProps) {
       <ProductForm
         mode="edit"
         productId={product.id}
-        storefrontSlug={product.slug}
-        currentStatus={product.status}
+        storefrontSlug={product.quantity > 0 ? product.slug : undefined}
         categories={categories.map((category) => ({
           id: category.id,
           name: category.name,
@@ -45,17 +49,12 @@ export default async function AdminEditProductPage({ params }: PageProps) {
           brand: product.brand,
           categoryId: product.categoryId,
           condition: product.condition,
-          status:
-            product.quantity > 0
-              ? product.status === "DRAFT"
-                ? "DRAFT"
-                : "AVAILABLE"
-              : "DRAFT",
           priceUah: Math.round(product.price / 100),
           quantity: product.quantity,
         }}
         images={product.images}
       />
+      <ProductOrdersSection orders={orders} />
     </div>
   );
 }

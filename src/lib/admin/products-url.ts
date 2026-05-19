@@ -1,8 +1,8 @@
-import type { ProductStatus } from "@/generated/prisma/client";
 import type { AdminPageSize } from "@/lib/pagination";
 import type {
   AdminProductListDir,
   AdminProductListSort,
+  AdminProductStockFilter,
 } from "@/server/validators/admin-product";
 
 const PRODUCTS_PATH = "/admin/tovary";
@@ -14,7 +14,7 @@ const DEFAULT_DIR: AdminProductListDir = "desc";
 export type AdminProductsUrlParams = {
   page?: number;
   pageSize?: AdminPageSize;
-  status?: ProductStatus;
+  stock?: AdminProductStockFilter;
   categoryId?: string;
   q?: string;
   sort?: AdminProductListSort;
@@ -24,8 +24,8 @@ export type AdminProductsUrlParams = {
 export function adminProductsUrl(params: AdminProductsUrlParams = {}): string {
   const searchParams = new URLSearchParams();
 
-  if (params.status != null) {
-    searchParams.set("status", params.status);
+  if (params.stock != null) {
+    searchParams.set("stock", params.stock);
   }
   if (params.categoryId != null) {
     searchParams.set("categoryId", params.categoryId);

@@ -1,7 +1,7 @@
-import type { Prisma, ProductStatus } from "@/generated/prisma/client";
-import type { ProductStatus } from "@/generated/prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import { computeTotalPages } from "@/lib/pagination";
+import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
 import type {
   AdminProductListDir,
   AdminProductListSort,
@@ -40,13 +40,16 @@ export function priceUahToKopiyky(uah: number): number {
   return Math.round(uah * 100);
 }
 
+export type ProductStockFilterKey = "" | "in_stock" | "out_of_stock";
+
 export function buildAdminProductWhere(
-  filters: Pick<ListAdminProductsFilters, "status" | "categoryId" | "q">,
+  filters: Pick<ListAdminProductsFilters, "stock" | "categoryId" | "q">,
 ): Prisma.ProductWhereInput {
   const q = filters.q?.trim();
 
   return {
-    ...(filters.status && { status: filters.status }),
+    ...(filters.stock === "in_stock" && { quantity: { gte: 1 } }),
+    ...(filters.stock === "out_of_stock" && { quantity: 0 }),
     ...(filters.categoryId && { categoryId: filters.categoryId }),
     ...(q && q.length >= 2
       ? {
@@ -116,51 +119,50 @@ async function resolveUniqueProductSlug(
   }
 }
 
-export type ProductStatusFilterKey = "" | ProductStatus;
-
 export type ProductFilterCounts = {
-  status: Record<ProductStatusFilterKey, number>;
+  stock: Record<ProductStockFilterKey, number>;
   category: Record<string, number>;
 };
 
-const PRODUCT_STATUS_FILTER_KEYS: readonly ProductStatusFilterKey[] = [
+const PRODUCT_STOCK_FILTER_KEYS: readonly ProductStockFilterKey[] = [
   "",
-  "DRAFT",
-  "AVAILABLE",
-  "SOLD",
+  "in_stock",
+  "out_of_stock",
 ];
 
 export async function getProductFilterCounts(
   categoryIds: string[],
   activeCategoryId?: string,
-  activeStatus?: ProductStatus,
+  activeStock?: ProductStockFilterKey,
 ): Promise<ProductFilterCounts> {
-  const baseForStatus: Prisma.ProductWhereInput = activeCategoryId
+  const baseForStock: Prisma.ProductWhereInput = activeCategoryId
     ? { categoryId: activeCategoryId }
     : {};
 
-  const statusCountValues = await Promise.all(
-    PRODUCT_STATUS_FILTER_KEYS.map((status) =>
+  const stockCountValues = await Promise.all(
+    PRODUCT_STOCK_FILTER_KEYS.map((stock) =>
       prisma.product.count({
         where: {
-          ...baseForStatus,
-          ...(status ? { status } : {}),
+          ...baseForStock,
+          ...(stock === "in_stock" && { quantity: { gte: 1 } }),
+          ...(stock === "out_of_stock" && { quantity: 0 }),
         },
       }),
     ),
   );
 
-  const status = PRODUCT_STATUS_FILTER_KEYS.reduce(
+  const stock = PRODUCT_STOCK_FILTER_KEYS.reduce(
     (acc, key, index) => {
-      acc[key] = statusCountValues[index] ?? 0;
+      acc[key] = stockCountValues[index] ?? 0;
       return acc;
     },
-    {} as Record<ProductStatusFilterKey, number>,
+    {} as Record<ProductStockFilterKey, number>,
   );
 
-  const baseForCategory: Prisma.ProductWhereInput = activeStatus
-    ? { status: activeStatus }
-    : {};
+  const baseForCategory: Prisma.ProductWhereInput = {
+    ...(activeStock === "in_stock" && { quantity: { gte: 1 } }),
+    ...(activeStock === "out_of_stock" && { quantity: 0 }),
+  };
 
   const [allCategoryCount, ...perCategoryCounts] = await Promise.all([
     prisma.product.count({ where: baseForCategory }),
@@ -176,7 +178,7 @@ export async function getProductFilterCounts(
     category[categoryId] = perCategoryCounts[index] ?? 0;
   });
 
-  return { status, category };
+  return { stock, category };
 }
 
 export function buildPrismaProductOrderBy(
@@ -190,8 +192,8 @@ export function buildPrismaProductOrderBy(
       return { category: { name: dir } };
     case "price":
       return { price: dir };
-    case "status":
-      return { status: dir };
+    case "quantity":
+      return { quantity: dir };
     default:
       return { updatedAt: "desc" };
   }
@@ -230,6 +232,44 @@ export async function getProductAdmin(id: string) {
   });
 }
 
+export type ProductOrderListItem = {
+  orderId: string;
+  orderNumber: string;
+  status: keyof typeof ORDER_STATUS_LABELS_UA;
+  customerName: string;
+  quantity: number;
+  createdAt: Date;
+};
+
+export async function listOrdersForProductAdmin(
+  productId: string,
+): Promise<ProductOrderListItem[]> {
+  const items = await prisma.orderItem.findMany({
+    where: { productId },
+    orderBy: { order: { createdAt: "desc" } },
+    include: {
+      order: {
+        select: {
+          id: true,
+          orderNumber: true,
+          status: true,
+          customerName: true,
+          createdAt: true,
+        },
+      },
+    },
+  });
+
+  return items.map((item) => ({
+    orderId: item.order.id,
+    orderNumber: item.order.orderNumber,
+    status: item.order.status,
+    customerName: item.order.customerName,
+    quantity: item.quantity,
+    createdAt: item.order.createdAt,
+  }));
+}
+
 export async function createProduct(data: UpsertProductValues) {
   const baseSlug = data.slug?.trim() || slugFromName(data.title);
   const slug = await resolveUniqueProductSlug(baseSlug);
@@ -242,37 +282,10 @@ export async function createProduct(data: UpsertProductValues) {
       brand: data.brand,
       categoryId: data.categoryId,
       condition: data.condition,
-      status: data.status ?? "DRAFT",
       price: priceUahToKopiyky(data.priceUah),
       quantity: data.quantity,
     },
     include: adminDetailInclude,
-  });
-}
-
-export const PRODUCT_STATUS_LOCKED = "PRODUCT_STATUS_LOCKED";
-
-export async function updateProductStatus(
-  productId: string,
-  status: "DRAFT" | "AVAILABLE",
-) {
-  const existing = await prisma.product.findUnique({ where: { id: productId } });
-  if (!existing) {
-    throw new Error(PRODUCT_NOT_FOUND);
-  }
-  if (existing.status === "SOLD") {
-    throw new Error(PRODUCT_STATUS_LOCKED);
-  }
-
-  return prisma.product.update({
-    where: { id: productId },
-    data: { status },
-    select: {
-      id: true,
-      slug: true,
-      status: true,
-      category: { select: { slug: true } },
-    },
   });
 }
 
@@ -287,13 +300,6 @@ export async function updateProduct(data: UpdateProductValues) {
     slug = await resolveUniqueProductSlug(data.slug.trim(), data.id);
   }
 
-  let status: ProductStatus = data.status;
-  if (data.quantity === 0) {
-    status = "SOLD";
-  } else if (status !== "DRAFT") {
-    status = "AVAILABLE";
-  }
-
   return prisma.product.update({
     where: { id: data.id },
     data: {
@@ -303,7 +309,6 @@ export async function updateProduct(data: UpdateProductValues) {
       brand: data.brand,
       categoryId: data.categoryId,
       condition: data.condition,
-      status,
       price: priceUahToKopiyky(data.priceUah),
       quantity: data.quantity,
     },

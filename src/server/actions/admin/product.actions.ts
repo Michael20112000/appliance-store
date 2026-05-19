@@ -11,14 +11,11 @@ import {
   PRODUCT_IN_CART,
   PRODUCT_NOT_FOUND,
   syncProductImages,
-  PRODUCT_STATUS_LOCKED,
   updateProduct,
-  updateProductStatus,
 } from "@/server/services/admin-product.service";
 import {
   saveProductImagesSchema,
   updateProductSchema,
-  updateProductStatusSchema,
   upsertProductSchema,
 } from "@/server/validators/admin-product";
 
@@ -44,25 +41,8 @@ function mapProductError(error: unknown) {
     if (error.message === PRODUCT_NOT_FOUND) {
       return { ok: false as const, error: "PRODUCT_NOT_FOUND" as const };
     }
-    if (error.message === PRODUCT_STATUS_LOCKED) {
-      return { ok: false as const, error: "PRODUCT_STATUS_LOCKED" as const };
-    }
   }
   return { ok: false as const, error: "UNKNOWN" as const };
-}
-
-export async function updateProductStatusAction(input: unknown) {
-  await requireAdmin();
-  const data = updateProductStatusSchema.parse(input);
-
-  try {
-    const product = await updateProductStatus(data.productId, data.status);
-    revalidateAdminProductPaths();
-    revalidateStorefrontProduct(product.slug, product.category.slug);
-    return { ok: true as const };
-  } catch (error) {
-    return mapProductError(error);
-  }
 }
 
 export async function createProductAction(input: unknown) {

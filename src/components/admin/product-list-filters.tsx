@@ -2,11 +2,11 @@ import Link from "next/link";
 import { adminProductsUrl } from "@/lib/admin/products-url";
 import type { AdminPageSize } from "@/lib/pagination";
 import { cn } from "@/lib/utils";
-import type { ProductStatus } from "@/generated/prisma/client";
-import type { ProductFilterCounts } from "@/server/services/admin-product.service";
+import type { ProductFilterCounts, ProductStockFilterKey } from "@/server/services/admin-product.service";
 import type {
   AdminProductListDir,
   AdminProductListSort,
+  AdminProductStockFilter,
 } from "@/server/validators/admin-product";
 
 type CategoryOption = {
@@ -16,7 +16,7 @@ type CategoryOption = {
 
 type ProductListFiltersProps = {
   categories: CategoryOption[];
-  activeStatus?: ProductStatus;
+  activeStock?: AdminProductStockFilter;
   activeCategoryId?: string;
   pageSize: AdminPageSize;
   sort?: AdminProductListSort;
@@ -24,11 +24,10 @@ type ProductListFiltersProps = {
   counts: ProductFilterCounts;
 };
 
-const STATUS_FILTERS: Array<{ value: ProductStatus | ""; label: string }> = [
-  { value: "", label: "Усі статуси" },
-  { value: "DRAFT", label: "Чернетки" },
-  { value: "AVAILABLE", label: "В наявності" },
-  { value: "SOLD", label: "Продано" },
+const STOCK_FILTERS: Array<{ value: ProductStockFilterKey; label: string }> = [
+  { value: "", label: "Усі товари" },
+  { value: "in_stock", label: "В наявності" },
+  { value: "out_of_stock", label: "Розпродано" },
 ];
 
 function filterLabel(label: string, count: number, showCount = true): string {
@@ -37,7 +36,7 @@ function filterLabel(label: string, count: number, showCount = true): string {
 
 export function ProductListFilters({
   categories,
-  activeStatus,
+  activeStock,
   activeCategoryId,
   pageSize,
   sort,
@@ -47,18 +46,18 @@ export function ProductListFilters({
   return (
     <div className="space-y-4">
       <section>
-        <h2 className="mb-2 text-sm font-medium">Статус товару</h2>
+        <h2 className="mb-2 text-sm font-medium">Наявність</h2>
         <div className="flex flex-wrap gap-2">
-          {STATUS_FILTERS.map((filter) => {
+          {STOCK_FILTERS.map((filter) => {
             const active =
-              (filter.value || undefined) === activeStatus ||
-              (!filter.value && !activeStatus);
+              (filter.value || undefined) === activeStock ||
+              (!filter.value && !activeStock);
 
             return (
               <Link
                 key={filter.label}
                 href={adminProductsUrl({
-                  status: filter.value || undefined,
+                  stock: filter.value || undefined,
                   categoryId: activeCategoryId,
                   page: 1,
                   pageSize,
@@ -74,7 +73,7 @@ export function ProductListFilters({
               >
                 {filterLabel(
                   filter.label,
-                  counts.status[filter.value],
+                  counts.stock[filter.value],
                   filter.value !== "",
                 )}
               </Link>
@@ -88,7 +87,7 @@ export function ProductListFilters({
         <div className="flex flex-wrap gap-2">
           <Link
             href={adminProductsUrl({
-              status: activeStatus,
+              stock: activeStock,
               page: 1,
               pageSize,
               sort,
@@ -107,7 +106,7 @@ export function ProductListFilters({
             <Link
               key={category.id}
               href={adminProductsUrl({
-                status: activeStatus,
+                stock: activeStock,
                 categoryId: category.id,
                 page: 1,
                 pageSize,

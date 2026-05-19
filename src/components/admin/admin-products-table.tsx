@@ -2,14 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { getCldImageUrl } from "next-cloudinary";
-import type { ProductStatus } from "@/generated/prisma/client";
 import {
   AdminSortableTableHeader,
   getAriaSort,
   nextSortDir,
 } from "@/components/admin/admin-sortable-table-header";
 import { ProductListDeleteButton } from "@/components/admin/product-list-delete-button";
-import { ProductListStatusSelect } from "@/components/admin/product-list-status-select";
 import {
   adminClickableRowClassName,
   getAdminClickableRowProps,
@@ -21,6 +19,7 @@ import { cn } from "@/lib/utils";
 import type {
   AdminProductListDir,
   AdminProductListSort,
+  AdminProductStockFilter,
 } from "@/server/validators/admin-product";
 
 export type AdminProductListItem = {
@@ -29,7 +28,6 @@ export type AdminProductListItem = {
   brand: string;
   price: number;
   quantity: number;
-  status: ProductStatus;
   category: { name: string };
   images: {
     cloudinaryPublicId: string;
@@ -42,19 +40,16 @@ type AdminProductsTableProps = {
   sort?: AdminProductListSort;
   dir: AdminProductListDir;
   pageSize: AdminPageSize;
-  status?: ProductStatus;
+  stock?: AdminProductStockFilter;
   categoryId?: string;
   q?: string;
 };
 
-const SORTABLE_COLUMNS_BEFORE_QUANTITY = [
+const SORTABLE_COLUMNS = [
   { key: "title" as const, label: "Назва" },
   { key: "category" as const, label: "Категорія" },
   { key: "price" as const, label: "Ціна" },
-] as const;
-
-const SORTABLE_COLUMNS_AFTER_QUANTITY = [
-  { key: "status" as const, label: "Статус" },
+  { key: "quantity" as const, label: "Кількість" },
 ] as const;
 
 export function AdminProductsTable({
@@ -62,7 +57,7 @@ export function AdminProductsTable({
   sort,
   dir,
   pageSize,
-  status,
+  stock,
   categoryId,
   q,
 }: AdminProductsTableProps) {
@@ -74,7 +69,7 @@ export function AdminProductsTable({
       dir: nextSortDir(sort, dir, column),
       page: 1,
       pageSize,
-      status,
+      stock,
       categoryId,
       q,
     });
@@ -86,23 +81,7 @@ export function AdminProductsTable({
         <thead>
           <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
             <th className="px-3 py-2 font-medium">Фото</th>
-            {SORTABLE_COLUMNS_BEFORE_QUANTITY.map((column) => (
-              <th
-                key={column.key}
-                className="px-3 py-2 font-medium"
-                aria-sort={getAriaSort(column.key, sort, dir)}
-              >
-                <AdminSortableTableHeader
-                  href={sortHeaderHref(column.key)}
-                  label={column.label}
-                  column={column.key}
-                  sort={sort}
-                  dir={dir}
-                />
-              </th>
-            ))}
-            <th className="px-3 py-2 font-medium">Кількість</th>
-            {SORTABLE_COLUMNS_AFTER_QUANTITY.map((column) => (
+            {SORTABLE_COLUMNS.map((column) => (
               <th
                 key={column.key}
                 className="px-3 py-2 font-medium"
@@ -173,12 +152,21 @@ export function AdminProductsTable({
                 <td className="px-3 py-2 tabular-nums">
                   {formatPriceKopiyky(product.price)}
                 </td>
-                <td className="px-3 py-2 tabular-nums">{product.quantity}</td>
-                <td className="px-3 py-2">
-                  <ProductListStatusSelect
-                    productId={product.id}
-                    status={product.status}
-                  />
+                <td className="px-3 py-2 tabular-nums">
+                  <span
+                    className={cn(
+                      product.quantity > 0
+                        ? "text-foreground"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {product.quantity}
+                  </span>
+                  {product.quantity === 0 ? (
+                    <span className="ml-2 text-xs text-muted-foreground">
+                      розпродано
+                    </span>
+                  ) : null}
                 </td>
                 <td className="px-3 py-2 text-right">
                   <ProductListDeleteButton productId={product.id} />
