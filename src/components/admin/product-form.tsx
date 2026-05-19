@@ -158,6 +158,8 @@ export function ProductForm({
             <p className="text-xs text-muted-foreground sm:col-span-2">
               Slug для URL згенерується автоматично з назви товару.
             </p>
+          ) : null}
+
           <div className="space-y-2">
             <Label htmlFor="brand">Бренд</Label>
             <Input id="brand" {...form.register("brand")} />
