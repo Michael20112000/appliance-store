@@ -92,7 +92,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 19-02-PLAN.md — Manual checklist + empty-DB smoke (fix-only if 500)
+- [x] 19-02-PLAN.md — Manual checklist + empty-DB smoke (fix-only if 500)
 
 ---
 
