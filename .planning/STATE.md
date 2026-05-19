@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4-stabilization
 milestone_name: Bugfix stabilization
-status: planning
-stopped_at: Phase 21 context — awaiting bug intake wave 1
-last_updated: "2026-05-19T15:45:00.000Z"
-last_activity: 2026-05-19 — checkpoint main (phases 17–20 + hotfixes); GSD bugfix workflow
+status: verifying
+stopped_at: Phase 21 context gathered
+last_updated: "2026-05-19T14:04:04.087Z"
+last_activity: "2026-05-19 — waves 1–2 intake done; operator: keep main stable"
 progress:
-  total_phases: 1
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_phases: 5
+  completed_phases: 3
+  total_plans: 7
+  completed_plans: 7
+  percent: 60
 ---
 
 # Project State
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 Phase: 21 (bugfix-stabilization) — PLANNING  
 Plan: 0 of TBD  
-Status: Awaiting operator bug intake for wave 1  
-Last activity: 2026-05-19 — `main` checkpoint; BUGFIX-WORKFLOW.md added
+Status: Context ready — verify-only plan next  
+Last activity: 2026-05-19 — waves 1–2 intake done; operator: keep main stable
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -53,8 +53,8 @@ Last activity: 2026-05-19 — `main` checkpoint; BUGFIX-WORKFLOW.md added
 
 ### Pending Todos
 
-- **Operator:** fill `bugfix-intake-YYYY-MM-DD.md` from template with remaining bugs
-- Then: `/gsd-discuss-phase 21` → `/gsd-plan-phase 21` → `/gsd-execute-phase 21`
+- `/gsd-plan-phase 21` — verify-only `21-01-PLAN` + `21-MANUAL-CHECKLIST.md`
+- Then: `/gsd-execute-phase 21` (smoke only unless regression found)
 
 ### Blockers/Concerns
 
@@ -70,13 +70,12 @@ Last activity: 2026-05-19 — `main` checkpoint; BUGFIX-WORKFLOW.md added
 
 ## Session Continuity
 
-Last session: 2026-05-19  
-Stopped at: Phase 21 context — need fresh bug intake  
-Resume file: `.planning/phases/21-bugfix-stabilization/21-CONTEXT.md`
+Last session: 2026-05-19T14:04:04.077Z
+Stopped at: Phase 21 context gathered
+Resume file: .planning/phases/21-bugfix-stabilization/21-CONTEXT.md
 
 ## Operator Next Steps
 
-1. Скопіюй `.planning/todos/pending/bugfix-intake-TEMPLATE.md` → `bugfix-intake-2026-05-19.md` (або сьогоднішня дата)
-2. Заповни **усі** баги, що ще бачиш (кроки, expected/actual)
-3. `/gsd-plan-phase 21` — **не** проси фіксити списком у чаті
-4. Опційно: `/gsd-progress` — повний статус
+1. `/gsd-plan-phase 21` — verify-only plan (no feature work unless regression)
+2. `/gsd-execute-phase 21` — CI + manual checklist
+3. Нові баги пізніше → новий `bugfix-intake-YYYY-MM-DD.md`, не блокує закриття 21
