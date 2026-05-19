@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { MouseEvent } from "react";
 import {
   adminClickableRowClassName,
   getAdminClickableRowProps,
 } from "@/lib/admin/clickable-table-row";
+import { adminProductsUrl } from "@/lib/admin/products-url";
 import { cn } from "@/lib/utils";
 
 export type AdminCategoryRow = {
@@ -21,13 +24,15 @@ type AdminCategoriesTableProps = {
 export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) {
   const router = useRouter();
 
+  const stopRowNav = (event: MouseEvent) => event.stopPropagation();
+
   return (
     <div className="overflow-x-auto rounded-lg border border-border bg-background">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
             <th className="px-4 py-2 font-medium">Назва</th>
-            <th className="px-4 py-2 font-medium">Товарів</th>
+            <th className="px-4 py-2 font-medium">Товари</th>
             <th className="px-4 py-2 font-medium">Порядок</th>
           </tr>
         </thead>
@@ -49,7 +54,19 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
                 )}
               >
                 <td className="px-4 py-2">{category.name}</td>
-                <td className="px-4 py-2">{category.productCount}</td>
+                <td className="px-4 py-2">
+                  <Link
+                    href={adminProductsUrl({ categoryId: category.id })}
+                    onClick={stopRowNav}
+                    onPointerDown={stopRowNav}
+                  >
+                    Переглянути
+                    <span className="text-muted-foreground">
+                      {" "}
+                      ({category.productCount})
+                    </span>
+                  </Link>
+                </td>
                 <td className="px-4 py-2">{category.sortOrder}</td>
               </tr>
             );
