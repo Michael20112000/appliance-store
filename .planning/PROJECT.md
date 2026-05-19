@@ -10,19 +10,23 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone
+## Current Milestone: v1.3 Fixes & Admin UX
 
-**Awaiting next milestone** — v1.2 Polish & UX shipped 2026-05-19.
+**Goal:** Стабільний адмін-чат з внутрішнім скролом, видалення товару зі списку, чиста БД для наповнення реальними даними + empty-state стійкість.
 
-Start planning: `/gsd-new-milestone`
+**Target features:**
+- `/admin/chaty`: фіксована висота панелі; список діалогів і тред скроляться всередині (не росте вся сторінка)
+- `/admin/tovary`: іконка кошика в останній колонці, `stopPropagation` — без переходу на edit при delete
+- Повне очищення бізнес-даних у БД (товари, категорії, замовлення, чати тощо); фікси UI при порожній БД
+- Без: відгуків, SEO/GSC, Lighthouse milestone, нових storefront-фіч
 
 ## Current State
 
 **Shipped:** v1.0 MVP + v1.1 Engagement & Fixes + **v1.2 Polish & UX** (2026-05-19)
 
-**v1.2 delivered:** admin row-click UX, order status inline select, product table sort, stock quantity (admin-only), chat inbox context menu, catalog polish (empty categories, badges, pagination 16), shadcn Select audit, PDP gallery + slug policy verified.
+**In progress:** v1.3 Fixes & Admin UX — requirements and roadmap defined 2026-05-19.
 
-**Next:** define v2 or incremental v1.3 scope (reviews, CWV, SEO) via `/gsd-new-milestone`.
+**v1.2 delivered:** admin row-click UX, order status inline select, product table sort, stock quantity (admin-only), chat inbox context menu, catalog polish (empty categories, badges, pagination 16), shadcn Select audit, PDP gallery + slug policy verified.
 
 ## Requirements
 
@@ -59,9 +63,12 @@ Start planning: `/gsd-new-milestone`
 - ✓ UX-01/02 — shadcn Select everywhere in components; clickable rows
 - ✓ POL-01/02 — PDP gallery verified; auto slug on create
 
-### Active
+### Active (v1.3)
 
-_None — start `/gsd-new-milestone` to define next scope._
+- ADM-CHAT-02 — admin chat inbox + thread fixed-height internal scroll
+- ADM-PRD-04 — delete product from `/admin/tovary` table (trash icon, stopPropagation)
+- DATA-01 — purge all business entities from database (operator-run)
+- DATA-02 — storefront + admin tolerate empty database without errors
 
 ### Out of Scope
 
@@ -114,4 +121,4 @@ v1.2 scope: admin row UX, orders status, stock qty, chat RCM, catalog polish, sh
 </details>
 
 ---
-*Last updated: 2026-05-19 after v1.2 milestone shipped*
+*Last updated: 2026-05-19 — milestone v1.3 Fixes & Admin UX started*

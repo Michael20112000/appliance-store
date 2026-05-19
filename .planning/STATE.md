@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.2
-milestone_name: Polish & UX
-status: Awaiting next milestone
-stopped_at: Phase 16 planned — 3 plans
-last_updated: "2026-05-19T09:00:57.623Z"
-last_activity: 2026-05-19 — Milestone v1.2 completed and archived
+milestone: v1.3
+milestone_name: Fixes & Admin UX
+status: planning
+last_updated: "2026-05-19T09:12:47.107Z"
+last_activity: 2026-05-19
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 21
-  completed_plans: 21
-  percent: 100
+  total_phases: 3
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-19)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Awaiting next milestone
+**Current focus:** Phase 17 — Admin Chat Inbox Layout
 
 ## Current Position
 
-Phase: Milestone v1.2 complete
+Phase: 17 — Admin Chat Inbox Layout (not started)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-19 — Milestone v1.2 completed and archived
+Status: Ready to discuss/plan
+Last activity: 2026-05-19 — Milestone v1.3 roadmap approved
 
 ## Performance Metrics
 
