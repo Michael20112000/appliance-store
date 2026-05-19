@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Eye, Plus } from "lucide-react";
 import { notFound } from "next/navigation";
 import { CategoryForm } from "@/components/admin/category-form";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
               <Link href={`/admin/tovary?categoryId=${category.id}`} />
             }
           >
+            <Eye className="size-4" aria-hidden />
             Переглянути товари
           </Button>
           <Button
@@ -40,6 +42,7 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
               <Link href={`/admin/tovary/novyi?categoryId=${category.id}`} />
             }
           >
+            <Plus className="size-4" aria-hidden />
             Додати товар
           </Button>
         </div>
