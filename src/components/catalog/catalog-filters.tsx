@@ -3,13 +3,24 @@
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { useQueryStates } from "nuqs";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { catalogParsers, catalogUrlKeys } from "@/lib/catalog/search-params";
+import { categoriesWithAvailableProducts } from "@/lib/catalog/categories";
 import { createThrottle } from "@/lib/catalog/throttle";
 import { cn } from "@/lib/utils";
 
 export const PRICE_STEP_UAH = 50;
 export const PRICE_URL_THROTTLE_MS = 200;
+
+const ALL_BRANDS = "__all__";
 
 type CategoryOption = { slug: string; name: string; productCount: number };
 
@@ -23,10 +34,6 @@ export type CatalogFiltersPanelProps = {
   priceBounds?: PriceBounds | null;
   className?: string;
 };
-
-function formatCategoryLabel(name: string, count: number) {
-  return `${name} — ${count}`;
-}
 
 type CatalogFiltersProps = CatalogFiltersPanelProps;
 
@@ -88,6 +95,7 @@ export function CatalogFiltersPanel({
 
   const bounds = priceBounds ?? null;
   const hasPriceBounds = bounds != null;
+  const visibleCategories = categoriesWithAvailableProducts(categories);
 
   const [dragValues, setDragValues] = useState<[number, number] | null>(null);
 
@@ -183,23 +191,25 @@ export function CatalogFiltersPanel({
             <Link
               href="/katalog"
               className={cn(
-                "block rounded-md px-2 py-1.5 hover:bg-muted",
+                "flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted",
                 !activeCategorySlug && "bg-muted font-medium",
               )}
             >
-              {formatCategoryLabel("Усі товари", totalProductCount)}
+              <span>Усі товари</span>
+              <Badge variant="secondary">{totalProductCount}</Badge>
             </Link>
           </li>
-          {categories.map((cat) => (
+          {visibleCategories.map((cat) => (
             <li key={cat.slug}>
               <Link
                 href={`/katalog/${cat.slug}`}
                 className={cn(
-                  "block rounded-md px-2 py-1.5 hover:bg-muted",
+                  "flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted",
                   activeCategorySlug === cat.slug && "bg-muted font-medium",
                 )}
               >
-                {formatCategoryLabel(cat.name, cat.productCount)}
+                <span>{cat.name}</span>
+                <Badge variant="secondary">{cat.productCount}</Badge>
               </Link>
             </li>
           ))}
@@ -208,20 +218,27 @@ export function CatalogFiltersPanel({
 
       <section>
         <h2 className="mb-2 text-sm font-medium">Бренд</h2>
-        <select
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-          value={params.brend ?? ""}
-          onChange={(e) =>
-            setParams({ brend: e.target.value || null, storinka: 1 })
+        <Select
+          value={params.brend ?? ALL_BRANDS}
+          onValueChange={(value) =>
+            setParams({
+              brend: value === ALL_BRANDS ? null : value,
+              storinka: 1,
+            })
           }
         >
-          <option value="">Усі бренди</option>
-          {brands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Усі бренди" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL_BRANDS}>Усі бренди</SelectItem>
+            {brands.map((brand) => (
+              <SelectItem key={brand} value={brand}>
+                {brand}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </section>
 
       <section>
