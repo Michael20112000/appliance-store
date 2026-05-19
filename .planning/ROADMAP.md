@@ -82,7 +82,10 @@ Plans:
 2. Після purge/seed порожні категорії не рендеряться
 3. Build + існуючі catalog tests green
 
-**Plans:** 0/0
+**Plans:** 1 plan
+
+Plans:
+- [ ] 25-01-PLAN.md — Align CategoryGrid with header catalog filter pipeline; extend service DTO for card images; unit tests + build gate
 
 ---
 
