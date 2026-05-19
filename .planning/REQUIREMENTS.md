@@ -1,0 +1,86 @@
+# Requirements: Appliance Store Lviv
+
+**Defined:** 2026-05-19  
+**Milestone:** v1.5 Incremental polish & operator UX  
+**Core Value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
+
+## v1.5 Requirements
+
+### Orders (admin)
+
+- [ ] **ORD-03**: Адмін бачить у select статусу лише переходи, сумісні з `deliveryType` замовлення (самовивіз — без «Доставляється»; доставка по Львову — без «Готово до самовивозу») на списку і на сторінці замовлення
+- [ ] **ORD-04**: Сервер відхиляє недопустимий перехід статусу для типу доставки (не лише UI)
+
+### Admin — categories
+
+- [ ] **ADM-CAT-03**: На сторінці редагування категорії кнопки дій біля заголовка мають зрозумілі іконки (наприклад Plus для додавання, Eye для перегляду товарів)
+- [ ] **ADM-CAT-04**: У таблиці `/admin/kategorii` колонка «Товари» з посиланням «Переглянути» на `/admin/tovary?categoryId={id}`
+
+### Admin — products
+
+- [ ] **ADM-PRD-05**: Редагування товару: «Назад» над заголовком; без кнопки «Зберегти»; auto-save полів форми з throttle/debounce; без «На вітрині»; «Видалити» — icon trash у правому верхньому куті навпроти заголовка
+
+### Storefront — homepage
+
+- [ ] **HOME-03**: Секція «Категорії» на головній не показує картки категорій без доступних товарів (та сама логіка, що в хедері)
+
+### Storefront — footer & mobile
+
+- [ ] **FOOT-01**: У футері відображаються контактний телефон і email магазину
+- [ ] **FOOT-02**: У футері форма зворотного зв’язку «Вкажіть свій номер — ми передзвонимо» (поле телефону + відправка)
+- [ ] **FOOT-03**: Та сама форма зворотного зв’язку в mobile drawer під списком категорій
+- [ ] **FOOT-04**: У mobile drawer біля кожної категорії показується кількість доступних товарів
+
+### Quality — UAT
+
+- [ ] **UAT-01**: Пройдено manual UAT для Phase 19 (purge + empty DB) і зафіксовано результат; за потреби `/gsd-verify-work` для критичних storefront/admin flows
+
+## Future Requirements (post–v1.5)
+
+### Performance & SEO (v2)
+
+- **PERF-01**: Core Web Vitals / Lighthouse milestone
+- **SEO-01/02**: GSC, custom domain
+
+### Engagement (v2)
+
+- **REV-01/02**: Відгуки на товари
+
+### Catalog WIP
+
+- **CAT-WIP-01**: Merge `git stash@{0}` (pagination/seed) — окрема фаза, не змішувати з bugfix
+
+## Out of Scope (v1.5)
+
+| Feature | Reason |
+|---------|--------|
+| Відгуки | v2 REV |
+| Lighthouse / CWV milestone | v2 PERF-01 |
+| Custom domain / GSC | v2 SEO |
+| Онлайн-оплата | v2+ |
+| `git stash@{0}` blind merge | Окрема фаза CAT-WIP-01 |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| ORD-03 | Phase 22 | Pending |
+| ORD-04 | Phase 22 | Pending |
+| ADM-CAT-03 | Phase 23 | Pending |
+| ADM-CAT-04 | Phase 23 | Pending |
+| ADM-PRD-05 | Phase 24 | Pending |
+| HOME-03 | Phase 25 | Pending |
+| FOOT-01 | Phase 26 | Pending |
+| FOOT-02 | Phase 26 | Pending |
+| FOOT-03 | Phase 26 | Pending |
+| FOOT-04 | Phase 26 | Pending |
+| UAT-01 | Phase 27 | Pending |
+
+**Coverage:**
+
+- v1.5 requirements: 11 total
+- Mapped to phases: 11
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-05-19 — milestone v1.5*
