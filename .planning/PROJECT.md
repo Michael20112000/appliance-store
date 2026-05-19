@@ -100,6 +100,7 @@
 | Тільки б/у | Фокус + condition filter | ✓ Good |
 | Checkout без онлайн-оплати v1 | Швидший запуск | ✓ Good |
 | Guest cart merge on login | localStorage pending → merge action | ✓ Good |
+| Guest checkout без реєстрації | localStorage cart + guest order token | ✓ Good (v1.3 phase 20) |
 | Pusher for chat | Realtime buyer ↔ store | ✓ Good |
 | Wishlist merge on login | Як кошик — один список після входу | ✓ Good (v1.1) |
 | Slug auto з назви | Адмін не редагує slug | ✓ Good (v1.2 verified) |

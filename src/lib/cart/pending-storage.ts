@@ -1,5 +1,7 @@
 "use client";
 
+import { dispatchCartChanged } from "@/lib/cart/cart-events";
+
 const KEY = "appliance-cart-pending";
 const MAX_ITEMS = 20;
 
@@ -28,6 +30,7 @@ function readRaw(): PendingCart {
 
 function write(data: PendingCart) {
   localStorage.setItem(KEY, JSON.stringify(data));
+  dispatchCartChanged();
 }
 
 export function readPending(): PendingCart {
@@ -60,4 +63,13 @@ export function hasPendingProduct(productId: string): boolean {
 export function clearPending() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(KEY);
+  dispatchCartChanged();
+}
+
+export function getPendingProductIds(): string[] {
+  return readRaw().items.map((item) => item.productId);
+}
+
+export function getPendingItemCount(): number {
+  return readRaw().items.length;
 }

@@ -1,9 +1,9 @@
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import type { OrderDetailDto, OrderSummaryDto } from "@/types/order";
-import type { CheckoutInput } from "../validators/order";
-import { checkoutSchema } from "../validators/order";
-import { clearCart, getCartForUser } from "./cart.service";
+import type { CheckoutInput, GuestCheckoutInput } from "../validators/order";
+import { checkoutSchema, guestCheckoutSchema } from "../validators/order";
+import { clearCart, getCartForUser, resolveGuestCartProducts } from "./cart.service";
 
 export async function listOrdersForUser(userId: string): Promise<OrderSummaryDto[]> {
   const orders = await prisma.order.findMany({
@@ -26,17 +26,24 @@ export async function listOrdersForUser(userId: string): Promise<OrderSummaryDto
   }));
 }
 
-export async function getOrderForUser(
-  userId: string,
-  orderNumber: string,
-): Promise<OrderDetailDto | null> {
-  const order = await prisma.order.findFirst({
-    where: { userId, orderNumber },
-    include: { items: true },
-  });
-
-  if (!order) return null;
-
+function mapOrderDetail(
+  order: {
+    id: string;
+    orderNumber: string;
+    status: OrderDetailDto["status"];
+    deliveryType: OrderDetailDto["deliveryType"];
+    customerName: string;
+    customerPhone: string;
+    deliveryAddress: string | null;
+    notes: string | null;
+    createdAt: Date;
+    items: {
+      titleSnapshot: string;
+      priceSnapshot: number;
+      quantity: number;
+    }[];
+  },
+): OrderDetailDto {
   return {
     id: order.id,
     orderNumber: order.orderNumber,
@@ -58,6 +65,34 @@ export async function getOrderForUser(
       quantity: item.quantity,
     })),
   };
+}
+
+export async function getOrderForUser(
+  userId: string,
+  orderNumber: string,
+): Promise<OrderDetailDto | null> {
+  const order = await prisma.order.findFirst({
+    where: { userId, orderNumber },
+    include: { items: true },
+  });
+
+  if (!order) return null;
+
+  return mapOrderDetail(order);
+}
+
+export async function getOrderForGuest(
+  orderNumber: string,
+  guestAccessToken: string,
+): Promise<OrderDetailDto | null> {
+  const order = await prisma.order.findFirst({
+    where: { orderNumber, guestAccessToken, userId: null },
+    include: { items: true },
+  });
+
+  if (!order) return null;
+
+  return mapOrderDetail(order);
 }
 
 export async function generateOrderNumber(
@@ -124,6 +159,51 @@ export async function reserveProductUnitForCheckout(
   }
 }
 
+type OrderLineInput = {
+  productId: string;
+  title: string;
+  priceKopiyky: number;
+};
+
+async function createOrderInTransaction(
+  tx: Prisma.TransactionClient,
+  lines: OrderLineInput[],
+  data: CheckoutInput,
+  options: { userId: string | null; guestAccessToken?: string },
+): Promise<{ orderNumber: string }> {
+  const orderNumber = await generateOrderNumber(tx);
+
+  const order = await tx.order.create({
+    data: {
+      orderNumber,
+      userId: options.userId,
+      guestAccessToken: options.guestAccessToken ?? null,
+      customerName: data.customerName,
+      customerPhone: data.customerPhone,
+      deliveryType: data.deliveryType,
+      deliveryAddress:
+        data.deliveryType === "LVIV_DELIVERY" ? data.deliveryAddress : null,
+      notes: data.notes ?? null,
+    },
+  });
+
+  for (const line of lines) {
+    await reserveProductUnitForCheckout(tx, line.productId);
+
+    await tx.orderItem.create({
+      data: {
+        orderId: order.id,
+        productId: line.productId,
+        titleSnapshot: line.title,
+        priceSnapshot: line.priceKopiyky,
+        quantity: 1,
+      },
+    });
+  }
+
+  return { orderNumber };
+}
+
 export async function createOrderFromCart(
   userId: string,
   input: CheckoutInput,
@@ -135,42 +215,49 @@ export async function createOrderFromCart(
     throw new Error("CART_EMPTY");
   }
 
-  return prisma.$transaction(async (tx) => {
-    const orderNumber = await generateOrderNumber(tx);
+  const lines: OrderLineInput[] = cart.items.map((line) => ({
+    productId: line.productId,
+    title: line.title,
+    priceKopiyky: line.priceKopiyky,
+  }));
 
-    const order = await tx.order.create({
-      data: {
-        orderNumber,
-        userId,
-        customerName: data.customerName,
-        customerPhone: data.customerPhone,
-        deliveryType: data.deliveryType,
-        deliveryAddress:
-          data.deliveryType === "LVIV_DELIVERY" ? data.deliveryAddress : null,
-        notes: data.notes ?? null,
-      },
-    });
-
-    for (const line of cart.items) {
-      await reserveProductUnitForCheckout(tx, line.productId);
-
-      await tx.orderItem.create({
-        data: {
-          orderId: order.id,
-          productId: line.productId,
-          titleSnapshot: line.title,
-          priceSnapshot: line.priceKopiyky,
-          quantity: 1,
-        },
-      });
-    }
-
+  const result = await prisma.$transaction(async (tx) => {
+    const created = await createOrderInTransaction(tx, lines, data, { userId });
     await tx.cartItem.deleteMany({
       where: {
         cart: { userId },
       },
     });
-
-    return { orderNumber };
+    return created;
   });
+
+  return result;
+}
+
+export async function createOrderFromGuestCart(
+  input: GuestCheckoutInput,
+): Promise<{ orderNumber: string; guestAccessToken: string }> {
+  const data = guestCheckoutSchema.parse(input);
+  const cart = await resolveGuestCartProducts(data.productIds);
+
+  if (cart.items.length === 0) {
+    throw new Error("CART_EMPTY");
+  }
+
+  const guestAccessToken = crypto.randomUUID();
+
+  const { orderNumber } = await prisma.$transaction(async (tx) =>
+    createOrderInTransaction(
+      tx,
+      cart.items.map((line) => ({
+        productId: line.productId,
+        title: line.title,
+        priceKopiyky: line.priceKopiyky,
+      })),
+      data,
+      { userId: null, guestAccessToken },
+    ),
+  );
+
+  return { orderNumber, guestAccessToken };
 }

@@ -96,6 +96,24 @@ Plans:
 
 ---
 
+#### Phase 20: Guest Checkout (no registration)
+
+**Goal:** Оформлення замовлення без реєстрації — кошик у браузері, checkout з контактами.
+
+**Requirements:** GUEST-01
+
+**Success criteria:**
+
+1. «Додати в кошик» для гостя не редіректить на `/uviity`
+2. `/koszyk` і `/zamovlennia` доступні без сесії (guest views)
+3. `Order` без `userId` + `guestAccessToken`; підтвердження для гостя
+4. Header: `GuestCartNavLink` з badge
+5. Logged-in flow і merge pending on login без регресії
+
+**Status:** ✅ Shipped inline 2026-05-19 (restored from WIP stash)
+
+---
+
 <details>
 <summary>✅ v1.2 Polish & UX (Phases 11–16) — SHIPPED 2026-05-19</summary>
 

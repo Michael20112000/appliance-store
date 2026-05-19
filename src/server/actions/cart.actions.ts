@@ -8,7 +8,12 @@ import {
   mergePendingItems,
   removeFromCart,
 } from "@/server/services/cart.service";
-import { addToCartSchema, mergePendingSchema } from "@/server/validators/cart";
+import { resolveGuestCartProducts } from "@/server/services/cart.service";
+import {
+  addToCartSchema,
+  mergePendingSchema,
+  resolveGuestCartSchema,
+} from "@/server/validators/cart";
 
 function revalidateCartPaths() {
   revalidatePath("/koszyk");
@@ -52,4 +57,10 @@ export async function clearCartAction() {
   await clearCart(session.user.id);
   revalidateCartPaths();
   return { ok: true as const };
+}
+
+export async function resolveGuestCartAction(productIds: string[]) {
+  const parsed = resolveGuestCartSchema.parse({ productIds });
+  const cart = await resolveGuestCartProducts(parsed.productIds);
+  return { ok: true as const, cart };
 }

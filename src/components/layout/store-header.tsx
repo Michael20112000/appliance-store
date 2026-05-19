@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { categoriesWithAvailableProducts } from "@/lib/catalog/categories";
 import { CartNavLink } from "@/components/cart/cart-nav-link";
+import { GuestCartNavLink } from "@/components/cart/guest-cart-nav-link";
+import { listCategoriesWithProductCounts } from "@/server/services/catalog.service";
 import { WishlistNavLink } from "@/components/wishlist/wishlist-nav-link";
 import { StoreHeaderAuth } from "@/components/layout/store-header-auth";
 import { getWishlistItemCount } from "@/server/services/wishlist.service";
@@ -10,9 +12,11 @@ import { StoreMobileNav } from "@/components/layout/store-mobile-nav";
 
 export async function StoreHeader() {
   const session = await auth.api.getSession({ headers: await headers() });
-  const categories = await prisma.category.findMany({
-    orderBy: { sortOrder: "asc" },
-  });
+  const { categories: categoriesWithCounts } =
+    await listCategoriesWithProductCounts();
+  const availableCategories =
+    categoriesWithAvailableProducts(categoriesWithCounts);
+  const headerNavCategories = availableCategories.slice(0, 4);
 
   const navLinkClass =
     "inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3 text-sm font-medium hover:bg-muted";
@@ -28,7 +32,7 @@ export async function StoreHeader() {
           <Link href="/katalog" className={navLinkClass}>
             Каталог
           </Link>
-          {categories.slice(0, 4).map((category) => (
+          {headerNavCategories.map((category) => (
             <Link
               key={category.id}
               href={`/katalog/${category.slug}`}
@@ -40,7 +44,7 @@ export async function StoreHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <StoreMobileNav categories={categories} />
+          <StoreMobileNav categories={availableCategories} />
           <WishlistNavLink
             hasSession={Boolean(session?.user)}
             initialCount={
@@ -49,7 +53,11 @@ export async function StoreHeader() {
                 : undefined
             }
           />
-          {session?.user ? <CartNavLink userId={session.user.id} /> : null}
+          {session?.user ? (
+            <CartNavLink userId={session.user.id} />
+          ) : (
+            <GuestCartNavLink />
+          )}
           <StoreHeaderAuth session={session} />
         </div>
       </div>

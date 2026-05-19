@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Check, ShoppingCart } from "lucide-react";
 import {
   addPendingProduct,
@@ -33,7 +33,6 @@ export function AddToCartButton({
   disabled = false,
 }: AddToCartButtonProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   const [inCart, setInCart] = useState(initialInCart);
   const [error, setError] = useState<string | null>(null);
@@ -54,8 +53,6 @@ export function AddToCartButton({
     if (!hasSession) {
       addPendingProduct(productId);
       setInCart(true);
-      const callbackUrl = encodeURIComponent(pathname || `/tovar/${productId}`);
-      router.push(`/uviity?callbackUrl=${callbackUrl}`);
       return;
     }
 

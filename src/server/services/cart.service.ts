@@ -177,3 +177,52 @@ export async function clearCart(userId: string) {
 export function canAddProductToCart(status: string, quantity: number): boolean {
   return isProductPurchasable(status, quantity);
 }
+
+export async function resolveGuestCartProducts(
+  productIds: string[],
+): Promise<CartViewDto> {
+  if (productIds.length === 0) {
+    return { items: [], subtotalKopiyky: 0, removedTitles: [] };
+  }
+
+  const products = await prisma.product.findMany({
+    where: { id: { in: productIds } },
+    include: {
+      images: {
+        orderBy: { sortOrder: "asc" as const },
+        take: 1,
+        select: { cloudinaryPublicId: true, alt: true },
+      },
+    },
+  });
+
+  const byId = new Map(products.map((product) => [product.id, product]));
+  const lines: CartLineDto[] = [];
+  const removedTitles: string[] = [];
+
+  for (const productId of productIds) {
+    const product = byId.get(productId);
+    if (!product) {
+      continue;
+    }
+    if (!isProductPurchasable(product.status, product.quantity)) {
+      removedTitles.push(product.title);
+      continue;
+    }
+    const image = product.images[0];
+    lines.push({
+      productId: product.id,
+      slug: product.slug,
+      title: product.title,
+      brand: product.brand,
+      priceKopiyky: product.price,
+      condition: product.condition,
+      image: image
+        ? { cloudinaryPublicId: image.cloudinaryPublicId, alt: image.alt }
+        : null,
+    });
+  }
+
+  const subtotalKopiyky = lines.reduce((sum, line) => sum + line.priceKopiyky, 0);
+  return { items: lines, subtotalKopiyky, removedTitles };
+}

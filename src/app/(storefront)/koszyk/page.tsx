@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CartEmpty } from "@/components/cart/cart-empty";
 import { ClearCartButton } from "@/components/cart/clear-cart-button";
 import { CartLineItem } from "@/components/cart/cart-line-item";
 import { CartSummary } from "@/components/cart/cart-summary";
-import { requireBuyer } from "@/lib/permissions";
+import { GuestCartView } from "@/components/cart/guest-cart-view";
+import { auth } from "@/lib/auth";
 import { getCartForUser } from "@/server/services/cart.service";
 
 export const metadata: Metadata = {
@@ -12,7 +14,20 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const session = await requireBuyer("/koszyk");
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session?.user) {
+    return (
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <h1 className="text-3xl font-semibold tracking-tight">Кошик</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Оформлення без реєстрації — лише ім&apos;я та телефон.
+        </p>
+        <GuestCartView />
+      </div>
+    );
+  }
+
   const cart = await getCartForUser(session.user.id);
 
   return (

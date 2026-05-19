@@ -185,10 +185,11 @@ model WishlistItem {
 }
 
 model Order {
-  id              String        @id @default(cuid())
-  orderNumber     String        @unique
-  userId          String
-  status          OrderStatus   @default(PENDING)
+  id               String        @id @default(cuid())
+  orderNumber      String        @unique
+  userId           String?
+  guestAccessToken String?       @unique
+  status           OrderStatus   @default(PENDING)
   deliveryType    DeliveryType
   deliveryAddress String?
   customerPhone   String
