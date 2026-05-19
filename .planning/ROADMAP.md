@@ -88,7 +88,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 19-01-PLAN.md — Purge script, db:purge, guards, README, Vitest
+- [x] 19-01-PLAN.md — Purge script, db:purge, guards, README, Vitest
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
