@@ -80,7 +80,7 @@ export function AdminProductsTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border bg-background">
+    <div className="min-w-0 overflow-x-auto rounded-lg border border-border bg-background">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">

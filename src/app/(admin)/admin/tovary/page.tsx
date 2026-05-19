@@ -69,7 +69,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Товари</h1>
         <Button render={<Link href="/admin/tovary/novyi" />}>
@@ -96,7 +96,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           Товарів не знайдено. Створіть перший товар або змініть фільтри.
         </p>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
           <AdminProductsTable
             items={result.items}
             sort={filters.sort}

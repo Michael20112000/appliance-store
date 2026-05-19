@@ -215,8 +215,8 @@ export function OrdersDataTable({
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="overflow-x-auto rounded-lg border border-border bg-background">
+    <div className="min-w-0 space-y-4">
+      <div className="min-w-0 overflow-x-auto rounded-lg border border-border bg-background">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

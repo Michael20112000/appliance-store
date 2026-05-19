@@ -30,7 +30,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-6">
       <h1 className="text-2xl font-semibold">Замовлення</h1>
       <OrderListFilters
         active={params.filter}
