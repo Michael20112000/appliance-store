@@ -407,14 +407,11 @@ npm test -- --run src/lib/order/status-transitions.test.ts \
 | A3 | `npx prisma db seed` creates ≥2 qty=0 products | Automated gate | seed.test stays red |
 | A4 | Legacy 04/07/18 debt unchanged in STATE | Closure report | Accidental scope creep |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Fix `e2e/cart-auth.spec.ts` in phase 27 or defer?**
-   - What we know: Contradicts guest checkout; not in D-14 gate.
-   - Recommendation: **P2 defer** unless operator wants CI e2e green — then P1 plan task (~30 min).
+1. **Fix `e2e/cart-auth.spec.ts` in phase 27 or defer?** — **RESOLVED: P2 defer.** Contradicts guest checkout; not in D-14 gate. Phase 27 plans exclude `npm run test:e2e`.
 
-2. **`26-HUMAN-UAT.md` separate file vs master inline?**
-   - Recommendation: **Separate file** (4 tests) for BUG-23 traceability; link from 27-MANUAL-CHECKLIST.
+2. **`26-HUMAN-UAT.md` separate file vs master inline?** — **RESOLVED: separate file** in plan 27-01 Task 2; master checklist links without duplicating bodies (D-12).
 
 ## Environment Availability
 
