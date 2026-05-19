@@ -60,9 +60,9 @@
 
 | Field | Value |
 |-------|-------|
-| Date | |
-| Operator | |
-| Result | Pass / Fail |
-| Failing items (if any) | |
+| Date | 2026-05-19 |
+| Operator | Michael Ivashko |
+| Result | Pass |
+| Failing items (if any) | — |
 
-**Resume:** Type `approved` in the executor session when all items pass, or list failing item numbers.
+**Approved:** Operator typed `approved` after manual regression (layout, list pages fix verified).
