@@ -102,7 +102,10 @@ Plans:
 3. Mobile drawer: біля категорії показано `productCount` для available товарів
 4. Валідація телефону (UA) + success/error feedback
 
-**Plans:** 0/0
+**Plans:** 0/1
+
+Plans:
+- [ ] `26-01-PLAN.md` — Wave 0 tests; Wave 1 Prisma + services + migrate; Wave 2 footer/drawer/admin UI; Wave 3 NAP + build gate (FOOT-01…04)
 
 ---
 
