@@ -18,7 +18,7 @@
 
 ### Admin — products
 
-- [ ] **ADM-PRD-05**: Редагування товару: «Назад» над заголовком; без кнопки «Зберегти»; auto-save полів форми з throttle/debounce; без «На вітрині»; «Видалити» — icon trash у правому верхньому куті навпроти заголовка
+- [x] **ADM-PRD-05**: Редагування товару: «Назад» над заголовком; без кнопки «Зберегти»; auto-save полів форми з throttle/debounce; без «На вітрині»; «Видалити» — icon trash у правому верхньому куті навпроти заголовка
 
 ### Storefront — homepage
 
@@ -68,7 +68,7 @@
 | ORD-04 | Phase 22 | Complete |
 | ADM-CAT-03 | Phase 23 | Complete |
 | ADM-CAT-04 | Phase 23 | Complete |
-| ADM-PRD-05 | Phase 24 | Pending |
+| ADM-PRD-05 | Phase 24 | Complete |
 | HOME-03 | Phase 25 | Pending |
 | FOOT-01 | Phase 26 | Pending |
 | FOOT-02 | Phase 26 | Pending |
