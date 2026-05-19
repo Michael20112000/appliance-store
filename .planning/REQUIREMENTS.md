@@ -12,7 +12,7 @@
 
 ### Admin — Products
 
-- [ ] **ADM-PRD-04**: Таблиця `/admin/tovary` має колонку з іконкою кошика (видалити); клік по delete не відкриває edit (`stopPropagation`); підтвердження та існуючі guardrails `deleteProduct` (кошик/активне замовлення) збережені
+- [x] **ADM-PRD-04**: Таблиця `/admin/tovary` має колонку з іконкою кошика (видалити); клік по delete не відкриває edit (`stopPropagation`); підтвердження та існуючі guardrails `deleteProduct` (кошик/активне замовлення) збережені
 
 ### Data & Empty States
 
@@ -53,6 +53,6 @@ Deferred beyond v1.3.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | ADM-CHAT-02 | Phase 17 | Complete |
-| ADM-PRD-04 | Phase 18 | Pending |
+| ADM-PRD-04 | Phase 18 | Complete |
 | DATA-01 | Phase 19 | Pending |
 | DATA-02 | Phase 19 | Pending |

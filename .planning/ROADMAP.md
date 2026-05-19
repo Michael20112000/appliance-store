@@ -61,11 +61,11 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 18-01-PLAN.md — List delete action + ProductListDeleteButton + «Дії» column
+- [x] 18-01-PLAN.md — List delete action + ProductListDeleteButton + «Дії» column
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 18-02-PLAN.md — Vitest stopPropagation + manual checklist
+- [x] 18-02-PLAN.md — Vitest stopPropagation + manual checklist
 
 ---
 
