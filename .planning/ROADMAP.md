@@ -63,7 +63,10 @@ Plans:
 3. Немає кнопок «Зберегти» і «На вітрині»
 4. Видалити — icon trash top-right, confirm dialog як на list
 
-**Plans:** 0/0
+**Plans:** 1 plan
+
+Plans:
+- [ ] `24-01-PLAN.md` — Wave 0: debounce + useProductAutoSave tests; Wave 1: edit shell, header delete, auto-save form (ADM-PRD-05)
 
 ---
 
