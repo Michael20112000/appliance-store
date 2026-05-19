@@ -5,13 +5,19 @@ import {
   buildPublicProductWhere,
   getCatalogPriceBounds,
   getDistinctBrands,
+  listCategoriesWithProductCounts,
 } from "./catalog.service";
 
 vi.mock("@/lib/db", () => ({
   prisma: {
+    category: {
+      findMany: vi.fn(),
+    },
     product: {
       findMany: vi.fn(),
       aggregate: vi.fn(),
+      count: vi.fn(),
+      groupBy: vi.fn(),
     },
   },
 }));
@@ -113,6 +119,63 @@ describe("getDistinctBrands", () => {
         },
       }),
     );
+  });
+});
+
+describe("listCategoriesWithProductCounts", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns image fields and productCount per category from catalog counts", async () => {
+    vi.mocked(prisma.category.findMany).mockResolvedValueOnce([
+      {
+        id: "cat-with-image",
+        slug: "phones",
+        name: "Телефони",
+        imagePublicId: "categories/phones",
+        imageAlt: "Телефони alt",
+        sortOrder: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "cat-empty",
+        slug: "empty",
+        name: "Порожня",
+        imagePublicId: null,
+        imageAlt: null,
+        sortOrder: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ] as never);
+    vi.mocked(prisma.product.count).mockResolvedValueOnce(2 as never);
+    vi.mocked(prisma.product.groupBy).mockResolvedValueOnce([
+      { categoryId: "cat-with-image", _count: { _all: 2 } },
+    ] as never);
+
+    const result = await listCategoriesWithProductCounts();
+
+    expect(result.totalProductCount).toBe(2);
+    expect(result.categories).toEqual([
+      {
+        id: "cat-with-image",
+        slug: "phones",
+        name: "Телефони",
+        imagePublicId: "categories/phones",
+        imageAlt: "Телефони alt",
+        productCount: 2,
+      },
+      {
+        id: "cat-empty",
+        slug: "empty",
+        name: "Порожня",
+        imagePublicId: null,
+        imageAlt: null,
+        productCount: 0,
+      },
+    ]);
   });
 });
 

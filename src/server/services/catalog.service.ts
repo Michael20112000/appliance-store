@@ -213,6 +213,8 @@ export async function listCategoriesWithProductCounts() {
       id: category.id,
       slug: category.slug,
       name: category.name,
+      imagePublicId: category.imagePublicId,
+      imageAlt: category.imageAlt,
       productCount: counts.byCategoryId[category.id] ?? 0,
     })),
   };
