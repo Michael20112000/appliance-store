@@ -16,10 +16,10 @@ TBD — pass/fail for UAT-01 after operator session (plan 27-02).
 
 | Item | Value |
 |------|-------|
-| Purge run | TBD |
-| Seed run | TBD |
-| DATABASE_URL host (redacted) | TBD |
-| Notes | TBD |
+| Purge run | Pending — operator Task 2 (19-MANUAL-CHECKLIST) |
+| Seed run | Not yet (optional after purge or before catalog smoke) |
+| DATABASE_URL host (redacted) | See `.env` — dev Neon branch (operator confirms not production) |
+| Notes | Automated gate run 2026-05-19 before manual purge block |
 
 ## §19 purge (19-MANUAL-CHECKLIST)
 
@@ -31,9 +31,9 @@ TBD — pass/fail for UAT-01 after operator session (plan 27-02).
 
 | Command | Exit | Notes |
 |---------|------|-------|
-| Targeted status Vitest | TBD | |
-| `npm test` | TBD | |
-| `npm run build` | TBD | |
+| Targeted status Vitest | 0 | 42/42 passed (2026-05-19) |
+| `npm test` | 1 | 256/257 passed; **P2** — `prisma/seed.test.ts` out-of-stock count (0 < 2) per D-06 |
+| `npm run build` | 0 | Next.js 16.2.6 compile OK (2026-05-19) |
 
 ## §Smoke
 
