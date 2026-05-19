@@ -12,9 +12,13 @@ import { Label } from "@/components/ui/label";
 
 type CheckoutFormProps = {
   defaultName?: string;
+  guestProductIds?: string[];
 };
 
-export function CheckoutForm({ defaultName = "" }: CheckoutFormProps) {
+export function CheckoutForm({
+  defaultName = "",
+  guestProductIds,
+}: CheckoutFormProps) {
   const [error, setError] = useState<string | null>(null);
   const form = useForm<CheckoutInput>({
     resolver: zodResolver(checkoutSchema),
@@ -31,14 +35,21 @@ export function CheckoutForm({ defaultName = "" }: CheckoutFormProps) {
 
   const onSubmit = form.handleSubmit(async (values) => {
     setError(null);
-    const result = await submitCheckoutAction(values);
+    const payload =
+      guestProductIds && guestProductIds.length > 0
+        ? { ...values, productIds: guestProductIds }
+        : values;
+    const result = await submitCheckoutAction(payload);
     if (result?.error === "CART_EMPTY") {
       setError("Кошик порожній. Додайте товари перед оформленням.");
     } else if (result?.error === "PRODUCT_UNAVAILABLE") {
       setError(
         "Деякі товари вже недоступні. Перевірте кошик і спробуйте знову.",
       );
+    } else if (result?.error === "VALIDATION") {
+      setError("Перевірте правильність заповнення форми.");
     } else if (result?.error) {
+      console.log(result);
       setError("Не вдалося оформити замовлення. Спробуйте ще раз.");
     }
   });
@@ -61,7 +72,9 @@ export function CheckoutForm({ defaultName = "" }: CheckoutFormProps) {
         <Input
           id="customerPhone"
           type="tel"
-          placeholder="+380501234567"
+          placeholder="0978734712"
+          inputMode="numeric"
+          maxLength={15}
           {...form.register("customerPhone")}
         />
       </div>

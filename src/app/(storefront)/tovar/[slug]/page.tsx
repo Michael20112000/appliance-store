@@ -9,7 +9,6 @@ import { ConditionBadge } from "@/components/catalog/condition-badge";
 import { PriceDisplay } from "@/components/catalog/price-display";
 import { ProductGallery } from "@/components/catalog/product-gallery";
 import { buttonVariants } from "@/components/ui/button";
-import { conditionLabelUa } from "@/lib/catalog/format";
 import { productMetadata } from "@/lib/catalog/metadata";
 import { buildProductJsonLd } from "@/lib/catalog/product-json-ld";
 import { getEnv } from "@/lib/env";
@@ -119,31 +118,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
               {product.description ?? "Опис товару уточнюється."}
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-medium">Характеристики</h2>
-            <dl className="mt-3 grid gap-2 text-sm">
-              <div className="flex justify-between gap-4 border-b py-2">
-                <dt className="text-muted-foreground">Бренд</dt>
-                <dd>{product.brand}</dd>
-              </div>
-              <div className="flex justify-between gap-4 border-b py-2">
-                <dt className="text-muted-foreground">Категорія</dt>
-                <dd>
-                  <Link
-                    href={`/katalog/${product.category.slug}`}
-                    className="hover:underline"
-                  >
-                    {product.category.name}
-                  </Link>
-                </dd>
-              </div>
-              <div className="flex justify-between gap-4 border-b py-2">
-                <dt className="text-muted-foreground">Стан</dt>
-                <dd>{conditionLabelUa(product.condition)}</dd>
-              </div>
-            </dl>
           </section>
 
           <Link href="/katalog" className={cn(buttonVariants(), "inline-flex")}>

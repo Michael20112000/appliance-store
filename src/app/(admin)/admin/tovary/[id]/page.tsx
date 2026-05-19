@@ -45,7 +45,12 @@ export default async function AdminEditProductPage({ params }: PageProps) {
           brand: product.brand,
           categoryId: product.categoryId,
           condition: product.condition,
-          status: product.status === "AVAILABLE" ? "AVAILABLE" : "DRAFT",
+          status:
+            product.quantity > 0
+              ? product.status === "DRAFT"
+                ? "DRAFT"
+                : "AVAILABLE"
+              : "DRAFT",
           priceUah: Math.round(product.price / 100),
           quantity: product.quantity,
         }}

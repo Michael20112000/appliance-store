@@ -3,10 +3,7 @@ import { z } from "zod";
 const uaPhoneSchema = z
   .string()
   .trim()
-  .regex(
-    /^\+380\d{9}$/,
-    "Вкажіть телефон у форматі +380XXXXXXXXX",
-  );
+  .regex(/^\d{10,15}$/, "Вкажіть номер телефону — лише цифри, від 10 до 15");
 
 export const deliveryTypeSchema = z.enum(["PICKUP", "LVIV_DELIVERY"]);
 
@@ -35,3 +32,12 @@ export const checkoutSchema = z
   });
 
 export type CheckoutInput = z.infer<typeof checkoutSchema>;
+
+export const guestCheckoutSchema = checkoutSchema.extend({
+  productIds: z
+    .array(z.string().cuid("Невірний ідентифікатор товару"))
+    .min(1, "Кошик порожній")
+    .max(20, "Занадто багато товарів у кошику"),
+});
+
+export type GuestCheckoutInput = z.infer<typeof guestCheckoutSchema>;

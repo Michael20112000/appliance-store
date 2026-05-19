@@ -12,6 +12,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import {
+  ALL_BRANDS_VALUE,
+  brandSelectToUrlParam,
+  resolveBrandSelectValue,
+} from "@/lib/catalog/catalog-labels";
 import { catalogParsers, catalogUrlKeys } from "@/lib/catalog/search-params";
 import { categoriesWithAvailableProducts } from "@/lib/catalog/categories";
 import { createThrottle } from "@/lib/catalog/throttle";
@@ -19,8 +24,6 @@ import { cn } from "@/lib/utils";
 
 export const PRICE_STEP_UAH = 50;
 export const PRICE_URL_THROTTLE_MS = 200;
-
-const ALL_BRANDS = "__all__";
 
 type CategoryOption = { slug: string; name: string; productCount: number };
 
@@ -219,19 +222,24 @@ export function CatalogFiltersPanel({
       <section>
         <h2 className="mb-2 text-sm font-medium">Бренд</h2>
         <Select
-          value={params.brend ?? ALL_BRANDS}
-          onValueChange={(value) =>
+          value={resolveBrandSelectValue(params.brend)}
+          onValueChange={(value) => {
+            if (!value) return;
             setParams({
-              brend: value === ALL_BRANDS ? null : value,
+              brend: brandSelectToUrlParam(value),
               storinka: 1,
-            })
-          }
+            });
+          }}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Усі бренди" />
+            <SelectValue placeholder="Усі бренди">
+              {resolveBrandSelectValue(params.brend) === ALL_BRANDS_VALUE
+                ? "Усі бренди"
+                : params.brend}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL_BRANDS}>Усі бренди</SelectItem>
+            <SelectItem value={ALL_BRANDS_VALUE}>Усі бренди</SelectItem>
             {brands.map((brand) => (
               <SelectItem key={brand} value={brand}>
                 {brand}

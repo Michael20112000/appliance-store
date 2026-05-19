@@ -1,4 +1,5 @@
 import type { Prisma, ProductStatus } from "@/generated/prisma/client";
+import type { ProductStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import { computeTotalPages } from "@/lib/pagination";
 import type {
@@ -78,6 +79,7 @@ export function assertProductDeletable(
 
 export function normalizeProductImages(
   images: Pick<ProductImageInput, "cloudinaryPublicId" | "alt" | "width" | "height">[],
+  defaultAlt?: string,
 ): Array<{
   cloudinaryPublicId: string;
   alt: string | null;
@@ -87,7 +89,7 @@ export function normalizeProductImages(
 }> {
   return images.slice(0, MAX_PRODUCT_IMAGES).map((image, index) => ({
     cloudinaryPublicId: image.cloudinaryPublicId,
-    alt: image.alt?.trim() ? image.alt.trim() : null,
+    alt: image.alt?.trim() || defaultAlt?.trim() || null,
     sortOrder: index,
     width: image.width ?? null,
     height: image.height ?? null,
@@ -285,15 +287,11 @@ export async function updateProduct(data: UpdateProductValues) {
     slug = await resolveUniqueProductSlug(data.slug.trim(), data.id);
   }
 
-  let status =
-    existing.status === "SOLD" ? existing.status : data.status;
-
-  if (
-    existing.status !== "SOLD" &&
-    data.quantity === 0 &&
-    status === "AVAILABLE"
-  ) {
+  let status: ProductStatus = data.status;
+  if (data.quantity === 0) {
     status = "SOLD";
+  } else if (status !== "DRAFT") {
+    status = "AVAILABLE";
   }
 
   return prisma.product.update({
@@ -319,13 +317,13 @@ export async function syncProductImages(
 ) {
   const product = await prisma.product.findUnique({
     where: { id: productId },
-    select: { id: true },
+    select: { id: true, title: true },
   });
   if (!product) {
     throw new Error(PRODUCT_NOT_FOUND);
   }
 
-  const normalized = normalizeProductImages(images);
+  const normalized = normalizeProductImages(images, product.title);
 
   await prisma.$transaction([
     prisma.productImage.deleteMany({ where: { productId } }),

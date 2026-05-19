@@ -7,8 +7,6 @@ import { saveProductImagesAction } from "@/server/actions/admin/product.actions"
 import type { ProductImageInput } from "@/server/validators/admin-product";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 const MAX_IMAGES = 8;
 
@@ -29,6 +27,7 @@ type ExistingImage = {
 
 type ProductImageUploadProps = {
   productId: string;
+  productTitle: string;
   initialImages: ExistingImage[];
 };
 
@@ -46,6 +45,7 @@ function extractUploadInfo(result: CloudinaryUploadWidgetResults) {
 
 export function ProductImageUpload({
   productId,
+  productTitle,
   initialImages,
 }: ProductImageUploadProps) {
   const [images, setImages] = useState<ProductImageInput[]>(
@@ -68,6 +68,7 @@ export function ProductImageUpload({
           productId,
           images: nextImages.map((image, index) => ({
             ...image,
+            alt: productTitle,
             sortOrder: index,
           })),
         });
@@ -76,7 +77,7 @@ export function ProductImageUpload({
         }
       });
     },
-    [productId],
+    [productId, productTitle],
   );
 
   const handleUploadSuccess = (result: CloudinaryUploadWidgetResults) => {
@@ -91,7 +92,7 @@ export function ProductImageUpload({
         ...current,
         {
           cloudinaryPublicId: uploaded.cloudinaryPublicId,
-          alt: "",
+          alt: productTitle,
           sortOrder: current.length,
           width: uploaded.width,
           height: uploaded.height,
@@ -108,16 +109,7 @@ export function ProductImageUpload({
     persistImages(next);
   };
 
-  const updateAlt = (index: number, alt: string) => {
-    const next = images.map((image, i) =>
-      i === index ? { ...image, alt } : image,
-    );
-    setImages(next);
-  };
-
-  const saveAlts = () => {
-    persistImages(images);
-  };
+  const imageAlt = productTitle.trim() || "Фото товару";
 
   if (!isUploadWidgetConfigured()) {
     return (
@@ -168,11 +160,11 @@ export function ProductImageUpload({
       {images.length > 0 ? (
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {images.map((image, index) => (
-            <li key={`${image.cloudinaryPublicId}-${index}`} className="space-y-2">
+            <li key={`${image.cloudinaryPublicId}-${index}`}>
               <div className="relative size-[72px] overflow-hidden rounded-md border border-border">
                 <CldImage
                   src={image.cloudinaryPublicId}
-                  alt={image.alt?.trim() || "Фото товару"}
+                  alt={imageAlt}
                   width={72}
                   height={72}
                   crop="fill"
@@ -188,16 +180,6 @@ export function ProductImageUpload({
                 >
                   ×
                 </Button>
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Alt</Label>
-                <Input
-                  value={image.alt ?? ""}
-                  onChange={(event) => updateAlt(index, event.target.value)}
-                  onBlur={saveAlts}
-                  placeholder="Опис зображення"
-                  className="h-8 text-xs"
-                />
               </div>
             </li>
           ))}

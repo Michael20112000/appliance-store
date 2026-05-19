@@ -60,15 +60,23 @@ export async function getCategoryById(id: string) {
 
 export async function createCategory(data: UpsertCategoryValues) {
   const baseSlug = data.slug?.trim() || slugFromName(data.name);
-  const slug = await resolveUniqueSlug(baseSlug);
 
-  return prisma.category.create({
-    data: {
-      name: data.name,
-      slug,
-      description: data.description ?? null,
-      sortOrder: data.sortOrder,
-    },
+  return prisma.$transaction(async (tx) => {
+    const slug = await resolveUniqueSlug(baseSlug);
+
+    await tx.category.updateMany({
+      where: { sortOrder: { gte: data.sortOrder } },
+      data: { sortOrder: { increment: 1 } },
+    });
+
+    return tx.category.create({
+      data: {
+        name: data.name,
+        slug,
+        description: data.description ?? null,
+        sortOrder: data.sortOrder,
+      },
+    });
   });
 }
 

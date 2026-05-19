@@ -285,13 +285,27 @@ export async function getOrderAdmin(
 
 export async function revertSoldProductsOnCancel(
   tx: Prisma.TransactionClient,
-  items: Array<{ productId: string | null }>,
+  items: Array<{ productId: string | null; quantity: number }>,
 ): Promise<void> {
-  for (const productId of getProductIdsForCancelRevert(items)) {
-    await tx.product.updateMany({
-      where: { id: productId, status: "SOLD" },
-      data: { status: "AVAILABLE" },
+  for (const item of items) {
+    if (item.productId == null || item.quantity < 1) {
+      continue;
+    }
+
+    const product = await tx.product.update({
+      where: { id: item.productId },
+      data: {
+        quantity: { increment: item.quantity },
+      },
+      select: { quantity: true, status: true },
     });
+
+    if (product.quantity > 0 && product.status === "SOLD") {
+      await tx.product.update({
+        where: { id: item.productId },
+        data: { status: "AVAILABLE" },
+      });
+    }
   }
 }
 

@@ -6,8 +6,17 @@ export const metadata: Metadata = {
   title: "Новий товар",
 };
 
-export default async function AdminNewProductPage() {
+type PageProps = {
+  searchParams: Promise<{ categoryId?: string }>;
+};
+
+export default async function AdminNewProductPage({ searchParams }: PageProps) {
+  const { categoryId } = await searchParams;
   const categories = await listCategoriesAdmin();
+  const defaultCategoryId =
+    categoryId && categories.some((c) => c.id === categoryId)
+      ? categoryId
+      : categories[0]?.id;
 
   if (categories.length === 0) {
     return (
@@ -32,6 +41,9 @@ export default async function AdminNewProductPage() {
           id: category.id,
           name: category.name,
         }))}
+        defaultValues={
+          defaultCategoryId ? { categoryId: defaultCategoryId } : undefined
+        }
       />
     </div>
   );

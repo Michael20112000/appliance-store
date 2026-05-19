@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { catalogSortLabel, type CatalogSortValue } from "@/lib/catalog/catalog-labels";
 import { catalogParsers, catalogUrlKeys } from "@/lib/catalog/search-params";
 import { pluralResultsUa } from "@/lib/catalog/format";
 
@@ -78,7 +79,9 @@ export function CatalogToolbar({ total }: CatalogToolbarProps) {
           }}
         >
           <SelectTrigger className="w-36" aria-label="Сортування">
-            <SelectValue />
+            <SelectValue placeholder="Сортування">
+              {catalogSortLabel(params.sort as CatalogSortValue)}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="novi">Новіші</SelectItem>

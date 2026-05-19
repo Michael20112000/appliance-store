@@ -73,7 +73,7 @@ export function ProductForm({
   images = [],
 }: ProductFormProps) {
   const [error, setError] = useState<string | null>(null);
-  const isSold = currentStatus === "SOLD";
+  const productTitle = defaultValues?.title ?? "";
 
   const form = useForm<UpsertProductInput>({
     resolver: zodResolver(
@@ -143,15 +143,6 @@ export function ProductForm({
           </Alert>
         ) : null}
 
-        {isSold ? (
-          <Alert>
-            <AlertDescription>
-              Статус «Продано» встановлюється лише через замовлення. Редагування
-              полів доступне, статус не змінюється.
-            </AlertDescription>
-          </Alert>
-        ) : null}
-
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="title">Назва</Label>
@@ -167,12 +158,6 @@ export function ProductForm({
             <p className="text-xs text-muted-foreground sm:col-span-2">
               Slug для URL згенерується автоматично з назви товару.
             </p>
-          ) : storefrontSlug ? (
-            <p className="text-xs text-muted-foreground sm:col-span-2">
-              URL: /tovar/{storefrontSlug}
-            </p>
-          ) : null}
-
           <div className="space-y-2">
             <Label htmlFor="brand">Бренд</Label>
             <Input id="brand" {...form.register("brand")} />
@@ -191,7 +176,10 @@ export function ProductForm({
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="categoryId" className="w-full">
-                    <SelectValue />
+                    <SelectValue placeholder="Оберіть категорію">
+                      {categories.find((c) => c.id === field.value)?.name ??
+                        "Оберіть категорію"}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((category) => (
@@ -213,7 +201,11 @@ export function ProductForm({
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="condition" className="w-full">
-                    <SelectValue />
+                    <SelectValue placeholder="Оберіть стан">
+                      {field.value
+                        ? conditionLabelUa(field.value)
+                        : "Оберіть стан"}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {CONDITIONS.map((condition) => (
@@ -268,26 +260,28 @@ export function ProductForm({
             ) : null}
           </div>
 
-          {!isSold ? (
-            <div className="space-y-2 sm:col-span-2">
-              <Label htmlFor="status">Статус</Label>
-              <Controller
-                name="status"
-                control={form.control}
-                render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="status" className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="DRAFT">Чернетка</SelectItem>
-                      <SelectItem value="AVAILABLE">В наявності</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-            </div>
-          ) : null}
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="status">Статус</Label>
+            <Controller
+              name="status"
+              control={form.control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="status" className="w-full">
+                    <SelectValue placeholder="Оберіть статус">
+                      {field.value === "AVAILABLE"
+                        ? "В наявності"
+                        : "Чернетка"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="DRAFT">Чернетка</SelectItem>
+                    <SelectItem value="AVAILABLE">В наявності</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
 
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="description">Опис</Label>
@@ -336,7 +330,11 @@ export function ProductForm({
       {mode === "edit" && productId ? (
         <section className="max-w-2xl space-y-3 border-t border-border pt-8">
           <h2 className="text-lg font-semibold">Фото</h2>
-          <ProductImageUpload productId={productId} initialImages={images} />
+          <ProductImageUpload
+            productId={productId}
+            productTitle={productTitle}
+            initialImages={images}
+          />
         </section>
       ) : null}
     </div>

@@ -115,24 +115,37 @@ describe("getProductIdsForCancelRevert", () => {
 });
 
 describe("revertSoldProductsOnCancel", () => {
-  it("updates each linked product from SOLD to AVAILABLE", async () => {
-    const updateMany = vi.fn().mockResolvedValue({ count: 1 });
-    const tx = { product: { updateMany } };
+  it("restores quantity and sets AVAILABLE when stock returns after cancel", async () => {
+    const update = vi.fn().mockImplementation(async (args: {
+      data?: { quantity?: { increment: number }; status?: string };
+    }) => {
+      if (args.data?.status) {
+        return {};
+      }
+      return { quantity: 1, status: "SOLD" };
+    });
+    const tx = { product: { update } };
 
     await revertSoldProductsOnCancel(tx as never, [
-      { productId: "p1" },
-      { productId: null },
-      { productId: "p2" },
+      { productId: "p1", quantity: 1 },
+      { productId: null, quantity: 1 },
+      { productId: "p2", quantity: 1 },
     ]);
 
-    expect(updateMany).toHaveBeenCalledTimes(2);
-    expect(updateMany).toHaveBeenCalledWith({
-      where: { id: "p1", status: "SOLD" },
+    expect(update).toHaveBeenCalledTimes(4);
+    expect(update).toHaveBeenCalledWith({
+      where: { id: "p1" },
+      data: { quantity: { increment: 1 } },
+      select: { quantity: true, status: true },
+    });
+    expect(update).toHaveBeenCalledWith({
+      where: { id: "p1" },
       data: { status: "AVAILABLE" },
     });
-    expect(updateMany).toHaveBeenCalledWith({
-      where: { id: "p2", status: "SOLD" },
-      data: { status: "AVAILABLE" },
+    expect(update).toHaveBeenCalledWith({
+      where: { id: "p2" },
+      data: { quantity: { increment: 1 } },
+      select: { quantity: true, status: true },
     });
   });
 });
