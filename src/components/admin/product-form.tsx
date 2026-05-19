@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ProductCondition, ProductStatus } from "@/generated/prisma/client";
 import {
@@ -21,6 +21,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CONDITIONS: ProductCondition[] = ["LIKE_NEW", "GOOD", "FAIR"];
 
@@ -178,32 +185,46 @@ export function ProductForm({
 
           <div className="space-y-2">
             <Label htmlFor="categoryId">Категорія</Label>
-            <select
-              id="categoryId"
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
-              {...form.register("categoryId")}
-            >
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            <Controller
+              name="categoryId"
+              control={form.control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="categoryId" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="condition">Стан</Label>
-            <select
-              id="condition"
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
-              {...form.register("condition")}
-            >
-              {CONDITIONS.map((condition) => (
-                <option key={condition} value={condition}>
-                  {conditionLabelUa(condition)}
-                </option>
-              ))}
-            </select>
+            <Controller
+              name="condition"
+              control={form.control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="condition" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CONDITIONS.map((condition) => (
+                      <SelectItem key={condition} value={condition}>
+                        {conditionLabelUa(condition)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
 
           <div className="space-y-2">
@@ -250,14 +271,21 @@ export function ProductForm({
           {!isSold ? (
             <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="status">Статус</Label>
-              <select
-                id="status"
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
-                {...form.register("status")}
-              >
-                <option value="DRAFT">Чернетка</option>
-                <option value="AVAILABLE">В наявності</option>
-              </select>
+              <Controller
+                name="status"
+                control={form.control}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id="status" className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="DRAFT">Чернетка</SelectItem>
+                      <SelectItem value="AVAILABLE">В наявності</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
           ) : null}
 
