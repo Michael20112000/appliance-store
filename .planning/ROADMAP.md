@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- 🚧 **v1.4 Bugfix stabilization** — Phase 21 (intake-first, 2026-05-19)
+- ✅ **v1.4 Bugfix stabilization** — Phase 21 (shipped 2026-05-19)
 - ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19)
 - ✅ **v1.2 Polish & UX** — Phases 11–16 (shipped 2026-05-19) — [archive](milestones/v1.2-ROADMAP.md) · [requirements](milestones/v1.2-REQUIREMENTS.md)
 - ✅ **v1.1 Engagement & Fixes** — Phases 7–10 (shipped 2026-05-17) — [archive](milestones/v1.1-ROADMAP.md) · [requirements](milestones/v1.1-REQUIREMENTS.md)
@@ -128,15 +128,15 @@ Plans:
 3. `21-MANUAL-CHECKLIST.md` пройдений (BUG-12…17 + guest + multi-qty)
 4. Intake `status: completed`; код не чіпається без регресії (мінімальний fix лише Task 4)
 
-**Status:** 📋 Planned — ready to execute
+**Status:** ✅ Complete (2026-05-19)
 
 **Plans:**
 
 **Wave 1** *(no dependencies)*
 
-| Plan | Objective |
-|------|-----------|
-| 21-01 | Verify-only: automated CI, static audit, manual checklist, optional regression fix |
+| Plan | Objective | Status |
+|------|-----------|--------|
+| 21-01 | Verify-only: automated CI, static audit, manual checklist, optional regression fix | ✅ |
 
 ---
 
@@ -172,7 +172,7 @@ See [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md).
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
-| v1.4 Bugfix stabilization | 1 (21) | 0 | 🚧 Planning |
+| v1.4 Bugfix stabilization | 1 (21) | 1 | ✅ Shipped 2026-05-19 |
 | v1.3 Fixes & Admin UX | 4 (17–20) | 7 | ✅ Shipped 2026-05-19 |
 | v1.2 Polish & UX | 6 (11–16) | 21 | ✅ Shipped 2026-05-19 |
 | v1.1 Engagement & Fixes | 4 (7–10) | 20 | ✅ Shipped 2026-05-17 |

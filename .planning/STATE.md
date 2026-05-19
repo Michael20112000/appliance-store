@@ -5,13 +5,13 @@ milestone_name: Bugfix stabilization
 status: milestone_complete
 stopped_at: Milestone complete (Phase 21 was final phase)
 last_updated: 2026-05-19T14:22:56.695Z
-last_activity: 2026-05-19 -- Phase 21 execution started
+last_activity: 2026-05-19 -- Phase 21 complete; v1.4 milestone shipped
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 5
   total_plans: 8
-  completed_plans: 77
-  percent: 60
+  completed_plans: 8
+  percent: 100
 ---
 
 # Project State
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 ## Current Position
 
-Phase: 21
-Plan: Not started
-Status: Milestone complete
+Phase: 21 (bugfix-stabilization) — complete
+Plan: 1/1 (21-01)
+Status: Milestone v1.4 complete
 Last activity: 2026-05-19
 
 ### Shipped on `main` (checkpoint 2026-05-19)
@@ -53,7 +53,7 @@ Last activity: 2026-05-19
 
 ### Pending Todos
 
-- `/gsd-execute-phase 21` — CI + `21-MANUAL-CHECKLIST.md` (smoke only unless regression)
+- `/gsd-verify-work` — conversational UAT (optional follow-up)
 
 ### Blockers/Concerns
 
@@ -75,6 +75,6 @@ Resume file: .planning/phases/21-bugfix-stabilization/21-CONTEXT.md
 
 ## Operator Next Steps
 
-1. `/gsd-execute-phase 21` — CI + manual checklist
-2. `/gsd-verify-work` — conversational UAT after execute
-3. Нові баги пізніше → новий `bugfix-intake-YYYY-MM-DD.md`, не блокує закриття 21
+1. `/gsd-verify-work` — conversational UAT (optional)
+2. `/gsd-complete-milestone` — archive v1.4 when ready
+3. Нові баги → новий `bugfix-intake-YYYY-MM-DD.md` (не блокує v1.4 close)
