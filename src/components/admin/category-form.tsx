@@ -27,20 +27,24 @@ const errorMessages: Record<string, string> = {
 type CategoryFormProps = {
   mode: "create" | "edit";
   categoryId?: string;
+  categoryCount?: number;
   defaultValues?: Partial<UpsertCategoryInput>;
 };
 
 export function CategoryForm({
   mode,
   categoryId,
+  categoryCount = 0,
   defaultValues,
 }: CategoryFormProps) {
+  const maxRank =
+    mode === "create" ? Math.max(1, categoryCount + 1) : Math.max(1, categoryCount);
   const [error, setError] = useState<string | null>(null);
   const form = useForm<UpsertCategoryInput>({
     resolver: zodResolver(upsertCategorySchema),
     defaultValues: {
       name: defaultValues?.name ?? "",
-      sortOrder: defaultValues?.sortOrder ?? 0,
+      sortOrder: defaultValues?.sortOrder ?? maxRank,
     },
   });
 
@@ -115,8 +119,15 @@ export function CategoryForm({
         <Input
           id="sortOrder"
           type="number"
+          min={1}
+          max={maxRank}
+          step={1}
+          inputMode="numeric"
           {...form.register("sortOrder", { valueAsNumber: true })}
         />
+        <p className="text-xs text-muted-foreground">
+          Від 1 до {maxRank}. Інші категорії зсунуться автоматично.
+        </p>
         {form.formState.errors.sortOrder ? (
           <p className="text-sm text-destructive">
             {form.formState.errors.sortOrder.message}

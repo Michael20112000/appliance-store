@@ -10,7 +10,11 @@ export const upsertCategorySchema = z
     name: z.string().trim().min(2, "Вкажіть назву категорії"),
     slug: z.union([slugSchema, z.literal("")]).optional(),
     description: z.union([z.string().trim().max(2000), z.literal("")]).optional(),
-    sortOrder: z.coerce.number().int().default(0),
+    sortOrder: z.coerce
+      .number()
+      .int("Порядок має бути цілим числом")
+      .min(1, "Порядок від 1")
+      .default(1),
   })
   .transform((data) => ({
     name: data.name,
@@ -25,7 +29,11 @@ export const updateCategorySchema = z
     name: z.string().trim().min(2, "Вкажіть назву категорії"),
     slug: z.union([slugSchema, z.literal("")]).optional(),
     description: z.union([z.string().trim().max(2000), z.literal("")]).optional(),
-    sortOrder: z.coerce.number().int().default(0),
+    sortOrder: z.coerce
+      .number()
+      .int("Порядок має бути цілим числом")
+      .min(1, "Порядок від 1")
+      .default(1),
   })
   .transform((data) => ({
     id: data.id,

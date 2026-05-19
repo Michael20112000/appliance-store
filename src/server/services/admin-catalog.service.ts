@@ -1,4 +1,11 @@
 import slugify from "slugify";
+import {
+  clampCategoryRank,
+  insertCategoryAtRank,
+  moveCategoryToRank,
+  normalizeCategoryRanks,
+  type CategoryRankRow,
+} from "@/lib/admin/category-sort-order";
 import { prisma } from "@/lib/db";
 import type { UpsertCategoryValues } from "@/server/validators/category";
 
@@ -40,22 +47,56 @@ async function resolveUniqueSlug(
   }
 }
 
-export async function listCategoriesAdmin() {
+async function fetchCategoryRankRows(): Promise<CategoryRankRow[]> {
   return prisma.category.findMany({
-    orderBy: { sortOrder: "asc" },
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+    select: { id: true, sortOrder: true },
+  });
+}
+
+function displayRankById(rows: CategoryRankRow[]): Map<string, number> {
+  return new Map(
+    normalizeCategoryRanks(rows).map((row) => [row.id, row.sortOrder]),
+  );
+}
+
+export async function listCategoriesAdmin() {
+  const rankRows = await fetchCategoryRankRows();
+  const ranks = displayRankById(rankRows);
+
+  const categories = await prisma.category.findMany({
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
     include: {
       _count: { select: { products: true } },
     },
   });
+
+  return categories.map((category) => ({
+    ...category,
+    sortOrder: ranks.get(category.id) ?? category.sortOrder,
+  }));
+}
+
+export async function getCategoryCount(): Promise<number> {
+  return prisma.category.count();
 }
 
 export async function getCategoryById(id: string) {
-  return prisma.category.findUnique({
+  const category = await prisma.category.findUnique({
     where: { id },
     include: {
       _count: { select: { products: true } },
     },
   });
+  if (!category) return null;
+
+  const rankRows = await fetchCategoryRankRows();
+  const ranks = displayRankById(rankRows);
+
+  return {
+    ...category,
+    sortOrder: ranks.get(category.id) ?? category.sortOrder,
+  };
 }
 
 export async function createCategory(data: UpsertCategoryValues) {
@@ -63,18 +104,33 @@ export async function createCategory(data: UpsertCategoryValues) {
 
   return prisma.$transaction(async (tx) => {
     const slug = await resolveUniqueSlug(baseSlug);
-
-    await tx.category.updateMany({
-      where: { sortOrder: { gte: data.sortOrder } },
-      data: { sortOrder: { increment: 1 } },
+    const existing = await tx.category.findMany({
+      orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+      select: { id: true, sortOrder: true },
     });
+    const n = existing.length;
+    const targetRank = clampCategoryRank(data.sortOrder, 1, n + 1);
+    const placeholderId = "__new__";
+    const ranked = insertCategoryAtRank(existing, placeholderId, targetRank);
+    const newRow = ranked.find((row) => row.id === placeholderId);
+    if (!newRow) {
+      throw new Error("CATEGORY_RANK_FAILED");
+    }
+
+    for (const row of ranked) {
+      if (row.id === placeholderId) continue;
+      await tx.category.update({
+        where: { id: row.id },
+        data: { sortOrder: row.sortOrder },
+      });
+    }
 
     return tx.category.create({
       data: {
         name: data.name,
         slug,
         description: data.description ?? null,
-        sortOrder: data.sortOrder,
+        sortOrder: newRow.sortOrder,
       },
     });
   });
@@ -93,14 +149,32 @@ export async function updateCategory(
     slug = await resolveUniqueSlug(input.slug.trim(), input.id);
   }
 
-  return prisma.category.update({
-    where: { id: input.id },
-    data: {
-      name: input.name,
-      slug,
-      description: input.description ?? null,
-      sortOrder: input.sortOrder,
-    },
+  const all = await prisma.category.findMany({
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+    select: { id: true, sortOrder: true },
+  });
+  const n = all.length;
+  const targetRank = clampCategoryRank(input.sortOrder, 1, n);
+  const ranked = moveCategoryToRank(all, input.id, targetRank);
+
+  return prisma.$transaction(async (tx) => {
+    for (const row of ranked) {
+      await tx.category.update({
+        where: { id: row.id },
+        data: {
+          sortOrder: row.sortOrder,
+          ...(row.id === input.id
+            ? {
+                name: input.name,
+                slug,
+                description: input.description ?? null,
+              }
+            : {}),
+        },
+      });
+    }
+
+    return tx.category.findUniqueOrThrow({ where: { id: input.id } });
   });
 }
 

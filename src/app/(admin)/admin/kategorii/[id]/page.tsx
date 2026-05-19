@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { CategoryForm } from "@/components/admin/category-form";
 import { Button } from "@/components/ui/button";
 import { CategoryImageUpload } from "@/components/admin/category-image-upload";
-import { getCategoryById } from "@/server/services/admin-catalog.service";
+import {
+  getCategoryById,
+  getCategoryCount,
+} from "@/server/services/admin-catalog.service";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -21,18 +24,30 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">Редагувати категорію</h1>
-        <Button
-          size="sm"
-          render={
-            <Link href={`/admin/tovary/novyi?categoryId=${category.id}`} />
-          }
-        >
-          Додати товар
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            render={
+              <Link href={`/admin/tovary?categoryId=${category.id}`} />
+            }
+          >
+            Переглянути товари
+          </Button>
+          <Button
+            size="sm"
+            render={
+              <Link href={`/admin/tovary/novyi?categoryId=${category.id}`} />
+            }
+          >
+            Додати товар
+          </Button>
+        </div>
       </div>
       <CategoryForm
         mode="edit"
         categoryId={category.id}
+        categoryCount={await getCategoryCount()}
         defaultValues={{
           name: category.name,
           sortOrder: category.sortOrder,
