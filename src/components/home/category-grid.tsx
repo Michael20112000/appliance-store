@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { categoriesWithAvailableProducts } from "@/lib/catalog/categories";
 import { categoryImageAlt } from "@/lib/catalog/category-image-alt";
 import { OptimizedImage } from "@/components/media/optimized-image";
 import {
@@ -8,11 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { listCategoriesWithProductCounts } from "@/server/services/catalog.service";
 
 export async function CategoryGrid() {
-  const categories = await prisma.category.findMany({
-    orderBy: { sortOrder: "asc" },
-  });
+  const { categories: categoriesWithCounts } =
+    await listCategoriesWithProductCounts();
+  const categories = categoriesWithAvailableProducts(categoriesWithCounts);
+
+  if (categories.length === 0) {
+    return null;
+  }
 
   return (
     <section id="kategorii" className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
