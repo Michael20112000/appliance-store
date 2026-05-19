@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Polish & UX
-status: executing
-stopped_at: Phase 15 context gathered
-last_updated: "2026-05-18T19:15:11.419Z"
-last_activity: 2026-05-18 -- Phase 15 planning complete
+status: planning
+stopped_at: Phase 16 context gathered
+last_updated: "2026-05-19T08:41:23.280Z"
+last_activity: 2026-05-18
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 18
-  completed_plans: 15
-  percent: 67
+  completed_plans: 18
+  percent: 83
 ---
 
 # Project State
@@ -21,20 +21,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-18)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 15 — storefront catalog polish
+**Current focus:** Phase 16 — shadcn select audit & verify
 
 ## Current Position
 
-Phase: 15
+Phase: 16
 Plan: Not started
-Status: Ready to execute
-Last activity: 2026-05-18 -- Phase 15 planning complete
+Status: Ready to plan
+Last activity: 2026-05-18
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 69
+- Total plans completed: 72
 - Average duration: —
 - Total execution time: —
 
@@ -50,6 +50,7 @@ Last activity: 2026-05-18 -- Phase 15 planning complete
 | 12 | 3 | - | - |
 | 13 | 4 | - | - |
 | 14 | 3 | - | - |
+| 15 | 3 | - | - |
 
 **Recent Trend:**
 
@@ -92,9 +93,9 @@ Items acknowledged at milestone close:
 
 ## Session Continuity
 
-Last session: 2026-05-18T19:10:00.322Z
-Stopped at: Phase 15 context gathered
-Resume file: .planning/phases/15-storefront-catalog-polish/15-CONTEXT.md
+Last session: 2026-05-19T08:41:23.271Z
+Stopped at: Phase 16 context gathered
+Resume file: .planning/phases/16-shadcn-select-audit-verify/16-CONTEXT.md
 
 ## Operator Next Steps
 
