@@ -30,15 +30,15 @@
 Plans:
 **Wave 1**
 
-- [ ] 17-01-PLAN.md — Admin shell + inbox flex height chain
+- [x] 17-01-PLAN.md — Admin shell + inbox flex height chain
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 17-02-PLAN.md — Column scroll, mobile native scroll, isPanelOpen
+- [x] 17-02-PLAN.md — Column scroll, mobile native scroll, isPanelOpen
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 17-03-PLAN.md — Manual checklist + Playwright scroll gate + sign-off
+- [x] 17-03-PLAN.md — Manual checklist + Playwright scroll gate + sign-off
 
 ---
 

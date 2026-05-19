@@ -8,7 +8,7 @@
 
 ### Admin — Chat
 
-- [ ] **ADM-CHAT-02**: На `/admin/chaty` (desktop) контейнер inbox має фіксовану висоту viewport; список діалогів скролиться всередині лівої колонки; повідомлення треду — всередині правої колонки; сторінка адмінки не росте по висоті від кількості чатів/повідомлень
+- [x] **ADM-CHAT-02**: На `/admin/chaty` (desktop) контейнер inbox має фіксовану висоту viewport; список діалогів скролиться всередині лівої колонки; повідомлення треду — всередині правої колонки; сторінка адмінки не росте по висоті від кількості чатів/повідомлень
 
 ### Admin — Products
 
@@ -52,7 +52,7 @@ Deferred beyond v1.3.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ADM-CHAT-02 | Phase 17 | Pending |
+| ADM-CHAT-02 | Phase 17 | Complete |
 | ADM-PRD-04 | Phase 18 | Pending |
 | DATA-01 | Phase 19 | Pending |
 | DATA-02 | Phase 19 | Pending |
