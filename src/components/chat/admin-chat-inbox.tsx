@@ -88,27 +88,33 @@ function AdminChatInboxInner() {
       : "Коли покупець напише, діалог зʼявиться тут.";
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Чати</h1>
-      <AdminChatTabs view={view} conversationId={selectedConversationId} />
-      <div className="grid min-h-[calc(100dvh-12rem)] overflow-hidden rounded-lg border border-border md:grid-cols-[320px_1fr]">
+    <div className="flex min-h-0 flex-1 flex-col gap-6">
+      <h1 className="shrink-0 text-2xl font-semibold">Чати</h1>
+      <div className="shrink-0">
+        <AdminChatTabs view={view} conversationId={selectedConversationId} />
+      </div>
+      <div className="grid min-h-0 flex-1 overflow-hidden rounded-lg border border-border md:grid-cols-[320px_1fr]">
         {showList ? (
-          <ConversationList
-            conversations={conversations}
-            selectedId={selectedConversationId}
-            enableContextMenu={!isMobile}
-            onSelect={setSelectedConversationId}
-            showUnreadHighlight={view === "active"}
-            emptyTitle={emptyTitle}
-            emptyBody={emptyBody}
-          />
+          <div className="flex min-h-0 flex-col overflow-hidden">
+            <ConversationList
+              conversations={conversations}
+              selectedId={selectedConversationId}
+              enableContextMenu={!isMobile}
+              onSelect={setSelectedConversationId}
+              showUnreadHighlight={view === "active"}
+              emptyTitle={emptyTitle}
+              emptyBody={emptyBody}
+            />
+          </div>
         ) : null}
         {showThread ? (
-          <ChatThread
-            onBack={
-              isMobile ? () => setSelectedConversationId(null) : undefined
-            }
-          />
+          <div className="flex min-h-0 flex-col overflow-hidden">
+            <ChatThread
+              onBack={
+                isMobile ? () => setSelectedConversationId(null) : undefined
+              }
+            />
+          </div>
         ) : null}
       </div>
     </div>
