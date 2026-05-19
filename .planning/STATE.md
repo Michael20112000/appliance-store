@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Polish & UX
-status: executing
-stopped_at: Phase 16 planned — 3 plans
-last_updated: "2026-05-19T08:46:54.701Z"
+status: milestone_complete
+stopped_at: Milestone complete (Phase 16 was final phase)
+last_updated: 2026-05-19T08:58:13.064Z
 last_activity: 2026-05-19 -- Phase 16 execution started
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 21
-  completed_plans: 18
+  completed_plans: 72
   percent: 83
 ---
 
@@ -21,20 +21,20 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-18)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 16 — shadcn-select-audit-verify
+**Current focus:** Milestone complete
 
 ## Current Position
 
-Phase: 16 (shadcn-select-audit-verify) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 16
-Last activity: 2026-05-19 -- Phase 16 execution started
+Phase: 16
+Plan: Not started
+Status: Milestone complete
+Last activity: 2026-05-19
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 72
+- Total plans completed: 75
 - Average duration: —
 - Total execution time: —
 
@@ -51,6 +51,7 @@ Last activity: 2026-05-19 -- Phase 16 execution started
 | 13 | 4 | - | - |
 | 14 | 3 | - | - |
 | 15 | 3 | - | - |
+| 16 | 3 | - | - |
 
 **Recent Trend:**
 

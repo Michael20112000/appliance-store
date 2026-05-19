@@ -5,11 +5,11 @@
 
 | # | Route | Action | Expected | Pass |
 |---|-------|--------|----------|------|
-| 1 | `/tovar/{slug}` (1 image) | Open PDP | Main image renders; no layout break | ☐ |
-| 2 | `/tovar/{slug}` (3+ images) | Open PDP | Thumb strip + main carousel; selecting thumb updates main | ☐ |
-| 3 | `/tovar/{slug}` | Viewport ~375px | Gallery usable; thumbs scroll if needed | ☐ |
-| 4 | `/tovar/{slug}` | Tap main image | Dialog/lightbox opens | ☐ |
-| 5 | Dialog open | Use arrows + close | Navigate images in dialog; after close, main view matches last selection | ☐ |
+| 1 | `/tovar/{slug}` (1 image) | Open PDP | Main image renders; no layout break | ✓ |
+| 2 | `/tovar/{slug}` (3+ images) | Open PDP | Thumb strip + main carousel; selecting thumb updates main | ✓ |
+| 3 | `/tovar/{slug}` | Viewport ~375px | Gallery usable; thumbs scroll if needed | ✓ |
+| 4 | `/tovar/{slug}` | Tap main image | Dialog/lightbox opens | ✓ |
+| 5 | Dialog open | Use arrows + close | Navigate images in dialog; after close, main view matches last selection | ✓ |
 
 **Notes:**
 

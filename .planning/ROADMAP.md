@@ -182,12 +182,12 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 16-01-PLAN.md — Storefront catalog sort + brand shadcn Select (UX-01)
-- [ ] 16-02-PLAN.md — Admin product-form RHF Select migration (UX-01)
+- [x] 16-01-PLAN.md — Storefront catalog sort + brand shadcn Select (UX-01)
+- [x] 16-02-PLAN.md — Admin product-form RHF Select migration (UX-01)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 16-03-PLAN.md — Slug verify, gallery manual checklist, grep + build gate (POL-01, POL-02, UX-01)
+- [x] 16-03-PLAN.md — Slug verify, gallery manual checklist, grep + build gate (POL-01, POL-02, UX-01)
 
 **Cross-cutting constraints:**
 

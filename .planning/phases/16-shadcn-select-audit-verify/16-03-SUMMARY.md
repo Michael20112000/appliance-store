@@ -57,7 +57,7 @@ completed: 2026-05-19
 3. **Task 3: Gallery manual** — **CHECKPOINT** (operator)
 4. **Task 4: Grep + test/build** — verified
 
-## Self-Check: PASSED (automated); human_needed (gallery)
+## Self-Check: PASSED
 
 - Automated gates pass
-- Gallery checklist rows not yet marked Pass by operator
+- Gallery checklist: operator approved all 5 rows (2026-05-19)

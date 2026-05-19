@@ -28,19 +28,19 @@
 
 ### Storefront — Catalog
 
-- [ ] **CAT-04**: Категорії без доступних товарів не показуються на головній, в навігації та сайдбарі каталогу
-- [ ] **CAT-05**: Лічильник товарів у сайдбарі каталогу відображається як shadcn Badge (не plain text «— N»)
-- [ ] **CAT-06**: Сітка `/katalog` (і category pages) пагінована: 16 карток на сторінку, пагінація в стилі `/admin/tovary` (`AdminListPagination`)
+- [x] **CAT-04**: Категорії без доступних товарів не показуються на головній, в навігації та сайдбарі каталогу
+- [x] **CAT-05**: Лічильник товарів у сайдбарі каталогу відображається як shadcn Badge (не plain text «— N»)
+- [x] **CAT-06**: Сітка `/katalog` (і category pages) пагінована: 16 карток на сторінку, пагінація в стилі `/admin/tovary` (`AdminListPagination`)
 
 ### UX / Design System
 
-- [ ] **UX-01**: Усі storefront і admin `<select>` замінені на shadcn `Select` (мінімум: `catalog-toolbar`, `catalog-filters`, `product-form`)
+- [x] **UX-01**: Усі storefront і admin `<select>` замінені на shadcn `Select` (мінімум: `catalog-toolbar`, `catalog-filters`, `product-form`)
 - [x] **UX-02**: Клікабельні рядки таблиць і списків мають `cursor-pointer` і keyboard access де доречно
 
 ### Polish (verify)
 
-- [ ] **POL-01**: PDP gallery (Carousel + Dialog lightbox) коректно на mobile та з кількома фото
-- [ ] **POL-02**: Slug товару/категорії генерується автоматично при create; ручне поле slug відсутнє в create UI
+- [x] **POL-01**: PDP gallery (Carousel + Dialog lightbox) коректно на mobile та з кількома фото
+- [x] **POL-02**: Slug товару/категорії генерується автоматично при create; ручне поле slug відсутнє в create UI
 
 ## v2 Requirements
 
@@ -84,12 +84,12 @@ Deferred beyond v1.2.
 | ADM-PRD-02 | Phase 12 | Complete |
 | ADM-PRD-03 | Phase 13 | Complete |
 | ADM-CHAT-01 | Phase 14 | Complete |
-| CAT-04 | Phase 15 | Pending |
-| CAT-05 | Phase 15 | Pending |
-| CAT-06 | Phase 15 | Pending |
-| UX-01 | Phase 16 | Pending |
-| POL-01 | Phase 16 | Pending |
-| POL-02 | Phase 16 | Pending |
+| CAT-04 | Phase 15 | Complete |
+| CAT-05 | Phase 15 | Complete |
+| CAT-06 | Phase 15 | Complete |
+| UX-01 | Phase 16 | Complete |
+| POL-01 | Phase 16 | Complete |
+| POL-02 | Phase 16 | Complete |
 
 **Coverage:**
 
