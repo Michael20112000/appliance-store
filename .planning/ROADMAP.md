@@ -66,7 +66,7 @@ Plans:
 **Plans:** 1/1 plans complete
 
 Plans:
-- [ ] `24-01-PLAN.md` — Wave 0: debounce + useProductAutoSave tests; Wave 1: edit shell, header delete, auto-save form (ADM-PRD-05)
+- [x] `24-01-PLAN.md` — Wave 0: debounce + useProductAutoSave tests; Wave 1: edit shell, header delete, auto-save form (ADM-PRD-05) — 2026-05-19
 
 ---
 
