@@ -26,10 +26,10 @@
 
 ### Storefront — footer & mobile
 
-- [ ] **FOOT-01**: У футері відображаються контактний телефон і email магазину
-- [ ] **FOOT-02**: У футері форма зворотного зв’язку «Вкажіть свій номер — ми передзвонимо» (поле телефону + відправка)
-- [ ] **FOOT-03**: Та сама форма зворотного зв’язку в mobile drawer під списком категорій
-- [ ] **FOOT-04**: У mobile drawer біля кожної категорії показується кількість доступних товарів
+- [x] **FOOT-01**: У футері відображаються контактний телефон і email магазину
+- [x] **FOOT-02**: У футері форма зворотного зв’язку «Вкажіть свій номер — ми передзвонимо» (поле телефону + відправка)
+- [x] **FOOT-03**: Та сама форма зворотного зв’язку в mobile drawer під списком категорій
+- [x] **FOOT-04**: У mobile drawer біля кожної категорії показується кількість доступних товарів
 
 ### Quality — UAT
 
@@ -70,10 +70,10 @@
 | ADM-CAT-04 | Phase 23 | Complete |
 | ADM-PRD-05 | Phase 24 | Complete |
 | HOME-03 | Phase 25 | Complete |
-| FOOT-01 | Phase 26 | Pending |
-| FOOT-02 | Phase 26 | Pending |
-| FOOT-03 | Phase 26 | Pending |
-| FOOT-04 | Phase 26 | Pending |
+| FOOT-01 | Phase 26 | Complete |
+| FOOT-02 | Phase 26 | Complete |
+| FOOT-03 | Phase 26 | Complete |
+| FOOT-04 | Phase 26 | Complete |
 | UAT-01 | Phase 27 | Pending |
 
 **Coverage:**
