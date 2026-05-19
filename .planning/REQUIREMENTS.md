@@ -13,8 +13,8 @@
 
 ### Admin — categories
 
-- [ ] **ADM-CAT-03**: На сторінці редагування категорії кнопки дій біля заголовка мають зрозумілі іконки (наприклад Plus для додавання, Eye для перегляду товарів)
-- [ ] **ADM-CAT-04**: У таблиці `/admin/kategorii` колонка «Товари» з посиланням «Переглянути» на `/admin/tovary?categoryId={id}`
+- [x] **ADM-CAT-03**: На сторінці редагування категорії кнопки дій біля заголовка мають зрозумілі іконки (наприклад Plus для додавання, Eye для перегляду товарів)
+- [x] **ADM-CAT-04**: У таблиці `/admin/kategorii` колонка «Товари» з посиланням «Переглянути» на `/admin/tovary?categoryId={id}`
 
 ### Admin — products
 
@@ -66,8 +66,8 @@
 |-------------|-------|--------|
 | ORD-03 | Phase 22 | Complete |
 | ORD-04 | Phase 22 | Complete |
-| ADM-CAT-03 | Phase 23 | Pending |
-| ADM-CAT-04 | Phase 23 | Pending |
+| ADM-CAT-03 | Phase 23 | Complete |
+| ADM-CAT-04 | Phase 23 | Complete |
 | ADM-PRD-05 | Phase 24 | Pending |
 | HOME-03 | Phase 25 | Pending |
 | FOOT-01 | Phase 26 | Pending |
