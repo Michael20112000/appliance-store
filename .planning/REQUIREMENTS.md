@@ -22,7 +22,7 @@
 
 ### Storefront — homepage
 
-- [ ] **HOME-03**: Секція «Категорії» на головній не показує картки категорій без доступних товарів (та сама логіка, що в хедері)
+- [x] **HOME-03**: Секція «Категорії» на головній не показує картки категорій без доступних товарів (та сама логіка, що в хедері)
 
 ### Storefront — footer & mobile
 
@@ -69,7 +69,7 @@
 | ADM-CAT-03 | Phase 23 | Complete |
 | ADM-CAT-04 | Phase 23 | Complete |
 | ADM-PRD-05 | Phase 24 | Complete |
-| HOME-03 | Phase 25 | Pending |
+| HOME-03 | Phase 25 | Complete |
 | FOOT-01 | Phase 26 | Pending |
 | FOOT-02 | Phase 26 | Pending |
 | FOOT-03 | Phase 26 | Pending |
