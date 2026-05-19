@@ -9,6 +9,7 @@ import { ConversationLifecycleMenuItems } from "@/components/chat/conversation-l
 import { MessageList } from "@/components/chat/message-list";
 import { useConversationLifecycleActions } from "@/components/chat/use-conversation-lifecycle-actions";
 import { markAdminReadAction } from "@/server/actions/chat.actions";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ type ChatThreadProps = {
 };
 
 export function ChatThread({ onBack }: ChatThreadProps) {
+  const isMobile = useIsMobile();
   const {
     selectedConversationId,
     selectedConversation,
@@ -64,7 +66,7 @@ export function ChatThread({ onBack }: ChatThreadProps) {
 
   if (!selectedConversationId || !selectedConversation) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-6 py-12 text-center">
         <p className="text-sm font-semibold text-muted-foreground">
           Оберіть діалог
         </p>
@@ -81,8 +83,8 @@ export function ChatThread({ onBack }: ChatThreadProps) {
   const { pending, deleteOpen, setDeleteOpen } = lifecycle;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex items-start gap-2 border-b border-border px-4 py-3">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="flex shrink-0 items-start gap-2 border-b border-border px-4 py-3">
         {onBack ? (
           <Button
             type="button"
@@ -133,7 +135,7 @@ export function ChatThread({ onBack }: ChatThreadProps) {
       </div>
 
       {isDisconnected ? (
-        <div className="border-b border-border bg-muted px-3 py-2 text-sm text-muted-foreground">
+        <div className="shrink-0 border-b border-border bg-muted px-3 py-2 text-sm text-muted-foreground">
           <p>Зʼєднання перервано. Повідомлення можуть затримуватися.</p>
           <Button
             type="button"
@@ -154,6 +156,8 @@ export function ChatThread({ onBack }: ChatThreadProps) {
         buyerDisplayName={buyerDisplayName}
         emptyTitle="Ще немає повідомлень"
         emptyBody="Надішліть відповідь покупцю."
+        useNativeScroll={isMobile}
+        isPanelOpen={Boolean(selectedConversationId)}
       />
 
       {!isArchived ? <AdminChatComposer /> : null}
