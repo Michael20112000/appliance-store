@@ -1,5 +1,22 @@
 # Milestones
 
+## v1.5 Incremental polish & operator UX (Shipped: 2026-05-19)
+
+**Phases completed:** 6 phases, 8 plans, 19 tasks
+
+**Key accomplishments:**
+
+- Admin order status options and API now respect pickup vs Lviv delivery — wrong fulfillment statuses are hidden and rejected.
+- Admin category edit toolbar and list «Товари» column link operators to filtered products without breaking row-click edit.
+- Edit product page auto-saves with debounced server actions, category-aware back navigation, and header AlertDialog delete — create flow unchanged.
+- Homepage «Категорії» now hides empty categories and omits the whole section when nothing is in stock — same rules as the header nav.
+- Store contacts and callback requests live in PostgreSQL; footer, mobile drawer, homepage JsonLd, and admin settings all read the same source.
+- UAT-01 closed: operator purge/empty checklist, guest checkout + admin order smoke, BUG-18…23 verified; `27-UAT-REPORT.md` recommends ship.
+
+**Known deferred items at close:** 5 (see STATE.md Deferred Items) — legacy UAT phases 04/07/18; `prisma/seed.test.ts` P2; stale `e2e/cart-auth.spec.ts`; `git stash@{0}`; template todo only.
+
+---
+
 ## v1.4 Bugfix stabilization (Shipped: 2026-05-19)
 
 **Phases completed:** 5 phases, 8 plans, 16 tasks

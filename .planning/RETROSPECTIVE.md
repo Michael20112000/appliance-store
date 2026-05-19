@@ -1,5 +1,40 @@
 # Project Retrospective
 
+## Milestone: v1.5 — Incremental polish & operator UX
+
+**Shipped:** 2026-05-19  
+**Phases:** 22–27 | **Plans:** 8
+
+### What Was Built
+
+Delivery-aware order status (UI + API). Admin category icons and «Товари» link. Product edit auto-save with debounced saves. Homepage hides empty categories. Footer/mobile contacts and callback from PostgreSQL. UAT-01 operator closure with purge checklist and intake BUG-18…23 verified.
+
+### What Worked
+
+- Vertical phases 22–26 shipped features; phase 27 dedicated UAT closure avoided scope creep
+- `BUGFIX-WORKFLOW.md` intake mapped cleanly to verification in phase 27
+- Reusing header catalog filter for homepage (HOME-03) — one source of truth
+
+### What Was Inefficient
+
+- No formal milestone audit before close; legacy UAT debt carried via acknowledge
+- Stale Prisma dev singleton after phase 26 schema — caught in UAT, fixed in `db.ts`
+- `prisma/seed.test.ts` fails without seeded out-of-stock products — documented P2 repeatedly
+
+### Patterns Established
+
+- `19-MANUAL-CHECKLIST.md` + `27-MANUAL-CHECKLIST.md` — operator entry points for purge vs full UAT
+- Store settings tables survive `db:purge` — footer may still show contacts (documented expectation)
+- P0/P1/P2 severity policy in UAT closure (≤30 min P1 fix budget)
+
+### Key Lessons
+
+- Run `prisma generate` + dev server restart after new models — or guard singleton in `db.ts`
+- Close human_needed verification (phase 25) inside dedicated UAT phase, not ad-hoc
+- Exclude stale Playwright guest-auth e2e from UAT gate until specs updated
+
+---
+
 ## Milestone: v1.4 — Bugfix stabilization
 
 **Shipped:** 2026-05-19  
@@ -36,6 +71,7 @@ BUG-12…17 verified on main; CI green after minimal test fixes; intake wave 1�
 
 | Milestone | Phases | Theme |
 |-----------|--------|-------|
+| v1.5 | 22–27 | Operator UX + UAT closure |
 | v1.4 | 21 | Stabilization / verify |
 | v1.3 | 17–20 | Admin UX + guest + data ops |
 | v1.2 | 11–16 | Polish & UX |

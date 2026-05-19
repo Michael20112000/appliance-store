@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Incremental polish & operator UX
-status: milestone_complete
-stopped_at: Milestone complete (Phase 27 was final phase)
-last_updated: 2026-05-19T18:00:27.082Z
-last_activity: 2026-05-19 -- Phase 27 complete; v1.5 milestone shipped
+status: Awaiting next milestone
+stopped_at: Phase 27 context gathered
+last_updated: "2026-05-19T19:13:57.152Z"
+last_activity: 2026-05-19 — Milestone v1.5 completed and archived
 progress:
   total_phases: 6
   completed_phases: 6
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-19)
 
 ## Current Position
 
-Phase: 27 (complete)
-Plan: 3/3 complete
-Status: Milestone complete
-Last activity: 2026-05-19
+Phase: Milestone v1.5 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-19 — Milestone v1.5 completed and archived
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -61,11 +61,17 @@ Last activity: 2026-05-19
 
 ## Deferred Items
 
-| Item | Notes |
-|------|--------|
-| `git stash@{0}` | Catalog pagination, seed tweaks — not on main |
-| Phase 19 human UAT | Satisfied via `19-MANUAL-CHECKLIST.md` in phase 27 (2026-05-19) |
-| CWV targets | v2 PERF-01 |
+Items acknowledged and deferred at milestone v1.5 close on 2026-05-19:
+
+| Category | Item | Status |
+|----------|------|--------|
+| uat_gaps | Phase 04, 07, 18 HUMAN-UAT partial | deferred |
+| verification_gaps | Phases 04, 06, 07, 12, 13, 18 VERIFICATION | human_needed / gaps_found |
+| test | `prisma/seed.test.ts` out-of-stock count | P2 — document after seed |
+| e2e | `e2e/cart-auth.spec.ts` guest redirect expectations | P2 — contradicts guest checkout |
+| wip | `git stash@{0}` catalog pagination | deferred — CAT-WIP-01 |
+| todos | bugfix-intake-TEMPLATE.md | template only |
+| perf | CWV / Lighthouse targets | v2 PERF-01 |
 
 Items acknowledged at v1.4 milestone close (2026-05-19):
 
@@ -78,12 +84,12 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 
 ## Session Continuity
 
-Last session: 2026-05-19T17:14:40.125Z
-Stopped at: Phase 27 context gathered
-Resume file: .planning/phases/27-human-uat-closure/27-CONTEXT.md
+Last session: 2026-05-19
+Stopped at: Milestone v1.5 archived
+Resume: `/gsd-new-milestone`
 
 ## Operator Next Steps
 
-1. `/gsd-complete-milestone` — archive v1.5 and plan next milestone
+1. `/gsd-new-milestone` — define v2 or v1.6 scope
 2. Optional: `/gsd-verify-work 27` — conversational UAT follow-up
-3. Intake archived: `.planning/todos/completed/bugfix-intake-2026-05-19-v1.5.md`
+3. Push tag `v1.5` to remote if not yet pushed
