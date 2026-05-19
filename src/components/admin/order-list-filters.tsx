@@ -14,7 +14,7 @@ const filters: Array<{ key: AdminOrderListFilter; label: string }> = [
   { key: "all", label: "Усі" },
   { key: "new", label: "Нові" },
   { key: "in_progress", label: "В роботі" },
-  { key: "completed", label: "Завершені" },
+  { key: "completed", label: "Виконані" },
   { key: "cancelled", label: "Скасовані" },
 ];
 
