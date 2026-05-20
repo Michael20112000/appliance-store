@@ -441,17 +441,19 @@ The existing `StatCard` accepts `count: number`. For revenue, create a variant o
 | A3 | `toLocaleString("uk-UA")` is available in the Vercel Node.js runtime | Common Pitfalls | Could fall back to manual regex replacement |
 | A4 | recharts weekly download count is "very high" | Package Legitimacy Audit | For legitimacy assessment only — package existence and age are verified |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **$queryRaw day column type**
    - What we know: Prisma `$queryRaw` returns Date or string for `DATE()` casts depending on the PG driver
    - What's unclear: Whether `@prisma/adapter-neon` returns `Date` or string for a `DATE` column cast
    - Recommendation: Add a guard in the service: `typeof r.day === 'string' ? r.day.slice(0,10) : r.day.toISOString().slice(0,10)`
+   - RESOLVED: Plan 34-02 uses a type guard `typeof r.day === "string" ? r.day.slice(0, 10) : r.day.toISOString().slice(0, 10)` for both order and revenue rows.
 
 2. **StatCard revenue display**
    - What we know: `StatCard.count` is typed as `number` (integer display only)
    - What's unclear: Whether to extend `StatCard` props or create a separate `RevenueCard`
    - Recommendation: Create a small `<AnalyticsKpiCard>` that accepts `label: string` + `value: string` to avoid mutating the existing shared component
+   - RESOLVED: Plan 34-05 uses Option B — an inline styled div matching the StatCard visual pattern for the revenue KPI, avoiding mutation of the shared `StatCard` component.
 
 ## Environment Availability
 
