@@ -9,6 +9,7 @@ import {
   CATEGORY_NOT_FOUND,
   createCategory,
   deleteCategory,
+  reorderCategories,
   updateCategory,
   updateCategoryImage,
 } from "@/server/services/admin-catalog.service";
@@ -97,5 +98,26 @@ export async function deleteCategoryAction(id: string) {
       throw error;
     }
     return mapCategoryError(error);
+  }
+}
+
+export async function reorderCategoriesAction(
+  orderedIds: string[]
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  await requireAdmin();
+
+  if (
+    !Array.isArray(orderedIds) ||
+    orderedIds.some((id) => typeof id !== "string")
+  ) {
+    return { ok: false as const, error: "INVALID_INPUT" as const };
+  }
+
+  try {
+    await reorderCategories(orderedIds);
+    revalidateCategoryPaths();
+    return { ok: true as const };
+  } catch {
+    return { ok: false as const, error: "UNKNOWN" as const };
   }
 }
