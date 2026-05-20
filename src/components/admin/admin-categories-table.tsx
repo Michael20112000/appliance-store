@@ -118,13 +118,14 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
     const oldIndex = localCategories.findIndex((c) => c.id === active.id);
     const newIndex = localCategories.findIndex((c) => c.id === over.id);
     const reordered = arrayMove(localCategories, oldIndex, newIndex);
+    const snapshot = localCategories; // capture before optimistic update
 
     setLocalCategories(reordered);
 
     startTransition(async () => {
       const result = await reorderCategoriesAction(reordered.map((c) => c.id));
       if (!result.ok) {
-        setLocalCategories(localCategories);
+        setLocalCategories(snapshot); // roll back to snapshot
         toast.error("Помилка збереження порядку");
       }
     });
