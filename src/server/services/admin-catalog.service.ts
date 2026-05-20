@@ -215,3 +215,14 @@ export async function deleteCategory(id: string) {
 
   await prisma.category.delete({ where: { id } });
 }
+
+export async function reorderCategories(orderedIds: string[]): Promise<void> {
+  await prisma.$transaction(
+    orderedIds.map((id, index) =>
+      prisma.category.update({
+        where: { id },
+        data: { sortOrder: index + 1 },
+      })
+    )
+  );
+}
