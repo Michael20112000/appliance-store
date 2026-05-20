@@ -16,7 +16,7 @@
 
 **Latest (v1.5):** Delivery-aware order status; admin category/product polish; homepage hides empty categories; footer + mobile contacts/callback from DB; UAT-01 closed (purge + v1.5 smoke).
 
-**Active milestone:** v2.0 Polish, UX & Admin analytics — Phase 29 complete (product cards hover + PDP lightbox/cart UX, 2026-05-20)
+**Active milestone:** v2.0 Polish, UX & Admin analytics — Phase 30 complete (PDP similar products + footer layout, 2026-05-20)
 
 **Operator:** `BUGFIX-WORKFLOW.md` intake; optional `db:purge` + seed.
 
