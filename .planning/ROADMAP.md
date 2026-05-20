@@ -174,7 +174,26 @@ Plans:
 2. Dashboard прев'ю — ≤2 графіки перед «Останні замовлення»
 3. Дані з існуючих Prisma таблиць (без фейкових mock)
 
-**Plans:** 0/0
+**Plans:** 5 plans
+
+Plans:
+
+**Wave 0**
+
+- [ ] 34-01-PLAN.md — analytics service test scaffold: getAnalyticsData stubs, BigInt conversion, zero-fill tests (AN-01)
+
+**Wave 1** *(parallel, both blocked on Wave 0)*
+
+- [ ] 34-02-PLAN.md — shadcn chart install + admin-analytics.service.ts: getAnalyticsData, getDashboardAnalyticsPreview, fillDays, formatRevenue (AN-01, AN-02)
+- [ ] 34-03-PLAN.md — Admin nav item «Аналітика» + PeriodSelector component (AN-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 34-04-PLAN.md — AnalyticsCharts + AnalyticsDashboardPreview client components (AN-01, AN-02)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 34-05-PLAN.md — /admin/analityka page + dashboard preview wiring + human verify (AN-01, AN-02)
 
 ---
 
