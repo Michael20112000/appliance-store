@@ -2,6 +2,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { AddToCartButton } from "@/components/cart/add-to-cart-button";
+import { PdpCartFab } from "@/components/cart/pdp-cart-fab";
 import { OpenChatButton } from "@/components/chat/open-chat-button";
 import { JsonLd } from "@/components/catalog/json-ld";
 import { auth } from "@/lib/auth";
@@ -13,7 +14,10 @@ import { productMetadata } from "@/lib/catalog/metadata";
 import { buildProductJsonLd } from "@/lib/catalog/product-json-ld";
 import { getEnv } from "@/lib/env";
 import { cn } from "@/lib/utils";
-import { isProductInCart } from "@/server/services/cart.service";
+import {
+  getCartItemCount,
+  isProductInCart,
+} from "@/server/services/cart.service";
 import { isProductInWishlist } from "@/server/services/wishlist.service";
 import { WishlistToggleButton } from "@/components/wishlist/wishlist-toggle-button";
 import { getPublicProductBySlug } from "@/server/services/catalog.service";
@@ -48,8 +52,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
     session?.user?.id != null
       ? await isProductInWishlist(session.user.id, product.id)
       : false;
+  const cartCount =
+    session?.user?.id != null
+      ? await getCartItemCount(session.user.id)
+      : 0;
 
   return (
+    <>
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <JsonLd data={buildProductJsonLd(product, canonicalUrl)} />
       <nav className="mb-6 text-sm text-muted-foreground" aria-label="Breadcrumb">
@@ -114,7 +123,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
 
           <section>
-            <h2 className="text-lg font-medium">Опис</h2>
+            <h2 className="text-lg font-medium">Опис та характеристики</h2>
             <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
               {product.description ?? "Опис товару уточнюється."}
             </p>
@@ -126,5 +135,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </div>
       </div>
     </div>
+    <PdpCartFab
+      initialCount={cartCount}
+      hasSession={Boolean(session?.user)}
+    />
+    </>
   );
 }
