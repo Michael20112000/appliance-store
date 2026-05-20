@@ -127,3 +127,17 @@
     @apply font-sans;
   }
 }
+
+html:has(#main-content) {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(#main-content) {
+    scroll-behavior: auto;
+  }
+}
+
+#kategorii {
+  scroll-margin-top: 4.5rem;
+}
