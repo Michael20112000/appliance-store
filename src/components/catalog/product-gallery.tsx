@@ -53,7 +53,8 @@ export function ProductGallery({ images, title, brand }: ProductGalleryProps) {
 
   useEffect(() => {
     if (!dialogOpen || !dialogApi) return;
-    dialogApi.scrollTo(dialogIndex, true);
+    if (dialogApi.selectedScrollSnap() === dialogIndex) return;
+    dialogApi.scrollTo(dialogIndex, false);
   }, [dialogOpen, dialogApi, dialogIndex]);
 
   useEffect(() => {
@@ -150,7 +151,14 @@ export function ProductGallery({ images, title, brand }: ProductGalleryProps) {
           <div className="relative overflow-hidden rounded-xl bg-background p-2 ring-1 ring-border">
             <Carousel
               setApi={setDialogApi}
-              opts={{ loop: hasMultiple, startIndex: dialogIndex }}
+              opts={{
+                loop: hasMultiple,
+                startIndex: dialogIndex,
+                duration: 25,
+                dragFree: false,
+                skipSnaps: false,
+                containScroll: false,
+              }}
               className="w-full"
             >
               <CarouselContent>
