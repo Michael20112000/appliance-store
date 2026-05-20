@@ -121,10 +121,10 @@ Plans:
 1. «Додати товар» — primary blue + Plus; «Переглянути замовлення» — Eye
 2. Три stat-картки з lucide-іконками
 
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
-- [ ] 32-01-PLAN.md — Update dashboard action buttons + StatCard icons (ADM-DASH-03, ADM-DASH-04)
+- [x] 32-01-PLAN.md — Update dashboard action buttons + StatCard icons (ADM-DASH-03, ADM-DASH-04)
 
 ---
 
