@@ -57,7 +57,7 @@ completed: 2026-05-20
 1. **Task 1: Lightbox Carousel opts** - `f10e825` (feat)
 2. **Task 2: Build gate + manual swipe note** - `0e2a0ac` (chore, empty — build verification)
 
-**Plan metadata:** pending (docs commit after this file)
+**Plan metadata:** `bc6097f` (docs: complete plan)
 
 ## Files Created/Modified
 
