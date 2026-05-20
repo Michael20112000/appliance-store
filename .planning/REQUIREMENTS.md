@@ -42,7 +42,7 @@
 
 ### Admin — categories
 
-- [ ] **ADM-CAT-05**: У таблиці `/admin/kategorii` посилання «Переглянути (N)» виглядає як клікабельне посилання (underline/hover/color), не як plain text
+- [x] **ADM-CAT-05**: У таблиці `/admin/kategorii` посилання «Переглянути (N)» виглядає як клікабельне посилання (underline/hover/color), не як plain text
 - [x] **ADM-CAT-06**: На `/admin/kategorii` drag & drop змінює `sortOrder` категорій і зберігається на сервері
 
 ### Admin — analytics
@@ -106,7 +106,7 @@
 | BUG-24 | Phase 31 | Complete |
 | ADM-DASH-03 | Phase 32 | Complete |
 | ADM-DASH-04 | Phase 32 | Complete |
-| ADM-CAT-05 | Phase 33 | Pending |
+| ADM-CAT-05 | Phase 33 | Complete |
 | ADM-CAT-06 | Phase 33 | Complete |
 | AN-01 | Phase 34 | Pending |
 | AN-02 | Phase 34 | Pending |
