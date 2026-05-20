@@ -1,3 +1,4 @@
+import type React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -6,14 +7,18 @@ type StatCardProps = {
   count: number;
   href?: string;
   className?: string;
+  icon?: React.ElementType;
 };
 
-export function StatCard({ label, count, href, className }: StatCardProps) {
+export function StatCard({ label, count, href, className, icon: Icon }: StatCardProps) {
   const content = (
-    <>
+    <div className="relative">
+      {Icon && (
+        <Icon className="absolute top-0 right-0 size-5 text-muted-foreground" aria-hidden />
+      )}
       <p className="text-sm font-medium text-muted-foreground">{label}</p>
       <p className="mt-2 text-3xl font-semibold tabular-nums">{count}</p>
-    </>
+    </div>
   );
 
   const cardClass = cn(

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Eye, Package, PackageX, Plus, ShoppingBag } from "lucide-react";
 import { StatCard } from "@/components/admin/stat-card";
 import { AdminRecentOrdersTable } from "@/components/admin/admin-recent-orders-table";
 import { Button } from "@/components/ui/button";
@@ -16,28 +17,32 @@ export default async function AdminDashboardPage() {
           label="Нові замовлення"
           count={stats.pendingOrders}
           href="/admin/zamovlennia?filter=new"
+          icon={ShoppingBag}
         />
         <StatCard
           label="Товари в наявності"
           count={stats.inStockProducts}
           href="/admin/tovary?stock=in_stock"
+          icon={Package}
         />
         <StatCard
           label="Розпродано"
           count={stats.outOfStockProducts}
           href="/admin/tovary?stock=out_of_stock"
+          icon={PackageX}
         />
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Button render={<Link href="/admin/tovary/novyi" />} size="sm" variant="outline">
+        <Button render={<Link href="/admin/tovary/novyi" />}>
+          <Plus className="size-4" aria-hidden />
           Додати товар
         </Button>
         <Button
           render={<Link href="/admin/zamovlennia" />}
-          size="sm"
           variant="outline"
         >
+          <Eye className="size-4" aria-hidden />
           Переглянути замовлення
         </Button>
       </div>
