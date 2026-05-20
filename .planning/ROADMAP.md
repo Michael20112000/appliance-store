@@ -140,7 +140,25 @@ Plans:
 2. Drag & drop зберігає порядок у БД; refresh зберігає order
 3. Vitest або manual checklist для reorder API
 
-**Plans:** 0/0
+**Plans:** 4 plans
+
+Plans:
+
+**Wave 1**
+
+- [ ] 33-01-PLAN.md — Package legitimacy checkpoint + install @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities (ADM-CAT-06)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 33-02-PLAN.md — reorderCategories service method + Vitest unit tests (ADM-CAT-06)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 33-03-PLAN.md — reorderCategoriesAction server action with requireAdmin + input validation (ADM-CAT-06)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 33-04-PLAN.md — AdminCategoriesTable DnD rewrite + Переглянути link styling + human verify (ADM-CAT-05, ADM-CAT-06)
 
 ---
 
@@ -153,7 +171,7 @@ Plans:
 **Success criteria:**
 
 1. `/admin/analityka` — KPI + графіки (замовлення, виручка, callbacks тощо)
-2. Dashboard прев’ю — ≤2 графіки перед «Останні замовлення»
+2. Dashboard прев'ю — ≤2 графіки перед «Останні замовлення»
 3. Дані з існуючих Prisma таблиць (без фейкових mock)
 
 **Plans:** 0/0
