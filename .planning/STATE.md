@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
-status: Defining requirements
+status: executing
 stopped_at: Phase 28 context gathered
-last_updated: "2026-05-20T10:57:06.964Z"
-last_activity: 2026-05-20 — Milestone v2.0 started
+last_updated: "2026-05-20T11:09:35.463Z"
+last_activity: 2026-05-20 -- Phase 28 planning complete
 progress:
   total_phases: 9
   completed_phases: 0
-  total_plans: 0
+  total_plans: 4
   completed_plans: 0
   percent: 0
 ---
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-20)
 
 Phase: Not started (defining requirements)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-20 — Milestone v2.0 started
+Status: Ready to execute
+Last activity: 2026-05-20 -- Phase 28 planning complete
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
