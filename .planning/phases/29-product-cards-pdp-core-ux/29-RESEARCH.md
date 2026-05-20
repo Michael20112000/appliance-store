@@ -482,14 +482,11 @@ export function ProductCardImageRotator({ images, alt, sizes }: Props) {
 
 **Planner confirmation:** A1 via mobile UAT; A2 via visual check with safe-area; A3 pick one name in plan task 1.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Extract shared `CartFabLink` vs PDP-only component?**  
-   - What we know: `GuestCartNavLink` already implements badge + event.  
-   - Recommendation: **PDP-only `PdpCartFab`** per D-15; duplicate minimal badge logic to avoid scope creep.
+1. **Extract shared `CartFabLink` vs PDP-only component?** — **RESOLVED:** PDP-only `PdpCartFab` per D-15; minimal badge logic, no global FAB.
 
-2. **Optional: hide FAB when lightbox open?**  
-   - Not in CONTEXT; skip unless UAT shows overlap annoyance.
+2. **Optional: hide FAB when lightbox open?** — **RESOLVED:** Out of scope; skip unless post-UAT annoyance reported.
 
 ## Environment Availability
 
