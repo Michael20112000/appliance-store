@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
 status: executing
-stopped_at: Phase 34 context gathered
-last_updated: "2026-05-20T19:50:06.203Z"
+stopped_at: Phase 35 — callback calls (next)
+last_updated: "2026-05-20T23:15:00Z"
 last_activity: 2026-05-20
 progress:
   total_phases: 9
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 20
-  completed_plans: 18
-  percent: 67
+  completed_plans: 19
+  percent: 70
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-20)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 34 — admin-analytics
+**Current focus:** Phase 35 — callback calls
 
 ## Current Position
 
-Phase: 34 (admin-analytics) — EXECUTING
-Plan: 2 of 5
-Status: Ready to execute
+Phase: 35 (callback-calls) — NEXT
+Plan: 0 of 0
+Status: Not planned yet
 Last activity: 2026-05-20
 
 ### Shipped on `main` (checkpoint 2026-05-19)
@@ -54,6 +54,8 @@ Last activity: 2026-05-20
 - Phase 33: DnD listeners on GripVertical icon only (not tr) — prevents click-vs-drag conflict
 - Phase 33: No DragOverlay used — opacity:0.5 on isDragging row sufficient for low-row admin table
 - [Phase ?]: 34-02: Revenue query covers ALL orders regardless of status (D-01) — no WHERE o.status filter in $queryRaw
+- Phase 34: priceSnapshot is kopiyky — analytics converts via kopiykyToRevenueUah before formatRevenue (D-02)
+- Phase 34: client chart components import @/lib/admin/analytics only (never admin-analytics.service — Prisma bundle leak)
 
 ### Pending Todos
 

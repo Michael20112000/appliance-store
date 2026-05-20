@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { Eye, Package, PackageX, Plus, ShoppingBag } from "lucide-react";
+import { AnalyticsDashboardPreview } from "@/components/admin/analytics-dashboard-preview";
 import { StatCard } from "@/components/admin/stat-card";
 import { AdminRecentOrdersTable } from "@/components/admin/admin-recent-orders-table";
 import { Button } from "@/components/ui/button";
+import { getDashboardAnalyticsPreview } from "@/server/services/admin-analytics.service";
 import { getAdminDashboardStats } from "@/server/services/admin-order.service";
 
 export default async function AdminDashboardPage() {
-  const stats = await getAdminDashboardStats();
+  const [stats, analyticsPreview] = await Promise.all([
+    getAdminDashboardStats(),
+    getDashboardAnalyticsPreview(),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -46,6 +51,13 @@ export default async function AdminDashboardPage() {
           Переглянути замовлення
         </Button>
       </div>
+
+      <AnalyticsDashboardPreview
+        ordersByDay={analyticsPreview.ordersByDay}
+        revenueByDay={analyticsPreview.revenueByDay}
+        totalOrders={analyticsPreview.kpi.totalOrders}
+        totalRevenue={analyticsPreview.kpi.totalRevenue}
+      />
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Останні замовлення</h2>

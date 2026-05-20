@@ -8,8 +8,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import type { DayPoint } from "@/server/services/admin-analytics.service";
-import { formatRevenue } from "@/server/services/admin-analytics.service";
+import type { DayPoint } from "@/lib/admin/analytics";
+import { formatRevenue } from "@/lib/admin/analytics";
 
 type AnalyticsChartsProps = {
   ordersByDay: DayPoint[];

@@ -3,7 +3,7 @@ phase: 34
 slug: admin-analytics
 status: draft
 nyquist_compliant: false
-wave_0_complete: false
+wave_0_complete: true
 created: 2026-05-20
 ---
 
@@ -38,10 +38,10 @@ created: 2026-05-20
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 34-01-01 | 01 | 0 | AN-01 | — | N/A | unit | `npx vitest run src/server/services/admin-analytics.service.test.ts` | ❌ W0 | ⬜ pending |
-| 34-02-01 | 02 | 1 | AN-01 | — | N/A | unit | `npx vitest run src/server/services/admin-analytics.service.test.ts` | ❌ W0 | ⬜ pending |
-| 34-03-01 | 03 | 2 | AN-01 | T-34-01 | /admin/analityka protected by requireAdmin() | manual | admin login → navigate to /admin/analityka | — | ⬜ pending |
-| 34-04-01 | 04 | 3 | AN-02 | — | N/A | manual | admin login → check /admin, verify preview before «Останні замовлення» | — | ⬜ pending |
+| 34-01-01 | 01 | 0 | AN-01 | — | N/A | unit | `npx vitest run src/server/services/admin-analytics.service.test.ts` | ✅ | ✅ green |
+| 34-02-01 | 02 | 1 | AN-01 | — | N/A | unit | `npx vitest run src/server/services/admin-analytics.service.test.ts` | ✅ | ✅ green |
+| 34-03-01 | 03 | 2 | AN-01 | T-34-01 | /admin/analityka protected by requireAdmin() | manual | admin login → navigate to /admin/analityka | — | ✅ green |
+| 34-04-01 | 04 | 3 | AN-02 | — | N/A | manual | admin login → check /admin, verify preview before «Останні замовлення» | — | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -49,7 +49,7 @@ created: 2026-05-20
 
 ## Wave 0 Requirements
 
-- [ ] `src/server/services/admin-analytics.service.test.ts` — stubs covering `getAnalyticsData` shape, BigInt conversion, zero-fill (`fillDays`), KPI totals
+- [x] `src/server/services/admin-analytics.service.test.ts` — stubs covering `getAnalyticsData` shape, BigInt conversion, zero-fill (`fillDays`), KPI totals
 - [ ] No new vitest config needed — existing `vitest.config.ts` covers `src/**/*.test.ts`
 
 *Existing vitest infrastructure covers all phase requirements. Only the test file needs to be created in Wave 0.*

@@ -4,8 +4,8 @@ import { Line, LineChart } from "recharts";
 import Link from "next/link";
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-import type { DayPoint } from "@/server/services/admin-analytics.service";
-import { formatRevenue } from "@/server/services/admin-analytics.service";
+import type { DayPoint } from "@/lib/admin/analytics";
+import { formatRevenue } from "@/lib/admin/analytics";
 
 type AnalyticsDashboardPreviewProps = {
   ordersByDay: DayPoint[];

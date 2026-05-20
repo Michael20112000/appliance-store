@@ -33,7 +33,7 @@ describe("getAnalyticsData", () => {
     const result = await getAnalyticsData(30);
 
     expect(result.kpi.totalOrders).toBe(8);
-    expect(result.kpi.totalRevenue).toBe(10000);
+    expect(result.kpi.totalRevenue).toBe(100);
     expect(result.kpi.totalCallbacks).toBe(2);
   });
 

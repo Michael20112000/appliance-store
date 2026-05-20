@@ -174,7 +174,7 @@ Plans:
 2. Dashboard прев'ю — ≤2 графіки перед «Останні замовлення»
 3. Дані з існуючих Prisma таблиць (без фейкових mock)
 
-**Plans:** 4/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 
@@ -193,7 +193,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 34-05-PLAN.md — /admin/analityka page + dashboard preview wiring + human verify (AN-01, AN-02)
+- [x] 34-05-PLAN.md — /admin/analityka page + dashboard preview wiring + human verify (AN-01, AN-02)
 
 ---
 
