@@ -25,24 +25,24 @@
 3. На картках категорій видно count; порожні категорії не показуються
 4. Select сортування на `/katalog` показує «Найновіші», «Дорожче», «Дешевше»
 
-**Plans:** 4 plans
+**Plans:** 4/4 plans complete
 
 Plans:
 **Wave 1**
 
-- [ ] 28-01-PLAN.md — Shared StorefrontAuthLinks + drawer session auth (NAV-01)
+- [x] 28-01-PLAN.md — Shared StorefrontAuthLinks + drawer session auth (NAV-01)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 28-02-PLAN.md — Storefront-scoped smooth scroll CSS for #kategorii (HOME-04)
+- [x] 28-02-PLAN.md — Storefront-scoped smooth scroll CSS for #kategorii (HOME-04)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 28-03-PLAN.md — Homepage category count badges + formatCategoryCountBadge (HOME-05)
+- [x] 28-03-PLAN.md — Homepage category count badges + formatCategoryCountBadge (HOME-05)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 28-04-PLAN.md — Catalog sort labels map + toolbar dedupe (CAT-02)
+- [x] 28-04-PLAN.md — Catalog sort labels map + toolbar dedupe (CAT-02)
 
 ---
 
