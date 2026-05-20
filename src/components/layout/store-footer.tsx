@@ -21,7 +21,20 @@ export async function StoreFooter() {
     <footer className="border-t border-border bg-muted/40">
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="grid gap-8 md:grid-cols-2 md:gap-12">
-          <div className="order-1 space-y-6 text-sm md:order-2">
+          {mapEmbedSrc ? (
+            <div className="order-3 md:order-1">
+              <iframe
+                title="Карта магазину"
+                src={mapEmbedSrc}
+                loading="lazy"
+                className="h-40 w-full rounded-md border border-border md:h-auto md:min-h-[280px]"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          ) : null}
+
+          <div className="order-1 flex flex-col gap-8 md:order-2 md:gap-6">
+            <div className="space-y-6 text-sm">
             {contacts.phones.length > 0 ? (
               <ul className="space-y-2">
                 {contacts.phones.map((phone) => (
@@ -83,23 +96,10 @@ export async function StoreFooter() {
                 ))}
               </ul>
             ) : null}
-          </div>
+            </div>
 
-          <div className="order-2 md:order-2">
             <CallbackRequestForm />
           </div>
-
-          {mapEmbedSrc ? (
-            <div className="order-3 md:order-1">
-              <iframe
-                title="Карта магазину"
-                src={mapEmbedSrc}
-                loading="lazy"
-                className="h-40 w-full rounded-md border border-border md:h-auto md:min-h-[280px]"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          ) : null}
         </div>
 
         <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground md:text-center">
