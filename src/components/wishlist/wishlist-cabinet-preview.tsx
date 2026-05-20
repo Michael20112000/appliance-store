@@ -19,6 +19,7 @@ function toPublicProductCard(line: WishlistLineDto): PublicProductCard {
     price: line.priceKopiyky,
     condition: line.condition,
     category: { name: "", slug: "" },
+    previewImages: line.image ? [line.image] : [],
     image: line.image,
   };
 }

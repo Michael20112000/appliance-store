@@ -63,6 +63,7 @@ describe("productMetadata", () => {
     price: 1250000,
     condition: "GOOD" as const,
     category: { name: "Пральні машини", slug: "pralni-mashyny" },
+    previewImages: [],
     image: null,
     description: "A".repeat(200),
     images: [

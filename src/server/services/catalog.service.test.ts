@@ -6,6 +6,7 @@ import {
   getCatalogPriceBounds,
   getDistinctBrands,
   listCategoriesWithProductCounts,
+  mapToCard,
 } from "./catalog.service";
 
 vi.mock("@/lib/db", () => ({
@@ -21,6 +22,43 @@ vi.mock("@/lib/db", () => ({
     },
   },
 }));
+
+describe("mapToCard", () => {
+  const baseProduct = {
+    id: "p1",
+    title: "Пральна машина",
+    slug: "pralna",
+    brand: "Samsung",
+    price: 125_000,
+    condition: "GOOD" as const,
+    category: { name: "Пральні", slug: "pralni" },
+    images: [] as Array<{ cloudinaryPublicId: string; alt: string | null }>,
+  };
+
+  it("maps previewImages from product images with length at most 5", () => {
+    const images = Array.from({ length: 5 }, (_, i) => ({
+      cloudinaryPublicId: `products/preview-${i}`,
+      alt: i === 0 ? "Головне фото" : null,
+    }));
+
+    const card = mapToCard({ ...baseProduct, images });
+
+    expect(card.previewImages).toHaveLength(5);
+    expect(card.previewImages.length).toBeLessThanOrEqual(5);
+    expect(card.previewImages[0]).toEqual({
+      cloudinaryPublicId: "products/preview-0",
+      alt: "Головне фото",
+    });
+    expect(card.image).toEqual(card.previewImages[0]);
+  });
+
+  it("returns empty previewImages and null image when product has no images", () => {
+    const card = mapToCard(baseProduct);
+
+    expect(card.previewImages).toEqual([]);
+    expect(card.image).toBeNull();
+  });
+});
 
 describe("buildPublicProductWhere", () => {
   it("always filters in-stock products", () => {
