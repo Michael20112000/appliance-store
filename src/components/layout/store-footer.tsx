@@ -102,7 +102,7 @@ export async function StoreFooter() {
           ) : null}
         </div>
 
-        <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground">
+        <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground md:text-center">
           © {year} Техніка б/у Львів
         </p>
       </div>
