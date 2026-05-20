@@ -16,7 +16,7 @@
 
 **Latest (v1.5):** Delivery-aware order status; admin category/product polish; homepage hides empty categories; footer + mobile contacts/callback from DB; UAT-01 closed (purge + v1.5 smoke).
 
-**Active milestone:** v2.0 Polish, UX & Admin analytics — Phase 30 complete (PDP similar products + footer layout, 2026-05-20)
+**Active milestone:** v2.0 Polish, UX & Admin analytics — Phase 32 complete (admin dashboard buttons + stat card icons, 2026-05-20)
 
 **Operator:** `BUGFIX-WORKFLOW.md` intake; optional `db:purge` + seed.
 
@@ -107,4 +107,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 - Admin: dashboard polish, analytics + прев’ю, «Дзвінки», DnD категорій, кольори статусів, bugfix ASL-20260519-0013, sidebar badges
 
 ---
-*Last updated: 2026-05-20 — Phase 29 complete (v2.0)*
+*Last updated: 2026-05-20 — Phase 32 complete (v2.0)*
