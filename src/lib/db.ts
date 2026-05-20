@@ -8,8 +8,14 @@ const globalForPrisma = globalThis as unknown as {
 /** Delegates added in phase 26 — stale dev singletons omit them after `prisma generate`. */
 const REQUIRED_DELEGATES = ["storePhone", "storeEmail", "storeAddress"] as const;
 
+/** Phase 35 CallbackRequest admin fields — bump marker when schema changes again. */
+const CALLBACK_ADMIN_SCHEMA_MARKER = "__callbackAdminFields_v35" as const;
+
 function isPrismaClientCurrent(client: PrismaClient): boolean {
-  return REQUIRED_DELEGATES.every((key) => key in client);
+  if (!REQUIRED_DELEGATES.every((key) => key in client)) return false;
+  return (
+    (client as Record<string, unknown>)[CALLBACK_ADMIN_SCHEMA_MARKER] === true
+  );
 }
 
 function createPrismaClient() {
@@ -27,6 +33,7 @@ function getPrismaClient(): PrismaClient {
     return existing;
   }
   const client = createPrismaClient();
+  (client as Record<string, unknown>)[CALLBACK_ADMIN_SCHEMA_MARKER] = true;
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = client;
   }
