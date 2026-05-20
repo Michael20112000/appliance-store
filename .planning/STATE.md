@@ -4,8 +4,8 @@ milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
 status: executing
 stopped_at: Phase 29 context gathered
-last_updated: "2026-05-20T11:30:34.425Z"
-last_activity: 2026-05-20 -- Phase 29 planning complete
+last_updated: "2026-05-20T11:31:57.396Z"
+last_activity: 2026-05-20 -- Phase 29 execution started
 progress:
   total_phases: 9
   completed_phases: 1
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-20)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 29 — product cards & pdp core ux
+**Current focus:** Phase 29 — product-cards-pdp-core-ux
 
 ## Current Position
 
-Phase: 29
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-05-20 -- Phase 29 planning complete
+Phase: 29 (product-cards-pdp-core-ux) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 29
+Last activity: 2026-05-20 -- Phase 29 execution started
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 

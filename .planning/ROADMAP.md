@@ -58,16 +58,16 @@ Plans:
 2. Lightbox swipe без jerk після release
 3. «Вже в кошику» + trash icon; FAB кошика над чатом; без трьох кнопок з disabled
 
-**Plans:** 3 plans in 2 waves
+**Plans:** 3/3 plans complete
 
 **Wave 1** *(parallel)*
 
-- [ ] 29-01-PLAN.md — Catalog previewImages + card hover crossfade (CARD-01)
-- [ ] 29-02-PLAN.md — Lightbox Embla snap tuning (PDP-05)
+- [x] 29-01-PLAN.md — Catalog previewImages + card hover crossfade (CARD-01)
+- [x] 29-02-PLAN.md — Lightbox Embla snap tuning (PDP-05)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 29-03-PLAN.md — PDP in-cart UI + PdpCartFab above chat (PDP-06)
+- [x] 29-03-PLAN.md — PDP in-cart UI + PdpCartFab above chat (PDP-06)
 
 ---
 
