@@ -22,9 +22,9 @@ decisions:
   - "startTransition wraps async reorderCategoriesAction — React 19 pattern, matches order-list-status-select.tsx"
   - "Revert uses captured localCategories closure value on error — simple and correct per plan spec"
 metrics:
-  duration: 2min
-  completed: "2026-05-20T14:57:50Z"
-  tasks_completed: 1
+  duration: 5min
+  completed: "2026-05-20T15:10:00Z"
+  tasks_completed: 2
   files_changed: 1
 ---
 
@@ -37,10 +37,14 @@ metrics:
 | Task | Name | Commit | Files |
 |------|------|--------|-------|
 | 1 | Rewrite AdminCategoriesTable with DnD + link styling | d6a597c | src/components/admin/admin-categories-table.tsx |
+| 2 | Verify DnD and link styling in browser | human-approved | — |
 
-## Task 2 — Checkpoint (Awaiting Human Verification)
+## Task 2 — Human Verification: APPROVED
 
-Task 2 is `type="checkpoint:human-verify"` — paused pending browser verification of DnD behavior and link styling at `/admin/kategorii`.
+User verified in browser at `/admin/kategorii`:
+
+- ADM-CAT-05: «Переглянути (N)» displays in primary color; underline appears on hover; clicking navigates to `/admin/tovary?categoryId=...`
+- ADM-CAT-06: Drag handle (GripVertical) present as first column; «Порядок» column absent; dragging a row reorders it optimistically; hard refresh (Cmd+Shift+R) confirms the new order persists from DB; row-click navigation to `/admin/kategorii/:id` intact
 
 ## Implementation Details
 
@@ -97,3 +101,6 @@ No new network endpoints, auth paths, file access patterns, or schema changes. T
 - [x] All six acceptance criteria grep checks pass
 - [x] TypeScript — no errors in the modified file
 - [x] 279 tests pass; 2 pre-existing seed failures unchanged
+- [x] Task 2 human-verify checkpoint: APPROVED by user in browser
+- [x] ADM-CAT-05 confirmed: Переглянути link styled (primary color, hover underline, correct navigation)
+- [x] ADM-CAT-06 confirmed: DnD reorder persists to DB and survives page refresh; row-click navigation intact
