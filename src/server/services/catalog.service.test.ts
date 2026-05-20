@@ -6,7 +6,9 @@ import {
   getCatalogPriceBounds,
   getDistinctBrands,
   listCategoriesWithProductCounts,
+  listSimilarPublicProducts,
   mapToCard,
+  similarPriceBandKopiyky,
 } from "./catalog.service";
 
 vi.mock("@/lib/db", () => ({
@@ -31,7 +33,7 @@ describe("mapToCard", () => {
     brand: "Samsung",
     price: 125_000,
     condition: "GOOD" as const,
-    category: { name: "Пральні", slug: "pralni" },
+    category: { id: "cat-pralni", name: "Пральні", slug: "pralni" },
     images: [] as Array<{ cloudinaryPublicId: string; alt: string | null }>,
   };
 
@@ -214,6 +216,111 @@ describe("listCategoriesWithProductCounts", () => {
         productCount: 0,
       },
     ]);
+  });
+});
+
+describe("similarPriceBandKopiyky", () => {
+  it("returns ±20% band with floor min and ceil max", () => {
+    expect(similarPriceBandKopiyky(100_00, 20)).toEqual({
+      minPrice: 80_00,
+      maxPrice: 120_00,
+    });
+  });
+
+  it("returns ±40% band with floor min and ceil max", () => {
+    expect(similarPriceBandKopiyky(100_00, 40)).toEqual({
+      minPrice: 60_00,
+      maxPrice: 140_00,
+    });
+  });
+});
+
+describe("listSimilarPublicProducts", () => {
+  const categoryId = "cat-phones";
+  const productId = "product-current";
+  const price = 100_00;
+
+  const row = (id: string) => ({
+    id,
+    title: `Product ${id}`,
+    slug: `slug-${id}`,
+    brand: "Samsung",
+    price: 100_00,
+    condition: "GOOD" as const,
+    category: { id: categoryId, name: "Телефони", slug: "phones" },
+    images: [] as Array<{ cloudinaryPublicId: string; alt: string | null }>,
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(Math, "random").mockReturnValue(0);
+  });
+
+  it("excludes current product on each tier query", async () => {
+    vi.mocked(prisma.product.findMany).mockResolvedValue([] as never);
+
+    await listSimilarPublicProducts({ productId, categoryId, price, limit: 4 });
+
+    for (const call of vi.mocked(prisma.product.findMany).mock.calls) {
+      expect(call[0]?.where).toEqual(
+        expect.objectContaining({
+          id: { not: productId },
+          categoryId,
+        }),
+      );
+    }
+  });
+
+  it("applies price gte/lte on band tiers", async () => {
+    vi.mocked(prisma.product.findMany).mockResolvedValue([] as never);
+
+    await listSimilarPublicProducts({ productId, categoryId, price, limit: 4 });
+
+    const firstCall = vi.mocked(prisma.product.findMany).mock.calls[0]?.[0];
+    expect(firstCall?.where).toEqual(
+      expect.objectContaining({
+        price: { gte: 80_00, lte: 120_00 },
+      }),
+    );
+
+    const secondCall = vi.mocked(prisma.product.findMany).mock.calls[1]?.[0];
+    expect(secondCall?.where).toEqual(
+      expect.objectContaining({
+        price: { gte: 60_00, lte: 140_00 },
+      }),
+    );
+  });
+
+  it("merges tier pools and returns up to four excluding current product", async () => {
+    vi.mocked(prisma.product.findMany)
+      .mockResolvedValueOnce([row("peer-a")] as never)
+      .mockResolvedValueOnce([row("peer-b"), row("peer-c")] as never)
+      .mockResolvedValueOnce([] as never);
+
+    const result = await listSimilarPublicProducts({
+      productId,
+      categoryId,
+      price,
+      limit: 4,
+    });
+
+    expect(result).toHaveLength(3);
+    expect(result.map((p) => p.id)).not.toContain(productId);
+    expect(prisma.product.findMany).toHaveBeenCalledTimes(3);
+  });
+
+  it("returns empty array when all tiers return no rows", async () => {
+    vi.mocked(prisma.product.findMany).mockResolvedValue([] as never);
+
+    const result = await listSimilarPublicProducts({
+      productId,
+      categoryId,
+      price,
+      limit: 4,
+    });
+
+    expect(result).toEqual([]);
+    expect(prisma.product.findMany).toHaveBeenCalledTimes(3);
   });
 });
 
