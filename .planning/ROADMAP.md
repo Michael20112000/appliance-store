@@ -174,7 +174,7 @@ Plans:
 2. Dashboard прев'ю — ≤2 графіки перед «Останні замовлення»
 3. Дані з існуючих Prisma таблиць (без фейкових mock)
 
-**Plans:** 3/5 plans executed
+**Plans:** 4/5 plans executed
 
 Plans:
 
@@ -189,7 +189,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 34-04-PLAN.md — AnalyticsCharts + AnalyticsDashboardPreview client components (AN-01, AN-02)
+- [x] 34-04-PLAN.md — AnalyticsCharts + AnalyticsDashboardPreview client components (AN-01, AN-02)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
