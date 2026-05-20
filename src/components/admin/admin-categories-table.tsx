@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import type { MouseEvent } from "react";
 import {
   adminClickableRowClassName,
   getAdminClickableRowProps,
@@ -48,7 +47,7 @@ function SortableRow({
   onNavigate,
 }: {
   category: AdminCategoryRow;
-  stopRowNav: (event: MouseEvent) => void;
+  stopRowNav: (event: React.SyntheticEvent) => void;
   onNavigate: (href: string) => void;
 }) {
   const {
@@ -109,7 +108,7 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const stopRowNav = (event: MouseEvent) => event.stopPropagation();
+  const stopRowNav = (event: React.SyntheticEvent) => event.stopPropagation();
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
