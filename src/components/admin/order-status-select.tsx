@@ -4,8 +4,11 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { OrderStatus } from "@/generated/prisma/client";
 import { toast } from "sonner";
+import { showOrderStatusErrorToast } from "@/lib/order/admin-status-errors";
 import { updateOrderStatusAction } from "@/server/actions/admin/order.actions";
 import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
+import { getOrderStatusAccentClass } from "@/lib/order/status-styles";
+import { cn } from "@/lib/utils";
 import type { AdminOrderDetailDto } from "@/server/services/admin-order.service";
 import {
   AlertDialog,
@@ -25,13 +28,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-
-const errorMessages: Record<string, string> = {
-  INVALID_STATUS_TRANSITION: "Недопустима зміна статусу для цього замовлення.",
-  INSUFFICIENT_STOCK: "Недостатньо товару на складі для підтвердження.",
-  ORDER_NOT_FOUND: "Замовлення не знайдено.",
-  UNKNOWN: "Не вдалося оновити статус. Спробуйте ще раз.",
-};
 
 type OrderStatusSelectProps = {
   order: Pick<AdminOrderDetailDto, "id" | "orderNumber" | "status">;
@@ -66,7 +62,7 @@ export function OrderStatusSelect({
     });
 
     if (!result.ok) {
-      toast.error(errorMessages[result.error] ?? errorMessages.UNKNOWN);
+      showOrderStatusErrorToast(result.error);
       return;
     }
 
@@ -98,7 +94,13 @@ export function OrderStatusSelect({
           onValueChange={handleSelect}
           disabled={pending}
         >
-          <SelectTrigger id="order-status" className="w-full max-w-xs">
+          <SelectTrigger
+            id="order-status"
+            className={cn(
+              "min-w-[14rem] w-full max-w-md whitespace-nowrap",
+              getOrderStatusAccentClass(order.status),
+            )}
+          >
             <SelectValue placeholder="Оберіть статус">
               {ORDER_STATUS_LABELS_UA[order.status]}
             </SelectValue>

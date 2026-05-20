@@ -4,7 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition, type MouseEvent } from "react";
 import type { DeliveryType, OrderStatus } from "@/generated/prisma/client";
 import { toast } from "sonner";
+import { showOrderStatusErrorToast } from "@/lib/order/admin-status-errors";
 import { ORDER_STATUS_LABELS_UA } from "@/lib/order/status-labels";
+import { getOrderStatusAccentClass } from "@/lib/order/status-styles";
+import { cn } from "@/lib/utils";
 import { updateOrderStatusAction } from "@/server/actions/admin/order.actions";
 import { getAllowedNextStatusesForDelivery } from "@/lib/order/status-transitions";
 import {
@@ -25,11 +28,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const errorMessages: Record<string, string> = {
-  INVALID_STATUS_TRANSITION: "Недопустима зміна статусу для цього замовлення.",
-  ORDER_NOT_FOUND: "Замовлення не знайдено.",
-  UNKNOWN: "Не вдалося оновити статус. Спробуйте ще раз.",
-};
+const listTriggerClassName =
+  "min-w-[14rem] w-auto max-w-[18rem] whitespace-nowrap";
 
 type OrderListStatusSelectProps = {
   orderId: string;
@@ -59,7 +59,7 @@ export function OrderListStatusSelect({
       <Select value={status} disabled>
         <SelectTrigger
           size="sm"
-          className="w-[11rem]"
+          className={cn(listTriggerClassName, getOrderStatusAccentClass(status))}
           onClick={stopRowNav}
           onPointerDown={stopRowNav}
         >
@@ -76,7 +76,7 @@ export function OrderListStatusSelect({
     });
 
     if (!result.ok) {
-      toast.error(errorMessages[result.error] ?? errorMessages.UNKNOWN);
+      showOrderStatusErrorToast(result.error);
       return;
     }
 
@@ -104,7 +104,7 @@ export function OrderListStatusSelect({
       <Select value={status} onValueChange={handleSelect} disabled={pending}>
         <SelectTrigger
           size="sm"
-          className="w-[11rem]"
+          className={cn(listTriggerClassName, getOrderStatusAccentClass(status))}
           onClick={stopRowNav}
           onPointerDown={stopRowNav}
         >
