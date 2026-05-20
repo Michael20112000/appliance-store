@@ -5,6 +5,7 @@ import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 import { PdpCartFab } from "@/components/cart/pdp-cart-fab";
 import { OpenChatButton } from "@/components/chat/open-chat-button";
 import { JsonLd } from "@/components/catalog/json-ld";
+import { SimilarProductsSection } from "@/components/catalog/similar-products-section";
 import { auth } from "@/lib/auth";
 import { ConditionBadge } from "@/components/catalog/condition-badge";
 import { PriceDisplay } from "@/components/catalog/price-display";
@@ -20,7 +21,11 @@ import {
 } from "@/server/services/cart.service";
 import { isProductInWishlist } from "@/server/services/wishlist.service";
 import { WishlistToggleButton } from "@/components/wishlist/wishlist-toggle-button";
-import { getPublicProductBySlug } from "@/server/services/catalog.service";
+import {
+  getPublicProductBySlug,
+  listSimilarPublicProducts,
+} from "@/server/services/catalog.service";
+import { getWishlistedProductIds } from "@/server/services/wishlist.service";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -52,10 +57,20 @@ export default async function ProductDetailPage({ params }: PageProps) {
     session?.user?.id != null
       ? await isProductInWishlist(session.user.id, product.id)
       : false;
-  const cartCount =
+  const [similar, wishlistedProductIds, cartCount] = await Promise.all([
+    listSimilarPublicProducts({
+      productId: product.id,
+      categoryId: product.category.id,
+      price: product.price,
+      limit: 4,
+    }),
+    session?.user
+      ? getWishlistedProductIds(session.user.id).then((ids) => new Set(ids))
+      : Promise.resolve(undefined),
     session?.user?.id != null
-      ? await getCartItemCount(session.user.id)
-      : 0;
+      ? getCartItemCount(session.user.id)
+      : Promise.resolve(0),
+  ]);
 
   return (
     <>
@@ -134,6 +149,12 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </Link>
         </div>
       </div>
+
+      <SimilarProductsSection
+        products={similar}
+        hasSession={Boolean(session?.user)}
+        wishlistedProductIds={wishlistedProductIds}
+      />
     </div>
     <PdpCartFab
       initialCount={cartCount}

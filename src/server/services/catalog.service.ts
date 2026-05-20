@@ -11,7 +11,7 @@ import { catalogFiltersSchema, listProductsSchema } from "../validators/product"
 const DEFAULT_PAGE_SIZE = 24;
 
 const cardInclude = {
-  category: { select: { name: true, slug: true } },
+  category: { select: { id: true, name: true, slug: true } },
   images: {
     orderBy: { sortOrder: "asc" as const },
     take: 5,
@@ -141,7 +141,7 @@ export async function getPublicProductBySlug(
   const product = await prisma.product.findFirst({
     where: { slug, quantity: { gte: 1 } },
     include: {
-      category: { select: { name: true, slug: true } },
+      category: { select: { id: true, name: true, slug: true } },
       images: {
         orderBy: { sortOrder: "asc" },
         select: {
@@ -255,6 +255,122 @@ export async function getCatalogPriceBounds(
     minUah: Math.floor(minKop / 100),
     maxUah: Math.ceil(maxKop / 100),
   };
+}
+
+export function similarPriceBandKopiyky(
+  priceKop: number,
+  band: 20 | 40,
+): { minPrice: number; maxPrice: number } {
+  if (band === 20) {
+    return {
+      minPrice: Math.floor(priceKop * 0.8),
+      maxPrice: Math.ceil(priceKop * 1.2),
+    };
+  }
+  return {
+    minPrice: Math.floor(priceKop * 0.6),
+    maxPrice: Math.ceil(priceKop * 1.4),
+  };
+}
+
+type ProductWithCardInclude = Prisma.ProductGetPayload<{
+  include: typeof cardInclude;
+}>;
+
+function fisherYatesShuffle<T>(items: T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function mergeUniqueProducts(
+  existing: ProductWithCardInclude[],
+  incoming: ProductWithCardInclude[],
+): ProductWithCardInclude[] {
+  const seen = new Set(existing.map((p) => p.id));
+  const merged = [...existing];
+  for (const product of incoming) {
+    if (!seen.has(product.id)) {
+      seen.add(product.id);
+      merged.push(product);
+    }
+  }
+  return merged;
+}
+
+async function fetchSimilarProductPool(options: {
+  categoryId: string;
+  productId: string;
+  minPrice?: number;
+  maxPrice?: number;
+  take?: number;
+}): Promise<ProductWithCardInclude[]> {
+  const where: Prisma.ProductWhereInput = {
+    ...buildPublicProductWhere({
+      categoryId: options.categoryId,
+      ...(options.minPrice != null || options.maxPrice != null
+        ? {
+            minPrice: options.minPrice,
+            maxPrice: options.maxPrice,
+          }
+        : {}),
+    }),
+    id: { not: options.productId },
+  };
+
+  return prisma.product.findMany({
+    where,
+    include: cardInclude,
+    ...(options.take != null ? { take: options.take } : {}),
+  });
+}
+
+export async function listSimilarPublicProducts(input: {
+  productId: string;
+  categoryId: string;
+  price: number;
+  limit?: number;
+}): Promise<PublicProductCard[]> {
+  const limit = input.limit ?? 4;
+  const band20 = similarPriceBandKopiyky(input.price, 20);
+
+  let pool = await fetchSimilarProductPool({
+    categoryId: input.categoryId,
+    productId: input.productId,
+    minPrice: band20.minPrice,
+    maxPrice: band20.maxPrice,
+  });
+
+  if (pool.length < limit) {
+    const band40 = similarPriceBandKopiyky(input.price, 40);
+    const pool40 = await fetchSimilarProductPool({
+      categoryId: input.categoryId,
+      productId: input.productId,
+      minPrice: band40.minPrice,
+      maxPrice: band40.maxPrice,
+    });
+    pool = mergeUniqueProducts(pool, pool40);
+  }
+
+  if (pool.length < limit) {
+    const poolCategory = await fetchSimilarProductPool({
+      categoryId: input.categoryId,
+      productId: input.productId,
+      take: 50,
+    });
+    pool = mergeUniqueProducts(pool, poolCategory);
+  }
+
+  if (pool.length === 0) {
+    return [];
+  }
+
+  return fisherYatesShuffle(pool)
+    .slice(0, limit)
+    .map(mapToCard);
 }
 
 export async function listPublicProductSlugsForSitemap(): Promise<string[]> {
