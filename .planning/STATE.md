@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
 status: executing
-stopped_at: Phase 33 context gathered
-last_updated: "2026-05-20T14:46:32.197Z"
+stopped_at: Phase 33 Plan 04 complete — all requirements ADM-CAT-05 ADM-CAT-06 met
+last_updated: "2026-05-20T15:10:00Z"
 last_activity: 2026-05-20
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 15
-  completed_plans: 12
-  percent: 56
+  completed_plans: 13
+  percent: 60
 ---
 
 # Project State
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-05-20)
 
 ## Current Position
 
-Phase: 33 (admin-categories-dnd-links) — EXECUTING
-Plan: 2 of 4
-Status: Ready to execute
+Phase: 33 (admin-categories-dnd-links) — COMPLETE
+Plan: 4 of 4 (all complete)
+Status: Phase complete
 Last activity: 2026-05-20
 
 ### Shipped on `main` (checkpoint 2026-05-19)
@@ -50,6 +50,9 @@ Last activity: 2026-05-20
 - Bugfixes: **intake → plan → execute** — see `.planning/BUGFIX-WORKFLOW.md`
 - Guest checkout: localStorage cart + `guestAccessToken` (phase 20)
 - Do **not** merge `git stash@{0}` (catalog pagination WIP) without a dedicated plan
+- Phase 33: SortableRow sub-component extracted above AdminCategoriesTable for clean useSortable usage per row
+- Phase 33: DnD listeners on GripVertical icon only (not tr) — prevents click-vs-drag conflict
+- Phase 33: No DragOverlay used — opacity:0.5 on isDragging row sufficient for low-row admin table
 
 ### Pending Todos
 
@@ -85,9 +88,9 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 
 ## Session Continuity
 
-Last session: 2026-05-20T14:46:32.186Z
-Stopped at: Phase 33 context gathered
-Resume: `/gsd-new-milestone`
+Last session: 2026-05-20T15:10:00Z
+Stopped at: Phase 33 Plan 04 complete — ADM-CAT-05 and ADM-CAT-06 delivered
+Resume: `/gsd-plan-phase 34` (Phase 34: Admin analytics) or `/gsd-new-milestone` if milestone review needed
 
 ## Operator Next Steps
 

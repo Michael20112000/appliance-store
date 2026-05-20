@@ -140,7 +140,7 @@ Plans:
 2. Drag & drop зберігає порядок у БД; refresh зберігає order
 3. Vitest або manual checklist для reorder API
 
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 
@@ -158,7 +158,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 33-04-PLAN.md — AdminCategoriesTable DnD rewrite + Переглянути link styling + human verify (ADM-CAT-05, ADM-CAT-06)
+- [x] 33-04-PLAN.md — AdminCategoriesTable DnD rewrite + Переглянути link styling + human verify (ADM-CAT-05, ADM-CAT-06)
 
 ---
 
