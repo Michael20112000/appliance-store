@@ -501,17 +501,17 @@ Note: `@dnd-kit/utilities` is a peer dependency of `@dnd-kit/sortable` and is in
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **DragOverlay vs inline transform for `<tr>`**
    - What we know: `<tr>` elements have limited CSS transform support in some browsers; dnd-kit docs recommend `DragOverlay` for portalled rendering of the dragged item.
    - What's unclear: Whether the visual glitch is noticeable enough in this admin table (low row count, not a storefront UX) to warrant the extra complexity of `DragOverlay`.
-   - Recommendation: Claude's Discretion (delegated by user). Start without `DragOverlay` (simpler code). If visual glitches occur during manual testing, add `DragOverlay` with a cloned row. The planner can make this call.
+   - RESOLVED: Proceed without `DragOverlay` (Claude's Discretion per CONTEXT.md). Simple `opacity: 0.5` on the dragging row is sufficient for a low-row admin table. If visual glitches appear during browser testing, `DragOverlay` can be added as a follow-up. Plans proceed without it.
 
 2. **`@dnd-kit/utilities` install**
    - What we know: `CSS.Transform.toString()` comes from `@dnd-kit/utilities` 3.2.2. It is a peer dep of `@dnd-kit/sortable` and usually installed transitively.
    - What's unclear: Whether `npm install @dnd-kit/core @dnd-kit/sortable` installs utilities transitively or requires explicit install.
-   - Recommendation: Add `@dnd-kit/utilities` to the explicit install command as a precaution: `npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities`.
+   - RESOLVED: Plan 33-01 Task 2 explicitly installs `@dnd-kit/utilities` alongside core and sortable (`npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities`). Transitive install is not relied upon.
 
 ---
 
