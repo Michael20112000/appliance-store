@@ -44,7 +44,10 @@ export async function StoreHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <StoreMobileNav categories={availableCategories} />
+          <StoreMobileNav
+            categories={availableCategories}
+            session={session}
+          />
           <WishlistNavLink
             hasSession={Boolean(session?.user)}
             initialCount={

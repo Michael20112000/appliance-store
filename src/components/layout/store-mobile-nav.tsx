@@ -5,6 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MenuIcon } from "lucide-react";
 import { CallbackRequestForm } from "@/components/layout/callback-request-form";
+import {
+  StorefrontAuthLinks,
+  type StorefrontAuthSession,
+} from "@/components/layout/storefront-auth-links";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -24,8 +28,10 @@ type MobileNavCategory = {
 
 export function StoreMobileNav({
   categories,
+  session,
 }: {
   categories: MobileNavCategory[];
+  session: StorefrontAuthSession;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -68,6 +74,10 @@ export function StoreMobileNav({
         <Separator className="my-6" />
         <div className="px-4">
           <CallbackRequestForm compact idPrefix="drawer" />
+        </div>
+        <Separator className="my-6" />
+        <div className="px-4 pb-4">
+          <StorefrontAuthLinks session={session} />
         </div>
       </SheetContent>
     </Sheet>
