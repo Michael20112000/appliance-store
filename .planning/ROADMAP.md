@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- **v2.0 Polish, UX & Admin analytics** — Phases 28–36 (planning 2026-05-20) — [requirements](REQUIREMENTS.md)
 - ✅ **v1.5 Incremental polish & operator UX** — Phases 22–27 (shipped 2026-05-19) — [archive](milestones/v1.5-ROADMAP.md) · [requirements](milestones/v1.5-REQUIREMENTS.md)
 - ✅ **v1.4 Bugfix stabilization** — Phase 21 (shipped 2026-05-19) — [archive](milestones/v1.4-ROADMAP.md) · [requirements](milestones/v1.4-REQUIREMENTS.md)
 - ✅ **v1.3 Fixes & Admin UX** — Phases 17–20 (shipped 2026-05-19) — [archive](milestones/v1.3-ROADMAP.md) · [requirements](milestones/v1.3-REQUIREMENTS.md)
@@ -11,26 +12,156 @@
 
 ## Phases
 
-<details>
-<summary>✅ v1.5 Incremental polish & operator UX (Phases 22–27) — SHIPPED 2026-05-19</summary>
+### Phase 28: Nav, homepage & catalog labels
 
-- [x] Phase 22: Delivery-aware order status (1/1 plans) — completed 2026-05-19
-- [x] Phase 23: Admin category polish (1/1 plans) — completed 2026-05-19
-- [x] Phase 24: Product edit auto-save UX (1/1 plans) — completed 2026-05-19
-- [x] Phase 25: Homepage empty categories (1/1 plans) — completed 2026-05-19
-- [x] Phase 26: Footer & mobile contact (1/1 plans) — completed 2026-05-19
-- [x] Phase 27: Human UAT closure (3/3 plans) — completed 2026-05-19
+**Goal:** Мобільна навігація повна; головна й каталог зрозуміліші для покупця.
 
-Full phase details: [milestones/v1.5-ROADMAP.md](milestones/v1.5-ROADMAP.md)
+**Requirements:** NAV-01, HOME-04, HOME-05, CAT-02
 
-</details>
+**Success criteria:**
 
-_No active phases. Start the next milestone with `/gsd-new-milestone`._
+1. У mobile drawer під callback є «Увійти» / «Реєстрація» для гостя
+2. Клік `#kategorii` — smooth scroll до блоку категорій
+3. На картках категорій видно count; порожні категорії не показуються
+4. Select сортування на `/katalog` показує «Новіше», «Дорожче», «Дешевше»
+
+**Plans:** 0/0
+
+---
+
+### Phase 29: Product cards & PDP core UX
+
+**Goal:** Картки й PDP відчуваються плавними; кошик на PDP без зайвих кнопок.
+
+**Requirements:** CARD-01, PDP-05, PDP-06
+
+**Success criteria:**
+
+1. Desktop hover на multi-image card — fade кожні ~3 с
+2. Lightbox swipe без jerk після release
+3. «Вже в кошику» + trash icon; FAB кошика над чатом; без трьох кнопок з disabled
+
+**Plans:** 0/0
+
+---
+
+### Phase 30: Similar products & footer layout
+
+**Goal:** PDP допомагає вибору; footer акуратний на desktop.
+
+**Requirements:** PDP-07, FOOT-05
+
+**Success criteria:**
+
+1. Секція «Схожі товари» з тієї ж категорії ±20% ціни, без поточного SKU
+2. Footer: map | contacts+form; © по центру на desktop
+
+**Plans:** 0/0
+
+---
+
+### Phase 31: Order status UX & bugfix
+
+**Goal:** Оператор бачить статуси з першого погляду; критичний bug підтвердження закритий.
+
+**Requirements:** ORD-05, BUG-24
+
+**Success criteria:**
+
+1. Колонка статусу з легким кольоровим акцентом за статусом
+2. Select не обрізає «Підтверджено (поточний)»
+3. ASL-20260519-0013 → CONFIRMED проходить (або задокументована причина + fix)
+4. Vitest на регресію transition/stock
+
+**Plans:** 0/0
+
+---
+
+### Phase 32: Admin dashboard polish
+
+**Goal:** Головна адмінки швидко орієнтує оператора.
+
+**Requirements:** ADM-DASH-03, ADM-DASH-04
+
+**Success criteria:**
+
+1. «Додати товар» — primary blue + Plus; «Переглянути замовлення» — Eye
+2. Три stat-картки з lucide-іконками
+
+**Plans:** 0/0
+
+---
+
+### Phase 33: Admin categories DnD & links
+
+**Goal:** Категорії зручно сортувати й переходити до товарів.
+
+**Requirements:** ADM-CAT-05, ADM-CAT-06
+
+**Success criteria:**
+
+1. «Переглянути (N)» виглядає як link (hover/focus)
+2. Drag & drop зберігає порядок у БД; refresh зберігає order
+3. Vitest або manual checklist для reorder API
+
+**Plans:** 0/0
+
+---
+
+### Phase 34: Admin analytics
+
+**Goal:** Оператор бачить продажі, виручку, дзвінки та тренди.
+
+**Requirements:** AN-01, AN-02
+
+**Success criteria:**
+
+1. `/admin/analityka` — KPI + графіки (замовлення, виручка, callbacks тощо)
+2. Dashboard прев’ю — ≤2 графіки перед «Останні замовлення»
+3. Дані з існуючих Prisma таблиць (без фейкових mock)
+
+**Plans:** 0/0
+
+---
+
+### Phase 35: Callback calls (Дзвінки)
+
+**Goal:** Заявки на дзвінок — окремий робочий простір зі статусами й архівом.
+
+**Requirements:** CALL-01, CALL-02, CALL-03, CALL-04
+
+**Success criteria:**
+
+1. Немає таблиці дзвінків на `/admin/nalashtuvannia`
+2. `/admin/dzvinky` — список, зміна статусу, нотатка, архів
+3. Prisma migration для status/note/archivedAt якщо потрібно
+
+**Plans:** 0/0
+
+---
+
+### Phase 36: Admin sidebar badges
+
+**Goal:** Sidebar показує що потребує уваги оператора.
+
+**Requirements:** ADM-NAV-01
+
+**Success criteria:**
+
+1. Категорії / товари — total count badges
+2. Замовлення — pending/active count (узгоджене правило в UI-SPEC або CONTEXT)
+3. Чати / дзвінки — лише невирішені, не total
+4. Performance: один aggregated query або RSC cache, без N+1 на кожен nav render
+
+**Plans:** 0/0
+
+---
 
 ## Progress
 
 | Milestone | Phases | Plans | Status |
 |-----------|--------|-------|--------|
+| v2.0 Polish, UX & Admin analytics | 9 (28–36) | 0 | Planning |
 | v1.5 Incremental polish | 6 (22–27) | 8 | ✅ Shipped 2026-05-19 |
 | v1.4 Bugfix stabilization | 1 (21) | 1 | ✅ Shipped 2026-05-19 |
 | v1.3 Fixes & Admin UX | 4 (17–20) | 7 | ✅ Shipped 2026-05-19 |
