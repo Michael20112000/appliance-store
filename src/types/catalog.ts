@@ -20,7 +20,7 @@ export type PublicProductCard = {
   brand: string;
   price: number;
   condition: ProductCondition;
-  category: { name: string; slug: string };
+  category: { id: string; name: string; slug: string };
   previewImages: PublicProductCardImage[];
   image: PublicProductCardImage | null;
 };

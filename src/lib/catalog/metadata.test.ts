@@ -62,7 +62,11 @@ describe("productMetadata", () => {
     brand: "Samsung",
     price: 1250000,
     condition: "GOOD" as const,
-    category: { name: "Пральні машини", slug: "pralni-mashyny" },
+    category: {
+      id: "cat-pralni",
+      name: "Пральні машини",
+      slug: "pralni-mashyny",
+    },
     previewImages: [],
     image: null,
     description: "A".repeat(200),
