@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Eye, Plus } from "lucide-react";
 import { StatCard } from "@/components/admin/stat-card";
 import { AdminRecentOrdersTable } from "@/components/admin/admin-recent-orders-table";
 import { Button } from "@/components/ui/button";
@@ -30,14 +31,15 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Button render={<Link href="/admin/tovary/novyi" />} size="sm" variant="outline">
+        <Button render={<Link href="/admin/tovary/novyi" />}>
+          <Plus className="size-4" aria-hidden />
           Додати товар
         </Button>
         <Button
           render={<Link href="/admin/zamovlennia" />}
-          size="sm"
           variant="outline"
         >
+          <Eye className="size-4" aria-hidden />
           Переглянути замовлення
         </Button>
       </div>
