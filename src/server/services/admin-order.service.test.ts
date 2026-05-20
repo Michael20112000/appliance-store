@@ -35,6 +35,12 @@ vi.mock("@/server/services/product-inventory", () => ({
   shouldReserveInventoryOnTransition: vi.fn(() => false),
 }));
 
+import {
+  INSUFFICIENT_STOCK,
+  reserveProductUnitsForOrder,
+  shouldReserveInventoryOnTransition,
+} from "@/server/services/product-inventory";
+
 const sampleOrder = {
   id: "order-1",
   orderNumber: "ASL-20260517-0001",
@@ -298,6 +304,40 @@ describe("updateOrderStatus", () => {
     await expect(
       updateOrderStatus("order-2", "READY_FOR_PICKUP"),
     ).rejects.toThrow(INVALID_STATUS_TRANSITION);
+  });
+
+  it("rejects PENDING→CONFIRMED when reserve fails with INSUFFICIENT_STOCK", async () => {
+    const orderUpdate = vi.fn();
+    vi.mocked(shouldReserveInventoryOnTransition).mockReturnValueOnce(true);
+    vi.mocked(reserveProductUnitsForOrder).mockRejectedValueOnce(
+      new Error(INSUFFICIENT_STOCK),
+    );
+
+    vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
+      const tx = {
+        order: {
+          findUnique: vi.fn().mockResolvedValue({
+            id: "order-pending",
+            orderNumber: "ASL-20260519-0013",
+            status: "PENDING",
+            deliveryType: "PICKUP",
+            items: [{ productId: "prod-1", quantity: 1 }],
+          }),
+          update: orderUpdate,
+        },
+      };
+      return fn(tx as never);
+    });
+
+    await expect(
+      updateOrderStatus("order-pending", "CONFIRMED"),
+    ).rejects.toThrow(INSUFFICIENT_STOCK);
+
+    expect(reserveProductUnitsForOrder).toHaveBeenCalledWith(
+      expect.anything(),
+      [{ productId: "prod-1", quantity: 1 }],
+    );
+    expect(orderUpdate).not.toHaveBeenCalled();
   });
 });
 
