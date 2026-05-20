@@ -209,7 +209,12 @@ Plans:
 2. `/admin/dzvinky` — список, зміна статусу, нотатка, архів
 3. Prisma migration для status/note/archivedAt якщо потрібно
 
-**Plans:** 0/0
+**Plans:** 3 plans
+
+Plans:
+- [ ] 35-01-PLAN.md — Wave 0: Nyquist test stubs (service + validator contracts)
+- [ ] 35-02-PLAN.md — Wave 1: Prisma migration [BLOCKING], service, validators, admin actions
+- [ ] 35-03-PLAN.md — Wave 2: `/admin/dzvinky` UI, nav, remove callback from nalashtuvannia
 
 ---
 
