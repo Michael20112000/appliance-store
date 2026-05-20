@@ -2,12 +2,14 @@ import Link from "next/link";
 import { categoriesWithAvailableProducts } from "@/lib/catalog/categories";
 import { categoryImageAlt } from "@/lib/catalog/category-image-alt";
 import { OptimizedImage } from "@/components/media/optimized-image";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatCategoryCountBadge } from "@/lib/catalog/format";
 import { listCategoriesWithProductCounts } from "@/server/services/catalog.service";
 
 export async function CategoryGrid() {
@@ -46,7 +48,21 @@ export async function CategoryGrid() {
                   )}
                 </div>
                 <CardHeader>
-                  <CardTitle className="text-base">{category.name}</CardTitle>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <CardTitle className="truncate text-base">
+                      {category.name}
+                    </CardTitle>
+                    <Badge
+                      variant="secondary"
+                      className={
+                        category.productCount >= 2
+                          ? "shrink-0 tabular-nums text-muted-foreground"
+                          : "shrink-0 text-muted-foreground"
+                      }
+                    >
+                      {formatCategoryCountBadge(category.productCount)}
+                    </Badge>
+                  </div>
                   <CardDescription>Переглянути</CardDescription>
                 </CardHeader>
               </Card>

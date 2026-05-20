@@ -15,6 +15,11 @@ export function conditionLabelUa(condition: ProductCondition): string {
   return conditionLabels[condition];
 }
 
+export function formatCategoryCountBadge(count: number): string {
+  if (count === 1) return "1 товар";
+  return String(count);
+}
+
 export function pluralResultsUa(count: number): string {
   const mod10 = count % 10;
   const mod100 = count % 100;
