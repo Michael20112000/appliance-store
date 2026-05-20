@@ -84,9 +84,11 @@ export function CatalogToolbar({ total }: CatalogToolbarProps) {
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="novi">Новіші</SelectItem>
-            <SelectItem value="cina-asc">Ціна ↑</SelectItem>
-            <SelectItem value="cina-desc">Ціна ↓</SelectItem>
+            {(["novi", "cina-asc", "cina-desc"] as const).map((value) => (
+              <SelectItem key={value} value={value}>
+                {catalogSortLabel(value)}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

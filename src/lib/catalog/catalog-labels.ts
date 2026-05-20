@@ -3,9 +3,9 @@ export const ALL_BRANDS_VALUE = "__all__";
 const LEGACY_ALL_BRAND_VALUES = new Set(["all", "__all__", ""]);
 
 export const CATALOG_SORT_LABELS = {
-  novi: "Новіші",
-  "cina-asc": "Ціна ↑",
-  "cina-desc": "Ціна ↓",
+  novi: "Найновіші",
+  "cina-asc": "Дешевше",
+  "cina-desc": "Дорожче",
 } as const;
 
 export type CatalogSortValue = keyof typeof CATALOG_SORT_LABELS;

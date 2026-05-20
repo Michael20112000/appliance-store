@@ -14,7 +14,8 @@ describe("catalog-labels", () => {
   });
 
   it("returns Ukrainian sort labels", () => {
-    expect(catalogSortLabel("novi")).toBe("Новіші");
-    expect(catalogSortLabel("cina-asc")).toBe("Ціна ↑");
+    expect(catalogSortLabel("novi")).toBe("Найновіші");
+    expect(catalogSortLabel("cina-asc")).toBe("Дешевше");
+    expect(catalogSortLabel("cina-desc")).toBe("Дорожче");
   });
 });
