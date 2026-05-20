@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, ShoppingCart } from "lucide-react";
+import { Check, ShoppingCart, Trash2 } from "lucide-react";
 import {
   addPendingProduct,
   hasPendingProduct,
@@ -14,8 +13,6 @@ import {
   removeFromCartAction,
 } from "@/server/actions/cart.actions";
 import { Button } from "@/components/ui/button";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 type AddToCartButtonProps = {
   productId: string;
@@ -86,36 +83,28 @@ export function AddToCartButton({
   if (inCart) {
     return (
       <div className="space-y-2">
-        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="secondary"
-            className="min-h-11 w-full sm:w-auto"
+            className="min-h-11 flex-1 sm:flex-none sm:w-auto"
             disabled
-            aria-label={`${productTitle} уже в кошику`}
+            aria-label={`${productTitle} вже в кошику`}
           >
             <Check className="mr-2 size-4" aria-hidden />
-            У кошику
+            Вже в кошику
           </Button>
           <Button
             type="button"
             variant="outline"
-            className="min-h-11 w-full sm:w-auto"
+            size="icon"
+            className="size-11 shrink-0"
             disabled={disabled || isPending}
             onClick={handleRemove}
             aria-label={`Прибрати ${productTitle} з кошика`}
           >
-            {isPending ? "Прибираємо…" : "Прибрати з кошика"}
+            <Trash2 className="size-4" aria-hidden />
           </Button>
-          <Link
-            href="/koszyk"
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "min-h-11 w-full justify-center sm:w-auto",
-            )}
-          >
-            Перейти до кошика
-          </Link>
         </div>
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
       </div>
