@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ConditionBadge } from "@/components/catalog/condition-badge";
+import { ProductCardImageStack } from "@/components/catalog/product-card-image-stack";
 import { PriceDisplay } from "@/components/catalog/price-display";
 import { WishlistToggleButton } from "@/components/wishlist/wishlist-toggle-button";
-import { OptimizedImage } from "@/components/media/optimized-image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPriceKopiyky } from "@/lib/catalog/format";
 import type { PublicProductCard } from "@/types/catalog";
@@ -30,12 +30,10 @@ export function ProductCard({
       <Card className="relative h-full overflow-hidden pt-0 transition-shadow group-hover:shadow-md">
         <Link href={productHref} className="block" aria-label={productLabel}>
           <div className="relative aspect-[4/3] min-h-48 w-full bg-muted">
-            {product.image ? (
-              <OptimizedImage
-                src={product.image.cloudinaryPublicId}
+            {product.previewImages.length > 0 ? (
+              <ProductCardImageStack
+                images={product.previewImages}
                 alt={imageAlt}
-                fill
-                className="object-cover"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
             ) : (
@@ -45,7 +43,7 @@ export function ProductCard({
             )}
             <ConditionBadge
               condition={product.condition}
-              className="absolute left-2 top-2"
+              className="absolute left-2 top-2 z-10"
             />
           </div>
           <CardHeader className="space-y-1 p-4">
