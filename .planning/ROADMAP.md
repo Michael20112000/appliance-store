@@ -103,7 +103,10 @@ Plans:
 3. ASL-20260519-0013 → CONFIRMED проходить (або задокументована причина + fix)
 4. Vitest на регресію transition/stock
 
-**Plans:** 0/0
+**Plans:** 1 plan
+
+Plans:
+- [ ] 31-01-PLAN.md — Shared status errors/accents; fix list INSUFFICIENT_STOCK mapping; Vitest + ASL verification
 
 ---
 
