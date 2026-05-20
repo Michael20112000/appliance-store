@@ -70,20 +70,24 @@ export function OrderListStatusSelect({
   }
 
   async function applyStatus(nextStatus: OrderStatus) {
-    const result = await updateOrderStatusAction({
-      orderId,
-      status: nextStatus,
-    });
+    try {
+      const result = await updateOrderStatusAction({
+        orderId,
+        status: nextStatus,
+      });
 
-    if (!result.ok) {
-      showOrderStatusErrorToast(result.error);
-      return;
+      if (!result.ok) {
+        showOrderStatusErrorToast(result.error);
+        return;
+      }
+
+      toast.success("Статус оновлено");
+      setSelectedStatus(null);
+      setCancelOpen(false);
+      router.refresh();
+    } catch {
+      showOrderStatusErrorToast("UNKNOWN");
     }
-
-    toast.success("Статус оновлено");
-    setSelectedStatus(null);
-    setCancelOpen(false);
-    router.refresh();
   }
 
   function handleSelect(value: string | null) {
