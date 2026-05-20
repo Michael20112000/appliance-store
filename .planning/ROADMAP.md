@@ -174,7 +174,7 @@ Plans:
 2. Dashboard прев'ю — ≤2 графіки перед «Останні замовлення»
 3. Дані з існуючих Prisma таблиць (без фейкових mock)
 
-**Plans:** 1/5 plans executed
+**Plans:** 3/5 plans executed
 
 Plans:
 
@@ -184,8 +184,8 @@ Plans:
 
 **Wave 1** *(parallel, both blocked on Wave 0)*
 
-- [ ] 34-02-PLAN.md — shadcn chart install + admin-analytics.service.ts: getAnalyticsData, getDashboardAnalyticsPreview, fillDays, formatRevenue (AN-01, AN-02)
-- [ ] 34-03-PLAN.md — Admin nav item «Аналітика» + PeriodSelector component (AN-01)
+- [x] 34-02-PLAN.md — shadcn chart install + admin-analytics.service.ts: getAnalyticsData, getDashboardAnalyticsPreview, fillDays, formatRevenue (AN-01, AN-02)
+- [x] 34-03-PLAN.md — Admin nav item «Аналітика» + PeriodSelector component (AN-01)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 

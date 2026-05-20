@@ -4,13 +4,13 @@ milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
 status: executing
 stopped_at: Phase 34 context gathered
-last_updated: "2026-05-20T19:31:34.498Z"
-last_activity: 2026-05-20 -- Phase 34 execution started
+last_updated: "2026-05-20T19:50:06.203Z"
+last_activity: 2026-05-20
 progress:
   total_phases: 9
   completed_phases: 6
   total_plans: 20
-  completed_plans: 15
+  completed_plans: 18
   percent: 67
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-20)
 ## Current Position
 
 Phase: 34 (admin-analytics) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 34
-Last activity: 2026-05-20 -- Phase 34 execution started
+Plan: 2 of 5
+Status: Ready to execute
+Last activity: 2026-05-20
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -53,6 +53,7 @@ Last activity: 2026-05-20 -- Phase 34 execution started
 - Phase 33: SortableRow sub-component extracted above AdminCategoriesTable for clean useSortable usage per row
 - Phase 33: DnD listeners on GripVertical icon only (not tr) — prevents click-vs-drag conflict
 - Phase 33: No DragOverlay used — opacity:0.5 on isDragging row sufficient for low-row admin table
+- [Phase ?]: 34-02: Revenue query covers ALL orders regardless of status (D-01) — no WHERE o.status filter in $queryRaw
 
 ### Pending Todos
 
@@ -85,10 +86,11 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 | verification_gaps | Phases 04, 06, 07, 12, 13, 18, 19 VERIFICATION | human_needed / gaps_found |
 | todos | bugfix-intake-TEMPLATE.md | template only |
 | Phase 33-admin-categories-dnd-links P01 | 5min | 2 tasks | 2 files |
+| Phase 34-admin-analytics P02 | 8min | 1 tasks | 4 files |
 
 ## Session Continuity
 
-Last session: 2026-05-20T18:43:53.727Z
+Last session: 2026-05-20T19:50:01.439Z
 Stopped at: Phase 34 context gathered
 Resume: `/gsd-plan-phase 34` (Phase 34: Admin analytics) or `/gsd-new-milestone` if milestone review needed
 

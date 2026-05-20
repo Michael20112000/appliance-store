@@ -47,8 +47,8 @@
 
 ### Admin — analytics
 
-- [ ] **AN-01**: Сторінка `/admin/analityka` з продажами, виручкою, заявками на дзвінок, графіками та зведеною статистикою проєкту
-- [ ] **AN-02**: На `/admin` перед «Останні замовлення» — прев’ю аналітики (макс. 2 графіки + короткі KPI)
+- [x] **AN-01**: Сторінка `/admin/analityka` з продажами, виручкою, заявками на дзвінок, графіками та зведеною статистикою проєкту
+- [x] **AN-02**: На `/admin` перед «Останні замовлення» — прев’ю аналітики (макс. 2 графіки + короткі KPI)
 
 ### Admin — callback calls (Дзвінки)
 
@@ -108,8 +108,8 @@
 | ADM-DASH-04 | Phase 32 | Complete |
 | ADM-CAT-05 | Phase 33 | Complete |
 | ADM-CAT-06 | Phase 33 | Complete |
-| AN-01 | Phase 34 | Pending |
-| AN-02 | Phase 34 | Pending |
+| AN-01 | Phase 34 | Complete |
+| AN-02 | Phase 34 | Complete |
 | CALL-01 | Phase 35 | Pending |
 | CALL-02 | Phase 35 | Pending |
 | CALL-03 | Phase 35 | Pending |
