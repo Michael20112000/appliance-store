@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-05-20)
 
 ## Current Position
 
-Phase: 35 (callback-calls) — CONTEXT READY
-Plan: 0 of 0
-Status: Ready for /gsd-plan-phase 35
+Phase: 35 (callback-calls) — PLANNED
+Plan: 0 of 3
+Status: Ready for /gsd-execute-phase 35
 Last activity: 2026-05-20
 
 ### Shipped on `main` (checkpoint 2026-05-19)
