@@ -8,6 +8,11 @@ export type CatalogFilters = {
   conditions?: ProductCondition[];
 };
 
+export type PublicProductCardImage = {
+  cloudinaryPublicId: string;
+  alt: string | null;
+};
+
 export type PublicProductCard = {
   id: string;
   title: string;
@@ -16,10 +21,8 @@ export type PublicProductCard = {
   price: number;
   condition: ProductCondition;
   category: { name: string; slug: string };
-  image: {
-    cloudinaryPublicId: string;
-    alt: string | null;
-  } | null;
+  previewImages: PublicProductCardImage[];
+  image: PublicProductCardImage | null;
 };
 
 export type PublicProductDetail = PublicProductCard & {

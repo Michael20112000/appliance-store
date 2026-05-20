@@ -14,7 +14,7 @@ const cardInclude = {
   category: { select: { name: true, slug: true } },
   images: {
     orderBy: { sortOrder: "asc" as const },
-    take: 1,
+    take: 5,
     select: { cloudinaryPublicId: true, alt: true },
   },
 } satisfies Prisma.ProductInclude;
@@ -64,10 +64,14 @@ export function buildPublicProductWhere(
   };
 }
 
-function mapToCard(
+export function mapToCard(
   product: Prisma.ProductGetPayload<{ include: typeof cardInclude }>,
 ): PublicProductCard {
-  const image = product.images[0];
+  const previewImages = product.images.map((img) => ({
+    cloudinaryPublicId: img.cloudinaryPublicId,
+    alt: img.alt,
+  }));
+  const image = previewImages[0] ?? null;
   return {
     id: product.id,
     title: product.title,
@@ -76,9 +80,8 @@ function mapToCard(
     price: product.price,
     condition: product.condition,
     category: product.category,
-    image: image
-      ? { cloudinaryPublicId: image.cloudinaryPublicId, alt: image.alt }
-      : null,
+    previewImages,
+    image,
   };
 }
 
@@ -152,7 +155,11 @@ export async function getPublicProductBySlug(
 
   if (!product) return null;
 
-  const image = product.images[0];
+  const previewImages = product.images.map((img) => ({
+    cloudinaryPublicId: img.cloudinaryPublicId,
+    alt: img.alt,
+  }));
+  const image = previewImages[0] ?? null;
   return {
     id: product.id,
     title: product.title,
@@ -162,9 +169,8 @@ export async function getPublicProductBySlug(
     condition: product.condition,
     category: product.category,
     description: product.description,
-    image: image
-      ? { cloudinaryPublicId: image.cloudinaryPublicId, alt: image.alt }
-      : null,
+    previewImages,
+    image,
     images: product.images.map((img) => ({
       cloudinaryPublicId: img.cloudinaryPublicId,
       alt: img.alt,
