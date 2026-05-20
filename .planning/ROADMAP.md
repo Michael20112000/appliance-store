@@ -140,7 +140,7 @@ Plans:
 2. Drag & drop зберігає порядок у БД; refresh зберігає order
 3. Vitest або manual checklist для reorder API
 
-**Plans:** 1/4 plans executed
+**Plans:** 2/4 plans executed
 
 Plans:
 
@@ -150,7 +150,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 33-02-PLAN.md — reorderCategories service method + Vitest unit tests (ADM-CAT-06)
+- [x] 33-02-PLAN.md — reorderCategories service method + Vitest unit tests (ADM-CAT-06)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
