@@ -82,7 +82,11 @@ Plans:
 1. Секція «Схожі товари» з тієї ж категорії ±20% ціни, без поточного SKU
 2. Footer: map | contacts+form; © по центру на desktop
 
-**Plans:** 0/0
+**Plans:** 2 plans
+
+Plans:
+- [ ] 30-01-PLAN.md — Similar products query, tests, PDP section (PDP-07)
+- [ ] 30-02-PLAN.md — Footer desktop map | contacts+form; © centered (FOOT-05)
 
 ---
 
