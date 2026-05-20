@@ -52,10 +52,10 @@
 
 ### Admin — callback calls (Дзвінки)
 
-- [ ] **CALL-01**: Блок «Заявки на дзвінок» прибрано з `/admin/nalashtuvannia`; таблиця на окремій `/admin/dzvinky`
-- [ ] **CALL-02**: Статус заявки: за замовчуванням «Очікує на дзвінок»; оператор може змінити на «Проконсультовано»
-- [ ] **CALL-03**: До заявки можна додати текстову нотатку (про зміст розмови)
-- [ ] **CALL-04**: Оброблені заявки можна архівувати, щоб не займали основну таблицю
+- [x] **CALL-01**: Блок «Заявки на дзвінок» прибрано з `/admin/nalashtuvannia`; таблиця на окремій `/admin/dzvinky`
+- [x] **CALL-02**: Статус заявки: за замовчуванням «Очікує на дзвінок»; оператор може змінити на «Проконсультовано»
+- [x] **CALL-03**: До заявки можна додати текстову нотатку (про зміст розмови)
+- [x] **CALL-04**: Оброблені заявки можна архівувати, щоб не займали основну таблицю
 
 ### Admin — navigation
 
@@ -110,10 +110,10 @@
 | ADM-CAT-06 | Phase 33 | Complete |
 | AN-01 | Phase 34 | Complete |
 | AN-02 | Phase 34 | Complete |
-| CALL-01 | Phase 35 | Pending |
-| CALL-02 | Phase 35 | Pending |
-| CALL-03 | Phase 35 | Pending |
-| CALL-04 | Phase 35 | Pending |
+| CALL-01 | Phase 35 | Complete |
+| CALL-02 | Phase 35 | Complete |
+| CALL-03 | Phase 35 | Complete |
+| CALL-04 | Phase 35 | Complete |
 | ADM-NAV-01 | Phase 36 | Pending |
 
 **Coverage:**

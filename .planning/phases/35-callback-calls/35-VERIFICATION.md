@@ -1,6 +1,6 @@
 ---
 phase: 35-callback-calls
-status: human_needed
+status: passed
 verified: 2026-05-20
 ---
 
@@ -25,15 +25,15 @@ verified: 2026-05-20
 - Prisma migration `20260520202841_callback_admin_fields` — applied
 - `listCallbackRequestsAdmin` removed from `store-settings.service.ts` — confirmed
 
-## Human Verification Required
+## Human Verification
 
-See `35-HUMAN-UAT.md`. Plan 03 Task 4 checkpoint blocking phase sign-off.
+Approved via `35-HUMAN-UAT.md` (8/8 passed).
 
 ## Requirement Traceability
 
 | ID | Status |
 |----|--------|
-| CALL-01 | ✅ code complete — human UAT pending |
+| CALL-01 | ✅ |
 | CALL-02 | ✅ |
 | CALL-03 | ✅ |
 | CALL-04 | ✅ |
