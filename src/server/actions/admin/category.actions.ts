@@ -108,7 +108,8 @@ export async function reorderCategoriesAction(
 
   if (
     !Array.isArray(orderedIds) ||
-    orderedIds.some((id) => typeof id !== "string")
+    orderedIds.length === 0 ||
+    orderedIds.some((id) => typeof id !== "string" || id.trim() === "")
   ) {
     return { ok: false as const, error: "INVALID_INPUT" as const };
   }
