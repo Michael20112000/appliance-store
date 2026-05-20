@@ -276,11 +276,20 @@ model StoreAddress {
   sortOrder Int     @default(0)
 }
 
+enum CallbackRequestStatus {
+  PENDING
+  CONSULTED
+}
+
 model CallbackRequest {
-  id        String   @id @default(cuid())
-  phone     String
-  ipAddress String?
-  createdAt DateTime @default(now())
+  id         String                @id @default(cuid())
+  phone      String
+  ipAddress  String?
+  createdAt  DateTime              @default(now())
+  status     CallbackRequestStatus @default(PENDING)
+  note       String?               @db.Text
+  archivedAt DateTime?
 
   @@index([ipAddress, createdAt])
+  @@index([archivedAt, createdAt])
 }

@@ -28,12 +28,6 @@ export type PublicStoreContacts = {
   addresses: PublicStoreAddress[];
 };
 
-export type CallbackRequestAdminRow = {
-  id: string;
-  phone: string;
-  createdAt: Date;
-};
-
 const contactOrder = [{ sortOrder: "asc" as const }, { id: "asc" as const }];
 
 export async function getPublicStoreContacts(): Promise<PublicStoreContacts> {
@@ -107,15 +101,5 @@ export async function saveStoreSettings(
         })),
       });
     }
-  });
-}
-
-export async function listCallbackRequestsAdmin(
-  limit = 50,
-): Promise<CallbackRequestAdminRow[]> {
-  return prisma.callbackRequest.findMany({
-    orderBy: { createdAt: "desc" },
-    take: limit,
-    select: { id: true, phone: true, createdAt: true },
   });
 }
