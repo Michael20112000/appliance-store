@@ -4,13 +4,13 @@ milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
 status: executing
 stopped_at: Phase 33 context gathered
-last_updated: "2026-05-20T14:35:58.298Z"
-last_activity: 2026-05-20 -- Phase 33 planning complete
+last_updated: "2026-05-20T14:46:32.197Z"
+last_activity: 2026-05-20
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 15
-  completed_plans: 11
+  completed_plans: 12
   percent: 56
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-20)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 33 — admin categories dnd & links
+**Current focus:** Phase 33 — admin-categories-dnd-links
 
 ## Current Position
 
-Phase: 33
-Plan: Not started
+Phase: 33 (admin-categories-dnd-links) — EXECUTING
+Plan: 2 of 4
 Status: Ready to execute
-Last activity: 2026-05-20 -- Phase 33 planning complete
+Last activity: 2026-05-20
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -81,10 +81,11 @@ Items acknowledged at v1.4 milestone close (2026-05-19):
 | uat_gaps | Phase 19 purge UAT | closed in phase 27 |
 | verification_gaps | Phases 04, 06, 07, 12, 13, 18, 19 VERIFICATION | human_needed / gaps_found |
 | todos | bugfix-intake-TEMPLATE.md | template only |
+| Phase 33-admin-categories-dnd-links P01 | 5min | 2 tasks | 2 files |
 
 ## Session Continuity
 
-Last session: 2026-05-20T14:05:04.292Z
+Last session: 2026-05-20T14:46:32.186Z
 Stopped at: Phase 33 context gathered
 Resume: `/gsd-new-milestone`
 

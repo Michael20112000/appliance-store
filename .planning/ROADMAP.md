@@ -140,13 +140,13 @@ Plans:
 2. Drag & drop зберігає порядок у БД; refresh зберігає order
 3. Vitest або manual checklist для reorder API
 
-**Plans:** 4 plans
+**Plans:** 1/4 plans executed
 
 Plans:
 
 **Wave 1**
 
-- [ ] 33-01-PLAN.md — Package legitimacy checkpoint + install @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities (ADM-CAT-06)
+- [x] 33-01-PLAN.md — Package legitimacy checkpoint + install @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities (ADM-CAT-06)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
