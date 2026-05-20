@@ -1,34 +1,33 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.5
-milestone_name: Incremental polish & operator UX
-status: Awaiting next milestone
-stopped_at: Phase 27 context gathered
-last_updated: "2026-05-19T19:13:57.152Z"
-last_activity: 2026-05-19 — Milestone v1.5 completed and archived
+milestone: v2.0
+milestone_name: Polish, UX & Admin analytics
+status: planning
+last_updated: "2026-05-20T10:35:39.765Z"
+last_activity: 2026-05-20
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_phases: 9
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-19)
+See: .planning/PROJECT.md (updated 2026-05-20)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** Milestone v2.0 — Phase 28 next
 
 ## Current Position
 
-Phase: Milestone v1.5 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-19 — Milestone v1.5 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-20 — Milestone v2.0 started
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -90,6 +89,6 @@ Resume: `/gsd-new-milestone`
 
 ## Operator Next Steps
 
-1. `/gsd-new-milestone` — define v2 or v1.6 scope
-2. Optional: `/gsd-verify-work 27` — conversational UAT follow-up
+1. `/gsd-discuss-phase 28` або `/gsd-plan-phase 28` — старт Phase 28
+2. BUG-24 (ASL-20260519-0013) — у Phase 31
 3. Push tag `v1.5` to remote if not yet pushed

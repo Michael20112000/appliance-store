@@ -16,9 +16,9 @@
 
 **Latest (v1.5):** Delivery-aware order status; admin category/product polish; homepage hides empty categories; footer + mobile contacts/callback from DB; UAT-01 closed (purge + v1.5 smoke).
 
-**Next:** Plan v2 or incremental v1.6 via `/gsd-new-milestone`.
+**Active milestone:** v2.0 Polish, UX & Admin analytics (planning 2026-05-20)
 
-**Operator:** `BUGFIX-WORKFLOW.md` intake; optional `db:purge` + seed; manual checklists in phase 27 archive.
+**Operator:** `BUGFIX-WORKFLOW.md` intake; optional `db:purge` + seed.
 
 ## Requirements
 
@@ -35,20 +35,22 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ FOOT-01…04 — footer contacts, callback, mobile drawer counts — v1.5
 - ✓ UAT-01 — Phase 19 purge UAT + v1.5 smoke (`27-UAT-REPORT.md`) — v1.5
 
-### Active (next milestone)
+### Active (v2.0)
 
-_Define via `/gsd-new-milestone`. Candidates from prior Future Requirements:_
+See `.planning/REQUIREMENTS.md` — storefront polish (nav, catalog, PDP, footer, homepage), admin analytics, callback «Дзвінки», category DnD, order status UX + ASL bugfix, sidebar badges.
+
+### Deferred (post–v2.0)
 
 - PERF-01 — Core Web Vitals / Lighthouse
 - SEO-01/02 — GSC, custom domain
 - REV-01/02 — відгуки на товари
 - CAT-WIP-01 — merge `git stash@{0}` (pagination/seed)
 
-### Out of Scope
+### Out of Scope (v2.0)
 
-- Відгуки — v2 REV
-- Core Web Vitals / Lighthouse milestone (PERF-01) — v2
-- GSC / custom domain (SEO-01/02) — v2
+- Відгуки (REV) — post–v2.0
+- Core Web Vitals / Lighthouse (PERF-01) — post–v2.0
+- GSC / custom domain (SEO-01/02) — post–v2.0
 - Онлайн-оплата, доставка за межі Львова, маркетплейс
 - Багатомовність
 - Storefront stock quantity display (admin-only by design)
@@ -91,5 +93,18 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 
 </details>
 
+## Current Milestone: v2.0 Polish, UX & Admin analytics
+
+**Goal:** Вилизати вітрину й адмінку — UX-фікси, аналітика продажів/дзвінків, операторські інструменти (DnD категорій, дзвінки, badges), критичний bugfix статусу замовлення.
+
+**Target features:**
+
+- Mobile drawer: кнопки входу/реєстрації під callback
+- Каталог: сортування «Новіше» / «Дорожче» / «Дешевше»
+- Картки товарів: fade-галерея на hover (desktop)
+- PDP: плавний lightbox-слайдер, кошик UX + FAB, «Схожі товари» ±20% ціни
+- Footer: 2 колонки desktop, © по центру; smooth scroll `#kategorii`; counts на картках категорій
+- Admin: dashboard polish, analytics + прев’ю, «Дзвінки», DnD категорій, кольори статусів, bugfix ASL-20260519-0013, sidebar badges
+
 ---
-*Last updated: 2026-05-19 after v1.5 milestone shipped*
+*Last updated: 2026-05-20 — milestone v2.0 started*
