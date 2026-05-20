@@ -174,13 +174,13 @@ Plans:
 2. Dashboard прев'ю — ≤2 графіки перед «Останні замовлення»
 3. Дані з існуючих Prisma таблиць (без фейкових mock)
 
-**Plans:** 5 plans
+**Plans:** 1/5 plans executed
 
 Plans:
 
 **Wave 0**
 
-- [ ] 34-01-PLAN.md — analytics service test scaffold: getAnalyticsData stubs, BigInt conversion, zero-fill tests (AN-01)
+- [x] 34-01-PLAN.md — analytics service test scaffold: getAnalyticsData stubs, BigInt conversion, zero-fill tests (AN-01)
 
 **Wave 1** *(parallel, both blocked on Wave 0)*
 
