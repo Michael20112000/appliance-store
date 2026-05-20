@@ -37,8 +37,8 @@
 
 ### Admin — dashboard
 
-- [ ] **ADM-DASH-03**: На `/admin` кнопки «Додати товар» (синя + Plus) і «Переглянути замовлення» (Eye) з іконками як на `/admin/tovary`
-- [ ] **ADM-DASH-04**: Stat-картки (нові замовлення, в наявності, розпродано) мають відповідні lucide-іконки
+- [x] **ADM-DASH-03**: На `/admin` кнопки «Додати товар» (синя + Plus) і «Переглянути замовлення» (Eye) з іконками як на `/admin/tovary`
+- [x] **ADM-DASH-04**: Stat-картки (нові замовлення, в наявності, розпродано) мають відповідні lucide-іконки
 
 ### Admin — categories
 
@@ -104,8 +104,8 @@
 | FOOT-05 | Phase 30 | Complete |
 | ORD-05 | Phase 31 | Complete |
 | BUG-24 | Phase 31 | Complete |
-| ADM-DASH-03 | Phase 32 | Pending |
-| ADM-DASH-04 | Phase 32 | Pending |
+| ADM-DASH-03 | Phase 32 | Complete |
+| ADM-DASH-04 | Phase 32 | Complete |
 | ADM-CAT-05 | Phase 33 | Pending |
 | ADM-CAT-06 | Phase 33 | Pending |
 | AN-01 | Phase 34 | Pending |
