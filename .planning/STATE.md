@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
-status: executing
-stopped_at: Phase 29 context gathered
-last_updated: "2026-05-20T11:31:57.396Z"
+status: ready_to_plan
+stopped_at: Phase 29 complete (3/3) — ready to discuss Phase 30
+last_updated: 2026-05-20T11:55:22.609Z
 last_activity: 2026-05-20 -- Phase 29 execution started
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 15
   percent: 11
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-20)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 29 — product-cards-pdp-core-ux
+**Current focus:** Phase 30 — similar products & footer layout
 
 ## Current Position
 
-Phase: 29 (product-cards-pdp-core-ux) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 29
-Last activity: 2026-05-20 -- Phase 29 execution started
+Phase: 30
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-05-20
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
