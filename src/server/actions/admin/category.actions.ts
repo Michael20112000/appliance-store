@@ -7,6 +7,7 @@ import { requireAdmin } from "@/lib/permissions";
 import {
   CATEGORY_HAS_PRODUCTS,
   CATEGORY_NOT_FOUND,
+  SLUG_ALREADY_EXISTS,
   createCategory,
   deleteCategory,
   reorderCategories,
@@ -35,6 +36,9 @@ function mapCategoryError(error: unknown) {
     }
     if (error.message === CATEGORY_NOT_FOUND) {
       return { ok: false as const, error: "CATEGORY_NOT_FOUND" as const };
+    }
+    if (error.message === SLUG_ALREADY_EXISTS) {
+      return { ok: false as const, error: "SLUG_ALREADY_EXISTS" as const };
     }
   }
   return { ok: false as const, error: "UNKNOWN" as const };

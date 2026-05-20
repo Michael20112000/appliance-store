@@ -27,6 +27,14 @@ export function assertCategoryDeletable(productCount: number): void {
   }
 }
 
+// TODO(race): resolveUniqueSlug runs outside the transaction. Between the
+// findUnique check here and the category.create/update inside the transaction,
+// a concurrent request can claim the same slug and cause a P2002 unique
+// constraint violation. The correct fix is to pass a transaction client (tx)
+// into resolveUniqueSlug so the slug check and the write share the same
+// serializable transaction. Until that refactor is done, createCategory and
+// updateCategory catch P2002 and rethrow SLUG_ALREADY_EXISTS so callers get
+// a meaningful error instead of the generic UNKNOWN.
 async function resolveUniqueSlug(
   baseSlug: string,
   excludeId?: string,
@@ -102,38 +110,54 @@ export async function getCategoryById(id: string) {
 export async function createCategory(data: UpsertCategoryValues) {
   const baseSlug = data.slug?.trim() || slugFromName(data.name);
 
-  return prisma.$transaction(async (tx) => {
-    const slug = await resolveUniqueSlug(baseSlug);
-    const existing = await tx.category.findMany({
-      orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
-      select: { id: true, sortOrder: true },
-    });
-    const n = existing.length;
-    const targetRank = clampCategoryRank(data.sortOrder, 1, n + 1);
-    const placeholderId = "__new__";
-    const ranked = insertCategoryAtRank(existing, placeholderId, targetRank);
-    const newRow = ranked.find((row) => row.id === placeholderId);
-    if (!newRow) {
-      throw new Error("CATEGORY_RANK_FAILED");
-    }
-
-    for (const row of ranked) {
-      if (row.id === placeholderId) continue;
-      await tx.category.update({
-        where: { id: row.id },
-        data: { sortOrder: row.sortOrder },
+  try {
+    return await prisma.$transaction(async (tx) => {
+      const slug = await resolveUniqueSlug(baseSlug);
+      const existing = await tx.category.findMany({
+        orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+        select: { id: true, sortOrder: true },
       });
-    }
+      const n = existing.length;
+      const targetRank = clampCategoryRank(data.sortOrder, 1, n + 1);
+      const placeholderId = "__new__";
+      const ranked = insertCategoryAtRank(existing, placeholderId, targetRank);
+      const newRow = ranked.find((row) => row.id === placeholderId);
+      if (!newRow) {
+        throw new Error("CATEGORY_RANK_FAILED");
+      }
 
-    return tx.category.create({
-      data: {
-        name: data.name,
-        slug,
-        description: data.description ?? null,
-        sortOrder: newRow.sortOrder,
-      },
+      for (const row of ranked) {
+        if (row.id === placeholderId) continue;
+        await tx.category.update({
+          where: { id: row.id },
+          data: { sortOrder: row.sortOrder },
+        });
+      }
+
+      return tx.category.create({
+        data: {
+          name: data.name,
+          slug,
+          description: data.description ?? null,
+          sortOrder: newRow.sortOrder,
+        },
+      });
     });
-  });
+  } catch (error) {
+    // A concurrent request may have claimed the same slug between our
+    // resolveUniqueSlug check and the create write (see race TODO above).
+    const code =
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      typeof (error as { code: unknown }).code === "string"
+        ? (error as { code: string }).code
+        : null;
+    if (code === "P2002") {
+      throw new Error(SLUG_ALREADY_EXISTS);
+    }
+    throw error;
+  }
 }
 
 export async function updateCategory(
@@ -157,25 +181,41 @@ export async function updateCategory(
   const targetRank = clampCategoryRank(input.sortOrder, 1, n);
   const ranked = moveCategoryToRank(all, input.id, targetRank);
 
-  return prisma.$transaction(async (tx) => {
-    for (const row of ranked) {
-      await tx.category.update({
-        where: { id: row.id },
-        data: {
-          sortOrder: row.sortOrder,
-          ...(row.id === input.id
-            ? {
-                name: input.name,
-                slug,
-                description: input.description ?? null,
-              }
-            : {}),
-        },
-      });
-    }
+  try {
+    return await prisma.$transaction(async (tx) => {
+      for (const row of ranked) {
+        await tx.category.update({
+          where: { id: row.id },
+          data: {
+            sortOrder: row.sortOrder,
+            ...(row.id === input.id
+              ? {
+                  name: input.name,
+                  slug,
+                  description: input.description ?? null,
+                }
+              : {}),
+          },
+        });
+      }
 
-    return tx.category.findUniqueOrThrow({ where: { id: input.id } });
-  });
+      return tx.category.findUniqueOrThrow({ where: { id: input.id } });
+    });
+  } catch (error) {
+    // A concurrent request may have claimed the same slug between our
+    // resolveUniqueSlug check and the update write (see race TODO above).
+    const code =
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      typeof (error as { code: unknown }).code === "string"
+        ? (error as { code: string }).code
+        : null;
+    if (code === "P2002") {
+      throw new Error(SLUG_ALREADY_EXISTS);
+    }
+    throw error;
+  }
 }
 
 export async function updateCategoryImage(input: {
