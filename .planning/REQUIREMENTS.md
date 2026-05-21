@@ -1,0 +1,67 @@
+# Requirements: Appliance Store Lviv — v2.1
+
+**Defined:** 2026-05-21
+**Core Value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
+
+## v2.1 Requirements
+
+### Admin Dashboard
+
+- [ ] **ADM-DASH-05**: Адмін-дашборд відображає StatCard з кількістю нових дзвінків (непрочитані / нові)
+- [ ] **ADM-DASH-06**: Адмін-дашборд відображає StatCard з кількістю активних чатів (непрочитані повідомлення)
+- [ ] **ADM-DASH-07**: Адмін-дашборд показує повноцінні графіки аналітики — ідентичні `/admin/analityka`
+- [ ] **ADM-DASH-08**: Таблиця «Останні замовлення» на дашборді відповідає повній версії з `/admin/zamovlennia` без фільтр-табів і пагінації, максимум 10 рядків
+
+### Дзвінки
+
+- [ ] **CALL-05**: Оператор бачить автозбережену нотатку до дзвінка без кнопки «Зберегти» — збереження відбувається через throttle 400мс після останнього введення
+
+### Категорії
+
+- [ ] **ADM-CAT-07**: Таблиця категорій відображає колонку з порядковим номером, що оновлюється після DnD-перестановки
+- [ ] **ADM-CAT-08**: Таблиця категорій має колонку «Дії» з кнопками «Додати товар» (веде до форми нового товару з передвибраною категорією) та «Видалити» (видалення категорії з підтвердженням)
+- [ ] **ADM-CAT-09**: Сторінка редагування категорії автозберігає зміни без кнопки «Зберегти» — поведінка ідентична `/admin/tovary/[id]`
+- [ ] **ADM-CAT-10**: Кнопка видалення категорії на сторінці редагування замінена на icon-only trash-кнопку у правому верхньому куті сторінки
+
+## Future Requirements
+
+*(Deferred from v2.0 — not in current roadmap)*
+
+- **PERF-01**: Core Web Vitals / Lighthouse targets
+- **SEO-01**: Google Search Console integration
+- **SEO-02**: Custom domain
+- **REV-01**: Відгуки на товари — покупець залишає оцінку
+- **REV-02**: Відгуки на товари — адмін модерує
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Онлайн-оплата | Поза рамками single-store Львів |
+| Доставка за межі Львова | Бізнес-рішення |
+| Багатомовність | Тільки українська за дизайном |
+| Storefront stock quantity | Admin-only by design |
+| Відгуки (REV) | post-v3.0 |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| ADM-DASH-05 | — | Pending |
+| ADM-DASH-06 | — | Pending |
+| ADM-DASH-07 | — | Pending |
+| ADM-DASH-08 | — | Pending |
+| CALL-05 | — | Pending |
+| ADM-CAT-07 | — | Pending |
+| ADM-CAT-08 | — | Pending |
+| ADM-CAT-09 | — | Pending |
+| ADM-CAT-10 | — | Pending |
+
+**Coverage:**
+- v2.1 requirements: 9 total
+- Mapped to phases: 0 (pending roadmap)
+- Unmapped: 9 ⚠
+
+---
+*Requirements defined: 2026-05-21*
+*Last updated: 2026-05-21 after v2.1 milestone start*
