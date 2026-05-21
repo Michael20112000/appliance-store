@@ -1,7 +1,7 @@
 ---
 phase: 37
 slug: dashboard-statcards
-status: draft
+status: signed-off
 nyquist_compliant: false
 wave_0_complete: false
 created: 2026-05-21
@@ -38,7 +38,7 @@ created: 2026-05-21
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 37-01-01 | 01 | 1 | ADM-DASH-05, ADM-DASH-06 | — | Admin-only page (layout enforces requireAdmin) | unit + smoke | `npx vitest run src/server/services/admin-sidebar.service.test.ts` | ✅ | ⬜ pending |
+| 37-01-01 | 01 | 1 | ADM-DASH-05, ADM-DASH-06 | — | Admin-only page (layout enforces requireAdmin) | unit + smoke | `npx vitest run src/server/services/admin-sidebar.service.test.ts` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -69,4 +69,4 @@ Existing infrastructure covers all phase requirements. The service-layer tests f
 - [ ] Feedback latency < 10s
 - [ ] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** signed off 2026-05-21 (human approved)

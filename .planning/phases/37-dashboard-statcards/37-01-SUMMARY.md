@@ -23,7 +23,7 @@ Extended the admin dashboard RSC page with two new StatCards (ADM-DASH-05, ADM-D
 
 - Unit tests: 7/7 green (`npx vitest run src/server/services/admin-sidebar.service.test.ts`)
 - Linter: no issues on `admin/page.tsx`
-- Human verify: pending — load `/admin`, confirm 5 StatCards, click-through to dzvinky/chaty
+- Human verify: **approved** (2026-05-21) — 5 StatCards on `/admin`, links to dzvinky/chaty OK
 
 ## Self-Check: PASSED (automated)
 
