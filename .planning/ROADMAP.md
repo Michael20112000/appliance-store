@@ -240,7 +240,7 @@ Plans:
 3. Чати / дзвінки — лише невирішені, не total
 4. Performance: один aggregated query або RSC cache, без N+1 на кожен nav render
 
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 
@@ -250,7 +250,7 @@ Plans:
 
 **Wave 1** *(blocked on Wave 0)*
 
-- [ ] 36-02-PLAN.md — admin-sidebar.service.ts: getAdminSidebarCounts() + AdminSidebarBadgeCounts type (ADM-NAV-01)
+- [x] 36-02-PLAN.md — admin-sidebar.service.ts: getAdminSidebarCounts() + AdminSidebarBadgeCounts type (ADM-NAV-01)
 
 **Wave 2** *(blocked on Wave 1)*
 
