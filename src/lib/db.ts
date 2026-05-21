@@ -14,7 +14,7 @@ const CALLBACK_ADMIN_SCHEMA_MARKER = "__callbackAdminFields_v35" as const;
 function isPrismaClientCurrent(client: PrismaClient): boolean {
   if (!REQUIRED_DELEGATES.every((key) => key in client)) return false;
   return (
-    (client as Record<string, unknown>)[CALLBACK_ADMIN_SCHEMA_MARKER] === true
+    (client as unknown as Record<string, unknown>)[CALLBACK_ADMIN_SCHEMA_MARKER] === true
   );
 }
 
@@ -33,7 +33,7 @@ function getPrismaClient(): PrismaClient {
     return existing;
   }
   const client = createPrismaClient();
-  (client as Record<string, unknown>)[CALLBACK_ADMIN_SCHEMA_MARKER] = true;
+  (client as unknown as Record<string, unknown>)[CALLBACK_ADMIN_SCHEMA_MARKER] = true;
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = client;
   }
