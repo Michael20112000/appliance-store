@@ -350,20 +350,19 @@ const defaultCategoryId =
 
 **Verified (no assumption):** `deleteCategoryAction` redirects on success — `src/server/actions/admin/category.actions.ts` lines 96–99.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Спільний debounced-save primitive з product hook?**
+1. **Спільний debounced-save primitive з product hook?** — **RESOLVED:** окремий `useCallbackNoteAutoSave` у фазі 39; без shared primitive (YAGNI до Phase 40).
    - What we know: Обидва — debounce + snapshot + chain; product додатково RHF + Zod parse.
-   - What's unclear: Чи варто abstract зараз (YAGNI).
-   - Recommendation: Окремий `useCallbackNoteAutoSave` у Phase 39; extract shared primitive лише якщо Phase 40 category autosave дублює >60% коду.
+   - Planner lock: Plan 39-01 Task 2 implements dedicated hook only.
 
-2. **Delete success: `filter` vs `router.refresh()`?**
+2. **Delete success: `filter` vs `router.refresh()`?** — **RESOLVED:** `setLocalCategories(prev => prev.filter(c => c.id !== id))`; без `router.refresh()` на success.
    - What we know: D-14 залишає вибір planner; `localCategories` вже є.
-   - Recommendation: **`setLocalCategories(prev => prev.filter(c => c.id !== id))`** + optional `router.refresh()` не потрібен, бо `revalidateCategoryPaths` на server; якщо product list використовує refresh — для категорій filter достатній (менше миготіння).
+   - Planner lock: Plan 39-02 Task 2 passes `onDeleted` → parent filter.
 
-3. **Success toast на delete категорії з таблиці?**
+3. **Success toast на delete категорії з таблиці?** — **RESOLVED:** `toast.success("Категорію видалено")` як у `ProductListDeleteButton`.
    - What we know: `ProductListDeleteButton` робить `toast.success("Товар видалено")`.
-   - Recommendation: Для категорій — **так само** short success toast після delete (не суперечить autosave D-01; це one-shot action). Якщо user хоче тихіше — discretion.
+   - Planner lock: Plan 39-02 Task 2 acceptance includes success toast.
 
 ## Environment Availability
 
