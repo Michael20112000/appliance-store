@@ -48,13 +48,13 @@
 
 ## Traceability
 
-| REQ-ID   | Phase | Notes |
-|----------|-------|-------|
-| SOC-01   | —     | |
-| SOC-02   | —     | |
-| SOC-03   | —     | |
-| FAB-01   | —     | |
-| FAB-02   | —     | |
-| SLIDER-01| —     | |
-| ANIM-01  | —     | |
-| BUG-25   | —     | |
+| REQ-ID    | Phase | Notes |
+|-----------|-------|-------|
+| SOC-01    | 41    | Social links in header |
+| SOC-02    | 41    | Social links in mobile drawer |
+| SOC-03    | 41    | Social links in footer |
+| FAB-01    | 42    | Persistent cart FAB, bottom-left |
+| FAB-02    | 42    | Callback FAB with phone dialog |
+| SLIDER-01 | 43    | Price slider step 50 UAH + snap to real min/max |
+| ANIM-01   | 43    | Fade page transitions, storefront only |
+| BUG-25    | 43    | Footer address link fix (embed URL → Google Maps URL) |
