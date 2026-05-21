@@ -33,7 +33,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 **Milestone Goal:** Допрацювати адмін-дашборд і UX адмін-сторінок — повноцінні дані, автозбереження, зручніші дії.
 
-- [ ] **Phase 37: Dashboard StatCards** - Два нові StatCard для дзвінків і чатів на /admin
+- [x] **Phase 37: Dashboard StatCards** - Два нові StatCard для дзвінків і чатів на /admin
 - [ ] **Phase 38: Dashboard Data Completeness** - Повноцінні графіки аналітики і розширена таблиця замовлень на дашборді
 - [ ] **Phase 39: Calls Auto-save & Categories Table Actions** - Автозбереження нотатки дзвінка + колонки порядкового номера і дій у таблиці категорій
 - [ ] **Phase 40: Category Edit UX** - Автозбереження і icon-trash на сторінці редагування категорії
@@ -50,7 +50,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   3. Обидва нові StatCards відображаються поруч з існуючими (замовлення, товари тощо) без порушення лейауту
 **Plans**: 1 plan
 Plans:
-- [ ] 37-01-PLAN.md — Add «Нові дзвінки» and «Активні чати» StatCards to dashboard (ADM-DASH-05, ADM-DASH-06)
+- [x] 37-01-PLAN.md — Add «Нові дзвінки» and «Активні чати» StatCards to dashboard (ADM-DASH-05, ADM-DASH-06)
 **UI hint**: yes
 
 ### Phase 38: Dashboard Data Completeness

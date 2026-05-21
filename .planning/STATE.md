@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Fixes & UX
-status: executing
-stopped_at: Roadmap created for v2.1 (Phases 37–40)
-last_updated: "2026-05-21T12:36:44.790Z"
-last_activity: 2026-05-21 -- Phase 37 planning complete
+status: phase_complete_pending_verify
+stopped_at: Phase 37 plan 37-01 executed — human verify pending
+last_updated: "2026-05-21T15:55:00.000Z"
+last_activity: 2026-05-21 -- Phase 37 plan 37-01 implementation complete
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 1
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** v2.1 — Phase 37 ready to plan
+**Current focus:** Phase 37 — dashboard-statcards (human verify) → Phase 38
 
 ## Current Position
 
-Phase: 1 of 4 (Phase 37: Dashboard StatCards)
-Plan: —
-Status: Ready to execute
-Last activity: 2026-05-21 -- Phase 37 planning complete
+Phase: 37 (dashboard-statcards) — PLAN COMPLETE, human verify pending
+Plan: 1 of 1 complete
+Status: Awaiting human checkpoint on /admin StatCards
+Last activity: 2026-05-21 -- 37-01 implemented (5 StatCards, getAdminSidebarCounts in Promise.all)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██░░░░░░░░] 25% (1/4 plans in milestone)
 
 ## Performance Metrics
 
@@ -43,11 +43,13 @@ Progress: [░░░░░░░░░░] 0%
 - Phase 34: shadcn recharts — client chart components import @/lib/admin/analytics only (never admin-analytics.service — Prisma bundle leak)
 - Phase 34: priceSnapshot is kopiyky — analytics converts via kopiykyToRevenueUah before formatRevenue
 - Phase 36: Single aggregated fetch for sidebar — Promise.all 5 queries, no N+1 per nav render
-- Phase 33: DnD listeners on GripVertical icon only (not tr) — prevents click-vs-drag conflict
+- Phase 37: Dashboard reuses getAdminSidebarCounts() — same counts as sidebar badges, single Promise.all on page load
 
 ### Pending Todos
 
-- `/gsd-verify-work` — conversational UAT (optional follow-up from v2.0)
+- Human verify Phase 37: `/admin` — 5 StatCards, click «Нові дзвінки» → /admin/dzvinky, «Активні чати» → /admin/chaty
+- `/gsd-verify-phase 37` after human approval
+- `/gsd-plan-phase 38` — Dashboard Data Completeness (next phase)
 
 ### Blockers/Concerns
 
@@ -67,5 +69,5 @@ Items acknowledged and deferred at milestone v2.0 close on 2026-05-21:
 ## Session Continuity
 
 Last session: 2026-05-21
-Stopped at: Roadmap created for v2.1 (Phases 37–40)
-Resume: `/gsd:plan-phase 37`
+Stopped at: Claude Code session limit during Phase 37 execution
+Resume: Human verify /admin StatCards, then `/gsd-verify-phase 37` or `/gsd-plan-phase 38`

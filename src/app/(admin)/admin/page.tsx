@@ -1,15 +1,25 @@
 import Link from "next/link";
-import { Eye, Package, PackageX, Plus, ShoppingBag } from "lucide-react";
+import {
+  Eye,
+  MessageSquare,
+  Package,
+  PackageX,
+  Phone,
+  Plus,
+  ShoppingBag,
+} from "lucide-react";
 import { AnalyticsDashboardPreview } from "@/components/admin/analytics-dashboard-preview";
 import { StatCard } from "@/components/admin/stat-card";
 import { AdminRecentOrdersTable } from "@/components/admin/admin-recent-orders-table";
 import { Button } from "@/components/ui/button";
 import { getDashboardAnalyticsPreview } from "@/server/services/admin-analytics.service";
 import { getAdminDashboardStats } from "@/server/services/admin-order.service";
+import { getAdminSidebarCounts } from "@/server/services/admin-sidebar.service";
 
 export default async function AdminDashboardPage() {
-  const [stats, analyticsPreview] = await Promise.all([
+  const [stats, sidebarCounts, analyticsPreview] = await Promise.all([
     getAdminDashboardStats(),
+    getAdminSidebarCounts(),
     getDashboardAnalyticsPreview(),
   ]);
 
@@ -35,6 +45,18 @@ export default async function AdminDashboardPage() {
           count={stats.outOfStockProducts}
           href="/admin/tovary?stock=out_of_stock"
           icon={PackageX}
+        />
+        <StatCard
+          label="Нові дзвінки"
+          count={sidebarCounts.unresolvedCallbacks}
+          href="/admin/dzvinky"
+          icon={Phone}
+        />
+        <StatCard
+          label="Активні чати"
+          count={sidebarCounts.unreadChats}
+          href="/admin/chaty"
+          icon={MessageSquare}
         />
       </div>
 
