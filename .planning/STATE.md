@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Polish, UX & Admin analytics
-status: Milestone v2.0 shipped — planning v3.0
-stopped_at: v2.0 milestone closed
-last_updated: "2026-05-21"
-last_activity: 2026-05-21 — v2.0 milestone archived, tagged, shipped
+milestone: v2.1
+milestone_name: Fixes & UX
+status: planning
+last_updated: "2026-05-21T12:18:15.632Z"
+last_activity: 2026-05-21
 progress:
-  total_phases: 9
-  completed_phases: 9
-  total_plans: 26
-  completed_plans: 26
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-05-21)
 
 ## Current Position
 
-Phase: Milestone v2.0 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-21 — Milestone v2.0 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-21 — Milestone v2.1 started
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 

@@ -10,6 +10,18 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
+## Current Milestone: v2.1 Fixes & UX
+
+**Goal:** Допрацювати адмін-дашборд і UX адмін-сторінок — повноцінні дані, автозбереження, зручніші дії.
+
+**Target features:**
+- StatCards для Дзвінків і Чатів на /admin
+- Повноцінні графіки аналітики на дашборді
+- Таблиця «Останні замовлення» = повна версія (max 10, без фільтрів)
+- Автозбереження нотатки дзвінка (throttle 400мс)
+- Колонка «Дії» + порядковий номер у таблиці категорій
+- Автозбереження категорії + icon-trash для видалення
+
 ## Current State
 
 **Shipped:** v1.0 → v2.0 (2026-05-21)
@@ -51,9 +63,14 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ CALL-01…04 — Дзвінки workspace (status, note, archive, /admin/dzvinky) — v2.0
 - ✓ ADM-NAV-01 — sidebar badges (5 nav items, aggregated fetch, TDD) — v2.0
 
-### Active (v3.0)
+### Active (v2.1)
 
-*(Start fresh requirements with `/gsd:new-milestone`)*
+- ADM-DASH-05 — StatCards для Дзвінків і Чатів на /admin
+- ADM-DASH-06 — повноцінні графіки аналітики на /admin (як /admin/analityka)
+- ADM-DASH-07 — таблиця «Останні замовлення» = повна версія, max 10, без фільтрів/пагінації
+- ADM-CALL-05 — автозбереження нотатки дзвінка (throttle 400мс), без кнопки «Зберегти»
+- ADM-CAT-07 — колонка «Дії» (додати товар, видалити категорію) + колонка порядкового номера (DnD-aware)
+- ADM-CAT-08 — автозбереження категорії + кнопка видалення → icon-trash у правому верхньому куті
 
 ### Deferred (post–v2.0)
 
@@ -123,4 +140,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-21 after v2.0 milestone*
+*Last updated: 2026-05-21 — milestone v2.1 started*
