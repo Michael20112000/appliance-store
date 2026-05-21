@@ -25,7 +25,7 @@ Dashboard «Останні замовлення» now matches `/admin/zamovlenni
 ## Verification
 
 - `npx vitest run src/server/services/admin-order.service.test.ts` — 35 tests pass
-- Human verify: **pending** — `/admin` table vs `/admin/zamovlennia`
+- Human verify: **approved** (2026-05-21) — 6 columns, status select, row nav, max 10 rows
 
 ## Self-Check: PASSED (automated)
 

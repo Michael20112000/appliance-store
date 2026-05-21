@@ -24,7 +24,7 @@ Replaced mini `AnalyticsDashboardPreview` on `/admin` with the same `AnalyticsCh
 
 - `npx vitest run src/server/services/admin-analytics.service.test.ts` — pass
 - `rg analytics-dashboard-preview` — zero hits in `src/`
-- Human verify: **pending** — compare `/admin` vs `/admin/analityka?days=30`
+- Human verify: **approved** (2026-05-21) — charts match `/admin/analityka?days=30`, link OK
 
 ## Self-Check: PASSED (automated)
 

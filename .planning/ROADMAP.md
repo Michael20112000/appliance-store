@@ -34,7 +34,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 **Milestone Goal:** Допрацювати адмін-дашборд і UX адмін-сторінок — повноцінні дані, автозбереження, зручніші дії.
 
 - [x] **Phase 37: Dashboard StatCards** - Два нові StatCard для дзвінків і чатів на /admin
-- [ ] **Phase 38: Dashboard Data Completeness** - Повноцінні графіки аналітики і розширена таблиця замовлень на дашборді
+- [x] **Phase 38: Dashboard Data Completeness** - Повноцінні графіки аналітики і розширена таблиця замовлень на дашборді (completed 2026-05-21)
 - [ ] **Phase 39: Calls Auto-save & Categories Table Actions** - Автозбереження нотатки дзвінка + колонки порядкового номера і дій у таблиці категорій
 - [ ] **Phase 40: Category Edit UX** - Автозбереження і icon-trash на сторінці редагування категорії
 
@@ -64,8 +64,8 @@ Plans:
   4. Адмін може клацнути рядок у таблиці і потрапити на сторінку замовлення
 **Plans**: 2 plans
 Plans:
-- [ ] 38-01-PLAN.md — Full AnalyticsCharts on dashboard, delete preview component (ADM-DASH-07)
-- [ ] 38-02-PLAN.md — Recent orders table parity with /admin/zamovlennia, take 10 (ADM-DASH-08)
+- [x] 38-01-PLAN.md — Full AnalyticsCharts on dashboard, delete preview component (ADM-DASH-07)
+- [x] 38-02-PLAN.md — Recent orders table parity with /admin/zamovlennia, take 10 (ADM-DASH-08)
 **UI hint**: yes
 
 ### Phase 39: Calls Auto-save & Categories Table Actions
@@ -96,6 +96,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
-| 38. Dashboard Data Completeness | 0/2 | Planned | - |
+| 38. Dashboard Data Completeness | 2/2 | Complete    | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | 0/TBD | Not started | - |
 | 40. Category Edit UX | 0/TBD | Not started | - |
