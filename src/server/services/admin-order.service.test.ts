@@ -66,6 +66,9 @@ describe("getAdminDashboardStats", () => {
     expect(stats.inStockProducts).toBe(12);
     expect(stats.outOfStockProducts).toBe(2);
     expect(stats.recentOrders).toEqual([]);
+    expect(prisma.order.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ take: 10, orderBy: { createdAt: "desc" } }),
+    );
   });
 });
 

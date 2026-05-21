@@ -1,7 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { OrderStatusBadge } from "@/components/admin/order-status-badge";
+import { OrderListStatusSelect } from "@/components/admin/order-list-status-select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   adminClickableRowClassName,
   getAdminClickableRowProps,
@@ -10,13 +18,8 @@ import { formatPriceKopiyky } from "@/lib/catalog/format";
 import { cn } from "@/lib/utils";
 import type { AdminOrderSummaryDto } from "@/server/services/admin-order.service";
 
-export type AdminRecentOrderRow = Pick<
-  AdminOrderSummaryDto,
-  "id" | "orderNumber" | "createdAt" | "status" | "totalKopiyky"
->;
-
 type AdminRecentOrdersTableProps = {
-  orders: AdminRecentOrderRow[];
+  orders: AdminOrderSummaryDto[];
 };
 
 function formatDate(date: Date): string {
@@ -26,29 +29,29 @@ function formatDate(date: Date): string {
   }).format(date);
 }
 
+function deliveryLabel(
+  deliveryType: AdminOrderSummaryDto["deliveryType"],
+): string {
+  return deliveryType === "PICKUP" ? "Самовивіз" : "Доставка по Львову";
+}
+
 export function AdminRecentOrdersTable({ orders }: AdminRecentOrdersTableProps) {
   const router = useRouter();
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
-            <th className="px-4 py-2 font-medium" scope="col">
-              Номер
-            </th>
-            <th className="px-4 py-2 font-medium" scope="col">
-              Дата
-            </th>
-            <th className="px-4 py-2 font-medium" scope="col">
-              Статус
-            </th>
-            <th className="px-4 py-2 font-medium" scope="col">
-              Сума
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="min-w-0 overflow-x-auto rounded-lg border border-border bg-background">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Номер</TableHead>
+            <TableHead>Дата</TableHead>
+            <TableHead>Покупець</TableHead>
+            <TableHead>Доставка</TableHead>
+            <TableHead>Сума</TableHead>
+            <TableHead>Статус</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {orders.map((order) => {
             const href = `/admin/zamovlennia/${order.orderNumber}`;
             const rowProps = getAdminClickableRowProps({
@@ -57,29 +60,35 @@ export function AdminRecentOrdersTable({ orders }: AdminRecentOrdersTableProps) 
             });
 
             return (
-              <tr
+              <TableRow
                 key={order.id}
                 {...rowProps}
-                className={cn(
-                  "border-b border-border last:border-0",
-                  adminClickableRowClassName,
-                )}
+                className={cn(adminClickableRowClassName)}
               >
-                <td className="px-4 py-2 font-medium">{order.orderNumber}</td>
-                <td className="px-4 py-2 text-muted-foreground">
+                <TableCell className="font-medium">{order.orderNumber}</TableCell>
+                <TableCell className="text-muted-foreground">
                   {formatDate(order.createdAt)}
-                </td>
-                <td className="px-4 py-2">
-                  <OrderStatusBadge status={order.status} />
-                </td>
-                <td className="px-4 py-2 tabular-nums">
+                </TableCell>
+                <TableCell>
+                  <p>{order.customerName}</p>
+                  <p className="text-muted-foreground">{order.customerPhone}</p>
+                </TableCell>
+                <TableCell>{deliveryLabel(order.deliveryType)}</TableCell>
+                <TableCell className="tabular-nums">
                   {formatPriceKopiyky(order.totalKopiyky)}
-                </td>
-              </tr>
+                </TableCell>
+                <TableCell>
+                  <OrderListStatusSelect
+                    orderId={order.id}
+                    status={order.status}
+                    deliveryType={order.deliveryType}
+                  />
+                </TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

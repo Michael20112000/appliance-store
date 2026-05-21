@@ -138,7 +138,7 @@ export async function getAdminDashboardStats() {
       prisma.product.count({ where: { quantity: { gte: 1 } } }),
       prisma.product.count({ where: { quantity: 0 } }),
       prisma.order.findMany({
-        take: 5,
+        take: 10,
         orderBy: { createdAt: "desc" },
         include: { items: true },
       }),
