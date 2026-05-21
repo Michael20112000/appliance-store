@@ -48,7 +48,9 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   1. Адмін бачить StatCard «Нові дзвінки» з актуальним лічильником непрочитаних/нових дзвінків на /admin
   2. Адмін бачить StatCard «Активні чати» з кількістю непрочитаних повідомлень на /admin
   3. Обидва нові StatCards відображаються поруч з існуючими (замовлення, товари тощо) без порушення лейауту
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 37-01-PLAN.md — Add «Нові дзвінки» and «Активні чати» StatCards to dashboard (ADM-DASH-05, ADM-DASH-06)
 **UI hint**: yes
 
 ### Phase 38: Dashboard Data Completeness
@@ -90,7 +92,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 37. Dashboard StatCards | 0/TBD | Not started | - |
+| 37. Dashboard StatCards | 0/1 | Not started | - |
 | 38. Dashboard Data Completeness | 0/TBD | Not started | - |
 | 39. Calls Auto-save & Categories Table Actions | 0/TBD | Not started | - |
 | 40. Category Edit UX | 0/TBD | Not started | - |
