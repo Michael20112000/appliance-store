@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  createCategoryAction,
-  deleteCategoryAction,
-  updateCategoryAction,
-} from "@/server/actions/admin/category.actions";
+import { createCategoryAction } from "@/server/actions/admin/category.actions";
 import {
   upsertCategorySchema,
   type UpsertCategoryInput,
 } from "@/server/validators/category";
+import {
+  useCategoryAutoSave,
+  type SaveStatus,
+} from "@/hooks/admin/use-category-auto-save";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,8 @@ type CategoryFormProps = {
   categoryId?: string;
   categoryCount?: number;
   defaultValues?: Partial<UpsertCategoryInput>;
+  onSaveStatusChange?: (status: SaveStatus) => void;
+  onAutoSaveFlushReady?: (flush: () => void) => void;
 };
 
 export function CategoryForm({
@@ -36,6 +38,8 @@ export function CategoryForm({
   categoryId,
   categoryCount = 0,
   defaultValues,
+  onSaveStatusChange,
+  onAutoSaveFlushReady,
 }: CategoryFormProps) {
   const maxRank =
     mode === "create" ? Math.max(1, categoryCount + 1) : Math.max(1, categoryCount);
@@ -50,6 +54,26 @@ export function CategoryForm({
 
   const isSubmitting = form.formState.isSubmitting;
 
+  const initialValues: UpsertCategoryInput = {
+    name: defaultValues?.name ?? "",
+    sortOrder: defaultValues?.sortOrder ?? maxRank,
+  };
+
+  const { status, flush } = useCategoryAutoSave({
+    control: form.control,
+    categoryId: categoryId ?? "",
+    enabled: mode === "edit",
+    initialValues,
+  });
+
+  useEffect(() => {
+    onSaveStatusChange?.(status);
+  }, [status, onSaveStatusChange]);
+
+  useEffect(() => {
+    onAutoSaveFlushReady?.(flush);
+  }, [flush, onAutoSaveFlushReady]);
+
   const onSubmit = form.handleSubmit(async (values) => {
     setError(null);
 
@@ -60,34 +84,7 @@ export function CategoryForm({
       }
       return;
     }
-
-    if (!categoryId) {
-      setError(errorMessages.UNKNOWN);
-      return;
-    }
-
-    const result = await updateCategoryAction({ id: categoryId, ...values });
-    if (result && !result.ok) {
-      setError(errorMessages[result.error] ?? errorMessages.UNKNOWN);
-    }
   });
-
-  const onDelete = async () => {
-    if (!categoryId) return;
-    if (
-      !window.confirm(
-        "Видалити категорію? Дію не можна скасувати, якщо в ній немає товарів.",
-      )
-    ) {
-      return;
-    }
-
-    setError(null);
-    const result = await deleteCategoryAction(categoryId);
-    if (result && !result.ok) {
-      setError(errorMessages[result.error] ?? errorMessages.UNKNOWN);
-    }
-  };
 
   return (
     <form onSubmit={onSubmit} className="max-w-lg space-y-6">
@@ -135,21 +132,13 @@ export function CategoryForm({
         ) : null}
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Збереження…" : "Зберегти"}
-        </Button>
-        {mode === "edit" ? (
-          <Button
-            type="button"
-            variant="destructive"
-            disabled={isSubmitting}
-            onClick={onDelete}
-          >
-            Видалити
+      {mode === "create" ? (
+        <div className="flex flex-wrap items-center gap-3">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Збереження…" : "Зберегти"}
           </Button>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </form>
   );
 }

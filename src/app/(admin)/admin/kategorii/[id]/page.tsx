@@ -1,8 +1,5 @@
-import Link from "next/link";
-import { Eye, Plus } from "lucide-react";
 import { notFound } from "next/navigation";
-import { CategoryForm } from "@/components/admin/category-form";
-import { Button } from "@/components/ui/button";
+import { CategoryEditPageContent } from "@/components/admin/category-edit-page-content";
 import { CategoryImageUpload } from "@/components/admin/category-image-upload";
 import {
   getCategoryById,
@@ -23,38 +20,13 @@ export default async function AdminEditCategoryPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold">Редагувати категорію</h1>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            render={
-              <Link href={`/admin/tovary?categoryId=${category.id}`} />
-            }
-          >
-            <Eye className="size-4" aria-hidden />
-            Переглянути товари
-          </Button>
-          <Button
-            size="sm"
-            render={
-              <Link href={`/admin/tovary/novyi?categoryId=${category.id}`} />
-            }
-          >
-            <Plus className="size-4" aria-hidden />
-            Додати товар
-          </Button>
-        </div>
-      </div>
-      <CategoryForm
-        mode="edit"
+      <CategoryEditPageContent
         categoryId={category.id}
-        categoryCount={await getCategoryCount()}
         defaultValues={{
           name: category.name,
           sortOrder: category.sortOrder,
         }}
+        categoryCount={await getCategoryCount()}
       />
 
       <section
