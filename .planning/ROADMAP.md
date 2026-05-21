@@ -91,7 +91,10 @@ Plans:
   1. Адмін редагує поля категорії — зміни зберігаються автоматично без кнопки «Зберегти», аналогічно /admin/tovary/[id]
   2. Кнопки «Зберегти» немає на сторінці редагування категорії
   3. У правому верхньому куті сторінки редагування категорії розташована icon-only trash-кнопка для видалення категорії
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 40-01-PLAN.md — useCategoryAutoSave hook + CategoryEditDeleteButton with tests (ADM-CAT-09, ADM-CAT-10)
+- [ ] 40-02-PLAN.md — CategoryEditHeader + CategoryEditPageContent + CategoryForm refactor + page wiring (ADM-CAT-09, ADM-CAT-10)
 **UI hint**: yes
 
 ## Progress
@@ -101,4 +104,4 @@ Plans:
 | 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | 2/2 | Complete    | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | 2/2 | Complete    | 2026-05-21 |
-| 40. Category Edit UX | 0/TBD | Not started | - |
+| 40. Category Edit UX | 0/2 | Not started | - |
