@@ -4,8 +4,8 @@ milestone: v2.0
 milestone_name: Polish, UX & Admin analytics
 status: executing
 stopped_at: Phase 36 context gathered
-last_updated: "2026-05-21T10:45:03.355Z"
-last_activity: 2026-05-21 -- Phase 36 planning complete
+last_updated: "2026-05-21T10:47:40.863Z"
+last_activity: 2026-05-21 -- Phase 36 execution started
 progress:
   total_phases: 9
   completed_phases: 8
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-20)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 36 — admin sidebar badges
+**Current focus:** Phase 36 — admin-sidebar-badges
 
 ## Current Position
 
-Phase: 36
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-05-21 -- Phase 36 planning complete
+Phase: 36 (admin-sidebar-badges) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 36
+Last activity: 2026-05-21 -- Phase 36 execution started
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 

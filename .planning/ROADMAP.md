@@ -240,13 +240,13 @@ Plans:
 3. Чати / дзвінки — лише невирішені, не total
 4. Performance: один aggregated query або RSC cache, без N+1 на кожен nav render
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 
 **Wave 0**
 
-- [ ] 36-01-PLAN.md — Nyquist test scaffold: admin-sidebar.service.test.ts failing stubs (ADM-NAV-01)
+- [x] 36-01-PLAN.md — Nyquist test scaffold: admin-sidebar.service.test.ts failing stubs (ADM-NAV-01)
 
 **Wave 1** *(blocked on Wave 0)*
 
