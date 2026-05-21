@@ -31,12 +31,12 @@ function FilterChip({ label, onDismiss }: FilterChipProps) {
   return (
     <Badge
       variant="secondary"
-      className="h-11 min-h-11 gap-0 rounded-full py-0 pl-3 pr-0 text-sm font-normal"
+      className="h-11 min-h-11 gap-0 rounded-full cursor-pointer py-0 pl-3 pr-0 text-sm font-normal"
     >
       <span className="pr-1">{label}</span>
       <button
         type="button"
-        className="inline-flex size-11 min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full hover:bg-muted/80"
+        className="inline-flex size-11 cursor-pointer min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full hover:bg-muted/80"
         aria-label={`Прибрати фільтр: ${label}`}
         onClick={onDismiss}
       >

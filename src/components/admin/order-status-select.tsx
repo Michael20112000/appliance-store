@@ -111,7 +111,7 @@ export function OrderStatusSelect({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={order.status}>
-              {ORDER_STATUS_LABELS_UA[order.status]} (поточний)
+              {ORDER_STATUS_LABELS_UA[order.status]}
             </SelectItem>
             {options.map((status) => (
               <SelectItem key={status} value={status}>

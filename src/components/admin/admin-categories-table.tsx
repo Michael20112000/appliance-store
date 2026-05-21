@@ -106,14 +106,18 @@ function SortableRow({
           data-admin-row-interactive
           className="flex flex-wrap gap-2"
         >
-          <Button variant="outline" size="sm" asChild>
-            <Link
-              href={`/admin/tovary/novyi?categoryId=${category.id}`}
-              onClick={stopRowNav}
-              onPointerDown={stopRowNav}
-            >
-              Додати товар
-            </Link>
+          <Button
+            variant="outline"
+            size="sm"
+            render={
+              <Link
+                href={`/admin/tovary/novyi?categoryId=${category.id}`}
+                onClick={stopRowNav}
+                onPointerDown={stopRowNav}
+              />
+            }
+          >
+            Додати товар
           </Button>
           <CategoryTableDeleteButton
             categoryId={category.id}

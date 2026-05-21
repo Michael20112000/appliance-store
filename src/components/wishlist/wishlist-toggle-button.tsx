@@ -127,7 +127,7 @@ export function WishlistToggleButton({
         size="icon"
         variant="secondary"
         className={cn(
-          "absolute right-2 top-2 z-10 bg-background/90 shadow-sm",
+          "absolute cursor-pointer right-2 top-2 z-10 bg-background/90 shadow-sm",
           inWishlist && "text-destructive",
         )}
         disabled={isPending}
@@ -144,7 +144,7 @@ export function WishlistToggleButton({
     <Button
       type="button"
       variant="outline"
-      className="min-h-11 w-full sm:w-auto"
+      className="min-h-11 cursor-pointer w-full sm:w-auto"
       disabled={isPending}
       onClick={handleClick}
       aria-pressed={inWishlist}

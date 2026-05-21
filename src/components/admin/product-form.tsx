@@ -154,12 +154,6 @@ export function ProductForm({
             ) : null}
           </div>
 
-          {mode === "create" ? (
-            <p className="text-xs text-muted-foreground sm:col-span-2">
-              Slug для URL згенерується автоматично з назви товару.
-            </p>
-          ) : null}
-
           <div className="space-y-2">
             <Label htmlFor="brand">Бренд</Label>
             <Input id="brand" {...form.register("brand")} />
@@ -250,11 +244,6 @@ export function ProductForm({
               className="tabular-nums"
               {...form.register("quantity", { valueAsNumber: true })}
             />
-            {mode === "create" ? (
-              <p className="text-xs text-muted-foreground">
-                Скільки однакових одиниць у цьому оголошенні.
-              </p>
-            ) : null}
             {form.formState.errors.quantity ? (
               <p className="text-sm text-destructive">
                 {form.formState.errors.quantity.message}
