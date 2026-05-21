@@ -105,6 +105,22 @@ export async function deleteCategoryAction(id: string) {
   }
 }
 
+export async function deleteCategoryFromListAction(id: string) {
+  await requireAdmin();
+
+  if (!id || typeof id !== "string") {
+    return { ok: false as const, error: "UNKNOWN" as const };
+  }
+
+  try {
+    await deleteCategory(id);
+    revalidateCategoryPaths();
+    return { ok: true as const };
+  } catch (error) {
+    return mapCategoryError(error);
+  }
+}
+
 export async function reorderCategoriesAction(
   orderedIds: string[]
 ): Promise<{ ok: true } | { ok: false; error: string }> {

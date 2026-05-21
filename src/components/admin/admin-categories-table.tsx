@@ -28,6 +28,8 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Button } from "@/components/ui/button";
+import { CategoryTableDeleteButton } from "@/components/admin/category-table-delete-button";
 import { reorderCategoriesAction } from "@/server/actions/admin/category.actions";
 
 export type AdminCategoryRow = {
@@ -43,12 +45,16 @@ type AdminCategoriesTableProps = {
 
 function SortableRow({
   category,
+  rowNumber,
   stopRowNav,
   onNavigate,
+  onCategoryDeleted,
 }: {
   category: AdminCategoryRow;
+  rowNumber: number;
   stopRowNav: (event: React.SyntheticEvent) => void;
   onNavigate: (href: string) => void;
+  onCategoryDeleted: (id: string) => void;
 }) {
   const {
     attributes,
@@ -76,6 +82,7 @@ function SortableRow({
       {...rowProps}
       className={cn("border-b border-border last:border-0", adminClickableRowClassName)}
     >
+      <td className="px-4 py-2 tabular-nums text-muted-foreground">{rowNumber}</td>
       <td className="px-2 py-2 w-8 touch-none cursor-grab">
         <GripVertical
           className="size-4 text-muted-foreground"
@@ -94,6 +101,26 @@ function SortableRow({
           <span className="text-muted-foreground"> ({category.productCount})</span>
         </Link>
       </td>
+      <td className="px-4 py-2">
+        <div
+          data-admin-row-interactive
+          className="flex flex-wrap gap-2"
+        >
+          <Button variant="outline" size="sm" asChild>
+            <Link
+              href={`/admin/tovary/novyi?categoryId=${category.id}`}
+              onClick={stopRowNav}
+              onPointerDown={stopRowNav}
+            >
+              Додати товар
+            </Link>
+          </Button>
+          <CategoryTableDeleteButton
+            categoryId={category.id}
+            onDeleted={() => onCategoryDeleted(category.id)}
+          />
+        </div>
+      </td>
     </tr>
   );
 }
@@ -110,6 +137,10 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
 
   const stopRowNav = (event: React.SyntheticEvent) => event.stopPropagation();
 
+  function handleCategoryDeleted(id: string) {
+    setLocalCategories((prev) => prev.filter((c) => c.id !== id));
+  }
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -117,14 +148,14 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
     const oldIndex = localCategories.findIndex((c) => c.id === active.id);
     const newIndex = localCategories.findIndex((c) => c.id === over.id);
     const reordered = arrayMove(localCategories, oldIndex, newIndex);
-    const snapshot = localCategories; // capture before optimistic update
+    const snapshot = localCategories;
 
     setLocalCategories(reordered);
 
     startTransition(async () => {
       const result = await reorderCategoriesAction(reordered.map((c) => c.id));
       if (!result.ok) {
-        setLocalCategories(snapshot); // roll back to snapshot
+        setLocalCategories(snapshot);
         toast.error("Помилка збереження порядку");
       }
     });
@@ -140,11 +171,13 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50 text-left text-muted-foreground">
+              <th className="px-4 py-2 font-medium w-12">№</th>
               <th className="px-2 py-2 w-8">
                 <span className="sr-only">Перетягнути</span>
               </th>
               <th className="px-4 py-2 font-medium">Назва</th>
               <th className="px-4 py-2 font-medium">Товари</th>
+              <th className="px-4 py-2 font-medium">Дії</th>
             </tr>
           </thead>
           <SortableContext
@@ -152,12 +185,14 @@ export function AdminCategoriesTable({ categories }: AdminCategoriesTableProps) 
             strategy={verticalListSortingStrategy}
           >
             <tbody>
-              {localCategories.map((category) => (
+              {localCategories.map((category, index) => (
                 <SortableRow
                   key={category.id}
                   category={category}
+                  rowNumber={index + 1}
                   stopRowNav={stopRowNav}
                   onNavigate={(target) => router.push(target)}
+                  onCategoryDeleted={handleCategoryDeleted}
                 />
               ))}
             </tbody>
