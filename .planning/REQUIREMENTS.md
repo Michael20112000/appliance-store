@@ -47,21 +47,21 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ADM-DASH-05 | — | Pending |
-| ADM-DASH-06 | — | Pending |
-| ADM-DASH-07 | — | Pending |
-| ADM-DASH-08 | — | Pending |
-| CALL-05 | — | Pending |
-| ADM-CAT-07 | — | Pending |
-| ADM-CAT-08 | — | Pending |
-| ADM-CAT-09 | — | Pending |
-| ADM-CAT-10 | — | Pending |
+| ADM-DASH-05 | Phase 37 | Pending |
+| ADM-DASH-06 | Phase 37 | Pending |
+| ADM-DASH-07 | Phase 38 | Pending |
+| ADM-DASH-08 | Phase 38 | Pending |
+| CALL-05 | Phase 39 | Pending |
+| ADM-CAT-07 | Phase 39 | Pending |
+| ADM-CAT-08 | Phase 39 | Pending |
+| ADM-CAT-09 | Phase 40 | Pending |
+| ADM-CAT-10 | Phase 40 | Pending |
 
 **Coverage:**
 - v2.1 requirements: 9 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 9 ⚠
+- Mapped to phases: 9 ✓
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-05-21*
-*Last updated: 2026-05-21 after v2.1 milestone start*
+*Last updated: 2026-05-21 — Roadmap v2.1 created, all 9 requirements mapped to Phases 37–40*

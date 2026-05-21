@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Fixes & UX
 status: planning
-last_updated: "2026-05-21T12:18:15.632Z"
+last_updated: "2026-05-21T12:30:00.000Z"
 last_activity: 2026-05-21
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,49 +20,37 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Planning v3.0 milestone
+**Current focus:** v2.1 — Phase 37 ready to plan
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 1 of 4 (Phase 37: Dashboard StatCards)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-21 — Milestone v2.1 started
+Status: Ready to plan
+Last activity: 2026-05-21 — Roadmap v2.1 created (Phases 37–40)
 
-### Shipped on `main` (checkpoint 2026-05-19)
-
-| Work | Commits area |
-|------|----------------|
-| Phases 17–19 (admin chat scroll, list delete, db purge) | merged to main |
-| Phase 20 guest checkout | 2a4ddfb |
-| v1.4 operator bugs BUG-01…11 | 40deedf |
-| Hotfixes (categories.ts, product-form JSX, suppressAdminRowNavigation, header keys) | d00a11c…bf591ba |
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
-**Velocity:** see milestone archives v1.0–v1.3
+**Velocity:** See milestone archives v1.0–v2.0
 
 ## Accumulated Context
 
 ### Decisions
 
-- Bugfixes: **intake → plan → execute** — see `.planning/BUGFIX-WORKFLOW.md`
-- Guest checkout: localStorage cart + `guestAccessToken` (phase 20)
-- Do **not** merge `git stash@{0}` (catalog pagination WIP) without a dedicated plan
-- Phase 33: SortableRow sub-component extracted above AdminCategoriesTable for clean useSortable usage per row
+- Phase 34: shadcn recharts — client chart components import @/lib/admin/analytics only (never admin-analytics.service — Prisma bundle leak)
+- Phase 34: priceSnapshot is kopiyky — analytics converts via kopiykyToRevenueUah before formatRevenue
+- Phase 36: Single aggregated fetch for sidebar — Promise.all 5 queries, no N+1 per nav render
 - Phase 33: DnD listeners on GripVertical icon only (not tr) — prevents click-vs-drag conflict
-- Phase 33: No DragOverlay used — opacity:0.5 on isDragging row sufficient for low-row admin table
-- [Phase ?]: 34-02: Revenue query covers ALL orders regardless of status (D-01) — no WHERE o.status filter in $queryRaw
-- Phase 34: priceSnapshot is kopiyky — analytics converts via kopiykyToRevenueUah before formatRevenue (D-02)
-- Phase 34: client chart components import @/lib/admin/analytics only (never admin-analytics.service — Prisma bundle leak)
 
 ### Pending Todos
 
-- `/gsd-verify-work` — conversational UAT (optional follow-up)
+- `/gsd-verify-work` — conversational UAT (optional follow-up from v2.0)
 
 ### Blockers/Concerns
 
-- Ad-hoc multi-bug chat fixes caused regressions (partial stash merge, missing exports) — mitigated by workflow above
+None for v2.1.
 
 ## Deferred Items
 
@@ -74,37 +62,9 @@ Items acknowledged and deferred at milestone v2.0 close on 2026-05-21:
 | uat_gaps | Phase 28 (1 pending scenario), Phase 32 (3 pending) | deferred |
 | dnd | aria-describedby hydration mismatch in SortableRow | P2 — known @dnd-kit SSR issue |
 | test | prisma/seed.test.ts 3 failures (out-of-stock counts) | P2 — pre-existing seed state |
-| todos | bugfix-intake-TEMPLATE.md | template only, not a real task |
-
-Items acknowledged and deferred at milestone v1.5 close on 2026-05-19:
-
-| Category | Item | Status |
-|----------|------|--------|
-| uat_gaps | Phase 04, 07, 18 HUMAN-UAT partial | deferred |
-| verification_gaps | Phases 04, 06, 07, 12, 13, 18 VERIFICATION | human_needed / gaps_found |
-| test | `prisma/seed.test.ts` out-of-stock count | P2 — document after seed |
-| e2e | `e2e/cart-auth.spec.ts` guest redirect expectations | P2 — contradicts guest checkout |
-| wip | `git stash@{0}` catalog pagination | deferred — CAT-WIP-01 |
-| todos | bugfix-intake-TEMPLATE.md | template only |
-| perf | CWV / Lighthouse targets | v2 PERF-01 |
-
-Items acknowledged at v1.4 milestone close (2026-05-19):
-
-| Category | Item | Status |
-|----------|------|--------|
-| uat_gaps | Phase 04, 07 HUMAN-UAT partial | deferred |
-| uat_gaps | Phase 19 purge UAT | closed in phase 27 |
-| verification_gaps | Phases 04, 06, 07, 12, 13, 18, 19 VERIFICATION | human_needed / gaps_found |
-| todos | bugfix-intake-TEMPLATE.md | template only |
-| Phase 33-admin-categories-dnd-links P01 | 5min | 2 tasks | 2 files |
-| Phase 34-admin-analytics P02 | 8min | 1 tasks | 4 files |
 
 ## Session Continuity
 
-Last session: 2026-05-21T09:41:39.591Z
-Stopped at: Phase 36 context gathered
-Resume: `/gsd-plan-phase 34` (Phase 34: Admin analytics) or `/gsd-new-milestone` if milestone review needed
-
-## Operator Next Steps
-
-- Start the next milestone with `/gsd:new-milestone`
+Last session: 2026-05-21
+Stopped at: Roadmap created for v2.1 (Phases 37–40)
+Resume: `/gsd:plan-phase 37`
