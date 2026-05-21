@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Fixes & UX
-status: executing
-stopped_at: Phase 39 context gathered
-last_updated: "2026-05-21T13:34:15.666Z"
-last_activity: 2026-05-21 -- Phase 39 planning complete
+status: ready_to_plan
+stopped_at: Phase 39 complete (2/2) — ready to discuss Phase 40
+last_updated: 2026-05-21T13:39:32.220Z
+last_activity: 2026-05-21 -- Phase 39 execution started
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 5
   percent: 50
 ---
 
@@ -21,15 +21,15 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 39 — calls auto save & categories table actions
+**Current focus:** Phase 40 — category edit ux
 
 ## Current Position
 
-Phase: 39
+Phase: 40
 Plan: Not started
 Plans: 2 plans (38-01 charts, 38-02 orders table)
-Status: Ready to execute
-Last activity: 2026-05-21 -- Phase 39 planning complete
+Status: Ready to plan
+Last activity: 2026-05-21
 
 Progress: [███░░░░░░░] 33% (1/4 phases complete in v2.1)
 

@@ -35,7 +35,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 - [x] **Phase 37: Dashboard StatCards** - Два нові StatCard для дзвінків і чатів на /admin
 - [x] **Phase 38: Dashboard Data Completeness** - Повноцінні графіки аналітики і розширена таблиця замовлень на дашборді (completed 2026-05-21)
-- [ ] **Phase 39: Calls Auto-save & Categories Table Actions** - Автозбереження нотатки дзвінка + колонки порядкового номера і дій у таблиці категорій
+- [x] **Phase 39: Calls Auto-save & Categories Table Actions** - Автозбереження нотатки дзвінка + колонки порядкового номера і дій у таблиці категорій (completed 2026-05-21)
 - [ ] **Phase 40: Category Edit UX** - Автозбереження і icon-trash на сторінці редагування категорії
 
 ## Phase Details
@@ -79,8 +79,8 @@ Plans:
   4. Колонка «Дії» містить кнопку «Видалити» з діалогом підтвердження перед видаленням категорії
 **Plans**: 2 plans
 Plans:
-- [ ] 39-01-PLAN.md — Callback note auto-save hook + CallbackNoteField (CALL-05)
-- [ ] 39-02-PLAN.md — Categories table № + Дії columns, list delete action (ADM-CAT-07, ADM-CAT-08)
+- [x] 39-01-PLAN.md — Callback note auto-save hook + CallbackNoteField (CALL-05)
+- [x] 39-02-PLAN.md — Categories table № + Дії columns, list delete action (ADM-CAT-07, ADM-CAT-08)
 **UI hint**: yes
 
 ### Phase 40: Category Edit UX
@@ -100,5 +100,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | 2/2 | Complete    | 2026-05-21 |
-| 39. Calls Auto-save & Categories Table Actions | 0/2 | Not started | - |
+| 39. Calls Auto-save & Categories Table Actions | 2/2 | Complete    | 2026-05-21 |
 | 40. Category Edit UX | 0/TBD | Not started | - |
