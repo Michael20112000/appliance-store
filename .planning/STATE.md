@@ -4,8 +4,8 @@ milestone: v2.1
 milestone_name: Fixes & UX
 status: executing
 stopped_at: Phase 40 context gathered
-last_updated: "2026-05-21T14:48:51.824Z"
-last_activity: 2026-05-21 -- Phase 40 planning complete
+last_updated: "2026-05-21T14:50:10.836Z"
+last_activity: 2026-05-21 -- Phase 40 execution started
 progress:
   total_phases: 4
   completed_phases: 3
@@ -21,15 +21,15 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 40 — category edit ux
+**Current focus:** Phase 40 — category-edit-ux
 
 ## Current Position
 
-Phase: 40
-Plan: Not started
+Phase: 40 (category-edit-ux) — EXECUTING
+Plan: 1 of 2
 Plans: 2 plans (38-01 charts, 38-02 orders table)
-Status: Ready to execute
-Last activity: 2026-05-21 -- Phase 40 planning complete
+Status: Executing Phase 40
+Last activity: 2026-05-21 -- Phase 40 execution started
 
 Progress: [███░░░░░░░] 33% (1/4 phases complete in v2.1)
 
