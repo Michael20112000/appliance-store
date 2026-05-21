@@ -1,11 +1,11 @@
 ---
 gsd_state_version: 1.0
 milestone: v2.0
-milestone_name: milestone
-status: completed
+milestone_name: Appliance Store MVP
+status: Phase 36 shipped — PR phase-36-admin-sidebar-badges
 stopped_at: Phase 36 context gathered
-last_updated: "2026-05-21T11:21:06.377Z"
-last_activity: 2026-05-21 -- Phase 36 marked complete
+last_updated: "2026-05-21T11:29:47.588Z"
+last_activity: 2026-05-21
 progress:
   total_phases: 9
   completed_phases: 9
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-20)
 
 Phase: 36 — COMPLETE
 Plan: 1 of 3
-Status: Phase 36 complete
-Last activity: 2026-05-21 -- Phase 36 marked complete
+Status: Phase 36 shipped — PR phase-36-admin-sidebar-badges
+Last activity: 2026-05-21
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
