@@ -62,7 +62,10 @@ Plans:
   2. Таблиця «Останні замовлення» на дашборді відповідає структурі таблиці з /admin/zamovlennia: ті самі колонки, статуси з акцентами, row-click навігація
   3. Таблиця показує максимум 10 рядків і не містить фільтр-табів і пагінації
   4. Адмін може клацнути рядок у таблиці і потрапити на сторінку замовлення
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 38-01-PLAN.md — Full AnalyticsCharts on dashboard, delete preview component (ADM-DASH-07)
+- [ ] 38-02-PLAN.md — Recent orders table parity with /admin/zamovlennia, take 10 (ADM-DASH-08)
 **UI hint**: yes
 
 ### Phase 39: Calls Auto-save & Categories Table Actions
@@ -92,7 +95,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 37. Dashboard StatCards | 0/1 | Not started | - |
-| 38. Dashboard Data Completeness | 0/TBD | Not started | - |
+| 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
+| 38. Dashboard Data Completeness | 0/2 | Planned | - |
 | 39. Calls Auto-save & Categories Table Actions | 0/TBD | Not started | - |
 | 40. Category Edit UX | 0/TBD | Not started | - |
