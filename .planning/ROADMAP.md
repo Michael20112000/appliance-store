@@ -240,7 +240,21 @@ Plans:
 3. Чати / дзвінки — лише невирішені, не total
 4. Performance: один aggregated query або RSC cache, без N+1 на кожен nav render
 
-**Plans:** 0/0
+**Plans:** 3 plans
+
+Plans:
+
+**Wave 0**
+
+- [ ] 36-01-PLAN.md — Nyquist test scaffold: admin-sidebar.service.test.ts failing stubs (ADM-NAV-01)
+
+**Wave 1** *(blocked on Wave 0)*
+
+- [ ] 36-02-PLAN.md — admin-sidebar.service.ts: getAdminSidebarCounts() + AdminSidebarBadgeCounts type (ADM-NAV-01)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 36-03-PLAN.md — Props refactor (layout → shell → AppSidebar) + five badge renders + human verify (ADM-NAV-01)
 
 ---
 
