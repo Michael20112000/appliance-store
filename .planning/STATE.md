@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.1
-milestone_name: Fixes & UX
-status: Awaiting next milestone
-stopped_at: Phase 40 context gathered
-last_updated: "2026-05-21T15:28:15.566Z"
-last_activity: 2026-05-21 — Milestone v2.1 completed and archived
+milestone: v2.2
+milestone_name: Bugfixes & Small Features
+status: planning
+last_updated: "2026-05-21T16:26:12.480Z"
+last_activity: 2026-05-21
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-05-21)
 
 ## Current Position
 
-Phase: Milestone v2.1 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-21 — Milestone v2.1 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-21 — Milestone v2.2 started
 
 ## Deferred Items
 
@@ -36,7 +35,7 @@ Items acknowledged and deferred at milestone close on 2026-05-21:
 
 | Category | Item | Status |
 |----------|------|--------|
-| verification_gap | Phase 40: 40-VERIFICATION.md | human_needed — user confirmed manual pass |
+| verification_gap | Phase 40: 40-VERIFICATION.md | ✅ closed — user manually verified 2026-05-21 |
 | todo | bugfix-intake-TEMPLATE.md | template file, not a real task |
 
 ## Accumulated Context
@@ -54,5 +53,5 @@ None. All v2.1 requirements delivered and manually verified.
 ## Session Continuity
 
 Last session: 2026-05-21
-Stopped at: Milestone v2.1 archived
+Stopped at: Milestone v2.1 summary generated (.planning/reports/MILESTONE_SUMMARY-v2.1.md)
 Resume: `/gsd:new-milestone`

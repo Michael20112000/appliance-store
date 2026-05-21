@@ -10,9 +10,16 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current State
+## Current Milestone: v2.2 Bugfixes & Small Features
 
-**Shipped:** v1.0 → v2.1 (2026-05-21)
+**Goal:** Покращити storefront — соцмережі, floating-кнопки, анімації, та закрити дрібні баги.
+
+**Target features:**
+- Соцмережі (Telegram, Viber, WhatsApp) у хедері, мобільному дровері, футері (mock links)
+- Floating-кнопки ліворуч внизу: корзина (завжди) + callback-діалог з формою телефону
+- Фікс цінового слайдера в каталозі: крок 50грн, snap до реального min/max
+- Легкі анімації storefront + fade-перехід між сторінками (без адмінки)
+- Баг: адреса в футері веде на Google Maps embed URL замість звичайного посилання
 
 ## Current State
 
@@ -65,9 +72,14 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ CALL-01…04 — Дзвінки workspace (status, note, archive, /admin/dzvinky) — v2.0
 - ✓ ADM-NAV-01 — sidebar badges (5 nav items, aggregated fetch, TDD) — v2.0
 
-### Active (v2.2+)
+### Active (v2.2)
 
-*(See next milestone planning for new requirements)*
+- [ ] SOC-01 — Соцмережі у хедері, дровері, футері (Telegram, Viber, WhatsApp)
+- [ ] FAB-01 — Floating cart button (завжди видима, ліворуч внизу)
+- [ ] FAB-02 — Floating callback button з діалогом (номер магазину + форма телефону)
+- [ ] SLIDER-01 — Ціновий слайдер: крок 50грн, snap до реального min/max
+- [ ] ANIM-01 — Легкі анімації storefront + fade page transitions
+- [ ] BUG-25 — Адреса в футері: виправити посилання з embed URL на Google Maps
 
 ### Deferred (post–v2.0)
 
