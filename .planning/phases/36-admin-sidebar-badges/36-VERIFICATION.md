@@ -1,7 +1,7 @@
 ---
 phase: 36-admin-sidebar-badges
 verified: 2026-05-21T14:20:00Z
-status: human_needed
+status: passed
 score: 19/19 must-haves verified
 overrides_applied: 0
 human_verification:
@@ -14,7 +14,7 @@ human_verification:
 
 **Phase Goal:** Implement admin sidebar badge counts — operators see attention signals on all five nav items (categories, products, pending orders, unread chats, unresolved callbacks) from a single aggregated server-side fetch with no N+1, using TDD discipline.
 **Verified:** 2026-05-21T14:20:00Z
-**Status:** human_needed
+**Status:** passed
 **Re-verification:** No — initial verification
 
 ## Goal Achievement
