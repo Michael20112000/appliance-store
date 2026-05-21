@@ -116,7 +116,11 @@ describe("useCategoryAutoSave", () => {
 
     await act(async () => {
       result.current.form.setValue("name", "Пральні машини");
+    });
+
+    await act(async () => {
       vi.advanceTimersByTime(500);
+      await Promise.resolve();
       await Promise.resolve();
     });
 
