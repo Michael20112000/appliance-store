@@ -77,7 +77,10 @@ Plans:
   2. Таблиця категорій відображає колонку з порядковим номером (1, 2, 3…), що оновлюється після DnD-перестановки рядків
   3. Таблиця категорій має колонку «Дії» з кнопкою «Додати товар» (веде до форми нового товару з передвибраною категорією)
   4. Колонка «Дії» містить кнопку «Видалити» з діалогом підтвердження перед видаленням категорії
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 39-01-PLAN.md — Callback note auto-save hook + CallbackNoteField (CALL-05)
+- [ ] 39-02-PLAN.md — Categories table № + Дії columns, list delete action (ADM-CAT-07, ADM-CAT-08)
 **UI hint**: yes
 
 ### Phase 40: Category Edit UX
@@ -97,5 +100,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | 2/2 | Complete    | 2026-05-21 |
-| 39. Calls Auto-save & Categories Table Actions | 0/TBD | Not started | - |
+| 39. Calls Auto-save & Categories Table Actions | 0/2 | Not started | - |
 | 40. Category Edit UX | 0/TBD | Not started | - |
