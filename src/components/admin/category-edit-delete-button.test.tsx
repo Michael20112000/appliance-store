@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
-import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { CategoryEditDeleteButton } from "./category-edit-delete-button";
 
 const push = vi.fn();
@@ -21,6 +21,10 @@ import { deleteCategoryFromListAction } from "@/server/actions/admin/category.ac
 import { toast } from "sonner";
 
 describe("CategoryEditDeleteButton", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("opens AlertDialog and calls deleteCategoryFromListAction on confirm then redirects on success", async () => {
     vi.mocked(deleteCategoryFromListAction).mockResolvedValue({ ok: true });
     push.mockReset();
