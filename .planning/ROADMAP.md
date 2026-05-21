@@ -36,7 +36,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 - [x] **Phase 37: Dashboard StatCards** - Два нові StatCard для дзвінків і чатів на /admin
 - [x] **Phase 38: Dashboard Data Completeness** - Повноцінні графіки аналітики і розширена таблиця замовлень на дашборді (completed 2026-05-21)
 - [x] **Phase 39: Calls Auto-save & Categories Table Actions** - Автозбереження нотатки дзвінка + колонки порядкового номера і дій у таблиці категорій (completed 2026-05-21)
-- [ ] **Phase 40: Category Edit UX** - Автозбереження і icon-trash на сторінці редагування категорії
+- [x] **Phase 40: Category Edit UX** - Автозбереження і icon-trash на сторінці редагування категорії (completed 2026-05-21)
 
 ## Phase Details
 
@@ -117,7 +117,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 40-02-PLAN.md — CategoryEditHeader + CategoryEditPageContent + CategoryForm refactor + page wiring (ADM-CAT-09, ADM-CAT-10)
+- [x] 40-02-PLAN.md — CategoryEditHeader + CategoryEditPageContent + CategoryForm refactor + page wiring (ADM-CAT-09, ADM-CAT-10)
 
 **UI hint**: yes
 
@@ -128,4 +128,4 @@ Plans:
 | 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | 2/2 | Complete    | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | 2/2 | Complete    | 2026-05-21 |
-| 40. Category Edit UX | 1/2 | In Progress|  |
+| 40. Category Edit UX | 2/2 | Complete   | 2026-05-21 |
