@@ -21,12 +21,13 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
+import type { AdminSidebarBadgeCounts } from "@/server/services/admin-sidebar.service";
 
 type AppSidebarProps = {
-  unreadChatCount: number;
+  badgeCounts: AdminSidebarBadgeCounts;
 };
 
-export function AppSidebar({ unreadChatCount }: AppSidebarProps) {
+export function AppSidebar({ badgeCounts }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
@@ -35,8 +36,13 @@ export function AppSidebar({ unreadChatCount }: AppSidebarProps) {
     setOpenMobile(false);
   }, [pathname, setOpenMobile]);
 
-  const chatBadgeLabel =
-    unreadChatCount > 99 ? "99+" : String(unreadChatCount);
+  const badgeConfig: Record<string, { count: number; destructive: boolean } | undefined> = {
+    "/admin/kategorii": { count: badgeCounts.categories, destructive: false },
+    "/admin/tovary": { count: badgeCounts.products, destructive: false },
+    "/admin/zamovlennia": { count: badgeCounts.pendingOrders, destructive: true },
+    "/admin/chaty": { count: badgeCounts.unreadChats, destructive: true },
+    "/admin/dzvinky": { count: badgeCounts.unresolvedCallbacks, destructive: true },
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -64,8 +70,9 @@ export function AppSidebar({ unreadChatCount }: AppSidebarProps) {
                   item.href === "/admin"
                     ? pathname === "/admin"
                     : pathname.startsWith(item.href);
-                const isChat = item.href === "/admin/chaty";
-                const showChatBadge = isChat && unreadChatCount > 0;
+                const badge = badgeConfig[item.href];
+                const showBadge = badge !== undefined && badge.count > 0;
+                const badgeLabel = badge && badge.count > 99 ? "99+" : String(badge?.count ?? 0);
 
                 return (
                   <SidebarMenuItem key={item.href}>
@@ -76,17 +83,38 @@ export function AppSidebar({ unreadChatCount }: AppSidebarProps) {
                       size="lg"
                       className="min-h-11"
                       aria-label={
-                        showChatBadge
-                          ? `Чати, ${unreadChatCount} непрочитаних`
+                        showBadge && badge
+                          ? (() => {
+                              switch (item.href) {
+                                case "/admin/kategorii":
+                                  return `Категорії, ${badge.count} всього`;
+                                case "/admin/tovary":
+                                  return `Товари, ${badge.count} всього`;
+                                case "/admin/zamovlennia":
+                                  return `Замовлення, ${badge.count} висячих`;
+                                case "/admin/chaty":
+                                  return `Чати, ${badge.count} непрочитаних`;
+                                case "/admin/dzvinky":
+                                  return `Дзвінки, ${badge.count} невирішених`;
+                                default:
+                                  return item.label;
+                              }
+                            })()
                           : item.label
                       }
                     >
                       <Icon aria-hidden />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
-                    {showChatBadge ? (
-                      <SidebarMenuBadge className="bg-destructive text-destructive-foreground">
-                        {chatBadgeLabel}
+                    {showBadge && badge ? (
+                      <SidebarMenuBadge
+                        className={
+                          badge.destructive
+                            ? "bg-destructive text-destructive-foreground"
+                            : "bg-muted text-muted-foreground"
+                        }
+                      >
+                        {badgeLabel}
                       </SidebarMenuBadge>
                     ) : null}
                   </SidebarMenuItem>
