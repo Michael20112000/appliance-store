@@ -433,7 +433,7 @@ import { CategoryEditPageContent } from "@/components/admin/category-edit-page-c
 
 **All claims in this research were verified by direct codebase inspection. No user confirmation needed.**
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Shared `SaveStatus` type location**
    - What we know: `SaveStatus = "idle" | "saving" | "saved"` is currently exported from `use-product-auto-save.ts`; `use-callback-note-auto-save.ts` re-defines it locally.

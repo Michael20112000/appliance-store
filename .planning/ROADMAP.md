@@ -41,60 +41,84 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 ## Phase Details
 
 ### Phase 37: Dashboard StatCards
+
 **Goal**: Адмін-дашборд відображає StatCard для нових дзвінків і активних чатів поруч з існуючими StatCards
 **Depends on**: Phase 36
 **Requirements**: ADM-DASH-05, ADM-DASH-06
 **Success Criteria** (what must be TRUE):
+
   1. Адмін бачить StatCard «Нові дзвінки» з актуальним лічильником непрочитаних/нових дзвінків на /admin
   2. Адмін бачить StatCard «Активні чати» з кількістю непрочитаних повідомлень на /admin
   3. Обидва нові StatCards відображаються поруч з існуючими (замовлення, товари тощо) без порушення лейауту
+
 **Plans**: 1 plan
 Plans:
+
 - [x] 37-01-PLAN.md — Add «Нові дзвінки» and «Активні чати» StatCards to dashboard (ADM-DASH-05, ADM-DASH-06)
+
 **UI hint**: yes
 
 ### Phase 38: Dashboard Data Completeness
+
 **Goal**: Адмін-дашборд містить повноцінні графіки аналітики і повну таблицю останніх замовлень
 **Depends on**: Phase 37
 **Requirements**: ADM-DASH-07, ADM-DASH-08
 **Success Criteria** (what must be TRUE):
+
   1. Дашборд показує ті самі графіки (замовлення і виручка), що й /admin/analityka — ідентичний вигляд і дані
   2. Таблиця «Останні замовлення» на дашборді відповідає структурі таблиці з /admin/zamovlennia: ті самі колонки, статуси з акцентами, row-click навігація
   3. Таблиця показує максимум 10 рядків і не містить фільтр-табів і пагінації
   4. Адмін може клацнути рядок у таблиці і потрапити на сторінку замовлення
+
 **Plans**: 2 plans
 Plans:
+
 - [x] 38-01-PLAN.md — Full AnalyticsCharts on dashboard, delete preview component (ADM-DASH-07)
 - [x] 38-02-PLAN.md — Recent orders table parity with /admin/zamovlennia, take 10 (ADM-DASH-08)
+
 **UI hint**: yes
 
 ### Phase 39: Calls Auto-save & Categories Table Actions
+
 **Goal**: Нотатка дзвінка зберігається автоматично; таблиця категорій показує порядковий номер і кнопки дій
 **Depends on**: Phase 37
 **Requirements**: CALL-05, ADM-CAT-07, ADM-CAT-08
 **Success Criteria** (what must be TRUE):
+
   1. Оператор вводить текст у поле нотатки дзвінка — зміни зберігаються автоматично через ~400мс після зупинки введення, кнопки «Зберегти» немає
   2. Таблиця категорій відображає колонку з порядковим номером (1, 2, 3…), що оновлюється після DnD-перестановки рядків
   3. Таблиця категорій має колонку «Дії» з кнопкою «Додати товар» (веде до форми нового товару з передвибраною категорією)
   4. Колонка «Дії» містить кнопку «Видалити» з діалогом підтвердження перед видаленням категорії
+
 **Plans**: 2 plans
 Plans:
+
 - [x] 39-01-PLAN.md — Callback note auto-save hook + CallbackNoteField (CALL-05)
 - [x] 39-02-PLAN.md — Categories table № + Дії columns, list delete action (ADM-CAT-07, ADM-CAT-08)
+
 **UI hint**: yes
 
 ### Phase 40: Category Edit UX
+
 **Goal**: Сторінка редагування категорії автозберігає зміни і має icon-only trash для видалення
 **Depends on**: Phase 39
 **Requirements**: ADM-CAT-09, ADM-CAT-10
 **Success Criteria** (what must be TRUE):
+
   1. Адмін редагує поля категорії — зміни зберігаються автоматично без кнопки «Зберегти», аналогічно /admin/tovary/[id]
   2. Кнопки «Зберегти» немає на сторінці редагування категорії
   3. У правому верхньому куті сторінки редагування категорії розташована icon-only trash-кнопка для видалення категорії
+
 **Plans**: 2 plans
 Plans:
+**Wave 1**
+
 - [ ] 40-01-PLAN.md — useCategoryAutoSave hook + CategoryEditDeleteButton with tests (ADM-CAT-09, ADM-CAT-10)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 40-02-PLAN.md — CategoryEditHeader + CategoryEditPageContent + CategoryForm refactor + page wiring (ADM-CAT-09, ADM-CAT-10)
+
 **UI hint**: yes
 
 ## Progress
