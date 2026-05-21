@@ -240,7 +240,7 @@ Plans:
 3. Чати / дзвінки — лише невирішені, не total
 4. Performance: один aggregated query або RSC cache, без N+1 на кожен nav render
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 
@@ -254,7 +254,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 36-03-PLAN.md — Props refactor (layout → shell → AppSidebar) + five badge renders + human verify (ADM-NAV-01)
+- [x] 36-03-PLAN.md — Props refactor (layout → shell → AppSidebar) + five badge renders + human verify (ADM-NAV-01)
 
 ---
 
