@@ -1,5 +1,44 @@
 # Project Retrospective
 
+## Milestone: v2.0 — Polish, UX & Admin analytics
+
+**Shipped:** 2026-05-21
+**Phases:** 28–36 | **Plans:** 26
+
+### What Was Built
+
+Storefront UX polish across nav (mobile auth drawer), homepage (smooth scroll, category counts), catalog (sort labels), PDP (lightbox snap, in-cart FAB, «Схожі товари» server-side), and footer (desktop 2-col). Admin: dashboard button/icon polish, analytics page + recharts dashboard preview, Дзвінки callbacks workspace (/admin/dzvinky with status/note/archive), DnD category reorder (@dnd-kit), order status accents + INSUFFICIENT_STOCK fix, sidebar badges (5 nav items, single aggregated Promise.all fetch, TDD red→green).
+
+### What Worked
+
+- TDD (Nyquist wave 0) before implementation — service contracts locked before coding; caught filter rules early (D-01/D-03/D-05/D-08)
+- Parallel wave execution for independent phases — analytics service + nav in same wave
+- gsd-executor worktree isolation — zero merge conflicts across parallel plans
+- Human checkpoint plans (36-03, 34-05, 35-03) — natural pause for visual verification, no wasted implementation cycles
+- `badgeConfig` object pattern — single source of truth for 5 badge types; trivial to extend
+
+### What Was Inefficient
+
+- Phases 28/32/33 shipped with `human_needed` verification — deferred and acknowledged at milestone close
+- Phase 34 required session resume (analytics page checkpoint hit Claude context limit mid-wave)
+- DnD hydration mismatch (`aria-describedby` DndDescribedBy-0/1) — pre-existing, not addressed in v2.0
+- `prisma/seed.test.ts` 3 failures — pre-existing seed count mismatch, carried forward
+
+### Patterns Established
+
+- Nyquist wave 0 (RED tests) before service implementation — now standard for all service phases
+- `badgeConfig` aggregated-fetch pattern for RSC → client count display
+- Analytics: `$queryRaw` + BigInt conversion + zero-fill day-bucketing with recharts
+- Separate workspace page for operator tools (Дзвінки) rather than embedding in settings
+
+### Key Lessons
+
+- Verify `human_needed` statuses during execution, not at milestone close — checkpoints are the right moment
+- dnd-kit SSR hydration: `aria-describedby` ID counter mismatch is a known upstream issue; use `suppressHydrationWarning` or server-only context if needed
+- shadcn recharts: `h-[220px]` fixed height required for responsive chart containers — document in PATTERNS.md
+
+---
+
 ## Milestone: v1.5 — Incremental polish & operator UX
 
 **Shipped:** 2026-05-19  
@@ -71,6 +110,7 @@ BUG-12…17 verified on main; CI green after minimal test fixes; intake wave 1�
 
 | Milestone | Phases | Theme |
 |-----------|--------|-------|
+| v2.0 | 28–36 | UX polish + admin tooling + TDD |
 | v1.5 | 22–27 | Operator UX + UAT closure |
 | v1.4 | 21 | Stabilization / verify |
 | v1.3 | 17–20 | Admin UX + guest + data ops |

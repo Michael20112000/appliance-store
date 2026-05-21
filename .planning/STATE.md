@@ -1,11 +1,11 @@
 ---
 gsd_state_version: 1.0
 milestone: v2.0
-milestone_name: Appliance Store MVP
-status: Phase 36 shipped — PR phase-36-admin-sidebar-badges
-stopped_at: Phase 36 context gathered
-last_updated: "2026-05-21T11:29:47.588Z"
-last_activity: 2026-05-21
+milestone_name: Polish, UX & Admin analytics
+status: Milestone v2.0 shipped — planning v3.0
+stopped_at: v2.0 milestone closed
+last_updated: "2026-05-21"
+last_activity: 2026-05-21 — v2.0 milestone archived, tagged, shipped
 progress:
   total_phases: 9
   completed_phases: 9
@@ -18,17 +18,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-20)
+See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 36 — admin-sidebar-badges
+**Current focus:** Planning v3.0 milestone
 
 ## Current Position
 
-Phase: 36 — COMPLETE
-Plan: 1 of 3
-Status: Phase 36 shipped — PR phase-36-admin-sidebar-badges
-Last activity: 2026-05-21
+Phase: Milestone v2.0 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-21 — Milestone v2.0 completed and archived
 
 ### Shipped on `main` (checkpoint 2026-05-19)
 
@@ -67,6 +67,16 @@ Last activity: 2026-05-21
 
 ## Deferred Items
 
+Items acknowledged and deferred at milestone v2.0 close on 2026-05-21:
+
+| Category | Item | Status |
+|----------|------|--------|
+| verification_gaps | Phases 28, 32, 33 VERIFICATION human_needed | deferred — visually approved in session |
+| uat_gaps | Phase 28 (1 pending scenario), Phase 32 (3 pending) | deferred |
+| dnd | aria-describedby hydration mismatch in SortableRow | P2 — known @dnd-kit SSR issue |
+| test | prisma/seed.test.ts 3 failures (out-of-stock counts) | P2 — pre-existing seed state |
+| todos | bugfix-intake-TEMPLATE.md | template only, not a real task |
+
 Items acknowledged and deferred at milestone v1.5 close on 2026-05-19:
 
 | Category | Item | Status |
@@ -98,6 +108,4 @@ Resume: `/gsd-plan-phase 34` (Phase 34: Admin analytics) or `/gsd-new-milestone`
 
 ## Operator Next Steps
 
-1. `/gsd-discuss-phase 28` або `/gsd-plan-phase 28` — старт Phase 28
-2. BUG-24 (ASL-20260519-0013) — у Phase 31
-3. Push tag `v1.5` to remote if not yet pushed
+- Start the next milestone with `/gsd:new-milestone`

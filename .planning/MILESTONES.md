@@ -1,5 +1,39 @@
 # Milestones
 
+## v2.0 Polish, UX & Admin analytics (Shipped: 2026-05-21)
+
+**Phases completed:** 9 phases, 26 plans, 32 tasks
+
+**Key accomplishments:**
+
+- Mobile drawer now mirrors header auth: guests see Увійти/Реєстрація, signed-in users see Кабінет/Вийти below the callback form.
+- Storefront hash links scroll smoothly with header offset on `#kategorii`; reduced motion disables animation.
+- Homepage category cards show availability counts using the same pipeline as the mobile drawer.
+- Catalog sort dropdown uses one Ukrainian label map; toolbar duplication bug fixed.
+- Catalog list cards load up to five preview images with a desktop-only hover crossfade stack; mobile and reduced-motion stay on the first image.
+- PDP lightbox tuned for momentum drag with nearest-slide snap — no instant jump on reopen when already aligned
+- PDP in-cart state shows «Вже в кошику» with icon-only remove; a PDP-only cart FAB above chat links to /koszyk when count ≥ 1.
+- Server-side «Схожі товари» on PDP: category-scoped price bands with ±20%/±40% fallbacks, Fisher–Yates shuffle, up to four ProductCards with wishlist when logged in.
+- FOOT-05 responsive footer — desktop map left, contacts+callback right, mobile action-first stack, centered © on md+
+- Admin order status selects now show correct stock errors, actionable hints, and per-status trigger accents — BUG-24 list UNKNOWN mapping fixed without changing reserve-on-confirm.
+- Task 1 — Dashboard action buttons:
+- Installed @dnd-kit/core@6.3.1, @dnd-kit/sortable@10.0.0, and @dnd-kit/utilities@3.2.2 after human package legitimacy verification
+- One-liner:
+- One-liner:
+- One-liner:
+- One-liner:
+- Prisma time-series analytics service with $queryRaw day-bucketing, BigInt conversion, zero-fill, and shadcn recharts chart component installed — all 5 vitest tests green
+- One-liner:
+- Two "use client" chart components created: AnalyticsCharts with paired h-[220px] LineCharts (orders + revenue with formatRevenue tooltip) and AnalyticsDashboardPreview with paired h-[120px] mini-charts + KPI row + Детальна аналітика link — zero TypeScript errors, 5 analytics tests green.
+- Resumed after Claude Code session limit at wave 3/3. Analytics page and dashboard preview wired; kopiyky→UAH revenue fix; human UAT approved.
+- Wave 0 Nyquist tests lock admin callback list, status, note, and archive rules before backend implementation.
+- Prisma migration and admin callback service/actions implement archive gate, note null normalization, and active/archive listing.
+- Operators manage callback requests on `/admin/dzvinky`; store settings no longer embeds the callback table.
+- Vitest unit test scaffold for getAdminSidebarCounts() with 7 RED tests covering all five count queries, filter rules D-01/D-03/D-05, and parallel execution mapping
+- Service `admin-sidebar.service.ts` implementing `getAdminSidebarCounts()` with `AdminSidebarBadgeCounts` type — all 7 Wave 0 unit tests turned GREEN via parallel Promise.all with correct D-01/D-03/D-05/D-08 filters
+
+---
+
 ## v1.5 Incremental polish & operator UX (Shipped: 2026-05-19)
 
 **Phases completed:** 6 phases, 8 plans, 19 tasks
