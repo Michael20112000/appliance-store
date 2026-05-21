@@ -9,14 +9,15 @@ import {
 } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import type { AdminSidebarBadgeCounts } from "@/server/services/admin-sidebar.service";
 
 type AdminSidebarShellProps = {
-  unreadChatCount: number;
+  badgeCounts: AdminSidebarBadgeCounts;
   children: React.ReactNode;
 };
 
 export function AdminSidebarShell({
-  unreadChatCount,
+  badgeCounts,
   children,
 }: AdminSidebarShellProps) {
   const pathname = usePathname();
@@ -27,7 +28,7 @@ export function AdminSidebarShell({
     <TooltipProvider>
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <SidebarProvider className="h-full min-h-0 min-w-0">
-          <AppSidebar unreadChatCount={unreadChatCount} />
+          <AppSidebar badgeCounts={badgeCounts} />
           <SidebarInset className="min-h-0 min-w-0 flex-1 overflow-hidden">
             <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border bg-background px-4 md:hidden">
               <SidebarTrigger className="size-9" aria-label="Відкрити меню" />
