@@ -1,5 +1,43 @@
 # Project Retrospective
 
+## Milestone: v2.1 — Fixes & UX
+
+**Shipped:** 2026-05-21
+**Phases:** 37–40 | **Plans:** 7
+
+### What Was Built
+
+Admin UX completeness sprint. Dashboard: StatCards for «Нові дзвінки» (Phone icon, /admin/dzvinky link) and «Активні чати» (MessageSquare icon, /admin/chaty link) reusing getAdminSidebarCounts() from phase 36; full AnalyticsCharts replacing mini preview; recent orders table with 6 columns, take 10, row navigation — parity with /admin/zamovlennia. Callback note auto-save (400ms throttle, saveChainRef serialization, inline Збереження…/Збережено status). Categories table: live № column (DnD-aware) + Дії column (Додати товар / Видалити with AlertDialog). Category edit page: useCategoryAutoSave (500ms debounce, schema guard, snapshot dedup, generation guard, TDD RED→GREEN) + CategoryEditDeleteButton (ghost icon trash, deleteCategoryFromListAction) + CategoryEditHeader (back link flush guard, aria-live status line, action buttons) + CategoryEditPageContent wrapper — identical UX to /admin/tovary/[id].
+
+### What Worked
+
+- Mirror pattern (product edit → category edit): zero ambiguity, fast implementation — read product analog, substitute types
+- TDD RED→GREEN on hooks: caught saveChainRef async chain issue and snapshot dedup edge case before integration
+- Worktree isolation: Plan 01 and Plan 02 fully isolated, no merge conflicts
+- Compact 4-phase milestone: each phase had 1-2 plans, fast to plan and execute
+- SDK-assisted STATE/ROADMAP tracking: no manual sync needed between plans
+
+### What Was Inefficient
+
+- Executor accidentally committed to main mid-plan (worktree branch check bypassed briefly), required revert + cleanup — cost ~2 extra commits
+- REQUIREMENTS.md checkboxes not updated by executors; needed manual fix at milestone close (ADM-DASH-05/06 + ADM-CAT-09/10)
+- useCategoryAutoSave `initialValues` object recreation (WR-02) identified at review — should have been caught earlier by referencing product-auto-save patterns more carefully
+
+### Patterns Established
+
+- CategoryEditPageContent/Header wrapper pattern as the standard for any admin edit page with auto-save + delete
+- `useCategoryAutoSave` snapshot from `safeParse(initialValues).data` (not raw initialValues) — prevents schema transform drift on init
+- `CategoryForm` mode-conditional buttons: edit mode noop, create mode unchanged — clean separation
+- Phase executor should update REQUIREMENTS.md traceability immediately on plan completion
+
+### Key Lessons
+
+- Before milestone close: grep REQUIREMENTS.md for `Pending` rows that should be `Complete` — executor writes SUMMARY.md but not requirement status
+- Worktree HEAD check MUST be the first action in an executor; delay causes accidental main commits
+- `useMemo(initialValues)` in parent (WR-02) — always memoize objects passed as hook deps across render cycles
+
+---
+
 ## Milestone: v2.0 — Polish, UX & Admin analytics
 
 **Shipped:** 2026-05-21
