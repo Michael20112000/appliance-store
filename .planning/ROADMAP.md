@@ -113,7 +113,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 40-01-PLAN.md — useCategoryAutoSave hook + CategoryEditDeleteButton with tests (ADM-CAT-09, ADM-CAT-10)
+- [x] 40-01-PLAN.md — useCategoryAutoSave hook + CategoryEditDeleteButton with tests (ADM-CAT-09, ADM-CAT-10)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -128,4 +128,4 @@ Plans:
 | 37. Dashboard StatCards | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | 2/2 | Complete    | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | 2/2 | Complete    | 2026-05-21 |
-| 40. Category Edit UX | 0/2 | Not started | - |
+| 40. Category Edit UX | 1/2 | In Progress|  |
