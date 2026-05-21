@@ -1,5 +1,18 @@
 # Milestones
 
+## v2.1 Fixes & UX (Shipped: 2026-05-21)
+
+**Phases completed:** 4 phases, 7 plans, 0 tasks
+
+**Key accomplishments:**
+
+- Callback notes on active rows auto-save after 400ms with inline «Збереження…» / «Збережено» — no save button or success toast.
+- Categories table shows live № after DnD and a Дії column with «Додати товар» (novyi?categoryId) and confirmed delete without leaving the list.
+- One-liner:
+- One-liner:
+
+---
+
 ## v2.0 Polish, UX & Admin analytics (Shipped: 2026-05-21)
 
 **Phases completed:** 9 phases, 26 plans, 32 tasks

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Fixes & UX
-status: executing
+status: Awaiting next milestone
 stopped_at: Phase 40 context gathered
-last_updated: "2026-05-21T14:50:10.836Z"
-last_activity: 2026-05-21 -- Phase 40 execution started
+last_updated: "2026-05-21T15:28:15.566Z"
+last_activity: 2026-05-21 — Milestone v2.1 completed and archived
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 7
-  completed_plans: 5
-  percent: 71
+  completed_plans: 7
+  percent: 100
 ---
 
 # Project State
@@ -21,47 +21,38 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 40 — category-edit-ux
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 40 (category-edit-ux) — EXECUTING
-Plan: 1 of 2
-Plans: 2 plans (38-01 charts, 38-02 orders table)
-Status: Executing Phase 40
-Last activity: 2026-05-21 -- Phase 40 execution started
+Phase: Milestone v2.1 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-21 — Milestone v2.1 completed and archived
 
-Progress: [███░░░░░░░] 33% (1/4 phases complete in v2.1)
+## Deferred Items
 
-## Phase 38 Plan Summary
+Items acknowledged and deferred at milestone close on 2026-05-21:
 
-| Plan | Wave | Requirement | Scope |
-|------|------|-------------|-------|
-| 38-01 | 1 | ADM-DASH-07 | Swap `AnalyticsDashboardPreview` → `AnalyticsCharts` on /admin |
-| 38-02 | 2 | ADM-DASH-08 | `take: 10` + 6-column `AdminRecentOrdersTable` parity |
-
-## Performance Metrics
-
-**Velocity:** See milestone archives v1.0–v2.0
+| Category | Item | Status |
+|----------|------|--------|
+| verification_gap | Phase 40: 40-VERIFICATION.md | human_needed — user confirmed manual pass |
+| todo | bugfix-intake-TEMPLATE.md | template file, not a real task |
 
 ## Accumulated Context
 
 ### Decisions
 
-- Phase 37: Dashboard reuses getAdminSidebarCounts() — same counts as sidebar badges
-- Phase 38: No new analytics service — reuse getDashboardAnalyticsPreview + AnalyticsCharts from phase 34
-- Phase 38: Recent orders table uses static shadcn Table (no TanStack) — parity without pagination/sort UI
-
-### Pending Todos
-
-- `/gsd-execute-phase 38` — run 38-01 then 38-02
+- Category edit mirrors product edit: auto-save + icon-trash, confirmed pattern
+- useCategoryAutoSave snapshot from safeParse output — prevents schema transform drift
+- CategoryForm mode-conditional: no Save/Delete in edit mode, create mode unchanged
 
 ### Blockers/Concerns
 
-None for v2.1.
+None. All v2.1 requirements delivered and manually verified.
 
 ## Session Continuity
 
-Last session: 2026-05-21T14:25:27.305Z
-Stopped at: Phase 40 context gathered
-Resume: `/gsd-execute-phase 38`
+Last session: 2026-05-21
+Stopped at: Milestone v2.1 archived
+Resume: `/gsd:new-milestone`

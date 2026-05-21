@@ -10,23 +10,17 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: v2.1 Fixes & UX
+## Current State
 
-**Goal:** Допрацювати адмін-дашборд і UX адмін-сторінок — повноцінні дані, автозбереження, зручніші дії.
-
-**Target features:**
-- StatCards для Дзвінків і Чатів на /admin
-- Повноцінні графіки аналітики на дашборді
-- Таблиця «Останні замовлення» = повна версія (max 10, без фільтрів)
-- Автозбереження нотатки дзвінка (throttle 400мс)
-- Колонка «Дії» + порядковий номер у таблиці категорій
-- Автозбереження категорії + icon-trash для видалення
+**Shipped:** v1.0 → v2.1 (2026-05-21)
 
 ## Current State
 
-**Shipped:** v1.0 → v2.0 (2026-05-21)
+**Shipped:** v1.0 → v2.1 (2026-05-21)
 
-**Latest (v2.0):** UX polish — nav auth, smooth scroll, category counts, catalog sort; PDP lightbox, in-cart FAB, схожі товари; footer desktop; admin dashboard polish + analytics + callbacks (Дзвінки) + DnD categories + sidebar badges.
+**Latest (v2.1):** Admin UX completeness — dashboard StatCards (calls + chats), full AnalyticsCharts on /admin, recent orders table parity (6 cols, max 10), callback note auto-save (400ms throttle), categories table № + Дії columns, category edit auto-save + icon-trash (mirrors product edit page).
+
+**v2.0:** UX polish — nav auth, smooth scroll, category counts, catalog sort; PDP lightbox, in-cart FAB, схожі товари; footer desktop; admin analytics + callbacks (Дзвінки) + DnD categories + sidebar badges.
 
 **Operator:** `BUGFIX-WORKFLOW.md` intake; optional `db:purge` + seed.
 
@@ -44,6 +38,14 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ HOME-03 — homepage hides empty categories — v1.5
 - ✓ FOOT-01…04 — footer contacts, callback, mobile drawer counts — v1.5
 - ✓ UAT-01 — Phase 19 purge UAT + v1.5 smoke — v1.5
+
+### Validated (v2.1)
+
+- ✓ ADM-DASH-05/06 — StatCards «Нові дзвінки» + «Активні чати» на /admin — v2.1
+- ✓ ADM-DASH-07/08 — повноцінні AnalyticsCharts + recent orders table (6 cols, max 10) — v2.1
+- ✓ CALL-05 — callback note auto-save 400ms throttle, без кнопки «Зберегти» — v2.1
+- ✓ ADM-CAT-07/08 — таблиця категорій: колонка № + Дії (Додати товар, Видалити) — v2.1
+- ✓ ADM-CAT-09/10 — category edit auto-save (500ms) + icon-trash header button — v2.1
 
 ### Validated (v2.0)
 
@@ -63,14 +65,9 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ CALL-01…04 — Дзвінки workspace (status, note, archive, /admin/dzvinky) — v2.0
 - ✓ ADM-NAV-01 — sidebar badges (5 nav items, aggregated fetch, TDD) — v2.0
 
-### Active (v2.1)
+### Active (v2.2+)
 
-- ADM-DASH-05 — StatCards для Дзвінків і Чатів на /admin
-- ADM-DASH-06 — повноцінні графіки аналітики на /admin (як /admin/analityka)
-- ADM-DASH-07 — таблиця «Останні замовлення» = повна версія, max 10, без фільтрів/пагінації
-- ADM-CALL-05 — автозбереження нотатки дзвінка (throttle 400мс), без кнопки «Зберегти»
-- ADM-CAT-07 — колонка «Дії» (додати товар, видалити категорію) + колонка порядкового номера (DnD-aware)
-- ADM-CAT-08 — автозбереження категорії + кнопка видалення → icon-trash у правому верхньому куті
+*(See next milestone planning for new requirements)*
 
 ### Deferred (post–v2.0)
 
@@ -121,8 +118,19 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 | Single aggregated fetch for sidebar | Promise.all 5 queries, no N+1 per nav render | ✓ Good (v2.0) |
 | Callback workspace = separate page | /admin/dzvinky replaces settings table | ✓ Good (v2.0) |
 | shadcn recharts for analytics | Zero-fill day-bucketing, BigInt conversion | ✓ Good (v2.0) |
+| Category edit = product edit mirror | Auto-save + icon-trash, same patterns | ✓ Good (v2.1) |
+| useCategoryAutoSave TDD RED→GREEN | Ensures schema guard + snapshot dedup correctness | ✓ Good (v2.1) |
+| CategoryForm mode-conditional buttons | Edit mode: no Save/Delete; create mode: unchanged | ✓ Good (v2.1) |
 
 ## Evolution
+
+<details>
+<summary>v2.1 milestone snapshot (2026-05-21)</summary>
+
+v2.1 scope: admin UX completeness — dashboard StatCards + full analytics charts + recent orders table parity, callback note auto-save, categories table № + Дії, category edit auto-save + icon-trash.
+4 phases, 7 plans, shipped 2026-05-21.
+
+</details>
 
 <details>
 <summary>v2.0 milestone snapshot (2026-05-21)</summary>
@@ -140,4 +148,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-21 — milestone v2.1 started*
+*Last updated: 2026-05-21 — milestone v2.1 shipped*
