@@ -8,7 +8,7 @@ import {
   Plus,
   ShoppingBag,
 } from "lucide-react";
-import { AnalyticsDashboardPreview } from "@/components/admin/analytics-dashboard-preview";
+import { AnalyticsCharts } from "@/components/admin/analytics-charts";
 import { StatCard } from "@/components/admin/stat-card";
 import { AdminRecentOrdersTable } from "@/components/admin/admin-recent-orders-table";
 import { Button } from "@/components/ui/button";
@@ -74,12 +74,21 @@ export default async function AdminDashboardPage() {
         </Button>
       </div>
 
-      <AnalyticsDashboardPreview
-        ordersByDay={analyticsPreview.ordersByDay}
-        revenueByDay={analyticsPreview.revenueByDay}
-        totalOrders={analyticsPreview.kpi.totalOrders}
-        totalRevenue={analyticsPreview.kpi.totalRevenue}
-      />
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Графіки</h2>
+          <Link
+            href="/admin/analityka"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            Детальна аналітика →
+          </Link>
+        </div>
+        <AnalyticsCharts
+          ordersByDay={analyticsPreview.ordersByDay}
+          revenueByDay={analyticsPreview.revenueByDay}
+        />
+      </section>
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Останні замовлення</h2>
