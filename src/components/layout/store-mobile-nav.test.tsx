@@ -95,10 +95,13 @@ describe("StoreMobileNav", () => {
     const viberLink = screen.getByRole("link", { name: "Viber" });
     const whatsappLink = screen.getByRole("link", { name: "WhatsApp" });
 
-    expect(telegramLink.getAttribute("href")).toBe(SOCIAL_LINKS.telegram);
-    expect(telegramLink.getAttribute("target")).toBe("_blank");
-    expect(telegramLink.getAttribute("rel")).toContain("noopener");
+    for (const link of [telegramLink, viberLink, whatsappLink]) {
+      expect(link.getAttribute("target")).toBe("_blank");
+      expect(link.getAttribute("rel")).toContain("noopener");
+      expect(link.getAttribute("rel")).toContain("noreferrer");
+    }
 
+    expect(telegramLink.getAttribute("href")).toBe(SOCIAL_LINKS.telegram);
     expect(viberLink.getAttribute("href")).toBe(SOCIAL_LINKS.viber);
     expect(whatsappLink.getAttribute("href")).toBe(SOCIAL_LINKS.whatsapp);
   });

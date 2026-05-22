@@ -8,9 +8,9 @@
 
 ### SOCIAL — Соцмережі
 
-- [ ] **SOC-01**: User can see Telegram, Viber, WhatsApp links in the site header
-- [ ] **SOC-02**: User can see the same social links in the mobile drawer
-- [ ] **SOC-03**: User can see the same social links in the footer
+- [x] **SOC-01**: User can see Telegram, Viber, WhatsApp links in the site header
+- [x] **SOC-02**: User can see the same social links in the mobile drawer
+- [x] **SOC-03**: User can see the same social links in the footer
 
 ### FAB — Floating кнопки
 

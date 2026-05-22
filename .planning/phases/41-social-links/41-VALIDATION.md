@@ -1,9 +1,9 @@
 ---
 phase: 41
 slug: social-links
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: complete
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-05-22
 ---
 
@@ -38,11 +38,11 @@ created: 2026-05-22
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| social-icons-component | 01 | 1 | SOC-01,02,03 | — | N/A | build | `npx tsc --noEmit` | ❌ W0 | ⬜ pending |
-| social-links-constants | 01 | 1 | SOC-01,02,03 | — | No sensitive URLs exposed | build | `npx tsc --noEmit` | ❌ W0 | ⬜ pending |
-| header-integration | 01 | 1 | SOC-01 | — | rel="noopener noreferrer" on all external links | manual visual | n/a — RSC | ❌ W0 | ⬜ pending |
-| drawer-integration | 01 | 1 | SOC-02 | — | rel="noopener noreferrer" on all external links | unit | `npm test -- src/components/layout/store-mobile-nav.test.tsx` | ✅ exists | ⬜ pending |
-| footer-integration | 01 | 1 | SOC-03 | — | rel="noopener noreferrer" on all external links | manual visual | n/a — RSC | ❌ W0 | ⬜ pending |
+| social-icons-component | 01 | 1 | SOC-01,02,03 | — | N/A | build | `npx tsc --noEmit` | ✅ | ✅ green |
+| social-links-constants | 01 | 1 | SOC-01,02,03 | — | No sensitive URLs exposed | build | `npx tsc --noEmit` | ✅ | ✅ green |
+| header-integration | 01 | 1 | SOC-01 | — | rel="noopener noreferrer" on all external links | manual visual | n/a — RSC | ✅ | ✅ green |
+| drawer-integration | 01 | 1 | SOC-02 | — | rel="noopener noreferrer" on all external links | unit | `npm test -- src/components/layout/store-mobile-nav.test.tsx` | ✅ exists | ✅ green |
+| footer-integration | 01 | 1 | SOC-03 | — | rel="noopener noreferrer" on all external links | manual visual | n/a — RSC | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -50,9 +50,9 @@ created: 2026-05-22
 
 ## Wave 0 Requirements
 
-- [ ] `src/components/icons/social-icons.tsx` — new file, Wave 1 creates it
-- [ ] `src/lib/social-links.ts` — new file, Wave 1 creates it
-- [ ] `src/components/layout/store-mobile-nav.test.tsx` — EXISTS; Wave 1 extends with 2 test cases for SOC-02
+- [x] `src/components/icons/social-icons.tsx` — created
+- [x] `src/lib/social-links.ts` — created
+- [x] `src/components/layout/store-mobile-nav.test.tsx` — extended with 2 test cases for SOC-02
 
 *Existing Vitest infrastructure covers the test environment — no new packages or config changes needed.*
 
@@ -72,11 +72,11 @@ created: 2026-05-22
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 10s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 10s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** 2026-05-22
