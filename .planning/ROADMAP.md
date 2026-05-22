@@ -62,7 +62,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   4. Clicking any social icon opens the correct external link (mock URL acceptable for v2.2)
 **Plans**: 1 plan
 Plans:
-- [ ] 41-01-PLAN.md — Create constants, SVG icons, SocialNavLinks cluster, and integrate into header/drawer/footer
+- [x] 41-01-PLAN.md — Create constants, SVG icons, SocialNavLinks cluster, and integrate into header/drawer/footer
 
 ### Phase 42: Floating Action Buttons
 **Goal**: Users always have one-tap access to the cart and store callback from any storefront page
@@ -92,7 +92,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 41. Social Links | v2.2 | 0/1 | Not started | - |
+| 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
 | 42. Floating Action Buttons | v2.2 | 0/? | Not started | - |
 | 43. Slider Fix, Animations & Footer Bug | v2.2 | 0/? | Not started | - |
 | 37. Dashboard StatCards | v2.1 | 1/1 | Complete | 2026-05-21 |
