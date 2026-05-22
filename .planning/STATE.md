@@ -2,9 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Bugfixes & Small Features
-status: in_progress
-last_updated: "2026-05-21T00:00:00.000Z"
-last_activity: 2026-05-21
+status: planning
+stopped_at: Phase 41 context gathered
+last_updated: "2026-05-22T11:56:14.295Z"
+last_activity: 2026-05-21 — Milestone v2.2 roadmap created (3 phases, 8 requirements)
 progress:
   total_phases: 3
   completed_phases: 0
@@ -60,6 +61,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-05-21
-Stopped at: Roadmap created for v2.2 — 3 phases (41–43), 8 requirements mapped
+Last session: 2026-05-22T11:56:14.286Z
+Stopped at: Phase 41 context gathered
 Resume: `/gsd:plan-phase 41`
