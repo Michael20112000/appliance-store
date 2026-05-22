@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Bugfixes & Small Features
-status: planning
+status: executing
 stopped_at: Phase 41 context gathered
-last_updated: "2026-05-22T11:56:14.295Z"
-last_activity: 2026-05-21 — Milestone v2.2 roadmap created (3 phases, 8 requirements)
+last_updated: "2026-05-22T12:39:49.830Z"
+last_activity: 2026-05-22 -- Phase 41 planning complete
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 0
+  total_plans: 1
   completed_plans: 0
   percent: 0
 ---
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-21)
 
 Phase: 41 — Social Links
 Plan: —
-Status: Roadmap created, ready to plan Phase 41
-Last activity: 2026-05-21 — Milestone v2.2 roadmap created (3 phases, 8 requirements)
+Status: Ready to execute
+Last activity: 2026-05-22 -- Phase 41 planning complete
 
 ```
 Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (0/3 phases)
