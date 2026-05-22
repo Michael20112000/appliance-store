@@ -8,6 +8,7 @@ import {
   uaPhoneTelHref,
 } from "@/lib/phone/format-ua";
 import { getPublicStoreContacts } from "@/server/services/store-settings.service";
+import { SocialNavLinks } from "@/components/layout/social-nav-links";
 
 export async function StoreFooter() {
   const year = new Date().getFullYear();
@@ -102,7 +103,11 @@ export async function StoreFooter() {
           </div>
         </div>
 
-        <p className="mt-8 border-t border-border pt-6 text-sm text-muted-foreground md:text-center">
+        <div className="mt-8 flex flex-col items-center gap-3 border-t border-border pt-6">
+          <p className="text-sm text-muted-foreground">Ми в соцмережах</p>
+          <SocialNavLinks />
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground md:text-center">
           © {year} Техніка б/у Львів
         </p>
       </div>

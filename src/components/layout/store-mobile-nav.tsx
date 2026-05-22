@@ -19,6 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { SocialNavLinks } from "@/components/layout/social-nav-links";
 
 type MobileNavCategory = {
   slug: string;
@@ -78,6 +79,11 @@ export function StoreMobileNav({
         <Separator className="my-6" />
         <div className="px-4 pb-4">
           <StorefrontAuthLinks session={session} />
+        </div>
+        <Separator className="my-6" />
+        <div className="px-4 pb-6">
+          <p className="mb-3 text-xs text-muted-foreground">Ми в соцмережах</p>
+          <SocialNavLinks />
         </div>
       </SheetContent>
     </Sheet>

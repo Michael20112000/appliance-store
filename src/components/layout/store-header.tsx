@@ -9,6 +9,7 @@ import { WishlistNavLink } from "@/components/wishlist/wishlist-nav-link";
 import { StoreHeaderAuth } from "@/components/layout/store-header-auth";
 import { getWishlistItemCount } from "@/server/services/wishlist.service";
 import { StoreMobileNav } from "@/components/layout/store-mobile-nav";
+import { SocialNavLinks } from "@/components/layout/social-nav-links";
 
 export async function StoreHeader() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -48,6 +49,9 @@ export async function StoreHeader() {
             categories={availableCategories}
             session={session}
           />
+          <div className="hidden md:flex items-center">
+            <SocialNavLinks />
+          </div>
           <WishlistNavLink
             hasSession={Boolean(session?.user)}
             initialCount={
