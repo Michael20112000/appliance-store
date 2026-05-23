@@ -106,8 +106,8 @@ Plans:
 Plans:
 **Wave 1** *(parallel)*
 
-- [ ] 43-01-PLAN.md — Write failing unit tests for normalizeSliderBounds (SLIDER-01 RED) and addressExternalMapUrl embed detection (BUG-25 RED)
-- [ ] 43-03-PLAN.md — Add page-fade-in CSS to globals.css and wrap storefront layout children with div.page-transition; visual checkpoint
+- [x] 43-01-PLAN.md — Write failing unit tests for normalizeSliderBounds (SLIDER-01 RED) and addressExternalMapUrl embed detection (BUG-25 RED)
+- [x] 43-03-PLAN.md — Add page-fade-in CSS to globals.css and wrap storefront layout children with div.page-transition; visual checkpoint
 
 **Wave 2** *(blocked on 43-01 completion)*
 
@@ -119,7 +119,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
 | 42. Floating Action Buttons | v2.2 | 2/2 | Complete   | 2026-05-23 |
-| 43. Slider Fix, Animations & Footer Bug | v2.2 | 0/3 | Not started | - |
+| 43. Slider Fix, Animations & Footer Bug | v2.2 | 2/3 | In Progress|  |
 | 37. Dashboard StatCards | v2.1 | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | v2.1 | 2/2 | Complete | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | v2.1 | 2/2 | Complete | 2026-05-21 |
