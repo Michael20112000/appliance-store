@@ -111,7 +111,7 @@ Plans:
 
 **Wave 2** *(blocked on 43-01 completion)*
 
-- [ ] 43-02-PLAN.md — Implement normalizeSliderBounds in catalog-filters.tsx and isEmbedMapUrl guard in store-map.ts; turn RED tests GREEN
+- [x] 43-02-PLAN.md — Implement normalizeSliderBounds in catalog-filters.tsx and isEmbedMapUrl guard in store-map.ts; turn RED tests GREEN
 
 ## Progress
 
@@ -119,7 +119,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
 | 42. Floating Action Buttons | v2.2 | 2/2 | Complete   | 2026-05-23 |
-| 43. Slider Fix, Animations & Footer Bug | v2.2 | 2/3 | In Progress|  |
+| 43. Slider Fix, Animations & Footer Bug | v2.2 | 3/3 | Complete   | 2026-05-23 |
 | 37. Dashboard StatCards | v2.1 | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | v2.1 | 2/2 | Complete | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | v2.1 | 2/2 | Complete | 2026-05-21 |
