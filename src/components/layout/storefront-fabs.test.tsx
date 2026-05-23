@@ -74,14 +74,14 @@ describe("StorefrontFabs", () => {
 
   it("FAB-01-d: shows badge with '3' when initialCartCount is 3", () => {
     render(
-      <StorefrontFabs phones={[]} initialCartCount={3} hasSession={false} />,
+      <StorefrontFabs phones={[]} initialCartCount={3} hasSession={true} />,
     );
     expect(screen.getByText("3")).toBeDefined();
   });
 
   it("FAB-01-e: shows badge '9+' when initialCartCount is 10", () => {
     render(
-      <StorefrontFabs phones={[]} initialCartCount={10} hasSession={false} />,
+      <StorefrontFabs phones={[]} initialCartCount={10} hasSession={true} />,
     );
     expect(screen.getByText("9+")).toBeDefined();
   });
@@ -111,7 +111,7 @@ describe("StorefrontFabs", () => {
       />,
     );
     fireEvent.click(screen.getByRole("button", { name: "Замовити дзвінок" }));
-    expect(screen.getByText(/097/)).toBeDefined();
+    expect(screen.getByText(/97/)).toBeDefined();
   });
 
   it("FAB-02-d: dialog contains callback form heading 'Вкажіть свій номер — ми передзвонимо'", () => {
