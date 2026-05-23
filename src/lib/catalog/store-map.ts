@@ -1,7 +1,18 @@
 import type { PublicStoreAddress } from "@/server/services/store-settings.service";
 
+function isEmbedMapUrl(url: string): boolean {
+  try {
+    const u = new URL(url);
+    if (u.searchParams.get("output") === "embed") return true;
+    if (u.pathname.startsWith("/maps/embed")) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 export function addressExternalMapUrl(address: PublicStoreAddress): string {
-  if (address.mapUrl) return address.mapUrl;
+  if (address.mapUrl && !isEmbedMapUrl(address.mapUrl)) return address.mapUrl;
   if (address.latitude != null && address.longitude != null) {
     return `https://www.google.com/maps/search/?api=1&query=${address.latitude},${address.longitude}`;
   }
