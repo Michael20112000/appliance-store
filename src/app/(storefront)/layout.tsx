@@ -8,6 +8,7 @@ import { WishlistPendingMergeGate } from "@/components/wishlist/wishlist-pending
 import { StoreFooter } from "@/components/layout/store-footer";
 import { StoreHeader } from "@/components/layout/store-header";
 import { StorefrontFabs } from "@/components/layout/storefront-fabs";
+import { PageTransition } from "@/components/layout/page-transition";
 import { Analytics } from "@vercel/analytics/next";
 import { auth } from "@/lib/auth";
 import { getPublicStoreContacts } from "@/server/services/store-settings.service";
@@ -26,7 +27,7 @@ export default async function StorefrontLayout({
     <>
       <StoreHeader />
       <main id="main-content" className="flex-1">
-        <div className="page-transition">
+        <PageTransition>
           <NuqsAdapter>
             <Suspense fallback={null}>
               <ChatProviderGate>
@@ -37,7 +38,7 @@ export default async function StorefrontLayout({
               </ChatProviderGate>
             </Suspense>
           </NuqsAdapter>
-        </div>
+        </PageTransition>
       </main>
       <StoreFooter />
       <Toaster richColors position="top-center" closeButton />
