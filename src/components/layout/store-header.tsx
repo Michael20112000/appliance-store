@@ -45,10 +45,6 @@ export async function StoreHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <StoreMobileNav
-            categories={availableCategories}
-            session={session}
-          />
           <div className="hidden md:flex items-center">
             <SocialNavLinks />
           </div>
@@ -65,7 +61,13 @@ export async function StoreHeader() {
           ) : (
             <GuestCartNavLink />
           )}
-          <StoreHeaderAuth session={session} />
+          <div className="hidden md:flex items-center">
+            <StoreHeaderAuth session={session} />
+          </div>
+          <StoreMobileNav
+            categories={availableCategories}
+            session={session}
+          />
         </div>
       </div>
     </header>
