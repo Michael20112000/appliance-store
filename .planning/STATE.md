@@ -1,38 +1,37 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.2
+milestone: v2.3
 milestone_name: Bugfixes & Small Features
-status: Awaiting next milestone
-stopped_at: Phase 42 complete (visual verification approved)
-last_updated: "2026-05-23T18:17:37.528Z"
-last_activity: 2026-05-23 — Milestone v2.2 completed and archived
+status: planning
+last_updated: "2026-05-23T00:00:00.000Z"
+last_activity: 2026-05-23 — Milestone v2.3 started
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-21)
+See: .planning/PROJECT.md (updated 2026-05-23)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 43 — slider-fix-animations-footer-bug
+**Current focus:** Defining requirements for v2.3
 
 ## Current Position
 
-Phase: Milestone v2.2 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-23 — Milestone v2.2 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-23 — Milestone v2.3 started
 
 ## Deferred Items
 
-Items acknowledged and deferred at milestone close on 2026-05-23 (v2.2):
+Items carried over from v2.2:
 
 | Category | Item | Status |
 |----------|------|--------|
@@ -48,21 +47,15 @@ Items acknowledged and deferred at milestone close on 2026-05-23 (v2.2):
 - Category edit mirrors product edit: auto-save + icon-trash, confirmed pattern
 - useCategoryAutoSave snapshot from safeParse output — prevents schema transform drift
 - CategoryForm mode-conditional: no Save/Delete in edit mode, create mode unchanged
-- Social links are mock URLs for v2.2 (real URLs TBD by operator)
+- Social links are mock URLs (real URLs TBD by operator)
 - Floating buttons (FAB) appear only on storefront, not admin pages
-- BUG-25 grouped with SLIDER-01 and ANIM-01 in Phase 43 (all three are small UI/polish items)
 - ANIM-01 must respect prefers-reduced-motion
+- v2.3: all floating buttons move to bottom-right corner in a column (callback → cart → chat); callback dialog z-index above all
 
 ### Blockers/Concerns
 
 None.
 
-## Session Continuity
-
-Last session: 2026-05-23T10:30:00.000Z
-Stopped at: Phase 42 complete (visual verification approved)
-Resume: `/gsd:plan-phase 43`
-
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Run `/gsd:plan-phase 44` to start execution

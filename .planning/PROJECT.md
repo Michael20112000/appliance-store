@@ -10,16 +10,15 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: v2.2 Bugfixes & Small Features
+## Current Milestone: v2.3 Bugfixes & Small Features
 
-**Goal:** Покращити storefront — соцмережі, floating-кнопки, анімації, та закрити дрібні баги.
+**Goal:** Полірувати мобільний хедер, pending-стани авторизації, та навести лад з floating UI — всі fixed-кнопки в одному місці з правильним z-порядком.
 
 **Target features:**
-- Соцмережі (Telegram, Viber, WhatsApp) у хедері, мобільному дровері, футері (mock links)
-- Floating-кнопки ліворуч внизу: корзина (завжди) + callback-діалог з формою телефону
-- Фікс цінового слайдера в каталозі: крок 50грн, snap до реального min/max
-- Легкі анімації storefront + fade-перехід між сторінками (без адмінки)
-- Баг: адреса в футері веде на Google Maps embed URL замість звичайного посилання
+- Мобільний хедер: прибрати кнопки авторизації, бургер — крайній правий
+- Pending-стан для кнопок авторизації в хедері ("Виходимо...", лоадер)
+- Callback-форма: прибрати "Вкажіть номер телефону — лише цифри, від 10 до 15"
+- Всі floating-кнопки переїжджають у правий нижній кут, у стовпчик: зворотній дзвінок → корзина → чат; callback-діалог поверх усього блоку
 
 ## Current State
 
@@ -72,14 +71,21 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ CALL-01…04 — Дзвінки workspace (status, note, archive, /admin/dzvinky) — v2.0
 - ✓ ADM-NAV-01 — sidebar badges (5 nav items, aggregated fetch, TDD) — v2.0
 
-### Active (v2.2)
+### Validated (v2.2)
 
-- [ ] SOC-01 — Соцмережі у хедері, дровері, футері (Telegram, Viber, WhatsApp)
-- [ ] FAB-01 — Floating cart button (завжди видима, ліворуч внизу)
-- [ ] FAB-02 — Floating callback button з діалогом (номер магазину + форма телефону)
-- [ ] SLIDER-01 — Ціновий слайдер: крок 50грн, snap до реального min/max
-- [ ] ANIM-01 — Легкі анімації storefront + fade page transitions
-- [ ] BUG-25 — Адреса в футері: виправити посилання з embed URL на Google Maps
+- ✓ SOC-01 — Соцмережі у хедері, дровері, футері (Telegram, Viber, WhatsApp) — v2.2
+- ✓ FAB-01 — Floating cart button (завжди видима, ліворуч внизу) — v2.2
+- ✓ FAB-02 — Floating callback button з діалогом (номер магазину + форма телефону) — v2.2
+- ✓ SLIDER-01 — Ціновий слайдер: крок 50грн, snap до реального min/max — v2.2
+- ✓ ANIM-01 — Легкі анімації storefront + fade page transitions — v2.2
+- ✓ BUG-25 — Адреса в футері: виправити посилання з embed URL на Google Maps — v2.2
+
+### Active (v2.3)
+
+- [ ] HDR-01 — Прибрати кнопки авторизації з мобільного хедера; бургер — крайній правий
+- [ ] HDR-02 — Pending-стан для кнопок авторизації в хедері (Виходимо... / лоадер)
+- [ ] FAB-03 — Прибрати валідаційний текст "Вкажіть номер телефону — лише цифри, від 10 до 15" з callback-форми
+- [ ] FAB-04 — Всі floating-кнопки у правому нижньому куті стовпчиком (зворотній дзвінок → корзина → чат); callback-діалог поверх блоку
 
 ### Deferred (post–v2.0)
 
@@ -137,6 +143,14 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 ## Evolution
 
 <details>
+<summary>v2.2 milestone snapshot (2026-05-23)</summary>
+
+v2.2 scope: storefront polish — social links (header/drawer/footer), floating FABs (cart + callback), price slider fix (50 UAH step), page fade animation, footer map link bugfix.
+3 phases, 6 plans, shipped 2026-05-23.
+
+</details>
+
+<details>
 <summary>v2.1 milestone snapshot (2026-05-21)</summary>
 
 v2.1 scope: admin UX completeness — dashboard StatCards + full analytics charts + recent orders table parity, callback note auto-save, categories table № + Дії, category edit auto-save + icon-trash.
@@ -160,4 +174,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-21 — milestone v2.1 shipped*
+*Last updated: 2026-05-23 — milestone v2.3 started*
