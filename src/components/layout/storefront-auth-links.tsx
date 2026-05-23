@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
@@ -18,6 +19,7 @@ type StorefrontAuthLinksProps = {
 
 export function StorefrontAuthLinks({ session }: StorefrontAuthLinksProps) {
   const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
 
   if (session?.user) {
     return (
@@ -30,13 +32,15 @@ export function StorefrontAuthLinks({ session }: StorefrontAuthLinksProps) {
           variant="outline"
           size="sm"
           className="min-h-11"
+          disabled={isPending}
           onClick={async () => {
+            setIsPending(true);
             await authClient.signOut();
             router.push("/");
             router.refresh();
           }}
         >
-          Вийти
+          {isPending ? "Виходимо..." : "Вийти"}
         </Button>
       </div>
     );
