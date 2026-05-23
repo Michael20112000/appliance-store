@@ -623,17 +623,17 @@ Step 2.6: SKIPPED — no external dependencies. All tools (Node.js, TypeScript, 
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Both cart FABs on PDP (left global + right PDP-specific)**
    - What we know: `PdpCartFab` is at `right-6 bottom-[5.75rem]` and is only rendered by `tovar/[slug]/page.tsx`. New cart FAB is at `left-6 bottom-6`.
    - What's unclear: Is showing two cart FABs on PDP acceptable UX?
-   - Recommendation: Accept it for v2.2. The PDP FAB is already shipping and the two buttons serve different visual purposes. No requirement in FAB-01/FAB-02 says to suppress `PdpCartFab`.
+   - RESOLVED: Accept it for v2.2. The PDP FAB is already shipping and the two buttons serve different visual purposes. No requirement in FAB-01/FAB-02 says to suppress `PdpCartFab`.
 
 2. **Dialog title and phone display when no phones configured**
    - What we know: `getPublicStoreContacts()` returns `phones: []` when no phones are in the DB.
    - What's unclear: Should the callback FAB still appear if no phone is configured?
-   - Recommendation: Yes — show the FAB always. The dialog just shows only the form (no phone number `<ul>`). The form still works.
+   - RESOLVED: Yes — show the FAB always. The dialog just shows only the form (no phone number `<ul>`). The form still works.
 
 ---
 

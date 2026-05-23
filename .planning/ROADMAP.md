@@ -52,41 +52,56 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 ## Phase Details
 
 ### Phase 41: Social Links
+
 **Goal**: Users can reach the store on Telegram, Viber, and WhatsApp from any page surface
 **Depends on**: Nothing (first phase of v2.2)
 **Requirements**: SOC-01, SOC-02, SOC-03
 **Success Criteria** (what must be TRUE):
+
   1. User sees three social icons (Telegram, Viber, WhatsApp) in the site header on desktop and mobile
   2. User sees the same three social icons in the mobile navigation drawer
   3. User sees the same three social icons in the footer
   4. Clicking any social icon opens the correct external link (mock URL acceptable for v2.2)
+
 **Plans**: 1 plan
 Plans:
+
 - [x] 41-01-PLAN.md — Create constants, SVG icons, SocialNavLinks cluster, and integrate into header/drawer/footer
 
 ### Phase 42: Floating Action Buttons
+
 **Goal**: Users always have one-tap access to the cart and store callback from any storefront page
 **Depends on**: Phase 41
 **Requirements**: FAB-01, FAB-02
 **Success Criteria** (what must be TRUE):
+
   1. User sees a floating cart button in the bottom-left zone on every storefront page, including when the cart is empty
   2. User sees a floating callback button alongside the cart button in the bottom-left zone
   3. User can click the callback FAB to open a dialog showing the store phone number and a field to enter their own phone number
   4. The floating buttons do not appear on admin pages
+
 **Plans**: 2 plans
 Plans:
+**Wave 1**
+
 - [ ] 42-01-PLAN.md — Create StorefrontFabs component with CartFab and CallbackFab (TDD)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 42-02-PLAN.md — Wire StorefrontFabs into storefront layout RSC and verify visually
 
 ### Phase 43: Slider Fix, Animations & Footer Bug
+
 **Goal**: The price slider behaves correctly, storefront pages have subtle transitions, and the footer address link works
 **Depends on**: Phase 41
 **Requirements**: SLIDER-01, ANIM-01, BUG-25
 **Success Criteria** (what must be TRUE):
+
   1. User dragging the catalog price slider moves in 50 UAH increments and the handles snap back to the real catalog min/max at the extremes
   2. User navigating between storefront pages sees a subtle fade transition (admin navigation is unaffected)
   3. User clicking the address in the footer is taken to a standard Google Maps URL, not an embed API URL
   4. Storefront animations are non-intrusive and do not play when the user has reduced motion enabled
+
 **Plans**: TBD
 **UI hint**: yes
 

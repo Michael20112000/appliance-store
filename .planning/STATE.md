@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Bugfixes & Small Features
-status: ready
-stopped_at: Phase 41 complete — ready for Phase 42
-last_updated: "2026-05-22T16:00:00.000Z"
-last_activity: 2026-05-22 -- Phase 41 verified (human_needed), review fixes applied
+status: executing
+stopped_at: Phase 41 complete
+last_updated: "2026-05-23T10:05:39.789Z"
+last_activity: 2026-05-23 -- Phase 42 planning complete
 progress:
   total_phases: 3
   completed_phases: 1
-  total_plans: 1
+  total_plans: 3
   completed_plans: 1
   percent: 33
 ---
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-21)
 
 Phase: 42 (floating-action-buttons) — READY
 Plan: 0 of TBD
-Status: Phase 41 complete; plan Phase 42 next
-Last activity: 2026-05-22 -- Phase 41 execution + verification completed
+Status: Ready to execute
+Last activity: 2026-05-23 -- Phase 42 planning complete
 
 ```
 Progress: [███████░░░░░░░░░░░░░] 33% (1/3 phases)
