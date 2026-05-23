@@ -1,5 +1,20 @@
 # Milestones
 
+## v2.2 Bugfixes & Small Features (Shipped: 2026-05-23)
+
+**Phases completed:** 3 phases, 6 plans, 10 tasks
+
+**Key accomplishments:**
+
+- One-liner:
+- StorefrontFabs client component with persistent cart FAB and callback FAB opening @base-ui/react/dialog with store phones and CallbackRequestForm idPrefix="fab"
+- StorefrontFabs injected into storefront layout RSC with server-side phone contacts and session-conditional cart count, completing FAB-01 and FAB-02 wiring
+- Vitest RED-phase scaffolds: 5 tests for addressExternalMapUrl embed detection (3 failing) and 4 tests for normalizeSliderBounds grid snapping (all failing — import error)
+- normalizeSliderBounds 50-UAH grid snap for price slider + isEmbedMapUrl guard to fix footer address link from embed iframe URL to navigable Google Maps URL
+- 150ms CSS opacity fade-in on storefront page navigation via @keyframes + .page-transition class in globals.css and a plain div wrapper in the storefront RSC layout
+
+---
+
 ## v2.1 Fixes & UX (Shipped: 2026-05-21)
 
 **Phases completed:** 4 phases, 7 plans, 0 tasks

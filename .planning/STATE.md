@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: Bugfixes & Small Features
-status: completed
+status: Awaiting next milestone
 stopped_at: Phase 42 complete (visual verification approved)
-last_updated: "2026-05-23T18:06:31.396Z"
-last_activity: 2026-05-23 -- Phase 43 marked complete
+last_updated: "2026-05-23T18:17:37.528Z"
+last_activity: 2026-05-23 — Milestone v2.2 completed and archived
 progress:
   total_phases: 3
   completed_phases: 3
@@ -25,24 +25,21 @@ See: .planning/PROJECT.md (updated 2026-05-21)
 
 ## Current Position
 
-Phase: 43 — COMPLETE
-Plan: 1 of 3
-Status: Phase 43 complete
-Last activity: 2026-05-23 -- Phase 43 marked complete
-
-```
-Progress: [██████████] 100%
-```
+Phase: Milestone v2.2 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-23 — Milestone v2.2 completed and archived
 
 ## Deferred Items
 
-Items acknowledged and deferred at milestone close on 2026-05-21:
+Items acknowledged and deferred at milestone close on 2026-05-23 (v2.2):
 
 | Category | Item | Status |
 |----------|------|--------|
-| verification_gap | Phase 40: 40-VERIFICATION.md | closed — user manually verified 2026-05-21 |
-| verification_gap | Phase 41: browser visual checks | pending — see 41-VERIFICATION.md human_verification |
-| todo | bugfix-intake-TEMPLATE.md | template file, not a real task |
+| verification_gap | Phase 41 41-VERIFICATION.md | human_needed — user visually approved during execution |
+| verification_gap | Phase 42 42-VERIFICATION.md | human_needed — user visually approved during execution |
+| verification_gap | Phase 43 43-VERIFICATION.md | human_needed — user visually approved during execution |
+| todo | bugfix-intake-TEMPLATE.md | template/acknowledged — not a real task |
 
 ## Accumulated Context
 
@@ -65,3 +62,7 @@ None.
 Last session: 2026-05-23T10:30:00.000Z
 Stopped at: Phase 42 complete (visual verification approved)
 Resume: `/gsd:plan-phase 43`
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
