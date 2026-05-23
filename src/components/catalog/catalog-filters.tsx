@@ -67,6 +67,17 @@ function normalizeThumbRange(
   return [low, high];
 }
 
+export function normalizeSliderBounds(bounds: PriceBounds): {
+  sliderMin: number;
+  sliderMax: number;
+} {
+  const sliderMin =
+    Math.floor(bounds.minUah / PRICE_STEP_UAH) * PRICE_STEP_UAH;
+  let sliderMax = Math.ceil(bounds.maxUah / PRICE_STEP_UAH) * PRICE_STEP_UAH;
+  if (sliderMin === sliderMax) sliderMax = sliderMin + PRICE_STEP_UAH;
+  return { sliderMin, sliderMax };
+}
+
 function thumbValuesFromParams(
   cinaVid: number | null,
   cinaDo: number | null,
@@ -107,6 +118,10 @@ export function CatalogFiltersPanel({
     if (!bounds) return [0, 0];
     return thumbValuesFromParams(params.cinaVid, params.cinaDo, bounds);
   }, [dragValues, bounds, params.cinaVid, params.cinaDo]);
+
+  const { sliderMin, sliderMax } = bounds
+    ? normalizeSliderBounds(bounds)
+    : { sliderMin: 0, sliderMax: 0 };
 
   const minInputValue = useMemo(() => {
     if (!bounds) return "";
@@ -259,8 +274,8 @@ export function CatalogFiltersPanel({
           <>
             <Slider
               className="mt-3"
-              min={bounds.minUah}
-              max={bounds.maxUah}
+              min={sliderMin}
+              max={sliderMax}
               step={PRICE_STEP_UAH}
               value={thumbValues}
               aria-label="Діапазон ціни"
