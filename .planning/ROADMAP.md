@@ -84,7 +84,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 42-01-PLAN.md — Create StorefrontFabs component with CartFab and CallbackFab (TDD)
+- [x] 42-01-PLAN.md — Create StorefrontFabs component with CartFab and CallbackFab (TDD)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -110,7 +110,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
-| 42. Floating Action Buttons | v2.2 | 0/2 | Not started | - |
+| 42. Floating Action Buttons | v2.2 | 1/2 | In Progress|  |
 | 43. Slider Fix, Animations & Footer Bug | v2.2 | 0/? | Not started | - |
 | 37. Dashboard StatCards | v2.1 | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | v2.1 | 2/2 | Complete | 2026-05-21 |

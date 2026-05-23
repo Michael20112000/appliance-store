@@ -4,8 +4,8 @@ milestone: v2.2
 milestone_name: Bugfixes & Small Features
 status: executing
 stopped_at: Phase 41 complete
-last_updated: "2026-05-23T10:05:39.789Z"
-last_activity: 2026-05-23 -- Phase 42 planning complete
+last_updated: "2026-05-23T10:12:24.872Z"
+last_activity: 2026-05-23 -- Phase 42 execution started
 progress:
   total_phases: 3
   completed_phases: 1
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-21)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 42 — floating action buttons
+**Current focus:** Phase 42 — floating-action-buttons
 
 ## Current Position
 
-Phase: 42 (floating-action-buttons) — READY
-Plan: 0 of TBD
-Status: Ready to execute
-Last activity: 2026-05-23 -- Phase 42 planning complete
+Phase: 42 (floating-action-buttons) — EXECUTING
+Plan: 1 of 2
+Status: Executing Phase 42
+Last activity: 2026-05-23 -- Phase 42 execution started
 
 ```
 Progress: [███████░░░░░░░░░░░░░] 33% (1/3 phases)
