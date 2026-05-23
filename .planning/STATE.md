@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.3
 milestone_name: Bugfixes & Small Features
-status: planning
-last_updated: "2026-05-23T00:00:00.000Z"
-last_activity: 2026-05-23 — Phase 44 planned (2 plans)
+status: executing
+last_updated: "2026-05-23T18:41:25.550Z"
+last_activity: 2026-05-23 -- Phase 44 execution started
 progress:
   total_phases: 2
   completed_phases: 0
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-23)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 44 — Mobile Header Cleanup
+**Current focus:** Phase 44 — mobile-header-cleanup
 
 ## Current Position
 
-Phase: 44 (planned — ready to execute)
-Plan: 2 plans (Wave 1)
-Status: Ready to execute
-Last activity: 2026-05-23 — Phase 44 planned (2 plans)
+Phase: 44 (mobile-header-cleanup) — EXECUTING
+Plan: 1 of 2
+Status: Executing Phase 44
+Last activity: 2026-05-23 -- Phase 44 execution started
 
 ## Deferred Items
 

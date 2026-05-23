@@ -71,8 +71,8 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 **Plans**: 2 plans
 Plans:
-- [ ] 44-01-PLAN.md — Restructure header flex container: hide auth on mobile, move burger to rightmost position (HDR-01)
-- [ ] 44-02-PLAN.md — Add isPending state to sign-out button in storefront-auth-links (HDR-02)
+- [x] 44-01-PLAN.md — Restructure header flex container: hide auth on mobile, move burger to rightmost position (HDR-01)
+- [x] 44-02-PLAN.md — Add isPending state to sign-out button in storefront-auth-links (HDR-02)
 **UI hint**: yes
 
 ### Phase 45: Floating UI Overhaul
@@ -93,7 +93,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 44. Mobile Header Cleanup | v2.3 | 0/2 | Not started | - |
+| 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 0/? | Not started | - |
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
 | 42. Floating Action Buttons | v2.2 | 2/2 | Complete   | 2026-05-23 |
