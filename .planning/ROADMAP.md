@@ -73,8 +73,10 @@ Plans:
   2. User sees a floating callback button alongside the cart button in the bottom-left zone
   3. User can click the callback FAB to open a dialog showing the store phone number and a field to enter their own phone number
   4. The floating buttons do not appear on admin pages
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 2 plans
+Plans:
+- [ ] 42-01-PLAN.md — Create StorefrontFabs component with CartFab and CallbackFab (TDD)
+- [ ] 42-02-PLAN.md — Wire StorefrontFabs into storefront layout RSC and verify visually
 
 ### Phase 43: Slider Fix, Animations & Footer Bug
 **Goal**: The price slider behaves correctly, storefront pages have subtle transitions, and the footer address link works
@@ -93,7 +95,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
-| 42. Floating Action Buttons | v2.2 | 0/? | Not started | - |
+| 42. Floating Action Buttons | v2.2 | 0/2 | Not started | - |
 | 43. Slider Fix, Animations & Footer Bug | v2.2 | 0/? | Not started | - |
 | 37. Dashboard StatCards | v2.1 | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | v2.1 | 2/2 | Complete | 2026-05-21 |
