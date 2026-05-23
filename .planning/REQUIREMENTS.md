@@ -14,8 +14,8 @@
 
 ### FAB — Floating кнопки
 
-- [ ] **FAB-01**: User always sees a cart button in the bottom-left floating zone (visible even when cart is empty)
-- [ ] **FAB-02**: User can open a callback dialog from a floating button — бачить номер магазину та форму для введення свого телефону
+- [x] **FAB-01**: User always sees a cart button in the bottom-left floating zone (visible even when cart is empty)
+- [x] **FAB-02**: User can open a callback dialog from a floating button — бачить номер магазину та форму для введення свого телефону
 
 ### CATALOG — Каталог
 
