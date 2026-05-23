@@ -4,11 +4,11 @@ milestone: v2.3
 milestone_name: Bugfixes & Small Features
 status: planning
 last_updated: "2026-05-23T00:00:00.000Z"
-last_activity: 2026-05-23 — Roadmap created (Phases 44–45)
+last_activity: 2026-05-23 — Phase 44 planned (2 plans)
 progress:
   total_phases: 2
   completed_phases: 0
-  total_plans: 0
+  total_plans: 2
   completed_plans: 0
   percent: 0
 ---
@@ -24,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-05-23)
 
 ## Current Position
 
-Phase: 44 (not started)
-Plan: —
-Status: Ready to plan
-Last activity: 2026-05-23 — Roadmap created (Phases 44–45)
+Phase: 44 (planned — ready to execute)
+Plan: 2 plans (Wave 1)
+Status: Ready to execute
+Last activity: 2026-05-23 — Phase 44 planned (2 plans)
 
 ## Deferred Items
 
@@ -60,4 +60,4 @@ None.
 
 ## Operator Next Steps
 
-- Run `/gsd:plan-phase 44` to start execution
+- Run `/gsd:execute-phase 44` to execute the plans
