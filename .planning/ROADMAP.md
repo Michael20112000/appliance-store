@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- 🔄 **v2.3 Bugfixes & Small Features** — Phases 44–45 (in progress)
 - ✅ **v2.2 Bugfixes & Small Features** — Phases 41–43 (shipped 2026-05-23) — [archive](milestones/v2.2-ROADMAP.md) · [requirements](milestones/v2.2-REQUIREMENTS.md)
 - ✅ **v2.1 Fixes & UX** — Phases 37–40 (shipped 2026-05-21) — [archive](milestones/v2.1-ROADMAP.md) · [requirements](milestones/v2.1-REQUIREMENTS.md)
 - ✅ **v2.0 Polish, UX & Admin analytics** — Phases 28–36 (shipped 2026-05-21) — [archive](milestones/v2.0-ROADMAP.md) · [requirements](milestones/v2.0-REQUIREMENTS.md)
@@ -13,6 +14,9 @@
 - ✅ **v1.0 Appliance Store MVP** — Phases 1–6 (shipped 2026-05-17) — [archive](milestones/v1.0-ROADMAP.md) · [requirements](milestones/v1.0-REQUIREMENTS.md)
 
 ## Phases
+
+- [ ] **Phase 44: Mobile Header Cleanup** — Remove auth buttons from mobile header; burger becomes rightmost element; sign-out shows pending state
+- [ ] **Phase 45: Floating UI Overhaul** — All floating buttons consolidated into a bottom-right column; callback dialog z-index above the button group; validation noise removed from callback form
 
 <details>
 <summary>✅ v2.2 Bugfixes & Small Features (Phases 41–43) — SHIPPED 2026-05-23</summary>
@@ -54,72 +58,40 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 ## Phase Details
 
-### Phase 41: Social Links
+### Phase 44: Mobile Header Cleanup
 
-**Goal**: Users can reach the store on Telegram, Viber, and WhatsApp from any page surface
-**Depends on**: Nothing (first phase of v2.2)
-**Requirements**: SOC-01, SOC-02, SOC-03
+**Goal**: Mobile header is uncluttered — auth buttons are gone from the top bar, burger is the rightmost control, and the sign-out action shows a loading state until the session ends
+**Depends on**: Nothing (first phase of v2.3)
+**Requirements**: HDR-01, HDR-02
 **Success Criteria** (what must be TRUE):
+  1. On a mobile viewport the header contains no "Увійти" or "Реєстрація" buttons — those flows are reached via the drawer instead
+  2. The burger/menu icon is the rightmost interactive element in the mobile header with no other controls to its right
+  3. When a signed-in user clicks "Вийти" in the header, the button immediately changes to a loading state (spinner or text "Виходимо...") and stays that way until the sign-out request completes
+  4. After sign-out completes, the header reverts to its guest state with no stuck loader visible
 
-  1. User sees three social icons (Telegram, Viber, WhatsApp) in the site header on desktop and mobile
-  2. User sees the same three social icons in the mobile navigation drawer
-  3. User sees the same three social icons in the footer
-  4. Clicking any social icon opens the correct external link (mock URL acceptable for v2.2)
+**Plans**: TBD
+**UI hint**: yes
 
-**Plans**: 1 plan
-Plans:
+### Phase 45: Floating UI Overhaul
 
-- [x] 41-01-PLAN.md — Create constants, SVG icons, SocialNavLinks cluster, and integrate into header/drawer/footer
-
-### Phase 42: Floating Action Buttons
-
-**Goal**: Users always have one-tap access to the cart and store callback from any storefront page
-**Depends on**: Phase 41
-**Requirements**: FAB-01, FAB-02
+**Goal**: All floating action buttons live in one bottom-right column in a defined order, the callback dialog renders above the entire button group, and the callback form no longer shows unnecessary validation text
+**Depends on**: Phase 44
+**Requirements**: FAB-03, FAB-04
 **Success Criteria** (what must be TRUE):
+  1. The callback phone-input field never displays the message "Вкажіть номер телефону — лише цифри, від 10 до 15" at any point during normal use
+  2. All floating buttons (callback, cart, chat) are grouped in the bottom-right corner of the screen stacked vertically in the order: callback (top) → cart → chat (bottom)
+  3. Opening the callback dialog renders it visually on top of the floating button group — no buttons bleed through the dialog overlay
+  4. The chat floating button is part of the same bottom-right group and does not appear separately in a different corner
 
-  1. User sees a floating cart button in the bottom-left zone on every storefront page, including when the cart is empty
-  2. User sees a floating callback button alongside the cart button in the bottom-left zone
-  3. User can click the callback FAB to open a dialog showing the store phone number and a field to enter their own phone number
-  4. The floating buttons do not appear on admin pages
-
-**Plans**: 2 plans
-Plans:
-**Wave 1**
-
-- [x] 42-01-PLAN.md — Create StorefrontFabs component with CartFab and CallbackFab (TDD)
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 42-02-PLAN.md — Wire StorefrontFabs into storefront layout RSC and verify visually
-
-### Phase 43: Slider Fix, Animations & Footer Bug
-
-**Goal**: The price slider behaves correctly, storefront pages have subtle transitions, and the footer address link works
-**Depends on**: Phase 41
-**Requirements**: SLIDER-01, ANIM-01, BUG-25
-**Success Criteria** (what must be TRUE):
-
-  1. User dragging the catalog price slider moves in 50 UAH increments and the handles snap back to the real catalog min/max at the extremes
-  2. User navigating between storefront pages sees a subtle fade transition (admin navigation is unaffected)
-  3. User clicking the address in the footer is taken to a standard Google Maps URL, not an embed API URL
-  4. Storefront animations are non-intrusive and do not play when the user has reduced motion enabled
-
-**Plans**: 3 plans
-Plans:
-**Wave 1** *(parallel)*
-
-- [x] 43-01-PLAN.md — Write failing unit tests for normalizeSliderBounds (SLIDER-01 RED) and addressExternalMapUrl embed detection (BUG-25 RED)
-- [x] 43-03-PLAN.md — Add page-fade-in CSS to globals.css and wrap storefront layout children with div.page-transition; visual checkpoint
-
-**Wave 2** *(blocked on 43-01 completion)*
-
-- [x] 43-02-PLAN.md — Implement normalizeSliderBounds in catalog-filters.tsx and isEmbedMapUrl guard in store-map.ts; turn RED tests GREEN
+**Plans**: TBD
+**UI hint**: yes
 
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
+| 44. Mobile Header Cleanup | v2.3 | 0/? | Not started | - |
+| 45. Floating UI Overhaul | v2.3 | 0/? | Not started | - |
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
 | 42. Floating Action Buttons | v2.2 | 2/2 | Complete   | 2026-05-23 |
 | 43. Slider Fix, Animations & Footer Bug | v2.2 | 3/3 | Complete   | 2026-05-23 |

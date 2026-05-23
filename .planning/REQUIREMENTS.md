@@ -43,4 +43,4 @@
 
 ---
 *Requirements defined: 2026-05-23*
-*Last updated: 2026-05-23 after initial definition*
+*Last updated: 2026-05-23 — phase mapping confirmed (Phase 44: HDR-01, HDR-02; Phase 45: FAB-03, FAB-04)*

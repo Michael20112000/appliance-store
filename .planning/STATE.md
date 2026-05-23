@@ -4,9 +4,9 @@ milestone: v2.3
 milestone_name: Bugfixes & Small Features
 status: planning
 last_updated: "2026-05-23T00:00:00.000Z"
-last_activity: 2026-05-23 — Milestone v2.3 started
+last_activity: 2026-05-23 — Roadmap created (Phases 44–45)
 progress:
-  total_phases: 0
+  total_phases: 2
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-23)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Defining requirements for v2.3
+**Current focus:** Phase 44 — Mobile Header Cleanup
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 44 (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-23 — Milestone v2.3 started
+Status: Ready to plan
+Last activity: 2026-05-23 — Roadmap created (Phases 44–45)
 
 ## Deferred Items
 
@@ -51,6 +51,8 @@ Items carried over from v2.2:
 - Floating buttons (FAB) appear only on storefront, not admin pages
 - ANIM-01 must respect prefers-reduced-motion
 - v2.3: all floating buttons move to bottom-right corner in a column (callback → cart → chat); callback dialog z-index above all
+- v2.3: auth buttons removed from mobile header (available in drawer); burger is rightmost element
+- v2.3: sign-out pending state shown in header button until session ends
 
 ### Blockers/Concerns
 
