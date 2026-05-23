@@ -17,7 +17,7 @@
 ### v2.2 Bugfixes & Small Features (Phases 41–43)
 
 - [x] **Phase 41: Social Links** — Telegram, Viber, WhatsApp icons in header, mobile drawer, and footer
-- [ ] **Phase 42: Floating Action Buttons** — Persistent cart FAB and callback FAB with phone dialog
+- [x] **Phase 42: Floating Action Buttons** — Persistent cart FAB and callback FAB with phone dialog
 - [ ] **Phase 43: Slider Fix, Animations & Footer Bug** — Price slider step/snap, storefront fade animations, footer address link fix
 
 <details>
