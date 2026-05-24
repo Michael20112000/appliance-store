@@ -35,9 +35,13 @@ export function StorefrontAuthLinks({ session }: StorefrontAuthLinksProps) {
           disabled={isPending}
           onClick={async () => {
             setIsPending(true);
-            await authClient.signOut();
-            router.push("/");
-            router.refresh();
+            try {
+              await authClient.signOut();
+              router.push("/");
+              router.refresh();
+            } catch {
+              setIsPending(false);
+            }
           }}
         >
           {isPending ? "Виходимо..." : "Вийти"}
