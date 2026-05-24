@@ -37,8 +37,18 @@ vi.mock("sonner", () => ({
   toast: { error: vi.fn(), success: vi.fn() },
 }));
 
+vi.mock("@/components/chat/chat-provider", () => ({
+  useChat: vi.fn().mockReturnValue({
+    isOpen: false,
+    openPanel: vi.fn(),
+    unreadFromStore: false,
+    hasSession: false,
+  }),
+}));
+
 import React from "react";
 import { StorefrontFabs } from "./storefront-fabs";
+import { useChat } from "@/components/chat/chat-provider";
 
 describe("StorefrontFabs", () => {
   beforeEach(() => {
@@ -122,5 +132,54 @@ describe("StorefrontFabs", () => {
     expect(
       screen.getByText("Вкажіть свій номер — ми передзвонимо"),
     ).toBeDefined();
+  });
+
+  it("FAB-04-a: wrapper div className includes right-6", () => {
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
+    );
+    const callbackBtn = screen.getByRole("button", { name: "Замовити дзвінок" });
+    const wrapper = callbackBtn.parentElement;
+    expect(wrapper?.className).toContain("right-6");
+    expect(wrapper?.className).not.toContain("left-6");
+  });
+
+  it("FAB-04-b: chat FAB renders when isOpen is false", () => {
+    vi.mocked(useChat).mockReturnValue({
+      isOpen: false,
+      openPanel: vi.fn(),
+      unreadFromStore: false,
+      hasSession: false,
+    } as ReturnType<typeof useChat>);
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
+    );
+    expect(screen.getByRole("button", { name: "Відкрити чат з магазином" })).toBeDefined();
+  });
+
+  it("FAB-04-c: chat FAB is hidden when isOpen is true", () => {
+    vi.mocked(useChat).mockReturnValue({
+      isOpen: true,
+      openPanel: vi.fn(),
+      unreadFromStore: false,
+      hasSession: false,
+    } as ReturnType<typeof useChat>);
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
+    );
+    expect(screen.queryByRole("button", { name: "Відкрити чат з магазином" })).toBeNull();
+  });
+
+  it("FAB-04-d: chat FAB has correct aria-label", () => {
+    vi.mocked(useChat).mockReturnValue({
+      isOpen: false,
+      openPanel: vi.fn(),
+      unreadFromStore: false,
+      hasSession: false,
+    } as ReturnType<typeof useChat>);
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
+    );
+    expect(screen.getByRole("button", { name: "Відкрити чат з магазином" })).toBeDefined();
   });
 });
