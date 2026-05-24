@@ -6,7 +6,7 @@ status: planning
 last_updated: "2026-05-24T14:06:41.309Z"
 last_activity: 2026-05-24
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -17,17 +17,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-23)
+See: .planning/PROJECT.md (updated 2026-05-24)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** v3.0 Chat & Engagement — defining requirements
+**Current focus:** v3.0 Chat & Engagement — roadmap defined, ready to plan Phase 46
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 46 (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-24 — Milestone v3.0 started
+Status: Roadmap defined
+Last activity: 2026-05-24 — v3.0 roadmap created (Phases 46–49)
 
 ## Deferred Items
 
@@ -56,6 +56,12 @@ Items acknowledged and deferred at milestone close on 2026-05-24:
 - v2.3: all floating buttons move to bottom-right corner in a column (callback → cart → chat); callback dialog z-index above all
 - v2.3: auth buttons removed from mobile header (available in drawer); burger is rightmost element
 - v2.3: sign-out pending state shown in header button until session ends
+- v3.0: guest chat uses localStorage `chat_guest_token`; no redirect to /uviity on widget open
+- v3.0: Conversation.userId @unique removed in Phase 46 — hard prerequisite for all later phases
+- v3.0: Pusher guest auth via guestToken param on /api/pusher/auth (not a new channel type)
+- v3.0: file uploads use signed Cloudinary preset `chat-attachments` (not unsigned); server validates type + size
+- v3.0: history drawer is in-widget view-state switch on mobile (not side-slide Sheet)
+- v3.0: Phase 48 and Phase 49 are independent and can be planned/executed in parallel
 
 ### Blockers/Concerns
 
@@ -63,4 +69,4 @@ None.
 
 ## Operator Next Steps
 
-- Run `/gsd:plan-phase 46` to start planning the first phase of v3.0
+- Run `/gsd:plan-phase 46` to start planning Phase 46: Schema Foundation + Guest Chat
