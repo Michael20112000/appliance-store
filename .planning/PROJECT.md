@@ -24,6 +24,8 @@
 
 **Shipped:** v1.0 → v2.1 (2026-05-21)
 
+**Phase 45 complete (2026-05-24):** Floating UI overhaul — callback phone premature validation fixed (shouldValidate removed), all three FABs (callback/cart/chat) consolidated into single bottom-right column at z-[49], dialog backdrop correctly covers FAB group, StorefrontFabs moved inside ChatContext.Provider.
+
 **Latest (v2.1):** Admin UX completeness — dashboard StatCards (calls + chats), full AnalyticsCharts on /admin, recent orders table parity (6 cols, max 10), callback note auto-save (400ms throttle), categories table № + Дії columns, category edit auto-save + icon-trash (mirrors product edit page).
 
 **v2.0:** UX polish — nav auth, smooth scroll, category counts, catalog sort; PDP lightbox, in-cart FAB, схожі товари; footer desktop; admin analytics + callbacks (Дзвінки) + DnD categories + sidebar badges.
@@ -174,4 +176,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-23 — milestone v2.3 started*
+*Last updated: 2026-05-24 — Phase 45 complete (floating UI overhaul)*
