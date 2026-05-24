@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.3
-milestone_name: Bugfixes & Small Features
-status: Awaiting next milestone
-last_updated: "2026-05-24T13:51:00.095Z"
-last_activity: 2026-05-24 — Milestone v2.3 completed and archived
+milestone: v3.0
+milestone_name: Chat & Engagement
+status: planning
+last_updated: "2026-05-24T14:06:41.309Z"
+last_activity: 2026-05-24
 progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-23)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** v3.0 Chat & Engagement — defining requirements
 
 ## Current Position
 
-Phase: Milestone v2.3 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-24 — Milestone v2.3 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-24 — Milestone v3.0 started
 
 ## Deferred Items
 
@@ -63,4 +63,4 @@ None.
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Run `/gsd:plan-phase 46` to start planning the first phase of v3.0
