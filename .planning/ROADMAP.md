@@ -15,7 +15,7 @@
 
 ## Phases
 
-- [ ] **Phase 44: Mobile Header Cleanup** — Remove auth buttons from mobile header; burger becomes rightmost element; sign-out shows pending state
+- [x] **Phase 44: Mobile Header Cleanup** — Remove auth buttons from mobile header; burger becomes rightmost element; sign-out shows pending state
 - [ ] **Phase 45: Floating UI Overhaul** — All floating buttons consolidated into a bottom-right column; callback dialog z-index above the button group; validation noise removed from callback form
 
 <details>
