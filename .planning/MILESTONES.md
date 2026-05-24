@@ -1,5 +1,16 @@
 # Milestones
 
+## v2.3 Bugfixes & Small Features (Shipped: 2026-05-24)
+
+**Phases completed:** 2 phases, 4 plans, 1 tasks
+
+**Key accomplishments:**
+
+- One-liner:
+- One-liner:
+
+---
+
 ## v2.2 Bugfixes & Small Features (Shipped: 2026-05-23)
 
 **Phases completed:** 3 phases, 6 plans, 10 tasks
