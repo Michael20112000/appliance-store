@@ -7,7 +7,6 @@ import { CartPendingMergeGate } from "@/components/cart/cart-pending-merge-gate"
 import { WishlistPendingMergeGate } from "@/components/wishlist/wishlist-pending-merge-gate";
 import { StoreFooter } from "@/components/layout/store-footer";
 import { StoreHeader } from "@/components/layout/store-header";
-import { StorefrontFabs } from "@/components/layout/storefront-fabs";
 import { PageTransition } from "@/components/layout/page-transition";
 import { Analytics } from "@vercel/analytics/next";
 import { auth } from "@/lib/auth";
@@ -30,7 +29,7 @@ export default async function StorefrontLayout({
         <PageTransition>
           <NuqsAdapter>
             <Suspense fallback={null}>
-              <ChatProviderGate>
+              <ChatProviderGate phones={contacts.phones} initialCartCount={cartCount}>
                 <CartPendingMergeGate />
                 <WishlistPendingMergeGate />
                 {children}
@@ -42,11 +41,6 @@ export default async function StorefrontLayout({
       </main>
       <StoreFooter />
       <Toaster richColors position="top-center" closeButton />
-      <StorefrontFabs
-        phones={contacts.phones}
-        initialCartCount={cartCount}
-        hasSession={Boolean(session?.user)}
-      />
     </>
   );
 }
