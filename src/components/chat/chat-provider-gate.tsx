@@ -3,11 +3,16 @@ import { auth } from "@/lib/auth";
 import type { ConversationStatus } from "@/generated/prisma/client";
 import { getConversationForBuyer } from "@/server/services/chat.service";
 import { ChatProvider } from "@/components/chat/chat-provider";
+import type { PublicStorePhone } from "@/server/services/store-settings.service";
 
 export async function ChatProviderGate({
   children,
+  phones,
+  initialCartCount,
 }: {
   children: React.ReactNode;
+  phones: PublicStorePhone[];
+  initialCartCount: number;
 }) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -36,6 +41,8 @@ export async function ChatProviderGate({
       initialConversationId={initialConversationId}
       initialConversationStatus={initialConversationStatus}
       initialUnreadFromStore={initialUnreadFromStore}
+      phones={phones}
+      initialCartCount={initialCartCount}
     >
       {children}
     </ChatProvider>
