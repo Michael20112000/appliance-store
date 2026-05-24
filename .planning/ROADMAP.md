@@ -88,8 +88,15 @@ Plans:
 
 **Plans**: 2 plans
 Plans:
+
+**Wave 1** *(both plans execute in parallel — no shared files)*
 - [ ] 45-01-PLAN.md — Suppress premature validation: remove shouldValidate from callback-request-form onChange (FAB-03)
 - [ ] 45-02-PLAN.md — FAB consolidation: merge chat FAB into StorefrontFabs column, fix z-index, thread props through ChatProviderGate (FAB-04)
+
+**Cross-cutting constraints:**
+- `StorefrontFabs` must be rendered inside `ChatContext.Provider` subtree to use `useChat()`
+- FAB wrapper z-index must be `z-[49]` so dialog backdrop at `z-50` covers it
+
 **UI hint**: yes
 
 ## Progress
@@ -97,7 +104,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
-| 45. Floating UI Overhaul | v2.3 | 0/2 | Not started | - |
+| 45. Floating UI Overhaul | v2.3 | 0/2 | Planned     | - |
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
 | 42. Floating Action Buttons | v2.2 | 2/2 | Complete   | 2026-05-23 |
 | 43. Slider Fix, Animations & Footer Bug | v2.2 | 3/3 | Complete   | 2026-05-23 |

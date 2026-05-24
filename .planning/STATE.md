@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.3
 milestone_name: Bugfixes & Small Features
-status: executing
-last_updated: "2026-05-23T18:41:25.550Z"
-last_activity: 2026-05-23 -- Phase 44 execution started
+status: planned
+last_updated: "2026-05-24T00:00:00.000Z"
+last_activity: 2026-05-24 -- Phase 45 planned (2 plans)
 progress:
   total_phases: 2
-  completed_phases: 0
-  total_plans: 2
-  completed_plans: 0
-  percent: 0
+  completed_phases: 1
+  total_plans: 4
+  completed_plans: 2
+  percent: 50
 ---
 
 # Project State
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-23)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 44 — mobile-header-cleanup
+**Current focus:** Phase 45 — floating-ui-overhaul
 
 ## Current Position
 
-Phase: 44 (mobile-header-cleanup) — EXECUTING
-Plan: 1 of 2
-Status: Executing Phase 44
-Last activity: 2026-05-23 -- Phase 44 execution started
+Phase: 45 (floating-ui-overhaul) — READY TO EXECUTE
+Plan: 0 of 2
+Status: Phase 45 planned — 2 plans in 1 wave (parallel)
+Last activity: 2026-05-24 -- Phase 45 planned (2 plans)
 
 ## Deferred Items
 
@@ -60,4 +60,4 @@ None.
 
 ## Operator Next Steps
 
-- Run `/gsd:execute-phase 44` to execute the plans
+- Run `/gsd:execute-phase 45` to execute the plans
