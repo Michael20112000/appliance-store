@@ -61,4 +61,30 @@ describe("CallbackRequestForm", () => {
     expect(toast.error).not.toHaveBeenCalled();
     expect(toast.success).not.toHaveBeenCalled();
   });
+
+  it("FAB-03-a: typing partial number does NOT show validation error before submit", async () => {
+    render(<CallbackRequestForm />);
+
+    const input = screen.getByLabelText("Номер телефону");
+    fireEvent.change(input, { target: { value: "097" } });
+
+    // Wait for any async RHF state updates to settle, then assert no error appears
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull();
+    });
+  });
+
+  it("FAB-03-b: validation error appears after submit with too-short number", async () => {
+    render(<CallbackRequestForm />);
+
+    const input = screen.getByLabelText("Номер телефону");
+    fireEvent.change(input, { target: { value: "097" } });
+    fireEvent.click(screen.getByRole("button", { name: "Передзвоніть мені" }));
+
+    await waitFor(() => {
+      const alert = screen.getByRole("alert");
+      expect(alert.textContent).toContain("Вкажіть номер телефону");
+    });
+    expect(vi.mocked(submitCallbackRequestAction).mock.calls.length).toBe(0);
+  });
 });
