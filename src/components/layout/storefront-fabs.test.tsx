@@ -150,7 +150,7 @@ describe("StorefrontFabs", () => {
       openPanel: vi.fn(),
       unreadFromStore: false,
       hasSession: false,
-    } as ReturnType<typeof useChat>);
+    } as unknown as ReturnType<typeof useChat>);
     render(
       <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
     );
@@ -163,7 +163,7 @@ describe("StorefrontFabs", () => {
       openPanel: vi.fn(),
       unreadFromStore: false,
       hasSession: false,
-    } as ReturnType<typeof useChat>);
+    } as unknown as ReturnType<typeof useChat>);
     render(
       <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
     );
@@ -176,7 +176,7 @@ describe("StorefrontFabs", () => {
       openPanel: vi.fn(),
       unreadFromStore: false,
       hasSession: false,
-    } as ReturnType<typeof useChat>);
+    } as unknown as ReturnType<typeof useChat>);
     render(
       <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
     );

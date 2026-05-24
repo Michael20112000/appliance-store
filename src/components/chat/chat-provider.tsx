@@ -21,11 +21,8 @@ import {
 import type { ConversationStatus } from "@/generated/prisma/client";
 import { markBuyerReadAction } from "@/server/actions/chat.actions";
 import type { MessageDto } from "@/types/chat";
-
-const ChatFab = dynamic(
-  () => import("@/components/chat/chat-fab").then((m) => ({ default: m.ChatFab })),
-  { ssr: false },
-);
+import { StorefrontFabs } from "@/components/layout/storefront-fabs";
+import type { PublicStorePhone } from "@/server/services/store-settings.service";
 
 const ChatPanel = dynamic(
   () =>
@@ -76,6 +73,9 @@ type ChatProviderProps = {
   initialConversationId?: string;
   initialConversationStatus?: ConversationStatus;
   initialUnreadFromStore?: boolean;
+  // FAB-04: props forwarded to StorefrontFabs
+  phones: PublicStorePhone[];
+  initialCartCount: number;
 };
 
 type PusherMessagePayload = {
@@ -92,6 +92,8 @@ export function ChatProvider({
   initialConversationId,
   initialConversationStatus,
   initialUnreadFromStore = false,
+  phones,
+  initialCartCount,
 }: ChatProviderProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -374,7 +376,11 @@ export function ChatProvider({
   return (
     <ChatContext.Provider value={value}>
       {children}
-      <ChatFab />
+      <StorefrontFabs
+        phones={phones}
+        initialCartCount={initialCartCount}
+        hasSession={hasSession}
+      />
       <ChatPanel />
     </ChatContext.Provider>
   );

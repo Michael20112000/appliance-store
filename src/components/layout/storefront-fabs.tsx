@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Phone, ShoppingCart } from "lucide-react";
+import { MessageSquare, Phone, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -16,6 +16,7 @@ import { getPendingItemCount } from "@/lib/cart/pending-storage";
 import { formatUaPhoneDisplay, uaPhoneTelHref } from "@/lib/phone/format-ua";
 import type { PublicStorePhone } from "@/server/services/store-settings.service";
 import { cn } from "@/lib/utils";
+import { useChat } from "@/components/chat/chat-provider";
 
 type StorefrontFabsProps = {
   phones: PublicStorePhone[];
@@ -30,6 +31,7 @@ export function StorefrontFabs({
 }: StorefrontFabsProps) {
   const [cartCount, setCartCount] = useState(initialCartCount);
   const [callbackOpen, setCallbackOpen] = useState(false);
+  const { isOpen: chatIsOpen, openPanel, unreadFromStore, hasSession: chatHasSession } = useChat();
 
   useEffect(() => {
     setCartCount(initialCartCount);
@@ -48,7 +50,7 @@ export function StorefrontFabs({
 
   return (
     <div
-      className="fixed bottom-6 left-6 z-[59] flex flex-col items-center gap-3 pb-[max(0px,env(safe-area-inset-bottom))]"
+      className="fixed bottom-6 right-6 z-[49] flex flex-col items-center gap-3 pb-[max(0px,env(safe-area-inset-bottom))]"
     >
       {/* FAB-02: Callback FAB */}
       <button
@@ -82,6 +84,27 @@ export function StorefrontFabs({
           </Badge>
         )}
       </Link>
+
+      {/* FAB-04: Chat FAB — hidden when chat panel is open */}
+      {!chatIsOpen && (
+        <button
+          type="button"
+          onClick={() => openPanel()}
+          className={cn(
+            "flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring relative",
+          )}
+          aria-label="Відкрити чат з магазином"
+        >
+          <MessageSquare className="size-6" aria-hidden />
+          {chatHasSession && unreadFromStore ? (
+            <span
+              className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-primary ring-2 ring-background"
+              aria-hidden
+            />
+          ) : null}
+        </button>
+      )}
 
       {/* FAB-02: Callback Dialog */}
       <Dialog open={callbackOpen} onOpenChange={setCallbackOpen}>
