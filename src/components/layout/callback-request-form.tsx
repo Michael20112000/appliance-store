@@ -71,7 +71,7 @@ export function CallbackRequestForm({
           {...form.register("phone", {
             onChange: (event) => {
               const digits = event.target.value.replace(/\D/g, "");
-              form.setValue("phone", digits, { shouldValidate: true });
+              form.setValue("phone", digits);
             },
           })}
         />
