@@ -31,6 +31,7 @@ export function ChatComposer() {
   const {
     conversationId,
     productContext,
+    guestToken,
     canSend: canSendMessages,
     appendMessage,
     replaceOptimisticMessage,
@@ -77,6 +78,7 @@ export function ChatComposer() {
           body: trimmed,
           conversationId: conversationId ?? undefined,
           productId: productContext?.productId,
+          guestToken: guestToken ?? undefined,
         }),
       });
 
