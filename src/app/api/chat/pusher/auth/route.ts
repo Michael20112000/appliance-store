@@ -57,6 +57,10 @@ export async function POST(request: Request) {
     return Response.json({ error: "INVALID_BODY" }, { status: 400 });
   }
 
+  if (!/^\d+\.\d+$/.test(socketId)) {
+    return Response.json({ error: "INVALID_SOCKET_ID" }, { status: 400 });
+  }
+
   if (!session?.user) {
     const guestToken = body.guestToken;
     if (!guestToken) {

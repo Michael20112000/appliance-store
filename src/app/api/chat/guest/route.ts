@@ -11,6 +11,10 @@ export async function GET(request: Request) {
     return Response.json({ error: "TOKEN_REQUIRED" }, { status: 400 });
   }
 
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(token)) {
+    return Response.json({ error: "INVALID_TOKEN" }, { status: 400 });
+  }
+
   try {
     const conversation = await getGuestConversation(token);
 
