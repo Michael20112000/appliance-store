@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+const mockTrigger = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
+
 vi.mock("@/lib/permissions", () => ({
   requireAdmin: vi.fn().mockResolvedValue(undefined),
 }));
@@ -13,8 +15,6 @@ vi.mock("@/server/services/chat.service", () => ({
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
-
-const mockTrigger = vi.fn().mockResolvedValue(undefined);
 
 vi.mock("@/lib/pusher-server", () => ({
   getPusherServer: vi.fn().mockReturnValue({

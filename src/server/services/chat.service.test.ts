@@ -312,10 +312,12 @@ describe("conversation lifecycle", () => {
 
     await archiveConversation("conv-1");
 
-    expect(prisma.conversation.update).toHaveBeenCalledWith({
-      where: { id: "conv-1" },
-      data: { status: "ARCHIVED" },
-    });
+    expect(prisma.conversation.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: "conv-1" },
+        data: expect.objectContaining({ status: "ARCHIVED" }),
+      }),
+    );
   });
 
   it("archiveConversation sets isActive=false alongside status ARCHIVED (CHAT-04)", async () => {
