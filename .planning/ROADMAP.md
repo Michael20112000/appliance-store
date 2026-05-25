@@ -99,7 +99,7 @@ Plans:
 - [x] 46-04-PLAN.md — ChatProvider guest mode: localStorage token management, no redirect, Pusher guestToken config (CHAT-01)
 
 **Wave 5** *(depends on 46-04)*
-- [ ] 46-05-PLAN.md — Human verification: full e2e test of all phase success criteria (CHAT-01, CHAT-03)
+- [x] 46-05-PLAN.md — Human verification: full e2e test of all phase success criteria (CHAT-01, CHAT-03)
 
 **UI hint**: yes
 
@@ -187,7 +187,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 46. Schema Foundation + Guest Chat | v3.0 | 4/5 | In Progress|  |
+| 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 0/? | Not started | - |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
