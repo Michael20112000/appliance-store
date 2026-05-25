@@ -362,21 +362,23 @@ export async function claimGuestConversation(
   guestToken: string,
   userId: string,
 ): Promise<void> {
-  const existingActive = await prisma.conversation.findFirst({
-    where: { userId, isActive: true },
-  });
+  await prisma.$transaction(async (tx) => {
+    const existingActive = await tx.conversation.findFirst({
+      where: { userId, isActive: true },
+    });
 
-  if (existingActive) {
-    await prisma.conversation.updateMany({
-      where: { guestToken },
-      data: { userId, guestToken: null, isActive: false },
-    });
-  } else {
-    await prisma.conversation.updateMany({
-      where: { guestToken },
-      data: { userId, guestToken: null },
-    });
-  }
+    if (existingActive) {
+      await tx.conversation.updateMany({
+        where: { guestToken },
+        data: { userId, guestToken: null, isActive: false },
+      });
+    } else {
+      await tx.conversation.updateMany({
+        where: { guestToken },
+        data: { userId, guestToken: null },
+      });
+    }
+  });
 }
 
 export async function unarchiveConversation(conversationId: string) {
