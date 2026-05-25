@@ -222,7 +222,9 @@ enum ConversationStatus {
 
 model Conversation {
   id                  String             @id @default(cuid())
-  userId              String             @unique
+  userId              String?
+  guestToken          String?            @unique
+  isActive            Boolean            @default(true)
   status              ConversationStatus @default(OPEN)
   contextProductId    String?
   contextProductTitle String?
@@ -235,6 +237,7 @@ model Conversation {
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
 
+  @@index([userId, isActive])
   @@index([updatedAt])
   @@index([lastMessageAt])
   @@index([status, lastMessageAt])
