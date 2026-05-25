@@ -324,8 +324,53 @@ export async function countUnreadForAdmin(): Promise<number> {
 export async function archiveConversation(conversationId: string) {
   await prisma.conversation.update({
     where: { id: conversationId },
-    data: { status: "ARCHIVED" },
+    data: { status: "ARCHIVED", isActive: false },
   });
+}
+
+export async function createNewConversation(
+  input: { userId: string } | { guestToken: string },
+): Promise<{ id: string }> {
+  return prisma.$transaction(async (tx) => {
+    if ("userId" in input) {
+      await tx.conversation.updateMany({
+        where: { userId: input.userId, isActive: true },
+        data: { isActive: false },
+      });
+      return tx.conversation.create({
+        data: { userId: input.userId, isActive: true },
+      });
+    } else {
+      await tx.conversation.updateMany({
+        where: { guestToken: input.guestToken, isActive: true },
+        data: { isActive: false },
+      });
+      return tx.conversation.create({
+        data: { guestToken: input.guestToken, isActive: true },
+      });
+    }
+  });
+}
+
+export async function claimGuestConversation(
+  guestToken: string,
+  userId: string,
+): Promise<void> {
+  const existingActive = await prisma.conversation.findFirst({
+    where: { userId, isActive: true },
+  });
+
+  if (existingActive) {
+    await prisma.conversation.updateMany({
+      where: { guestToken },
+      data: { userId, guestToken: null, isActive: false },
+    });
+  } else {
+    await prisma.conversation.updateMany({
+      where: { guestToken },
+      data: { userId, guestToken: null },
+    });
+  }
 }
 
 export async function unarchiveConversation(conversationId: string) {
