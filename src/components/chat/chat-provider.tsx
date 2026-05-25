@@ -17,6 +17,7 @@ import { chatParsers, chatUrlKeys } from "@/lib/chat/search-params";
 import {
   getPusherClient,
   isPusherClientConfigured,
+  setGuestTokenForPusher,
 } from "@/lib/pusher-client";
 import type { ConversationStatus } from "@/generated/prisma/client";
 import { markBuyerReadAction } from "@/server/actions/chat.actions";
@@ -54,6 +55,7 @@ type ChatContextValue = {
   isDisconnected: boolean;
   unreadFromStore: boolean;
   productContext: ProductChatContext | null;
+  guestToken: string | null;
   openPanel: (options?: ProductChatContext) => void;
   closePanel: () => void;
   refetchMessages: () => Promise<void>;
@@ -66,6 +68,8 @@ type ChatContextValue = {
 };
 
 const ChatContext = createContext<ChatContextValue | null>(null);
+
+const GUEST_CHAT_TOKEN_KEY = "chat_guest_token";
 
 type ChatProviderProps = {
   children?: ReactNode;
@@ -116,6 +120,7 @@ export function ChatProvider({
   const [productContext, setProductContext] = useState<ProductChatContext | null>(
     null,
   );
+  const [guestToken, setGuestToken] = useState<string | null>(null);
 
   const wasDisconnectedRef = useRef(false);
   const subscribedChannelRef = useRef<string | null>(null);
@@ -139,9 +144,16 @@ export function ChatProvider({
 
   const openPanel = useCallback(
     (options?: ProductChatContext) => {
-      if (!hasSession) {
-        guestRedirect();
-        return;
+      // D-09: no redirect for guests — widget opens normally
+      // D-01: generate token on first open if not already set; no DB write
+      if (!hasSession && !guestToken) {
+        try {
+          const token = crypto.randomUUID();
+          localStorage.setItem("chat_guest_token", token);
+          setGuestToken(token);
+        } catch {
+          // private mode or crypto not available — continue without token
+        }
       }
 
       if (options?.productId || options?.productTitle || options?.productSlug) {
@@ -155,7 +167,7 @@ export function ChatProvider({
 
       void setQuery({ chat: "open" });
     },
-    [guestRedirect, hasSession, setQuery],
+    [guestToken, hasSession, setQuery],
   );
 
   const appendMessage = useCallback((message: ChatMessage) => {
@@ -221,6 +233,37 @@ export function ChatProvider({
     }
   }, [conversationId, fetchMessages]);
 
+  // Guest token management: run once on mount (D-10)
+  useEffect(() => {
+    if (hasSession) return; // authenticated users don't need a guest token
+    if (typeof window === "undefined") return; // SSR guard
+    try {
+      const stored = localStorage.getItem("chat_guest_token");
+      if (!stored) return;
+      setGuestToken(stored);
+      void (async () => {
+        try {
+          const response = await fetch(
+            `/api/chat/guest?token=${encodeURIComponent(stored)}`,
+          );
+          if (!response.ok) return; // 404 or other: keep token, wait for first Send
+          const data = (await response.json()) as {
+            conversationId: string;
+            messages: MessageDto[];
+            status: ConversationStatus;
+          };
+          setConversationId(data.conversationId);
+          setMessages(data.messages);
+          setConversationStatus(data.status);
+        } catch {
+          // network error — keep token, attempt restore on next load
+        }
+      })();
+    } catch {
+      // private mode or storage access error — continue without token
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (!isOpen || !hasSession) return;
 
@@ -257,9 +300,13 @@ export function ChatProvider({
   }, [clearUnreadFromStore, conversationId, fetchMessages, hasSession, isOpen]);
 
   useEffect(() => {
-    if (!isOpen || !hasSession || !conversationId || !isPusherClientConfigured()) {
+    // T-46-11: guard prevents subscription before conversationId exists
+    if (!isOpen || !conversationId || !isPusherClientConfigured()) {
       return;
     }
+
+    // Ensure guestToken is current before Pusher auth request fires
+    setGuestTokenForPusher(guestToken);
 
     let cancelled = false;
 
@@ -320,7 +367,7 @@ export function ChatProvider({
       pusher.unsubscribe(channelName);
       subscribedChannelRef.current = null;
     };
-  }, [appendMessage, conversationId, hasSession, isOpen, refetchMessages]);
+  }, [appendMessage, conversationId, guestToken, isOpen, refetchMessages]);
 
   useEffect(() => {
     if (isOpen && hasSession) {
@@ -341,6 +388,7 @@ export function ChatProvider({
       isDisconnected,
       unreadFromStore,
       productContext,
+      guestToken,
       openPanel,
       closePanel,
       refetchMessages,
@@ -358,6 +406,7 @@ export function ChatProvider({
       canSend,
       conversationId,
       conversationStatus,
+      guestToken,
       hasSession,
       isDisconnected,
       isLoading,
