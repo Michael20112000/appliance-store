@@ -167,7 +167,7 @@ describe("sendMessage", () => {
       contextProductId: null,
       contextProductTitle: null,
     };
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValue(
+    vi.mocked(prisma.conversation.findFirst).mockResolvedValue(
       conversation as never,
     );
 

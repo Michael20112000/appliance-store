@@ -12,6 +12,8 @@ export const CONVERSATION_NOT_FOUND = "CONVERSATION_NOT_FOUND";
 export const FORBIDDEN = "FORBIDDEN";
 export const CHAT_RATE_LIMIT = "CHAT_RATE_LIMIT";
 export const CHAT_ARCHIVED = "CHAT_ARCHIVED";
+export const GUEST_TOKEN_INVALID = "GUEST_TOKEN_INVALID";
+export const GUEST_NOT_FOUND = "GUEST_NOT_FOUND";
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 20;
@@ -90,7 +92,9 @@ export async function getOrCreateConversation(
   userId: string,
   context?: ProductContext,
 ) {
-  const existing = await prisma.conversation.findUnique({ where: { userId } });
+  const existing = await prisma.conversation.findFirst({
+    where: { userId, isActive: true },
+  });
   if (existing) {
     if (context?.productId || context?.productTitle) {
       return applyProductContextIfEmpty(existing.id, context);
@@ -108,7 +112,9 @@ export async function getOrCreateConversation(
     });
   } catch (error) {
     if (isUniqueViolation(error)) {
-      return prisma.conversation.findUniqueOrThrow({ where: { userId } });
+      return prisma.conversation.findFirstOrThrow({
+        where: { userId, isActive: true },
+      });
     }
     throw error;
   }
@@ -142,7 +148,37 @@ async function applyProductContextIfEmpty(
 }
 
 export async function getConversationForBuyer(userId: string) {
-  return prisma.conversation.findUnique({ where: { userId } });
+  return prisma.conversation.findFirst({ where: { userId, isActive: true } });
+}
+
+export async function getGuestConversation(guestToken: string) {
+  return prisma.conversation.findUnique({ where: { guestToken } });
+}
+
+export async function getOrCreateGuestConversation(
+  guestToken: string,
+  context?: ProductContext,
+) {
+  const existing = await prisma.conversation.findUnique({
+    where: { guestToken },
+  });
+  if (existing) return existing;
+
+  try {
+    return await prisma.conversation.create({
+      data: {
+        guestToken,
+        isActive: true,
+        contextProductId: context?.productId,
+        contextProductTitle: context?.productTitle,
+      },
+    });
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      return prisma.conversation.findUniqueOrThrow({ where: { guestToken } });
+    }
+    throw error;
+  }
 }
 
 export async function listMessages(
@@ -180,6 +216,7 @@ type SendMessageInput = {
   conversationId?: string;
   userId?: string;
   productContext?: ProductContext;
+  guestToken?: string;
 };
 
 function assertConversationOpen(conversation: { status: ConversationStatus }) {
@@ -239,10 +276,14 @@ async function resolveConversationForSend(input: SendMessageInput) {
     return conversation;
   }
 
+  if (input.guestToken) {
+    return getOrCreateGuestConversation(input.guestToken, input.productContext);
+  }
+
   if (!input.userId) {
     throw new ChatServiceError(
       CONVERSATION_NOT_FOUND,
-      "Потрібен userId або conversationId",
+      "Потрібен userId, guestToken або conversationId",
     );
   }
 
@@ -310,14 +351,20 @@ export async function listConversationsForAdmin(options: {
 
   if (conversations.length === 0) return [];
 
+  const userIds = conversations
+    .map((c) => c.userId)
+    .filter((id): id is string => id !== null);
+
   const users = await prisma.user.findMany({
-    where: { id: { in: conversations.map((c) => c.userId) } },
+    where: { id: { in: userIds } },
     select: { id: true, name: true, email: true },
   });
   const userById = new Map(users.map((u) => [u.id, u]));
 
   return conversations.map((conversation) => {
-    const buyer = userById.get(conversation.userId);
+    const buyer = conversation.userId
+      ? userById.get(conversation.userId)
+      : null;
     const unreadForAdmin =
       conversation.lastMessageSender === "BUYER" &&
       conversation.lastMessageAt !== null &&
@@ -327,7 +374,7 @@ export async function listConversationsForAdmin(options: {
       id: conversation.id,
       userId: conversation.userId,
       status: conversation.status,
-      buyerName: buyer?.name ?? "Покупець",
+      buyerName: buyer?.name ?? "Гість",
       buyerEmail: buyer?.email ?? "",
       lastMessagePreview: conversation.lastMessagePreview,
       lastMessageAt: conversation.lastMessageAt?.toISOString() ?? null,
@@ -344,7 +391,7 @@ export function parseConversationChannel(channelName: string): string | null {
 export async function assertConversationAccess(
   session: ChatSession,
   conversationId: string,
-): Promise<{ id: string; userId: string; status: ConversationStatus }> {
+): Promise<{ id: string; userId: string | null; status: ConversationStatus }> {
   const conversation = await prisma.conversation.findUnique({
     where: { id: conversationId },
   });
@@ -357,7 +404,7 @@ export async function assertConversationAccess(
     return conversation;
   }
 
-  if (conversation.userId !== session.user.id) {
+  if (!conversation.userId || conversation.userId !== session.user.id) {
     throw new ChatServiceError(FORBIDDEN, "Немає доступу до цієї розмови");
   }
 
