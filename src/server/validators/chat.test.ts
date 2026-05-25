@@ -32,4 +32,20 @@ describe("sendMessageSchema", () => {
     });
     expect(result.success).toBe(true);
   });
+
+  it("accepts optional guestToken as UUID", () => {
+    const result = sendMessageSchema.safeParse({
+      body: "Привіт",
+      guestToken: "123e4567-e89b-12d3-a456-426614174000",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects guestToken that is not a UUID", () => {
+    const result = sendMessageSchema.safeParse({
+      body: "Привіт",
+      guestToken: "not-a-uuid",
+    });
+    expect(result.success).toBe(false);
+  });
 });
