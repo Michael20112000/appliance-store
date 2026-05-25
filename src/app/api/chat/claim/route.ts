@@ -22,7 +22,11 @@ export async function POST(request: Request) {
     return Response.json({ error: "INVALID_TOKEN" }, { status: 400 });
   }
 
-  await claimGuestConversation(parsed.data.guestToken, session.user.id);
+  try {
+    await claimGuestConversation(parsed.data.guestToken, session.user.id);
+  } catch {
+    return Response.json({ error: "CLAIM_FAILED" }, { status: 500 });
+  }
 
   return Response.json({ ok: true });
 }
