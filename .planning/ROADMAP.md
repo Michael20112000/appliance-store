@@ -156,7 +156,18 @@ Plans:
   3. Selecting a valid file shows a preview; sending the message uploads it to Cloudinary and displays it inline (image) or as a download link (PDF) in the conversation
   4. Selecting a file over 10 MB or of a disallowed type shows a client-side error and does not attempt an upload
   5. Admin can also send files from the admin chat workspace using the same attachment flow
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+**Wave 1**
+- [ ] 49-01-PLAN.md — Schema + types + sign endpoint: prisma attachments Json?, ChatAttachment type, MessageDto extension, POST /api/chat/upload/sign (CHAT-09)
+
+**Wave 2** *(depends on 49-01)*
+- [ ] 49-02-PLAN.md — Service + API: extend sendMessageSchema with attachments, extend sendMessage to persist, extend messages route + Pusher payload (CHAT-09)
+
+**Wave 3** *(depends on 49-02)*
+- [ ] 49-03-PLAN.md — UI: paperclip button in ChatComposer + AdminChatComposer, upload flow, MessageBubble attachment rendering, human UAT (CHAT-09)
+
 **UI hint**: yes
 
 ### Phase 44: Mobile Header Cleanup
@@ -205,9 +216,9 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
-| 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete   | 2026-05-25 |
+| 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete    | 2026-05-25 |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
-| 49. File Attachments | v3.0 | 0/? | Not started | - |
+| 49. File Attachments | v3.0 | 0/3 | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
