@@ -6,8 +6,12 @@ import {
   CHAT_ARCHIVED,
   CHAT_RATE_LIMIT,
   ChatRateLimitError,
+  // @ts-expect-error — not exported yet (Wave 0 RED stub)
+  claimGuestConversation,
   CONVERSATION_NOT_FOUND,
   countUnreadForAdmin,
+  // @ts-expect-error — not exported yet (Wave 0 RED stub)
+  createNewConversation,
   deleteConversation,
   FORBIDDEN,
   getGuestConversation,
@@ -32,6 +36,7 @@ vi.mock("@/lib/db", () => ({
       findFirstOrThrow: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
+      updateMany: vi.fn(),
       delete: vi.fn(),
       findMany: vi.fn(),
       count: vi.fn(),
@@ -313,6 +318,22 @@ describe("conversation lifecycle", () => {
     });
   });
 
+  it("archiveConversation sets isActive=false alongside status ARCHIVED (CHAT-04)", async () => {
+    vi.mocked(prisma.conversation.update).mockResolvedValueOnce({
+      id: "conv-1",
+      status: "ARCHIVED",
+      isActive: false,
+    } as never);
+
+    await archiveConversation("conv-1");
+
+    expect(prisma.conversation.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ isActive: false }),
+      }),
+    );
+  });
+
   it("unarchiveConversation sets status OPEN", async () => {
     vi.mocked(prisma.conversation.update).mockResolvedValueOnce({
       id: "conv-1",
@@ -530,6 +551,96 @@ describe("assertConversationAccess - guest conversation", () => {
     await expect(
       assertConversationAccess(buyerSession, "conv-g1"),
     ).rejects.toMatchObject({ code: FORBIDDEN });
+  });
+});
+
+describe("Phase 47 stubs — createNewConversation (CHAT-05)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("createNewConversation({ userId }) deactivates old conversation and creates a new one in $transaction", async () => {
+    const newConv = { id: "new-conv-id", userId: "user-1", isActive: true };
+    vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
+      const tx = {
+        conversation: {
+          updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+          create: vi.fn().mockResolvedValue(newConv),
+        },
+      };
+      return fn(tx as never);
+    });
+
+    const result = await (createNewConversation as (input: { userId: string }) => Promise<{ id: string }>)({ userId: "user-1" });
+
+    expect(prisma.$transaction).toHaveBeenCalled();
+    expect(result).toMatchObject({ id: "new-conv-id" });
+  });
+
+  it("createNewConversation({ guestToken }) deactivates old guest conversation and creates a new one", async () => {
+    const newConv = { id: "new-conv-id", guestToken: "tok-abc", isActive: true };
+    vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
+      const tx = {
+        conversation: {
+          updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+          create: vi.fn().mockResolvedValue(newConv),
+        },
+      };
+      return fn(tx as never);
+    });
+
+    const result = await (createNewConversation as (input: { guestToken: string }) => Promise<{ id: string }>)({ guestToken: "tok-abc" });
+
+    expect(prisma.$transaction).toHaveBeenCalled();
+    expect(result).toMatchObject({ id: "new-conv-id" });
+  });
+});
+
+describe("Phase 47 stubs — claimGuestConversation (CHAT-02)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("claims guest conversation: links guestToken to userId (basic claim)", async () => {
+    // User has no active conversation
+    vi.mocked(prisma.conversation.findFirst).mockResolvedValueOnce(null as never);
+    vi.mocked(prisma.conversation.updateMany).mockResolvedValueOnce({ count: 1 } as never);
+
+    await (claimGuestConversation as (guestToken: string, userId: string) => Promise<void>)("token-xyz", "user-1");
+
+    expect(prisma.conversation.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ guestToken: "token-xyz" }),
+        data: expect.objectContaining({ userId: "user-1", guestToken: null }),
+      }),
+    );
+  });
+
+  it("claimGuestConversation is idempotent: second call (updateMany returns count=0) does not throw", async () => {
+    // User has no active conversation
+    vi.mocked(prisma.conversation.findFirst).mockResolvedValueOnce(null as never);
+    // Token already null — 0 rows updated
+    vi.mocked(prisma.conversation.updateMany).mockResolvedValueOnce({ count: 0 } as never);
+
+    await expect(
+      (claimGuestConversation as (guestToken: string, userId: string) => Promise<void>)("token-xyz", "user-1"),
+    ).resolves.toBeUndefined();
+  });
+
+  it("claimGuestConversation when user already has active conversation: guest conv becomes isActive=false", async () => {
+    // User already has an active conversation
+    vi.mocked(prisma.conversation.findFirst).mockResolvedValueOnce({
+      id: "existing-conv",
+    } as never);
+    vi.mocked(prisma.conversation.updateMany).mockResolvedValueOnce({ count: 1 } as never);
+
+    await (claimGuestConversation as (guestToken: string, userId: string) => Promise<void>)("token-xyz", "user-1");
+
+    expect(prisma.conversation.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ userId: "user-1", guestToken: null, isActive: false }),
+      }),
+    );
   });
 });
 
