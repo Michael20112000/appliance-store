@@ -11,6 +11,15 @@ const getSession = vi.fn();
 const assertConversationAccess = vi.fn();
 const parseConversationChannel = vi.fn();
 const authorizeChannel = vi.fn();
+const findUniqueConversation = vi.fn();
+
+vi.mock("@/lib/db", () => ({
+  prisma: {
+    conversation: {
+      findUnique: (...args: unknown[]) => findUniqueConversation(...args),
+    },
+  },
+}));
 
 vi.mock("@/lib/auth", () => ({
   auth: {
@@ -214,5 +223,53 @@ describe("POST /api/chat/pusher/auth", () => {
     await expect(res.json()).resolves.toEqual({
       error: "PUSHER_NOT_CONFIGURED",
     });
+  });
+
+  // CR-02: guest path tests — require @/lib/db mock for prisma.conversation.findUnique
+  it("returns 403 when guestToken does not match conversation", async () => {
+    getSession.mockResolvedValue(null);
+    findUniqueConversation.mockResolvedValue({ guestToken: "correct-token" });
+    parseConversationChannel.mockReturnValue(CONV_ID);
+
+    const res = await postAuth({
+      socket_id: "1.2",
+      channel_name: CHANNEL,
+      guestToken: "wrong-token",
+    });
+
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: "FORBIDDEN" });
+    expect(authorizeChannel).not.toHaveBeenCalled();
+  });
+
+  it("returns 403 when conversation is not found for guest", async () => {
+    getSession.mockResolvedValue(null);
+    findUniqueConversation.mockResolvedValue(null);
+    parseConversationChannel.mockReturnValue(CONV_ID);
+
+    const res = await postAuth({
+      socket_id: "1.2",
+      channel_name: CHANNEL,
+      guestToken: "any-token",
+    });
+
+    expect(res.status).toBe(403);
+    expect(authorizeChannel).not.toHaveBeenCalled();
+  });
+
+  it("authorizes guest with matching guestToken", async () => {
+    getSession.mockResolvedValue(null);
+    findUniqueConversation.mockResolvedValue({ guestToken: "uuid-match" });
+    parseConversationChannel.mockReturnValue(CONV_ID);
+
+    const res = await postAuth({
+      socket_id: "1.2",
+      channel_name: CHANNEL,
+      guestToken: "uuid-match",
+    });
+
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ auth: "key:signature" });
+    expect(authorizeChannel).toHaveBeenCalledWith("1.2", CHANNEL);
   });
 });

@@ -126,6 +126,7 @@ export function ChatProvider({
   const subscribedChannelRef = useRef<string | null>(null);
 
   const isOpen = query.chat === "open";
+  const isOpenRef = useRef(isOpen);
   const canSend =
     conversationStatus === null || conversationStatus === "OPEN";
 
@@ -136,6 +137,12 @@ export function ChatProvider({
     );
     router.push(`/uviity?callbackUrl=${callbackUrl}`);
   }, [pathname, router, searchParams]);
+
+  // WR-01: keep isOpenRef in sync so appendMessage doesn't need isOpen in its
+  // dependency array, preventing Pusher re-subscription on every panel toggle.
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
 
   const closePanel = useCallback(() => {
     void setQuery({ chat: null, productId: null });
@@ -176,9 +183,9 @@ export function ChatProvider({
       return [...prev, message];
     });
     if (message.senderRole === "STORE") {
-      setUnreadFromStore(!isOpen);
+      setUnreadFromStore(!isOpenRef.current);
     }
-  }, [isOpen]);
+  }, []); // stable reference — reads isOpen via isOpenRef.current (WR-01)
 
   const replaceOptimisticMessage = useCallback(
     (tempId: string, message: MessageDto) => {
@@ -232,6 +239,28 @@ export function ChatProvider({
       setIsLoading(false);
     }
   }, [conversationId, fetchMessages]);
+
+  // CR-01: guest-safe refetch — routes to the guest endpoint instead of the
+  // session-required GET /api/chat/messages endpoint (which returns 401 for guests).
+  const refetchMessagesForGuest = useCallback(async () => {
+    if (!guestToken) return;
+    try {
+      const response = await fetch(
+        `/api/chat/guest?token=${encodeURIComponent(guestToken)}`,
+      );
+      if (!response.ok) return;
+      const data = (await response.json()) as {
+        conversationId: string;
+        messages: MessageDto[];
+        status: ConversationStatus;
+      };
+      setMessages(data.messages);
+      setConversationStatus(data.status);
+      setLoadError(null);
+    } catch {
+      setLoadError("Не вдалося завантажити повідомлення. Спробуйте оновити сторінку.");
+    }
+  }, [guestToken]);
 
   // Guest token management: run once on mount (D-10)
   useEffect(() => {
@@ -346,7 +375,13 @@ export function ChatProvider({
         conversationId
       ) {
         wasDisconnectedRef.current = false;
-        void refetchMessages();
+        // CR-01: guests must use the guest endpoint — the session-required
+        // GET /api/chat/messages returns 401 for unauthenticated requests.
+        if (hasSession) {
+          void refetchMessages();
+        } else {
+          void refetchMessagesForGuest();
+        }
       }
     };
 
@@ -367,7 +402,7 @@ export function ChatProvider({
       pusher.unsubscribe(channelName);
       subscribedChannelRef.current = null;
     };
-  }, [appendMessage, conversationId, guestToken, isOpen, refetchMessages]);
+  }, [appendMessage, conversationId, guestToken, hasSession, isOpen, refetchMessages, refetchMessagesForGuest]);
 
   useEffect(() => {
     if (isOpen && hasSession) {
