@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Chat & Engagement
 status: executing
-last_updated: "2026-05-25T16:19:35.879Z"
-last_activity: 2026-05-25 -- Phase 47 planning complete
+last_updated: "2026-05-25T16:22:42.147Z"
+last_activity: 2026-05-25 -- Phase 47 execution started
 progress:
   total_phases: 6
   completed_phases: 1
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-24)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 46 — schema-foundation-guest-chat
+**Current focus:** Phase 47 — chat-lifecycle-control
 
 ## Current Position
 
-Phase: 46 — COMPLETE
+Phase: 47 (chat-lifecycle-control) — EXECUTING
 Plan: 1 of 5
-Status: Ready to execute
-Last activity: 2026-05-25 -- Phase 47 planning complete
+Status: Executing Phase 47
+Last activity: 2026-05-25 -- Phase 47 execution started
 
 ## Deferred Items
 
