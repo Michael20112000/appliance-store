@@ -10,7 +10,11 @@ import {
   countUnreadForAdmin,
   deleteConversation,
   FORBIDDEN,
+  getGuestConversation,
   getOrCreateConversation,
+  getOrCreateGuestConversation,
+  GUEST_NOT_FOUND,
+  GUEST_TOKEN_INVALID,
   listConversationsForAdmin,
   listMessages,
   parseConversationChannel,
@@ -24,6 +28,8 @@ vi.mock("@/lib/db", () => ({
       fields: { adminLastReadAt: "adminLastReadAt" },
       findUnique: vi.fn(),
       findUniqueOrThrow: vi.fn(),
+      findFirst: vi.fn(),
+      findFirstOrThrow: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
@@ -57,7 +63,7 @@ describe("getOrCreateConversation", () => {
 
   it("returns existing conversation", async () => {
     const existing = { id: "conv-1", userId: "buyer-1" };
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+    vi.mocked(prisma.conversation.findFirst).mockResolvedValueOnce(
       existing as never,
     );
 
@@ -69,7 +75,7 @@ describe("getOrCreateConversation", () => {
 
   it("returns existing archived conversation without creating a new one", async () => {
     const archived = { id: "conv-1", userId: "buyer-1", status: "ARCHIVED" };
-    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+    vi.mocked(prisma.conversation.findFirst).mockResolvedValueOnce(
       archived as never,
     );
 
@@ -80,14 +86,13 @@ describe("getOrCreateConversation", () => {
   });
 
   it("creates conversation and handles P2002 race", async () => {
-    vi.mocked(prisma.conversation.findUnique)
-      .mockResolvedValueOnce(null as never)
+    vi.mocked(prisma.conversation.findFirst)
       .mockResolvedValueOnce(null as never);
     vi.mocked(prisma.conversation.create).mockRejectedValueOnce({
       code: "P2002",
     });
     const raced = { id: "conv-1", userId: "buyer-1" };
-    vi.mocked(prisma.conversation.findUniqueOrThrow).mockResolvedValueOnce(
+    vi.mocked(prisma.conversation.findFirstOrThrow).mockResolvedValueOnce(
       raced as never,
     );
 
@@ -409,3 +414,134 @@ describe("ChatRateLimitError", () => {
     expect(err.code).toBe(CHAT_RATE_LIMIT);
   });
 });
+
+describe("getOrCreateGuestConversation", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("creates conversation on first message", async () => {
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+      null as never,
+    );
+    const created = {
+      id: "conv-g1",
+      guestToken: "uuid-1",
+      isActive: true,
+    };
+    vi.mocked(prisma.conversation.create).mockResolvedValueOnce(
+      created as never,
+    );
+
+    const result = await getOrCreateGuestConversation("uuid-1");
+
+    expect(result).toEqual(created);
+  });
+
+  it("returns existing conversation on retry (P2002 race)", async () => {
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+      null as never,
+    );
+    vi.mocked(prisma.conversation.create).mockRejectedValueOnce({
+      code: "P2002",
+    });
+    const raced = { id: "conv-g1" };
+    vi.mocked(prisma.conversation.findUniqueOrThrow).mockResolvedValueOnce(
+      raced as never,
+    );
+
+    const result = await getOrCreateGuestConversation("uuid-1");
+
+    expect(result).toEqual(raced);
+  });
+
+  it("returns existing conversation directly", async () => {
+    const existing = { id: "conv-g1", guestToken: "uuid-1" };
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+      existing as never,
+    );
+
+    const result = await getOrCreateGuestConversation("uuid-1");
+
+    expect(result).toEqual(existing);
+    expect(prisma.conversation.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("getGuestConversation", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns null for unknown token", async () => {
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+      null as never,
+    );
+
+    const result = await getGuestConversation("unknown-token");
+
+    expect(result).toBeNull();
+  });
+
+  it("returns conversation for known token", async () => {
+    const conv = { id: "conv-g1", guestToken: "uuid-1" };
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValueOnce(
+      conv as never,
+    );
+
+    const result = await getGuestConversation("uuid-1");
+
+    expect(result).toMatchObject(conv);
+  });
+});
+
+describe("listConversationsForAdmin - guest conversations", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("uses 'Гість' as buyerName when userId is null", async () => {
+    const lastMessageAt = new Date();
+    vi.mocked(prisma.conversation.findMany).mockResolvedValueOnce([
+      {
+        id: "conv-g1",
+        userId: null,
+        status: "OPEN",
+        lastMessagePreview: "hi",
+        lastMessageAt,
+        lastMessageSender: "BUYER",
+        adminLastReadAt: new Date(Date.now() - 1000),
+      },
+    ] as never);
+    vi.mocked(prisma.user.findMany).mockResolvedValueOnce([] as never);
+
+    const rows = await listConversationsForAdmin({ status: "OPEN" });
+
+    expect(rows[0]?.buyerName).toBe("Гість");
+  });
+});
+
+describe("assertConversationAccess - guest conversation", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.mocked(prisma.conversation).fields = {
+      adminLastReadAt: "adminLastReadAt",
+    };
+  });
+
+  it("throws FORBIDDEN for buyer accessing guest conversation (null userId)", async () => {
+    vi.mocked(prisma.conversation.findUnique).mockResolvedValue({
+      id: "conv-g1",
+      userId: null,
+      status: "OPEN",
+    } as never);
+
+    await expect(
+      assertConversationAccess(buyerSession, "conv-g1"),
+    ).rejects.toMatchObject({ code: FORBIDDEN });
+  });
+});
+
+// Ensure unused imports don't cause lint errors
+void GUEST_TOKEN_INVALID;
+void GUEST_NOT_FOUND;
