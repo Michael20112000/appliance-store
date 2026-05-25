@@ -119,7 +119,7 @@ Plans:
 - [x] 47-01-PLAN.md — RED test stubs: chat.service.test.ts + chat.actions.test.ts + claim/route.test.ts (CHAT-02, CHAT-04, CHAT-05)
 
 **Wave 1** *(depends on 47-01)*
-- [ ] 47-02-PLAN.md — Service + admin action: extend archiveConversation (isActive=false), add createNewConversation, add claimGuestConversation, extend archiveConversationAction with Pusher broadcast (CHAT-02, CHAT-04, CHAT-05)
+- [x] 47-02-PLAN.md — Service + admin action: extend archiveConversation (isActive=false), add createNewConversation, add claimGuestConversation, extend archiveConversationAction with Pusher broadcast (CHAT-02, CHAT-04, CHAT-05)
 
 **Wave 2** *(depends on 47-02)*
 - [ ] 47-03-PLAN.md — API routes: POST /api/chat/new + POST /api/chat/claim (CHAT-04, CHAT-05, CHAT-02)
@@ -205,7 +205,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
-| 47. Chat Lifecycle Control | v3.0 | 1/5 | In Progress|  |
+| 47. Chat Lifecycle Control | v3.0 | 2/5 | In Progress|  |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
