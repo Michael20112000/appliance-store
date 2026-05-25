@@ -128,7 +128,7 @@ Plans:
 - [x] 47-04-PLAN.md — Client: ChatProvider conversation:closed binding + claim effect; ArchivedChatBanner interactive with Почати новий чат (CHAT-04, CHAT-05, CHAT-02)
 
 **Wave 4** *(depends on 47-04)*
-- [ ] 47-05-PLAN.md — Human UAT: full e2e verification of all three Phase 47 success criteria (CHAT-02, CHAT-04, CHAT-05)
+- [x] 47-05-PLAN.md — Human UAT: full e2e verification of all three Phase 47 success criteria (CHAT-02, CHAT-04, CHAT-05) (completed 2026-05-25)
 
 **UI hint**: yes
 
@@ -205,7 +205,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
-| 47. Chat Lifecycle Control | v3.0 | 4/5 | In Progress|  |
+| 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
