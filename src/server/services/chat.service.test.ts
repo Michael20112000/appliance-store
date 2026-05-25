@@ -105,9 +105,6 @@ describe("getOrCreateConversation", () => {
 describe("sendMessage", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(prisma.conversation).fields = {
-      adminLastReadAt: "adminLastReadAt",
-    };
   });
 
   it("rejects when rate limit exceeded at 20 messages in window", async () => {
@@ -346,9 +343,6 @@ describe("conversation lifecycle", () => {
 describe("assertConversationAccess", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(prisma.conversation).fields = {
-      adminLastReadAt: "adminLastReadAt",
-    };
   });
 
   it("allows buyer for own conversation", async () => {
@@ -524,9 +518,6 @@ describe("listConversationsForAdmin - guest conversations", () => {
 describe("assertConversationAccess - guest conversation", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(prisma.conversation).fields = {
-      adminLastReadAt: "adminLastReadAt",
-    };
   });
 
   it("throws FORBIDDEN for buyer accessing guest conversation (null userId)", async () => {
