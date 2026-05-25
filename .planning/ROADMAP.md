@@ -93,7 +93,7 @@ Plans:
 - [x] 46-02-PLAN.md — Data layer: types, validators, service functions for guest conversations (CHAT-01, CHAT-03)
 
 **Wave 3** *(depends on 46-02)*
-- [ ] 46-03-PLAN.md — API routes: GET /api/chat/guest restore, POST /api/chat/messages guest path, POST /api/chat/pusher/auth guest path (CHAT-01)
+- [x] 46-03-PLAN.md — API routes: GET /api/chat/guest restore, POST /api/chat/messages guest path, POST /api/chat/pusher/auth guest path (CHAT-01)
 
 **Wave 4** *(depends on 46-03)*
 - [ ] 46-04-PLAN.md — ChatProvider guest mode: localStorage token management, no redirect, Pusher guestToken config (CHAT-01)
@@ -187,7 +187,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 46. Schema Foundation + Guest Chat | v3.0 | 2/5 | In Progress|  |
+| 46. Schema Foundation + Guest Chat | v3.0 | 3/5 | In Progress|  |
 | 47. Chat Lifecycle Control | v3.0 | 0/? | Not started | - |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
