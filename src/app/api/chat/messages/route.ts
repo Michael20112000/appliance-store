@@ -56,10 +56,6 @@ export async function POST(request: Request) {
     headers: await headers(),
   });
 
-  if (!session?.user) {
-    return Response.json({ error: "UNAUTHORIZED" }, { status: 401 });
-  }
-
   let body: unknown;
   try {
     body = await request.json();
@@ -73,6 +69,49 @@ export async function POST(request: Request) {
       { error: "VALIDATION_ERROR", issues: parsed.error.flatten() },
       { status: 400 },
     );
+  }
+
+  if (!session?.user) {
+    if (!parsed.data.guestToken) {
+      return Response.json({ error: "UNAUTHORIZED" }, { status: 401 });
+    }
+
+    try {
+      const message = await sendMessage({
+        guestToken: parsed.data.guestToken,
+        senderId: parsed.data.guestToken,
+        senderRole: "BUYER",
+        body: parsed.data.body,
+        productContext: parsed.data.productId
+          ? { productId: parsed.data.productId }
+          : undefined,
+      });
+
+      try {
+        await getPusherServer().trigger(
+          conversationChannel(message.conversationId),
+          "message:new",
+          pusherPayload(message),
+        );
+      } catch (error) {
+        if (!(error instanceof PusherNotConfiguredError)) {
+          throw error;
+        }
+      }
+
+      return Response.json(message, { status: 201 });
+    } catch (error) {
+      if (error instanceof ChatRateLimitError) {
+        return Response.json(
+          { error: CHAT_RATE_LIMIT, message: RATE_LIMIT_MESSAGE },
+          { status: 429 },
+        );
+      }
+      if (error instanceof ChatServiceError) {
+        return mapChatServiceError(error);
+      }
+      throw error;
+    }
   }
 
   const isAdmin = session.user.role === "admin";
