@@ -526,17 +526,17 @@ const openPanel = useCallback((options?: ProductChatContext) => {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **D-06: Use `partialIndexes` preview or service-layer enforcement?**
    - What we know: `partialIndexes` is available in Prisma 7 but requires adding `previewFeatures = ["partialIndexes"]` to the generator — not currently in `schema.prisma`. The syntax for filtered unique on a nullable field (`@@unique([userId], where: { isActive: true })`) should work on PostgreSQL.
    - What's unclear: Whether Prisma's object-literal `where` form correctly handles `null` exclusion (i.e., does the partial index only cover non-null userIds?).
-   - Recommendation: Implement service-layer enforcement in Phase 46 (simpler, no preview flag), reserve the filtered unique constraint for Phase 47 when `createNewConversation()` is actually needed. Phase 46 has at most one `isActive=true` per user because the migration sets all existing rows to `true` and no new-conversation creation happens until Phase 47.
+   - RESOLVED: Service-layer enforcement in Phase 46 (no `partialIndexes` preview flag). Phase 46 has at most one `isActive=true` per user because the migration sets all existing rows to `true` and no new-conversation creation happens until Phase 47. The filtered unique constraint is deferred to Phase 47 when `createNewConversation()` is built.
 
 2. **Should `ChatProviderGate` SSR still call `getConversationForBuyer` after the schema change?**
    - What we know: `getConversationForBuyer(userId)` currently uses `findUnique({ where: { userId } })`. After migration this must become `findFirst({ where: { userId, isActive: true } })`. Guest users have no session so SSR skips this call.
    - What's unclear: Whether the function rename (`getConversationForBuyer` → still works but with different query) is a single edit or requires a new function name.
-   - Recommendation: Keep the function name, update its internals. No callers other than `ChatProviderGate` and `markBuyerReadAction` use it.
+   - RESOLVED: Keep the function name, update its internals only. `findFirst({ where: { userId, isActive: true } })` replaces `findUnique({ where: { userId } })`. No callers other than `ChatProviderGate` and `markBuyerReadAction` exist — both continue calling the same function signature.
 
 ---
 
