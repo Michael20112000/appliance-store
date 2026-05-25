@@ -581,19 +581,19 @@ describe("Phase 47 stubs — createNewConversation (CHAT-05)", () => {
 
   it("createNewConversation({ guestToken }) deactivates old guest conversation and creates a new one", async () => {
     const newConv = { id: "new-conv-id", guestToken: "tok-abc", isActive: true };
+    const mockUpdateMany = vi.fn().mockResolvedValue({ count: 1 });
+    const mockCreate = vi.fn().mockResolvedValue(newConv);
     vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
-      const tx = {
-        conversation: {
-          updateMany: vi.fn().mockResolvedValue({ count: 1 }),
-          create: vi.fn().mockResolvedValue(newConv),
-        },
-      };
+      const tx = { conversation: { updateMany: mockUpdateMany, create: mockCreate } };
       return fn(tx as never);
     });
 
     const result = await (createNewConversation as (input: { guestToken: string }) => Promise<{ id: string }>)({ guestToken: "tok-abc" });
 
     expect(prisma.$transaction).toHaveBeenCalled();
+    expect(mockUpdateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ isActive: false, guestToken: null }) }),
+    );
     expect(result).toMatchObject({ id: "new-conv-id" });
   });
 });

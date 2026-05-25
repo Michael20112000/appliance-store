@@ -343,7 +343,7 @@ export async function createNewConversation(
     } else {
       await tx.conversation.updateMany({
         where: { guestToken: input.guestToken, isActive: true },
-        data: { isActive: false },
+        data: { isActive: false, guestToken: null },
       });
       return tx.conversation.create({
         data: { guestToken: input.guestToken, isActive: true },
