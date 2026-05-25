@@ -4,6 +4,11 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/permissions";
 import {
+  conversationChannel,
+  getPusherServer,
+  PusherNotConfiguredError,
+} from "@/lib/pusher-server";
+import {
   archiveConversation,
   deleteConversation,
   unarchiveConversation,
@@ -22,6 +27,15 @@ export async function archiveConversationAction(conversationId: string) {
   await requireAdmin();
   const id = conversationIdSchema.parse(conversationId);
   await archiveConversation(id);
+  try {
+    await getPusherServer().trigger(
+      conversationChannel(id),
+      "conversation:closed",
+      { conversationId: id },
+    );
+  } catch (error) {
+    if (!(error instanceof PusherNotConfiguredError)) throw error;
+  }
   revalidateAdminChat();
   return { ok: true as const };
 }
