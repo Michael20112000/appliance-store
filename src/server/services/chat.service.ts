@@ -382,7 +382,7 @@ export async function claimGuestConversation(
 export async function unarchiveConversation(conversationId: string) {
   await prisma.conversation.update({
     where: { id: conversationId },
-    data: { status: "OPEN" },
+    data: { status: "OPEN", isActive: true },
   });
 }
 
