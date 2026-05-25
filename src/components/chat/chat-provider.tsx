@@ -450,6 +450,7 @@ export function ChatProvider({
         });
         if (res.ok) {
           localStorage.removeItem(GUEST_CHAT_TOKEN_KEY);
+          router.refresh();
           setGuestToken(null);
           setGuestTokenForPusher(null);
         }
