@@ -112,7 +112,24 @@ Plans:
   1. Admin closes a chat — within ~1 second the buyer's open widget shows "Чат завершено" and the composer input is locked
   2. Guest sends messages then registers or logs in — after login, that conversation appears in their account history with all prior messages intact
   3. A closed chat's banner shows a "Почати новий чат" button; clicking it opens a new active conversation
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+
+**Wave 0**
+- [ ] 47-01-PLAN.md — RED test stubs: chat.service.test.ts + chat.actions.test.ts + claim/route.test.ts (CHAT-02, CHAT-04, CHAT-05)
+
+**Wave 1** *(depends on 47-01)*
+- [ ] 47-02-PLAN.md — Service + admin action: extend archiveConversation (isActive=false), add createNewConversation, add claimGuestConversation, extend archiveConversationAction with Pusher broadcast (CHAT-02, CHAT-04, CHAT-05)
+
+**Wave 2** *(depends on 47-02)*
+- [ ] 47-03-PLAN.md — API routes: POST /api/chat/new + POST /api/chat/claim (CHAT-04, CHAT-05, CHAT-02)
+
+**Wave 3** *(depends on 47-03)*
+- [ ] 47-04-PLAN.md — Client: ChatProvider conversation:closed binding + claim effect; ArchivedChatBanner interactive with Почати новий чат (CHAT-04, CHAT-05, CHAT-02)
+
+**Wave 4** *(depends on 47-04)*
+- [ ] 47-05-PLAN.md — Human UAT: full e2e verification of all three Phase 47 success criteria (CHAT-02, CHAT-04, CHAT-05)
+
 **UI hint**: yes
 
 ### Phase 48: History Drawer
@@ -188,7 +205,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
-| 47. Chat Lifecycle Control | v3.0 | 0/? | Not started | - |
+| 47. Chat Lifecycle Control | v3.0 | 0/5 | Not started | - |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
