@@ -342,7 +342,7 @@ export async function createNewConversation(
       });
     } else {
       await tx.conversation.updateMany({
-        where: { guestToken: input.guestToken, isActive: true },
+        where: { guestToken: input.guestToken },
         data: { isActive: false, guestToken: null },
       });
       return tx.conversation.create({

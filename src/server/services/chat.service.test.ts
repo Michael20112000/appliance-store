@@ -592,7 +592,10 @@ describe("Phase 47 stubs — createNewConversation (CHAT-05)", () => {
 
     expect(prisma.$transaction).toHaveBeenCalled();
     expect(mockUpdateMany).toHaveBeenCalledWith(
-      expect.objectContaining({ data: expect.objectContaining({ isActive: false, guestToken: null }) }),
+      expect.objectContaining({
+        where: expect.objectContaining({ guestToken: "tok-abc" }),
+        data: expect.objectContaining({ isActive: false, guestToken: null }),
+      }),
     );
     expect(result).toMatchObject({ id: "new-conv-id" });
   });
