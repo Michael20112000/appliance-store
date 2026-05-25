@@ -161,7 +161,7 @@ export function ChatProvider({
           localStorage.setItem("chat_guest_token", token);
           setGuestToken(token);
         } catch {
-          // private mode or crypto not available — continue without token
+          // private mode or storage unavailable — continue without persistent token
         }
       }
 
