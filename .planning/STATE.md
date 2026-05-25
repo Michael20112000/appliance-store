@@ -2,32 +2,33 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Chat & Engagement
-status: executing
-last_updated: "2026-05-25T16:22:42.147Z"
+status: ready_to_plan
+last_updated: 2026-05-25T20:46:47.986Z
 last_activity: 2026-05-25 -- Phase 47 execution started
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 10
-  completed_plans: 9
+  completed_plans: 20
   percent: 17
+stopped_at: Phase 47 complete (5/5) — ready to discuss Phase 48
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-24)
+See: .planning/PROJECT.md (updated 2026-05-25)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 47 — chat-lifecycle-control
+**Current focus:** Phase 48 — history drawer
 
 ## Current Position
 
-Phase: 47 (chat-lifecycle-control) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 47
-Last activity: 2026-05-25 -- Phase 47 execution started
+Phase: 48
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-05-25
 
 ## Deferred Items
 
@@ -62,6 +63,9 @@ Items acknowledged and deferred at milestone close on 2026-05-24:
 - v3.0: file uploads use signed Cloudinary preset `chat-attachments` (not unsigned); server validates type + size
 - v3.0: history drawer is in-widget view-state switch on mobile (not side-slide Sheet)
 - v3.0: Phase 48 and Phase 49 are independent and can be planned/executed in parallel
+- v3.0/47: claimGuestConversation wrapped in $transaction (TOCTOU race fix)
+- v3.0/47: unarchiveConversation must set isActive: true (not just status: "OPEN")
+- v3.0/47: router.refresh() after claim — SSR re-hydrates initialConversationId
 
 ### Blockers/Concerns
 
@@ -69,4 +73,5 @@ None.
 
 ## Operator Next Steps
 
-- Run `/gsd:plan-phase 46` to start planning Phase 46: Schema Foundation + Guest Chat
+- Run `/gsd:plan-phase 48` — History Drawer
+- Run `/gsd:plan-phase 49` — File Attachments (parallel with 48)

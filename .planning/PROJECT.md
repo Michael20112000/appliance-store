@@ -92,13 +92,16 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ FAB-03 — Прибрати валідаційний текст "Вкажіть номер телефону — лише цифри, від 10 до 15" з callback-форми — v2.3
 - ✓ FAB-04 — Всі floating-кнопки у правому нижньому куті стовпчиком (зворотній дзвінок → корзина → чат); callback-діалог поверх блоку — v2.3
 
+### Validated (v3.0)
+
+- ✓ CHAT-02 — При реєстрації/вході гостьовий чат прив'язується до акаунту — Phase 47
+- ✓ CHAT-04 — Адмін може завершити чат; юзер бачить "Чат завершено", input блокується — Phase 47
+- ✓ CHAT-05 — Після завершення чату юзеру пропонується відкрити новий — Phase 47
+
 ### Active (v3.0)
 
 - [ ] CHAT-01 — Гостьовий чат без реєстрації (один чат, лише текст); сесія через localStorage/cookie
-- [ ] CHAT-02 — При реєстрації/вході гостьовий чат прив'язується до акаунту
 - [ ] CHAT-03 — Гість відображається в адмінці як "Гість"
-- [ ] CHAT-04 — Адмін може завершити чат; юзер бачить "Чат завершено", input блокується
-- [ ] CHAT-05 — Після завершення чату юзеру пропонується відкрити новий
 - [ ] CHAT-06 — Меню-кнопка у чат-віджеті (поряд з ×) відкриває дровер з середини віджету
 - [ ] CHAT-07 — Дровер: список чатів з можливістю перемикання (тільки авторизовані)
 - [ ] CHAT-08 — Новий чат можна створити з дровера
@@ -156,6 +159,9 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 | Category edit = product edit mirror | Auto-save + icon-trash, same patterns | ✓ Good (v2.1) |
 | useCategoryAutoSave TDD RED→GREEN | Ensures schema guard + snapshot dedup correctness | ✓ Good (v2.1) |
 | CategoryForm mode-conditional buttons | Edit mode: no Save/Delete; create mode: unchanged | ✓ Good (v2.1) |
+| guest chat via localStorage token | Один UUID в localStorage; claim через POST /api/chat/claim при вході | ✓ Good (v3.0/47) |
+| claimGuestConversation in $transaction | TOCTOU race між findFirst + updateMany — транзакція усуває | ✓ Good (v3.0/47) |
+| router.refresh() after claim | SSR re-hydrates initialConversationId без page reload — найпростіший підхід | ✓ Good (v3.0/47) |
 
 ## Evolution
 
@@ -199,4 +205,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-24 — Milestone v3.0 started (Chat & Engagement)*
+*Last updated: 2026-05-25 — Phase 47 complete (CHAT-02, CHAT-04, CHAT-05 shipped)*
