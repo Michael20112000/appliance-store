@@ -83,7 +83,24 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   2. Guest sends a message — the message appears in the admin inbox labeled "Гість" (not blank or null)
   3. Guest refreshes the page — previous guest messages are still visible in the widget
   4. Guest clears localStorage — the widget treats them as a brand-new guest with no prior session
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+
+**Wave 1**
+- [ ] 46-01-PLAN.md — Schema migration: nullable userId, guestToken, isActive + [BLOCKING] prisma migrate dev (CHAT-01, CHAT-03)
+
+**Wave 2** *(depends on 46-01)*
+- [ ] 46-02-PLAN.md — Data layer: types, validators, service functions for guest conversations (CHAT-01, CHAT-03)
+
+**Wave 3** *(depends on 46-02)*
+- [ ] 46-03-PLAN.md — API routes: GET /api/chat/guest restore, POST /api/chat/messages guest path, POST /api/chat/pusher/auth guest path (CHAT-01)
+
+**Wave 4** *(depends on 46-03)*
+- [ ] 46-04-PLAN.md — ChatProvider guest mode: localStorage token management, no redirect, Pusher guestToken config (CHAT-01)
+
+**Wave 5** *(depends on 46-04)*
+- [ ] 46-05-PLAN.md — Human verification: full e2e test of all phase success criteria (CHAT-01, CHAT-03)
+
 **UI hint**: yes
 
 ### Phase 47: Chat Lifecycle Control
@@ -170,7 +187,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 46. Schema Foundation + Guest Chat | v3.0 | 0/? | Not started | - |
+| 46. Schema Foundation + Guest Chat | v3.0 | 0/5 | Not started | - |
 | 47. Chat Lifecycle Control | v3.0 | 0/? | Not started | - |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
