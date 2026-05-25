@@ -66,6 +66,7 @@ type ChatContextValue = {
   setConversationStatus: (status: ConversationStatus) => void;
   clearUnreadFromStore: () => void;
   resetMessages: () => void;
+  updateGuestToken: (token: string) => void;
 };
 
 const ChatContext = createContext<ChatContextValue | null>(null);
@@ -420,6 +421,16 @@ export function ChatProvider({
 
   const resetMessages = useCallback(() => setMessages([]), []);
 
+  const updateGuestToken = useCallback((token: string) => {
+    try {
+      localStorage.setItem(GUEST_CHAT_TOKEN_KEY, token);
+    } catch {
+      // private mode — continue without persisting
+    }
+    setGuestToken(token);
+    setGuestTokenForPusher(token);
+  }, []);
+
   const claimAttemptedRef = useRef(false);
 
   useEffect(() => {
@@ -472,6 +483,7 @@ export function ChatProvider({
       setConversationStatus,
       clearUnreadFromStore,
       resetMessages,
+      updateGuestToken,
     }),
     [
       appendMessage,
@@ -494,6 +506,7 @@ export function ChatProvider({
       removeOptimisticMessage,
       resetMessages,
       unreadFromStore,
+      updateGuestToken,
     ],
   );
 

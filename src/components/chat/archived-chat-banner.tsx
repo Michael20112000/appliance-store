@@ -5,8 +5,13 @@ import { useChat } from "@/components/chat/chat-provider";
 import { Button } from "@/components/ui/button";
 
 export function ArchivedChatBanner() {
-  const { guestToken, setConversationId, setConversationStatus, resetMessages } =
-    useChat();
+  const {
+    guestToken,
+    setConversationId,
+    setConversationStatus,
+    resetMessages,
+    updateGuestToken,
+  } = useChat();
   const [isStarting, setIsStarting] = useState(false);
 
   const handleStartNew = async () => {
@@ -18,7 +23,11 @@ export function ArchivedChatBanner() {
         body: JSON.stringify({ ...(guestToken ? { guestToken } : {}) }),
       });
       if (!res.ok) return;
-      const data = (await res.json()) as { conversationId: string };
+      const data = (await res.json()) as {
+        conversationId: string;
+        guestToken?: string;
+      };
+      if (data.guestToken) updateGuestToken(data.guestToken);
       resetMessages();
       setConversationId(data.conversationId);
       setConversationStatus("OPEN");

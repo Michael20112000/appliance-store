@@ -27,5 +27,8 @@ export async function POST(request: Request) {
   const conversation = await createNewConversation({
     guestToken: parsed.data.guestToken,
   });
-  return Response.json({ conversationId: conversation.id }, { status: 201 });
+  return Response.json(
+    { conversationId: conversation.id, guestToken: conversation.guestToken },
+    { status: 201 },
+  );
 }

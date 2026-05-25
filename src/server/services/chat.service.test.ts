@@ -579,8 +579,9 @@ describe("Phase 47 stubs — createNewConversation (CHAT-05)", () => {
     expect(result).toMatchObject({ id: "new-conv-id" });
   });
 
-  it("createNewConversation({ guestToken }) deactivates old guest conversation and creates a new one", async () => {
-    const newConv = { id: "new-conv-id", guestToken: "tok-abc", isActive: true };
+  it("createNewConversation({ guestToken }) deactivates old active guest conversation and creates a new one with a fresh token", async () => {
+    const freshToken = "fresh-uuid-token";
+    const newConv = { id: "new-conv-id", guestToken: freshToken, isActive: true };
     const mockUpdateMany = vi.fn().mockResolvedValue({ count: 1 });
     const mockCreate = vi.fn().mockResolvedValue(newConv);
     vi.mocked(prisma.$transaction).mockImplementationOnce(async (fn) => {
@@ -588,16 +589,22 @@ describe("Phase 47 stubs — createNewConversation (CHAT-05)", () => {
       return fn(tx as never);
     });
 
-    const result = await (createNewConversation as (input: { guestToken: string }) => Promise<{ id: string }>)({ guestToken: "tok-abc" });
+    const result = await (createNewConversation as (input: { guestToken: string }) => Promise<{ id: string; guestToken?: string }>)({ guestToken: "tok-abc" });
 
     expect(prisma.$transaction).toHaveBeenCalled();
+    // Old active conversation deactivated but guestToken left intact (owner_required constraint)
     expect(mockUpdateMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: expect.objectContaining({ guestToken: "tok-abc" }),
-        data: expect.objectContaining({ isActive: false, guestToken: null }),
+        where: expect.objectContaining({ guestToken: "tok-abc", isActive: true }),
+        data: expect.objectContaining({ isActive: false }),
       }),
     );
+    // New conversation created with a different (fresh) token
+    expect(mockCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ isActive: true }) }),
+    );
     expect(result).toMatchObject({ id: "new-conv-id" });
+    expect(result.guestToken).toBeDefined();
   });
 });
 

@@ -330,7 +330,7 @@ export async function archiveConversation(conversationId: string) {
 
 export async function createNewConversation(
   input: { userId: string } | { guestToken: string },
-): Promise<{ id: string }> {
+): Promise<{ id: string; guestToken?: string }> {
   return prisma.$transaction(async (tx) => {
     if ("userId" in input) {
       await tx.conversation.updateMany({
@@ -341,13 +341,19 @@ export async function createNewConversation(
         data: { userId: input.userId, isActive: true },
       });
     } else {
+      // Deactivate the old active conversation without touching its guestToken —
+      // clearing guestToken would violate the owner_required check constraint
+      // (archived guest row would have neither userId nor guestToken).
       await tx.conversation.updateMany({
-        where: { guestToken: input.guestToken },
-        data: { isActive: false, guestToken: null },
+        where: { guestToken: input.guestToken, isActive: true },
+        data: { isActive: false },
       });
-      return tx.conversation.create({
-        data: { guestToken: input.guestToken, isActive: true },
+      const { randomUUID } = await import("crypto");
+      const newToken = randomUUID();
+      const conv = await tx.conversation.create({
+        data: { guestToken: newToken, isActive: true },
       });
+      return { id: conv.id, guestToken: newToken };
     }
   });
 }
