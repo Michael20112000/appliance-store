@@ -87,10 +87,10 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 Plans:
 
 **Wave 1**
-- [ ] 46-01-PLAN.md — Schema migration: nullable userId, guestToken, isActive + [BLOCKING] prisma migrate dev (CHAT-01, CHAT-03)
+- [x] 46-01-PLAN.md — Schema migration: nullable userId, guestToken, isActive + [BLOCKING] prisma migrate dev (CHAT-01, CHAT-03)
 
 **Wave 2** *(depends on 46-01)*
-- [ ] 46-02-PLAN.md — Data layer: types, validators, service functions for guest conversations (CHAT-01, CHAT-03)
+- [x] 46-02-PLAN.md — Data layer: types, validators, service functions for guest conversations (CHAT-01, CHAT-03)
 
 **Wave 3** *(depends on 46-02)*
 - [ ] 46-03-PLAN.md — API routes: GET /api/chat/guest restore, POST /api/chat/messages guest path, POST /api/chat/pusher/auth guest path (CHAT-01)
@@ -187,7 +187,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 46. Schema Foundation + Guest Chat | v3.0 | 0/5 | Not started | - |
+| 46. Schema Foundation + Guest Chat | v3.0 | 2/5 | In Progress|  |
 | 47. Chat Lifecycle Control | v3.0 | 0/? | Not started | - |
 | 48. History Drawer | v3.0 | 0/? | Not started | - |
 | 49. File Attachments | v3.0 | 0/? | Not started | - |
