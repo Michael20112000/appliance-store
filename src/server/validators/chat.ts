@@ -11,6 +11,7 @@ export const sendMessageSchema = z.object({
     .cuid("Невірний ідентифікатор розмови")
     .optional(),
   productId: z.string().cuid("Невірний ідентифікатор товару").optional(),
+  guestToken: z.string().uuid("Невірний гостьовий токен").optional(),
 });
 
 export type SendMessageInput = z.infer<typeof sendMessageSchema>;

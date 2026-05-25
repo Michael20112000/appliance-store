@@ -14,7 +14,7 @@ export type MessageDto = {
 
 export type ConversationSummaryDto = {
   id: string;
-  userId: string;
+  userId: string | null;
   status: ConversationStatus;
   buyerName: string;
   buyerEmail: string;
