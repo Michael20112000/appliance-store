@@ -1,15 +1,52 @@
+"use client";
+
+import { useState } from "react";
+import { useChat } from "@/components/chat/chat-provider";
+import { Button } from "@/components/ui/button";
+
 export function ArchivedChatBanner() {
+  const { guestToken, setConversationId, setConversationStatus, resetMessages } =
+    useChat();
+  const [isStarting, setIsStarting] = useState(false);
+
+  const handleStartNew = async () => {
+    setIsStarting(true);
+    try {
+      const res = await fetch("/api/chat/new", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...(guestToken ? { guestToken } : {}) }),
+      });
+      if (!res.ok) return;
+      const data = (await res.json()) as { conversationId: string };
+      resetMessages();
+      setConversationId(data.conversationId);
+      setConversationStatus("OPEN");
+    } finally {
+      setIsStarting(false);
+    }
+  };
+
   return (
     <div
       role="status"
       className="border-b border-border bg-muted px-4 py-3"
     >
       <p className="text-sm font-semibold text-foreground">
-        Діалог закрито магазином
+        Чат завершено
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
         Ви можете переглядати історію, але нові повідомлення надіслати не можна.
       </p>
+      <Button
+        variant="outline"
+        size="sm"
+        className="mt-2"
+        disabled={isStarting}
+        onClick={() => void handleStartNew()}
+      >
+        Почати новий чат
+      </Button>
     </div>
   );
 }
