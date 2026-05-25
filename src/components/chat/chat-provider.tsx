@@ -65,6 +65,7 @@ type ChatContextValue = {
   setConversationId: (id: string) => void;
   setConversationStatus: (status: ConversationStatus) => void;
   clearUnreadFromStore: () => void;
+  resetMessages: () => void;
 };
 
 const ChatContext = createContext<ChatContextValue | null>(null);
@@ -385,8 +386,14 @@ export function ChatProvider({
       }
     };
 
+    const handleClose = (payload: { conversationId: string }) => {
+      if (cancelled || payload.conversationId !== conversationId) return;
+      setConversationStatus("ARCHIVED");
+    };
+
     const channel = pusher.subscribe(channelName);
     channel.bind("message:new", handleMessage);
+    channel.bind("conversation:closed", handleClose);
     pusher.connection.bind("state_change", handleStateChange);
     subscribedChannelRef.current = channelName;
 
@@ -398,6 +405,7 @@ export function ChatProvider({
     return () => {
       cancelled = true;
       channel.unbind("message:new", handleMessage);
+      channel.unbind("conversation:closed", handleClose);
       pusher.connection.unbind("state_change", handleStateChange);
       pusher.unsubscribe(channelName);
       subscribedChannelRef.current = null;
@@ -409,6 +417,36 @@ export function ChatProvider({
       clearUnreadFromStore();
     }
   }, [clearUnreadFromStore, hasSession, isOpen]);
+
+  const resetMessages = useCallback(() => setMessages([]), []);
+
+  const claimAttemptedRef = useRef(false);
+
+  useEffect(() => {
+    if (!hasSession || claimAttemptedRef.current) return;
+    if (typeof window === "undefined") return;
+
+    const stored = localStorage.getItem(GUEST_CHAT_TOKEN_KEY);
+    if (!stored) return;
+
+    claimAttemptedRef.current = true;
+    void (async () => {
+      try {
+        const res = await fetch("/api/chat/claim", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ guestToken: stored }),
+        });
+        if (res.ok) {
+          localStorage.removeItem(GUEST_CHAT_TOKEN_KEY);
+          setGuestToken(null);
+          setGuestTokenForPusher(null);
+        }
+      } catch {
+        // claim failure is non-fatal — guest messages still visible via guestToken until page reload
+      }
+    })();
+  }, [hasSession]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const value = useMemo<ChatContextValue>(
     () => ({
@@ -433,6 +471,7 @@ export function ChatProvider({
       setConversationId,
       setConversationStatus,
       clearUnreadFromStore,
+      resetMessages,
     }),
     [
       appendMessage,
@@ -453,6 +492,7 @@ export function ChatProvider({
       refetchMessages,
       replaceOptimisticMessage,
       removeOptimisticMessage,
+      resetMessages,
       unreadFromStore,
     ],
   );
