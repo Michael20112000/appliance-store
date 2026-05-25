@@ -12,7 +12,10 @@ vi.mock("@/lib/auth", () => ({
   },
 }));
 
-// This import is RED — route.ts does not exist yet (Plan 47-03 creates it)
+vi.mock("@/server/services/chat.service", () => ({
+  claimGuestConversation: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { POST } from "@/app/api/chat/claim/route";
 
 describe("POST /api/chat/claim", () => {
