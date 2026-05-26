@@ -1,5 +1,21 @@
 # Milestones
 
+## v3.0 Chat & Engagement (Shipped: 2026-05-26)
+
+**Phases completed:** 4 phases, 16 plans
+
+**Key accomplishments:**
+
+- Unauthenticated users can open chat widget and send messages without registering; session persisted via localStorage `chat_guest_token`; guest appears as "Гість" in admin inbox
+- Admin closes chat with real-time Pusher notification ("Чат завершено"); input locks; "Почати новий чат" CTA on closure
+- Guest conversation automatically claimed by account on login via POST /api/chat/claim with $transaction TOCTOU guard
+- Authenticated users access in-widget conversation history drawer via Menu button; conversation switching and "Новий чат" creation from drawer
+- Auth users and admin can send image attachments (jpg/png/webp, ≤10 MB) via signed Cloudinary preset `chat-attachments`; guests remain text-only
+
+**Known gaps at close:** REQUIREMENTS.md checkbox sync gap — CHAT-01, CHAT-03, CHAT-06–09 were `Pending` in traceability but confirmed shipped by UAT summaries (46-05, 47-05, 48-03, 49-03).
+
+---
+
 ## v2.3 Bugfixes & Small Features (Shipped: 2026-05-24)
 
 **Phases completed:** 2 phases, 4 plans, 1 tasks

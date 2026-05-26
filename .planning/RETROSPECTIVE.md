@@ -1,5 +1,46 @@
 # Project Retrospective
 
+## Milestone: v3.0 — Chat & Engagement
+
+**Shipped:** 2026-05-26
+**Phases:** 46–49 | **Plans:** 16
+
+### What Was Built
+
+Full real-time chat system on Pusher + PostgreSQL (Neon). Phase 46: schema migration (nullable userId, guestToken, isActive), guest chat service layer, API routes, ChatProvider guest mode, localStorage token management — confirmed by human UAT. Phase 47: TDD RED→GREEN wave 0 (chat.service + actions + claim route stubs), archiveConversation/createNewConversation/claimGuestConversation service, POST /api/chat/new + /api/chat/claim routes, ChatProvider conversation:closed Pusher binding + claim effect, ArchivedChatBanner — confirmed by human UAT (Pusher latency ~1s). Phase 48: listConversationsForBuyer service + GET /api/chat/conversations route (TDD), ChatProvider panelView state ('thread' | 'history'), PanelHeader Menu icon (auth-gated), HistoryDrawer fetch-on-mount, ChatPanel branching. Phase 49: Prisma attachments Json? field, ChatAttachment type, MessageDto extension, POST /api/chat/upload/sign, sendMessageSchema extension, paperclip UI in ChatComposer + AdminChatComposer, MessageBubble inline image render, Pusher payload extension — PDF dropped mid-phase (Cloudinary delivery complexity).
+
+### What Worked
+
+- `$transaction` for claimGuestConversation — caught TOCTOU race immediately in design; zero production issues
+- panelView in-widget state switch — simpler than Sheet overlay, no z-index conflict with chat widget frame
+- Phase 48 + 49 parallel execution — no shared files, zero merge conflicts
+- Human UAT as the final plan in each phase — natural gate before declaring complete
+- TDD wave 0 in Phase 47 — RED stubs locked the service contract before any implementation; caught the `isActive: true` requirement on unarchive
+- Worktree isolation throughout — all plans in separate worktrees, clean merges
+
+### What Was Inefficient
+
+- REQUIREMENTS.md checkbox sync still not happening during execution (same issue as v2.1) — left 6 requirements as "Pending" despite all phases complete; needed manual reconciliation at milestone close
+- PDF delivery Cloudinary 401 consumed 4 extra fix commits before deciding to drop PDF support entirely — a pre-implementation spike on Cloudinary signed delivery URLs would have resolved this in ~30 min
+- Phase 46 `guestToken` unique constraint bug found in Phase 47 UAT — regression not caught in Phase 46 UAT because it required multiple guest sessions
+
+### Patterns Established
+
+- Guest session via localStorage UUID (`chat_guest_token`): generate on first open, restore on load, pass as Pusher auth param and API header
+- `claimGuestConversation` always in `$transaction` — TOCTOU guard is now the standard for any claim/transfer operation
+- `panelView: 'thread' | 'history'` pattern for in-widget view switching — extend ChatProvider state, branch in ChatPanel render
+- Signed Cloudinary preset for user-generated content — `POST /api/chat/upload/sign` pattern reusable for any future upload feature
+- `router.refresh()` after server-side conversation state change (claim, new) — SSR re-hydrates props without page reload
+
+### Key Lessons
+
+- Executor MUST update REQUIREMENTS.md traceability immediately after plan completion — the checkbox gap is a recurring process miss; consider enforcing in PLAN.md "done when" criteria
+- Before adding binary/file support: spike the delivery URL strategy first — signed vs unsigned vs proxy has major downstream implications
+- Test multi-session edge cases in Phase UAT (e.g., "clear localStorage then open again" for guest chat) — single-session tests miss constraint violations
+- PDF support added to Phase 49 scope but delivery was under-researched; dropping it was the right call but cost time
+
+---
+
 ## Milestone: v2.1 — Fixes & UX
 
 **Shipped:** 2026-05-21
@@ -148,6 +189,10 @@ BUG-12…17 verified on main; CI green after minimal test fixes; intake wave 1�
 
 | Milestone | Phases | Theme |
 |-----------|--------|-------|
+| v3.0 | 46–49 | Real-time chat — guest, lifecycle, history, attachments |
+| v2.3 | 44–45 | Header cleanup + FAB overhaul |
+| v2.2 | 41–43 | Social links, FABs, slider, animation |
+| v2.1 | 37–40 | Admin UX completeness |
 | v2.0 | 28–36 | UX polish + admin tooling + TDD |
 | v1.5 | 22–27 | Operator UX + UAT closure |
 | v1.4 | 21 | Stabilization / verify |

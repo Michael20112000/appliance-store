@@ -10,26 +10,19 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: v3.0 Chat & Engagement
+## Current Milestone: Planning Next
 
-**Goal:** Повноцінний чат — гостьовий доступ без реєстрації, історія розмов для авторизованих юзерів, вкладення файлів, контроль адміна над статусом чату.
-
-**Target features:**
-- Гостьовий чат: без реєстрації, один чат, лише текст; сесія через localStorage/cookie; при вході → прив'язується до акаунту
-- Гість в адмінці відображається як "Гість"
-- Адмін закриває чат: юзер бачить "Чат завершено", input блокується, пропонується відкрити новий
-- Меню-кнопка в чат-віджеті (поряд з ×): відкриває дровер з середини віджету
-- Дровер: список чатів з перемиканням (тільки авторизовані)
-- Новий чат можна створити з дровера
-- Вкладення файлів (jpg/png/webp + pdf) — тільки авторизовані юзери та адмін
+**v3.0 shipped 2026-05-26.** Run `/gsd:new-milestone` to start next milestone cycle.
 
 ## Current State
 
-**Shipped:** v1.0 → v2.1 (2026-05-21)
+**Shipped:** v1.0 → v3.0 (2026-05-26)
 
-**Phase 45 complete (2026-05-24):** Floating UI overhaul — callback phone premature validation fixed (shouldValidate removed), all three FABs (callback/cart/chat) consolidated into single bottom-right column at z-[49], dialog backdrop correctly covers FAB group, StorefrontFabs moved inside ChatContext.Provider.
+**v3.0 (2026-05-26):** Full real-time chat — guest chat without registration (localStorage token), admin lifecycle control (close/reopen), guest conversation claim on login, in-widget history drawer (auth only), image attachments (jpg/png/webp, signed Cloudinary).
 
-**Latest (v2.1):** Admin UX completeness — dashboard StatCards (calls + chats), full AnalyticsCharts on /admin, recent orders table parity (6 cols, max 10), callback note auto-save (400ms throttle), categories table № + Дії columns, category edit auto-save + icon-trash (mirrors product edit page).
+**v2.3 (2026-05-24):** Mobile header cleanup (auth buttons removed, burger rightmost, sign-out pending state) + floating UI overhaul (all FABs bottom-right column at z-[49], dialog z-index fixed, validation text removed).
+
+**v2.1–v2.2:** Admin UX completeness, social links, floating FABs, price slider snap, page fade animation.
 
 **v2.0:** UX polish — nav auth, smooth scroll, category counts, catalog sort; PDP lightbox, in-cart FAB, схожі товари; footer desktop; admin analytics + callbacks (Дзвінки) + DnD categories + sidebar badges.
 
@@ -94,18 +87,19 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 
 ### Validated (v3.0)
 
+- ✓ CHAT-01 — Гостьовий чат без реєстрації; localStorage `chat_guest_token`; без редіректу — Phase 46
 - ✓ CHAT-02 — При реєстрації/вході гостьовий чат прив'язується до акаунту — Phase 47
+- ✓ CHAT-03 — Гість відображається в адмінці як "Гість" — Phase 46
 - ✓ CHAT-04 — Адмін може завершити чат; юзер бачить "Чат завершено", input блокується — Phase 47
 - ✓ CHAT-05 — Після завершення чату юзеру пропонується відкрити новий — Phase 47
+- ✓ CHAT-06 — Меню-кнопка у чат-віджеті відкриває дровер — Phase 48
+- ✓ CHAT-07 — Дровер: список чатів з перемиканням (тільки авторизовані) — Phase 48
+- ✓ CHAT-08 — Новий чат можна створити з дровера — Phase 48
+- ✓ CHAT-09 — Вкладення файлів (jpg/png/webp, ≤10 МБ) — лише авторизовані та адмін — Phase 49
 
-### Active (v3.0)
+### Active (post-v3.0)
 
-- [ ] CHAT-01 — Гостьовий чат без реєстрації (один чат, лише текст); сесія через localStorage/cookie
-- [ ] CHAT-03 — Гість відображається в адмінці як "Гість"
-- [ ] CHAT-06 — Меню-кнопка у чат-віджеті (поряд з ×) відкриває дровер з середини віджету
-- [ ] CHAT-07 — Дровер: список чатів з можливістю перемикання (тільки авторизовані)
-- [ ] CHAT-08 — Новий чат можна створити з дровера
-- [ ] CHAT-09 — Вкладення файлів (jpg/png/webp + pdf) — лише авторизовані юзери та адмін
+*(No active requirements — start /gsd:new-milestone for next cycle)*
 
 ### Deferred (post–v2.0)
 
@@ -162,8 +156,19 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 | guest chat via localStorage token | Один UUID в localStorage; claim через POST /api/chat/claim при вході | ✓ Good (v3.0/47) |
 | claimGuestConversation in $transaction | TOCTOU race між findFirst + updateMany — транзакція усуває | ✓ Good (v3.0/47) |
 | router.refresh() after claim | SSR re-hydrates initialConversationId без page reload — найпростіший підхід | ✓ Good (v3.0/47) |
+| panelView state in ChatProvider | In-widget view-state switch ('thread' \| 'history') — no Sheet/modal, simpler than overlay | ✓ Good (v3.0/48) |
+| PDF attachments dropped in Phase 49 | Cloudinary signed delivery URL complexity; images only (jpg/png/webp) | ✓ Good (v3.0/49) |
+| Cloudinary signed preset chat-attachments | Server-validates type + size; no unsigned upload | ✓ Good (v3.0/49) |
 
 ## Evolution
+
+<details>
+<summary>v3.0 milestone snapshot (2026-05-26)</summary>
+
+v3.0 scope: full real-time chat system — guest access (localStorage token, no redirect), admin lifecycle control (Pusher close/reopen), guest claim on login ($transaction), in-widget history drawer (panelView state), image attachments (signed Cloudinary preset, auth only).
+4 phases, 16 plans, shipped 2026-05-26. CHAT-01…09 all validated.
+
+</details>
 
 <details>
 <summary>v2.3 milestone snapshot (2026-05-24)</summary>
@@ -205,4 +210,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-25 — Phase 47 complete (CHAT-02, CHAT-04, CHAT-05 shipped)*
+*Last updated: 2026-05-26 after v3.0 milestone — CHAT-01…09 all shipped*
