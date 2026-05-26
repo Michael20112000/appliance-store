@@ -25,6 +25,10 @@ vi.mock("@/components/chat/product-context-banner", () => ({
   ProductContextBanner: () => null,
 }));
 
+vi.mock("@/components/chat/history-drawer", () => ({
+  HistoryDrawer: () => null,
+}));
+
 import { ChatPanel } from "@/components/chat/chat-panel";
 
 // Minimal ChatContextValue shape that satisfies all component consumers
@@ -53,6 +57,8 @@ const baseChatContext = {
   resetMessages: vi.fn(),
   updateGuestToken: vi.fn(),
   openHistory: vi.fn(),
+  panelView: "thread" as const,
+  closeHistory: vi.fn(),
 };
 
 describe("PanelHeader — Menu icon visibility gated on hasSession", () => {
