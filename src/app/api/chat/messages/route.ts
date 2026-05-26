@@ -29,6 +29,7 @@ function pusherPayload(message: MessageDto) {
     body: message.body,
     senderRole: message.senderRole,
     createdAt: message.createdAt,
+    attachments: message.attachments,
   };
 }
 
@@ -85,6 +86,7 @@ export async function POST(request: Request) {
         productContext: parsed.data.productId
           ? { productId: parsed.data.productId }
           : undefined,
+        attachments: parsed.data.attachments,
       });
 
       try {
@@ -130,6 +132,7 @@ export async function POST(request: Request) {
           senderId: session.user.id,
           senderRole: "STORE",
           body: parsed.data.body,
+          attachments: parsed.data.attachments,
         })
       : await sendMessage({
           userId: session.user.id,
@@ -139,6 +142,7 @@ export async function POST(request: Request) {
           productContext: parsed.data.productId
             ? { productId: parsed.data.productId }
             : undefined,
+          attachments: parsed.data.attachments,
         });
 
     try {

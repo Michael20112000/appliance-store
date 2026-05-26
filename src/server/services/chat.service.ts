@@ -2,8 +2,10 @@ import type {
   ConversationStatus,
   MessageSender,
 } from "@/generated/prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
 import type {
+  ChatAttachment,
   ConversationSummaryDto,
   MessageDto,
 } from "@/types/chat";
@@ -68,6 +70,7 @@ function mapMessageDto(message: {
   senderRole: MessageSender;
   senderId: string;
   createdAt: Date;
+  attachments?: Prisma.JsonValue | null;
 }): MessageDto {
   return {
     id: message.id,
@@ -76,6 +79,9 @@ function mapMessageDto(message: {
     senderRole: message.senderRole,
     senderId: message.senderId,
     createdAt: message.createdAt.toISOString(),
+    attachments: message.attachments
+      ? (message.attachments as unknown as ChatAttachment[])
+      : undefined,
   };
 }
 
@@ -217,6 +223,7 @@ type SendMessageInput = {
   userId?: string;
   productContext?: ProductContext;
   guestToken?: string;
+  attachments?: ChatAttachment[];
 };
 
 function assertConversationOpen(conversation: { status: ConversationStatus }) {
@@ -243,6 +250,7 @@ export async function sendMessage(input: SendMessageInput): Promise<MessageDto> 
         senderId: input.senderId,
         senderRole: input.senderRole,
         body: input.body,
+        ...(input.attachments ? { attachments: input.attachments } : {}),
       },
     });
 
