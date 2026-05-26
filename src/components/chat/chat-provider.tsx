@@ -21,7 +21,7 @@ import {
 } from "@/lib/pusher-client";
 import type { ConversationStatus } from "@/generated/prisma/client";
 import { markBuyerReadAction } from "@/server/actions/chat.actions";
-import type { MessageDto } from "@/types/chat";
+import type { ChatAttachment, MessageDto } from "@/types/chat";
 import { StorefrontFabs } from "@/components/layout/storefront-fabs";
 import type { PublicStorePhone } from "@/server/services/store-settings.service";
 
@@ -93,6 +93,7 @@ type PusherMessagePayload = {
   body: string;
   senderRole: MessageDto["senderRole"];
   createdAt: string;
+  attachments?: ChatAttachment[];
 };
 
 export function ChatProvider({
@@ -370,6 +371,7 @@ export function ChatProvider({
         senderRole: payload.senderRole,
         senderId: "",
         createdAt: payload.createdAt,
+        attachments: payload.attachments,
       });
     };
 

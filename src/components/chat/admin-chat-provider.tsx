@@ -16,7 +16,7 @@ import {
   isPusherClientConfigured,
 } from "@/lib/pusher-client";
 import { buildAdminChatHref, type AdminChatView } from "@/lib/admin-chat-url";
-import type { ConversationSummaryDto, MessageDto } from "@/types/chat";
+import type { ChatAttachment, ConversationSummaryDto, MessageDto } from "@/types/chat";
 
 export type AdminChatMessage = MessageDto & {
   pending?: boolean;
@@ -50,6 +50,7 @@ type PusherMessagePayload = {
   body: string;
   senderRole: MessageDto["senderRole"];
   createdAt: string;
+  attachments?: ChatAttachment[];
 };
 
 type AdminChatProviderProps = {
@@ -232,6 +233,7 @@ export function AdminChatProvider({
         senderRole: payload.senderRole,
         senderId: "",
         createdAt: payload.createdAt,
+        attachments: payload.attachments,
       });
     };
 
