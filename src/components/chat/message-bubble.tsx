@@ -68,7 +68,7 @@ export function MessageBubble({ message, buyerDisplayName }: MessageBubbleProps)
               ) : (
                 <a
                   key={attachment.publicId}
-                  href={attachment.url}
+                  href={`/api/chat/attachment?publicId=${encodeURIComponent(attachment.publicId)}`}
                   download={attachment.filename}
                   target="_blank"
                   rel="noopener noreferrer"
