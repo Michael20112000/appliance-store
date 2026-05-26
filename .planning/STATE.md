@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
-status: planning
-last_updated: "2026-05-26T18:17:17.167Z"
+status: in_progress
+last_updated: "2026-05-26T00:00:00.000Z"
 last_activity: 2026-05-26
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,14 +20,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** v3.0 milestone archived — planning next milestone
+**Current focus:** v3.1 UX Polish & Fixes — 4 phases, starting at Phase 50
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 50 (Cart & Wishlist Drawers) — Not started
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-26 — Milestone v3.1 started
+Status: Roadmap defined, ready for planning
+
+```
+Progress: [          ] 0% (0/4 phases)
+```
+
+Last activity: 2026-05-26 — Roadmap created for v3.1 milestone
 
 ## Deferred Items
 
@@ -72,5 +77,4 @@ None.
 
 ## Operator Next Steps
 
-- Run `/gsd:plan-phase 48` — History Drawer
-- Run `/gsd:plan-phase 49` — File Attachments (parallel with 48)
+- Run `/gsd:plan-phase 50` — Cart & Wishlist Drawers

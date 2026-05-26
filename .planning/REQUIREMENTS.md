@@ -47,20 +47,20 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DRWR-01 | TBD | Pending |
-| DRWR-02 | TBD | Pending |
-| CHAT-10 | TBD | Pending |
-| CHAT-11 | TBD | Pending |
-| CHAT-12 | TBD | Pending |
-| CHAT-13 | TBD | Pending |
-| CHAT-14 | TBD | Pending |
-| ADM-SRCH-01 | TBD | Pending |
+| DRWR-01 | Phase 50 | Pending |
+| DRWR-02 | Phase 50 | Pending |
+| CHAT-10 | Phase 51 | Pending |
+| CHAT-11 | Phase 51 | Pending |
+| CHAT-12 | Phase 52 | Pending |
+| CHAT-13 | Phase 52 | Pending |
+| CHAT-14 | Phase 52 | Pending |
+| ADM-SRCH-01 | Phase 53 | Pending |
 
 **Coverage:**
 - v3.1 requirements: 8 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 8 ⚠️
+- Mapped to phases: 8/8 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-26*
-*Last updated: 2026-05-26 after v3.1 milestone start*
+*Last updated: 2026-05-26 — traceability mapped after roadmap creation*

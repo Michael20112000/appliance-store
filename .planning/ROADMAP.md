@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- 🔄 **v3.1 UX Polish & Fixes** — Phases 50–53 (in progress)
 - ✅ **v3.0 Chat & Engagement** — Phases 46–49 (shipped 2026-05-26) — [archive](milestones/v3.0-ROADMAP.md) · [requirements](milestones/v3.0-REQUIREMENTS.md)
 - ✅ **v2.3 Bugfixes & Small Features** — Phases 44–45 (shipped 2026-05-24) — [archive](milestones/v2.3-ROADMAP.md) · [requirements](milestones/v2.3-REQUIREMENTS.md)
 - ✅ **v2.2 Bugfixes & Small Features** — Phases 41–43 (shipped 2026-05-23) — [archive](milestones/v2.2-ROADMAP.md) · [requirements](milestones/v2.2-REQUIREMENTS.md)
@@ -15,6 +16,13 @@
 - ✅ **v1.0 Appliance Store MVP** — Phases 1–6 (shipped 2026-05-17) — [archive](milestones/v1.0-ROADMAP.md) · [requirements](milestones/v1.0-REQUIREMENTS.md)
 
 ## Phases
+
+### v3.1 UX Polish & Fixes
+
+- [ ] **Phase 50: Cart & Wishlist Drawers** - Replace /koszyk and /obrane pages with full-height right-side drawers
+- [ ] **Phase 51: Chat Badge & Suggested Messages** - Add unread badge on chat FAB and suggested messages on chat open
+- [ ] **Phase 52: Chat Structural Refactor** - Mobile drawer, history slide-in panel, and persistent chat across navigation
+- [ ] **Phase 53: Admin Product Search** - Live search field on /admin/tovary
 
 <details>
 <summary>✅ v3.0 Chat & Engagement (Phases 46–49) — SHIPPED 2026-05-26</summary>
@@ -76,19 +84,73 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 </details>
 
+## Phase Details
+
+### Phase 50: Cart & Wishlist Drawers
+**Goal**: Users can open their cart and wishlist inline without leaving the current page
+**Depends on**: Nothing (first phase of milestone)
+**Requirements**: DRWR-01, DRWR-02
+**Success Criteria** (what must be TRUE):
+  1. Clicking the cart FAB or cart icon opens a full-height drawer from the right side — the browser does not navigate to /koszyk
+  2. Clicking the wishlist icon opens a full-height drawer from the right side — the browser does not navigate to /obrane
+  3. The cart drawer shows current cart contents and totals; user can update quantities or remove items
+  4. The wishlist drawer shows saved items; user can remove items or move them to cart
+  5. Both drawers close when clicking the backdrop or an explicit close button
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 51: Chat Badge & Suggested Messages
+**Goal**: Users immediately see when they have unread admin messages and get helpful starting points when opening a new chat
+**Depends on**: Phase 50
+**Requirements**: CHAT-10, CHAT-11
+**Success Criteria** (what must be TRUE):
+  1. When the admin sends messages the user has not read, a numeric badge appears on the chat FAB showing the count
+  2. The badge disappears (or resets to 0) once the user opens the chat and views the messages
+  3. When a user opens a new chat on a product page, a context-specific suggested message for that product appears as a chip or button
+  4. Two to three general suggested messages (e.g. opening hours, address) appear alongside the product chip for any new chat
+  5. Clicking a suggested message pre-fills the input or sends it directly; suggestions disappear once a message is sent
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 52: Chat Structural Refactor
+**Goal**: Chat works naturally on mobile, history browsing does not disrupt the active conversation, and chat survives page navigation
+**Depends on**: Phase 51
+**Requirements**: CHAT-12, CHAT-13, CHAT-14
+**Success Criteria** (what must be TRUE):
+  1. On a mobile viewport the chat widget renders as a shadcn Drawer that slides up from the bottom and closes with a downward swipe
+  2. Tapping the history/menu button inside the widget slides a panel in from the left within the widget frame — the current conversation remains visible on the right and is not replaced
+  3. Navigating to a different storefront page (e.g. from catalog to PDP) leaves the chat widget open and in the same state it was before navigation
+  4. Chat closes only when the user presses the explicit close (X) button, and not on any internal link click or page transition
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 53: Admin Product Search
+**Goal**: Admin can instantly find any product by name or SKU on /admin/tovary without paginating through the full list
+**Depends on**: Phase 50
+**Requirements**: ADM-SRCH-01
+**Success Criteria** (what must be TRUE):
+  1. A search input is visible at the top of the /admin/tovary product list
+  2. Typing in the search field filters the product list in real time (no submit button required)
+  3. The filtered list shows only products whose name or relevant field matches the query; an empty state is shown when there are no matches
+**Plans**: TBD
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
+| 50. Cart & Wishlist Drawers | v3.1 | 0/? | Not started | - |
+| 51. Chat Badge & Suggested Messages | v3.1 | 0/? | Not started | - |
+| 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
+| 53. Admin Product Search | v3.1 | 0/? | Not started | - |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 48. History Drawer | v3.0 | 3/3 | Complete | 2026-05-26 |
 | 49. File Attachments | v3.0 | 3/3 | Complete | 2026-05-26 |
-| 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
-| 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
-| 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
-| 42. Floating Action Buttons | v2.2 | 2/2 | Complete   | 2026-05-23 |
-| 43. Slider Fix, Animations & Footer Bug | v2.2 | 3/3 | Complete   | 2026-05-23 |
+| 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete | 2026-05-23 |
+| 45. Floating UI Overhaul | v2.3 | 2/2 | Complete | 2026-05-24 |
+| 41. Social Links | v2.2 | 1/1 | Complete | 2026-05-22 |
+| 42. Floating Action Buttons | v2.2 | 2/2 | Complete | 2026-05-23 |
+| 43. Slider Fix, Animations & Footer Bug | v2.2 | 3/3 | Complete | 2026-05-23 |
 | 37. Dashboard StatCards | v2.1 | 1/1 | Complete | 2026-05-21 |
 | 38. Dashboard Data Completeness | v2.1 | 2/2 | Complete | 2026-05-21 |
 | 39. Calls Auto-save & Categories Table Actions | v2.1 | 2/2 | Complete | 2026-05-21 |
