@@ -11,7 +11,7 @@ import type { ChatAttachment, MessageDto } from "@/types/chat";
 
 const MAX_LENGTH = 2000;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function mapSendError(status: number, payload: { error?: string; message?: string }) {
   if (payload.error === "CHAT_ARCHIVED") {
@@ -44,7 +44,7 @@ async function signAndUpload(file: File): Promise<ChatAttachment> {
   formData.append("timestamp", String(timestamp));
   formData.append("signature", signature);
   formData.append("upload_preset", "chat-attachments");
-  const resourceType = file.type === "application/pdf" ? "raw" : "image";
+  const resourceType = "image";
   const uploadRes = await fetch(
     `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
     { method: "POST", body: formData }
@@ -105,7 +105,7 @@ export function ChatComposer() {
     setFileError(null);
     if (!file) return;
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setFileError("Дозволені формати: JPG, PNG, WEBP, PDF.");
+      setFileError("Дозволені формати: JPG, PNG, WEBP.");
       return;
     }
     if (file.size > MAX_FILE_SIZE) {
@@ -210,7 +210,7 @@ export function ChatComposer() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/jpeg,image/png,image/webp,application/pdf"
+              accept="image/jpeg,image/png,image/webp"
               className="hidden"
               onChange={handleFileSelect}
             />
@@ -313,7 +313,7 @@ export function AdminChatComposer() {
     setFileError(null);
     if (!file) return;
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setFileError("Дозволені формати: JPG, PNG, WEBP, PDF.");
+      setFileError("Дозволені формати: JPG, PNG, WEBP.");
       return;
     }
     if (file.size > MAX_FILE_SIZE) {
@@ -410,7 +410,7 @@ export function AdminChatComposer() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,application/pdf"
+          accept="image/jpeg,image/png,image/webp"
           className="hidden"
           onChange={handleFileSelect}
         />

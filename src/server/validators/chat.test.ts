@@ -116,9 +116,9 @@ describe("sendMessageSchema", () => {
       attachments: [
         {
           publicId: "chat/abc123",
-          resourceType: "video",
-          url: "https://res.cloudinary.com/demo/video/upload/sample.mp4",
-          filename: "sample.mp4",
+          resourceType: "raw",
+          url: "https://res.cloudinary.com/demo/raw/upload/sample.pdf",
+          filename: "sample.pdf",
           bytes: 1024,
         },
       ],
@@ -154,7 +154,7 @@ describe("chatAttachmentSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("validates a valid raw attachment", () => {
+  it("rejects resourceType raw (PDF not supported)", () => {
     const result = chatAttachmentSchema.safeParse({
       publicId: "chat/doc456",
       resourceType: "raw",
@@ -162,7 +162,7 @@ describe("chatAttachmentSchema", () => {
       filename: "document.pdf",
       bytes: 204800,
     });
-    expect(result.success).toBe(true);
+    expect(result.success).toBe(false);
   });
 
   it("rejects bytes > 10 MB", () => {

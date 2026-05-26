@@ -1,4 +1,3 @@
-import { Paperclip } from "lucide-react";
 import type { ChatMessage } from "@/components/chat/chat-provider";
 import { cn } from "@/lib/utils";
 
@@ -49,36 +48,22 @@ export function MessageBubble({ message, buyerDisplayName }: MessageBubbleProps)
         ) : null}
         {hasAttachments ? (
           <div className={cn("mt-1", message.pending && "opacity-70")}>
-            {message.attachments!.map((attachment) =>
-              attachment.resourceType === "image" ? (
-                <a
-                  key={attachment.publicId}
-                  href={attachment.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={attachment.url}
-                    alt={attachment.filename}
-                    className="mt-1 max-w-[200px] max-h-[200px] rounded-md object-contain"
-                    loading="lazy"
-                  />
-                </a>
-              ) : (
-                <a
-                  key={attachment.publicId}
-                  href={`/api/chat/attachment?publicId=${encodeURIComponent(attachment.publicId)}`}
-                  download={attachment.filename}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 flex items-center gap-1 text-sm underline"
-                >
-                  <Paperclip className="size-3" />
-                  <span>{attachment.filename}</span>
-                </a>
-              ),
-            )}
+            {message.attachments!.map((attachment) => (
+              <a
+                key={attachment.publicId}
+                href={attachment.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={attachment.url}
+                  alt={attachment.filename}
+                  className="mt-1 max-w-[200px] max-h-[200px] rounded-md object-contain"
+                  loading="lazy"
+                />
+              </a>
+            ))}
           </div>
         ) : null}
         {timestamp ? (

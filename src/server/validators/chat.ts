@@ -9,7 +9,7 @@ export const chatAttachmentSchema = z.object({
     .min(1)
     .max(500)
     .regex(/^chat\//, "publicId must be under the 'chat/' folder"),
-  resourceType: z.enum(["image", "raw"]),
+  resourceType: z.enum(["image"]),
   url: z
     .string()
     .url()
