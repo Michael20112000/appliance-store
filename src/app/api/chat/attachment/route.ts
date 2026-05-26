@@ -23,12 +23,15 @@ export async function GET(request: Request) {
     throw err;
   }
 
-  const expiresAt = Math.round(Date.now() / 1000) + 300;
-  const downloadUrl = cloudinary.utils.private_download_url(publicId, "", {
+  // private_download_url only works for type:"authenticated" resources.
+  // Our assets are type:"upload" but require signed delivery (account security setting).
+  // cloudinary.url with sign_url:true generates a signed CDN delivery URL that satisfies this.
+  const signedUrl = cloudinary.url(publicId, {
     resource_type: "raw",
-    expires_at: expiresAt,
-    attachment: true,
+    type: "upload",
+    sign_url: true,
+    secure: true,
   });
 
-  return Response.redirect(downloadUrl, 302);
+  return Response.redirect(signedUrl, 302);
 }
