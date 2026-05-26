@@ -18,10 +18,10 @@
 
 ### v3.0 Chat & Engagement (Phases 46–49)
 
-- [ ] **Phase 46: Schema Foundation + Guest Chat** — DB schema migrated, guest users can chat without registering, "Гість" label in admin
-- [ ] **Phase 47: Chat Lifecycle Control** — Admin can close chats with real-time notification; guest chat migrates to account on login; "Почати новий чат" after closure
-- [ ] **Phase 48: History Drawer** — Auth users access conversation history from within the widget via in-widget drawer
-- [ ] **Phase 49: File Attachments** — Auth users and admin can send image files and PDFs up to 10 MB; guests see no attachment UI
+- [x] **Phase 46: Schema Foundation + Guest Chat** — DB schema migrated, guest users can chat without registering, "Гість" label in admin
+- [x] **Phase 47: Chat Lifecycle Control** — Admin can close chats with real-time notification; guest chat migrates to account on login; "Почати новий чат" after closure
+- [x] **Phase 48: History Drawer** — Auth users access conversation history from within the widget via in-widget drawer
+- [x] **Phase 49: File Attachments** — Auth users and admin can send image files (jpg/png/webp) in chat; guests see no attachment UI
 
 <details>
 <summary>✅ v2.3 Bugfixes & Small Features (Phases 44–45) — SHIPPED 2026-05-24</summary>
