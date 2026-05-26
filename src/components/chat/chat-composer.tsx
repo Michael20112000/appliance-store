@@ -40,6 +40,7 @@ async function signAndUpload(file: File): Promise<ChatAttachment> {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("api_key", apiKey);
+  formData.append("folder", "chat");
   formData.append("timestamp", String(timestamp));
   formData.append("signature", signature);
   formData.append("upload_preset", "chat-attachments");
