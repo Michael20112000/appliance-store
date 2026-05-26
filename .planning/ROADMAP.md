@@ -142,7 +142,18 @@ Plans:
   2. Clicking the menu icon opens a panel inside the widget (not full-screen, not a new page) showing the list of past conversations
   3. Clicking a conversation in the list switches the message view to that thread without closing the widget
   4. The drawer contains a "Новий чат" button; clicking it creates a new conversation and opens it in the message view
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+
+**Wave 1**
+- [ ] 48-01-PLAN.md — RED test stubs: extend chat.service.test.ts + create conversations/route.test.ts + create chat-panel.test.tsx (CHAT-06, CHAT-07)
+
+**Wave 2** *(depends on 48-01)*
+- [ ] 48-02-PLAN.md — Backend: listConversationsForBuyer in chat.service.ts + GET /api/chat/conversations route (CHAT-07)
+
+**Wave 3** *(depends on 48-02)*
+- [ ] 48-03-PLAN.md — Client: ChatProvider panelView state; PanelHeader Menu icon; HistoryDrawer component; ChatPanel branch; human UAT (CHAT-06, CHAT-07, CHAT-08)
+
 **UI hint**: yes
 
 ### Phase 49: File Attachments
@@ -217,7 +228,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete    | 2026-05-25 |
-| 48. History Drawer | v3.0 | 0/? | Not started | - |
+| 48. History Drawer | v3.0 | 0/3 | Not started | - |
 | 49. File Attachments | v3.0 | 0/3 | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
