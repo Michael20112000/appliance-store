@@ -18,7 +18,7 @@ export async function POST(_request: Request) {
   try {
     config = getCloudinaryConfig();
     signature = signUploadParams(
-      { timestamp, upload_preset: "chat-attachments" },
+      { folder: "chat", timestamp, upload_preset: "chat-attachments" },
       config.apiSecret,
     );
   } catch (error) {

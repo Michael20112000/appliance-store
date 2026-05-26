@@ -24,7 +24,7 @@ function mapSendError(status: number, payload: { error?: string; message?: strin
     return payload.message ?? "Забагато повідомлень. Зачекайте хвилину.";
   }
   if (payload.error === "VALIDATION_ERROR") {
-    return "Повідомлення занадто довге (максимум 2000 символів).";
+    return "Не вдалося надіслати. Спробуйте ще раз.";
   }
   return "Не вдалося надіслати. Спробуйте ще раз.";
 }
@@ -48,7 +48,14 @@ async function signAndUpload(file: File): Promise<ChatAttachment> {
     `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
     { method: "POST", body: formData }
   );
-  if (!uploadRes.ok) throw new Error("UPLOAD_FAILED");
+  if (!uploadRes.ok) {
+    let detail = "";
+    try {
+      const err = await uploadRes.json() as { error?: { message?: string } };
+      detail = err?.error?.message ?? "";
+    } catch { /* ignore */ }
+    throw new Error(`UPLOAD_FAILED:${uploadRes.status}:${detail}`);
+  }
   const data = await uploadRes.json() as {
     public_id: string; resource_type: string; secure_url: string; bytes: number;
   };
@@ -119,7 +126,8 @@ export function ChatComposer() {
         const att = await signAndUpload(pendingFile);
         attachments = [att];
         setPendingFile(null);
-      } catch {
+      } catch (err) {
+        console.error("[chat-composer] upload error:", err);
         setIsSending(false);
         setError("Не вдалося завантажити файл. Спробуйте ще раз.");
         return;

@@ -78,6 +78,7 @@ describe("POST /api/chat/upload/sign", () => {
     });
     expect(signUploadParams).toHaveBeenCalledWith(
       {
+        folder: "chat",
         timestamp: expect.any(Number),
         upload_preset: "chat-attachments",
       },
@@ -102,6 +103,7 @@ describe("POST /api/chat/upload/sign", () => {
     });
     expect(signUploadParams).toHaveBeenCalledWith(
       {
+        folder: "chat",
         timestamp: expect.any(Number),
         upload_preset: "chat-attachments",
       },
