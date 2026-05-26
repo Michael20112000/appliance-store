@@ -59,6 +59,25 @@ const messageDto = {
   senderRole: "BUYER" as const,
   senderId: "buyer-1",
   createdAt: "2026-05-17T12:00:00.000Z",
+  attachments: undefined,
+};
+
+const attachment = {
+  publicId: "chat/abc123",
+  resourceType: "image" as const,
+  url: "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+  filename: "sample.jpg",
+  bytes: 1024,
+};
+
+const messageDtoWithAttachment = {
+  id: "cltestmsg0000000000000002",
+  conversationId: CONV_ID,
+  body: "",
+  senderRole: "BUYER" as const,
+  senderId: "buyer-1",
+  createdAt: "2026-05-17T12:00:00.000Z",
+  attachments: [attachment],
 };
 
 function postMessages(body: unknown) {
@@ -126,6 +145,7 @@ describe("POST /api/chat/messages", () => {
         body: messageDto.body,
         senderRole: messageDto.senderRole,
         createdAt: messageDto.createdAt,
+        attachments: messageDto.attachments,
       },
     );
   });
@@ -221,6 +241,38 @@ describe("POST /api/chat/messages", () => {
     expect(trigger).not.toHaveBeenCalled();
   });
 
+  it("POST with attachment included — buyer path persists attachment in response", async () => {
+    getSession.mockResolvedValue({
+      user: { id: "buyer-1", role: "buyer" },
+    });
+    sendMessage.mockResolvedValue(messageDtoWithAttachment);
+
+    const res = await postMessages({
+      body: "",
+      attachments: [attachment],
+    });
+
+    expect(res.status).toBe(201);
+    const json = await res.json();
+    expect(json.attachments).toEqual([attachment]);
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ attachments: [attachment] }),
+    );
+  });
+
+  it("POST with body='' and no attachments — buyer path returns 400 VALIDATION_ERROR", async () => {
+    getSession.mockResolvedValue({
+      user: { id: "buyer-1", role: "buyer" },
+    });
+
+    const res = await postMessages({ body: "" });
+
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.error).toBe("VALIDATION_ERROR");
+    expect(sendMessage).not.toHaveBeenCalled();
+  });
+
   it("returns 201 when Pusher is not configured but message was saved", async () => {
     getSession.mockResolvedValue({
       user: { id: "buyer-1", role: "buyer" },
@@ -305,5 +357,19 @@ describe("GET /api/chat/messages", () => {
     await expect(res.json()).resolves.toEqual({
       error: CONVERSATION_NOT_FOUND,
     });
+  });
+
+  it("GET /api/chat/messages includes attachments in message list", async () => {
+    getSession.mockResolvedValue({
+      user: { id: "buyer-1", role: "buyer" },
+    });
+    listMessages.mockResolvedValue([messageDtoWithAttachment]);
+
+    const res = await getMessages(CONV_ID);
+
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.messages).toEqual([messageDtoWithAttachment]);
+    expect(json.messages[0].attachments).toEqual([attachment]);
   });
 });
