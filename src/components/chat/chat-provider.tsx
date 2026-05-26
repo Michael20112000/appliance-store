@@ -67,6 +67,9 @@ type ChatContextValue = {
   clearUnreadFromStore: () => void;
   resetMessages: () => void;
   updateGuestToken: (token: string) => void;
+  panelView: "thread" | "history";
+  openHistory: () => void;
+  closeHistory: () => void;
 };
 
 const ChatContext = createContext<ChatContextValue | null>(null);
@@ -123,6 +126,7 @@ export function ChatProvider({
     null,
   );
   const [guestToken, setGuestToken] = useState<string | null>(null);
+  const [panelView, setPanelView] = useState<"thread" | "history">("thread");
 
   const wasDisconnectedRef = useRef(false);
   const subscribedChannelRef = useRef<string | null>(null);
@@ -149,7 +153,11 @@ export function ChatProvider({
   const closePanel = useCallback(() => {
     void setQuery({ chat: null, productId: null });
     setProductContext(null);
+    setPanelView("thread");
   }, [setQuery]);
+
+  const openHistory = useCallback(() => setPanelView("history"), []);
+  const closeHistory = useCallback(() => setPanelView("thread"), []);
 
   const openPanel = useCallback(
     (options?: ProductChatContext) => {
@@ -485,6 +493,9 @@ export function ChatProvider({
       clearUnreadFromStore,
       resetMessages,
       updateGuestToken,
+      panelView,
+      openHistory,
+      closeHistory,
     }),
     [
       appendMessage,
@@ -508,6 +519,9 @@ export function ChatProvider({
       resetMessages,
       unreadFromStore,
       updateGuestToken,
+      panelView,
+      openHistory,
+      closeHistory,
     ],
   );
 
