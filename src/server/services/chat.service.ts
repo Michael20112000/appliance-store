@@ -4,6 +4,7 @@ import type {
 } from "@/generated/prisma/client";
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db";
+import { chatAttachmentSchema } from "@/server/validators/chat";
 import type {
   ChatAttachment,
   ConversationSummaryDto,
@@ -57,8 +58,9 @@ type ProductContext = {
   productTitle?: string;
 };
 
-function messagePreview(body: string): string {
+function messagePreview(body: string, hasAttachments?: boolean): string {
   const trimmed = body.trim();
+  if (!trimmed && hasAttachments) return "Вкладення";
   if (trimmed.length <= MESSAGE_PREVIEW_MAX) return trimmed;
   return `${trimmed.slice(0, MESSAGE_PREVIEW_MAX - 1)}…`;
 }
@@ -79,8 +81,11 @@ function mapMessageDto(message: {
     senderRole: message.senderRole,
     senderId: message.senderId,
     createdAt: message.createdAt.toISOString(),
-    attachments: message.attachments
-      ? (message.attachments as unknown as ChatAttachment[])
+    attachments: Array.isArray(message.attachments)
+      ? (message.attachments as unknown[]).flatMap((item) => {
+          const r = chatAttachmentSchema.safeParse(item);
+          return r.success ? [r.data] : [];
+        })
       : undefined,
   };
 }
@@ -240,7 +245,7 @@ export async function sendMessage(input: SendMessageInput): Promise<MessageDto> 
 
   const conversation = await resolveConversationForSend(input);
   assertConversationOpen(conversation);
-  const preview = messagePreview(input.body);
+  const preview = messagePreview(input.body, (input.attachments?.length ?? 0) > 0);
   const now = new Date();
 
   const message = await prisma.$transaction(async (tx) => {

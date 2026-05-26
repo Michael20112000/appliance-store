@@ -119,6 +119,22 @@ describe("POST /api/chat/messages", () => {
     expect(trigger).not.toHaveBeenCalled();
   });
 
+  it("returns 403 for guest with guestToken when attachments are included", async () => {
+    getSession.mockResolvedValue(null);
+
+    const res = await postMessages({
+      body: "",
+      guestToken: "123e4567-e89b-12d3-a456-426614174000",
+      attachments: [attachment],
+    });
+
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({
+      error: "ATTACHMENTS_NOT_ALLOWED_FOR_GUESTS",
+    });
+    expect(sendMessage).not.toHaveBeenCalled();
+  });
+
   it("returns 201 and triggers Pusher once for buyer", async () => {
     getSession.mockResolvedValue({
       user: { id: "buyer-1", role: "buyer" },

@@ -77,6 +77,13 @@ export async function POST(request: Request) {
       return Response.json({ error: "UNAUTHORIZED" }, { status: 401 });
     }
 
+    if (parsed.data.attachments?.length) {
+      return Response.json(
+        { error: "ATTACHMENTS_NOT_ALLOWED_FOR_GUESTS" },
+        { status: 403 },
+      );
+    }
+
     try {
       const message = await sendMessage({
         guestToken: parsed.data.guestToken,

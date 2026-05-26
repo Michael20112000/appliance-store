@@ -1,9 +1,23 @@
 import { z } from "zod";
 
+const CLOUDINARY_URL_RE =
+  /^https:\/\/res\.cloudinary\.com\/[a-z0-9_-]+\/(image|raw|video)\/upload\//i;
+
 export const chatAttachmentSchema = z.object({
-  publicId: z.string().min(1).max(500),
+  publicId: z
+    .string()
+    .min(1)
+    .max(500)
+    .regex(/^chat\//, "publicId must be under the 'chat/' folder"),
   resourceType: z.enum(["image", "raw"]),
-  url: z.string().url().max(2000),
+  url: z
+    .string()
+    .url()
+    .max(2000)
+    .refine(
+      (val) => CLOUDINARY_URL_RE.test(val),
+      "url must be a Cloudinary delivery URL",
+    ),
   filename: z.string().min(1).max(255),
   bytes: z.number().int().positive().max(10_485_760),
 });

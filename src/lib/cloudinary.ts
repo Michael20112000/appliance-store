@@ -39,7 +39,8 @@ export function getCloudinaryConfig() {
 
 export function signUploadParams(
   paramsToSign: Record<string, string | number>,
+  apiSecret?: string,
 ): string {
-  const { apiSecret } = getCloudinaryConfig();
-  return cloudinary.utils.api_sign_request(paramsToSign, apiSecret);
+  const secret = apiSecret ?? getCloudinaryConfig().apiSecret;
+  return cloudinary.utils.api_sign_request(paramsToSign, secret);
 }

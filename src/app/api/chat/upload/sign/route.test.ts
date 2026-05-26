@@ -76,10 +76,13 @@ describe("POST /api/chat/upload/sign", () => {
       apiKey: "test-api-key",
       cloudName: "test-cloud",
     });
-    expect(signUploadParams).toHaveBeenCalledWith({
-      timestamp: expect.any(Number),
-      upload_preset: "chat-attachments",
-    });
+    expect(signUploadParams).toHaveBeenCalledWith(
+      {
+        timestamp: expect.any(Number),
+        upload_preset: "chat-attachments",
+      },
+      "test-api-secret",
+    );
   });
 
   it("returns 200 with signature fields for admin session", async () => {
@@ -97,10 +100,13 @@ describe("POST /api/chat/upload/sign", () => {
       apiKey: "test-api-key",
       cloudName: "test-cloud",
     });
-    expect(signUploadParams).toHaveBeenCalledWith({
-      timestamp: expect.any(Number),
-      upload_preset: "chat-attachments",
-    });
+    expect(signUploadParams).toHaveBeenCalledWith(
+      {
+        timestamp: expect.any(Number),
+        upload_preset: "chat-attachments",
+      },
+      "test-api-secret",
+    );
   });
 
   it("returns 503 when Cloudinary secrets are missing", async () => {

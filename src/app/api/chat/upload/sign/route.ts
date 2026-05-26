@@ -14,8 +14,13 @@ export async function POST(_request: Request) {
   const timestamp = Math.round(Date.now() / 1000);
 
   let config: ReturnType<typeof getCloudinaryConfig>;
+  let signature: string;
   try {
     config = getCloudinaryConfig();
+    signature = signUploadParams(
+      { timestamp, upload_preset: "chat-attachments" },
+      config.apiSecret,
+    );
   } catch (error) {
     if (error instanceof CloudinaryNotConfiguredError) {
       return Response.json(
@@ -25,11 +30,6 @@ export async function POST(_request: Request) {
     }
     throw error;
   }
-
-  const signature = signUploadParams({
-    timestamp,
-    upload_preset: "chat-attachments",
-  });
 
   return Response.json({
     signature,

@@ -75,6 +75,25 @@ describe("sendMessageSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  it("accepts whitespace-only body with attachment", () => {
+    const result = sendMessageSchema.safeParse({
+      body: "   ",
+      attachments: [
+        {
+          publicId: "chat/abc123",
+          resourceType: "image",
+          url: "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+          filename: "sample.jpg",
+          bytes: 1024,
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.body).toBe("");
+    }
+  });
+
   it("rejects attachment with bytes exceeding 10 MB limit", () => {
     const result = sendMessageSchema.safeParse({
       body: "",
@@ -162,6 +181,28 @@ describe("chatAttachmentSchema", () => {
       publicId: "chat/abc123",
       resourceType: "image",
       url: "not-a-url",
+      filename: "sample.jpg",
+      bytes: 1024,
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects non-Cloudinary url", () => {
+    const result = chatAttachmentSchema.safeParse({
+      publicId: "chat/abc123",
+      resourceType: "image",
+      url: "https://evil.example.com/image.jpg",
+      filename: "image.jpg",
+      bytes: 1024,
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects publicId without chat/ prefix", () => {
+    const result = chatAttachmentSchema.safeParse({
+      publicId: "other/abc123",
+      resourceType: "image",
+      url: "https://res.cloudinary.com/demo/image/upload/sample.jpg",
       filename: "sample.jpg",
       bytes: 1024,
     });
