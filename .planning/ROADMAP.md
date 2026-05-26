@@ -177,7 +177,7 @@ Plans:
 - [x] 49-02-PLAN.md — Service + API: extend sendMessageSchema with attachments, extend sendMessage to persist, extend messages route + Pusher payload (CHAT-09)
 
 **Wave 3** *(depends on 49-02)*
-- [ ] 49-03-PLAN.md — UI: paperclip button in ChatComposer + AdminChatComposer, upload flow, MessageBubble attachment rendering, human UAT (CHAT-09)
+- [x] 49-03-PLAN.md — UI: paperclip button in ChatComposer + AdminChatComposer, upload flow, MessageBubble attachment rendering, human UAT (CHAT-09)
 
 **UI hint**: yes
 
@@ -229,7 +229,7 @@ Plans:
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete    | 2026-05-25 |
 | 48. History Drawer | v3.0 | 3/3 | Complete   | 2026-05-26 |
-| 49. File Attachments | v3.0 | 2/3 | In Progress|  |
+| 49. File Attachments | v3.0 | 3/3 | Complete   | 2026-05-26 |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |
