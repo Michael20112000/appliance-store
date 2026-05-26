@@ -171,7 +171,7 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 49-01-PLAN.md — Schema + types + sign endpoint: prisma attachments Json?, ChatAttachment type, MessageDto extension, POST /api/chat/upload/sign (CHAT-09)
+- [x] 49-01-PLAN.md — Schema + types + sign endpoint: prisma attachments Json?, ChatAttachment type, MessageDto extension, POST /api/chat/upload/sign (CHAT-09)
 
 **Wave 2** *(depends on 49-01)*
 - [ ] 49-02-PLAN.md — Service + API: extend sendMessageSchema with attachments, extend sendMessage to persist, extend messages route + Pusher payload (CHAT-09)
@@ -229,7 +229,7 @@ Plans:
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete    | 2026-05-25 |
 | 48. History Drawer | v3.0 | 3/3 | Complete   | 2026-05-26 |
-| 49. File Attachments | v3.0 | 0/3 | Not started | - |
+| 49. File Attachments | v3.0 | 1/3 | In Progress|  |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
 | 41. Social Links | v2.2 | 1/1 | Complete   | 2026-05-22 |

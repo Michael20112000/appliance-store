@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Chat & Engagement
 status: executing
-last_updated: "2026-05-26T11:51:27.832Z"
-last_activity: 2026-05-26 -- Phase 48 execution started
+last_updated: "2026-05-26T15:23:03.837Z"
+last_activity: 2026-05-26 -- Phase 49 execution started
 progress:
   total_phases: 6
   completed_phases: 3
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-25)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 48 — history-drawer
+**Current focus:** Phase 49 — file-attachments
 
 ## Current Position
 
-Phase: 48 (history-drawer) — EXECUTING
+Phase: 49 (file-attachments) — EXECUTING
 Plan: 1 of 3
-Status: Executing Phase 48
-Last activity: 2026-05-26 -- Phase 48 execution started
+Status: Executing Phase 49
+Last activity: 2026-05-26 -- Phase 49 execution started
 
 ## Deferred Items
 
