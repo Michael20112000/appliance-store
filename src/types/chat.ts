@@ -3,6 +3,14 @@ import type {
   MessageSender,
 } from "@/generated/prisma/client";
 
+export type ChatAttachment = {
+  publicId: string;
+  resourceType: "image" | "raw";
+  url: string;
+  filename: string;
+  bytes: number;
+};
+
 export type MessageDto = {
   id: string;
   conversationId: string;
@@ -10,6 +18,7 @@ export type MessageDto = {
   senderRole: MessageSender;
   senderId: string;
   createdAt: string;
+  attachments?: ChatAttachment[];
 };
 
 export type ConversationSummaryDto = {

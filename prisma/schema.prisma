@@ -250,6 +250,7 @@ model Message {
   senderId       String
   senderRole     MessageSender
   body           String
+  attachments    Json?
   createdAt      DateTime       @default(now())
 
   @@index([conversationId, createdAt])
