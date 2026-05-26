@@ -152,7 +152,7 @@ Plans:
 - [x] 48-02-PLAN.md — Backend: listConversationsForBuyer in chat.service.ts + GET /api/chat/conversations route (CHAT-07)
 
 **Wave 3** *(depends on 48-02)*
-- [ ] 48-03-PLAN.md — Client: ChatProvider panelView state; PanelHeader Menu icon; HistoryDrawer component; ChatPanel branch; human UAT (CHAT-06, CHAT-07, CHAT-08)
+- [x] 48-03-PLAN.md — Client: ChatProvider panelView state; PanelHeader Menu icon; HistoryDrawer component; ChatPanel branch; human UAT (CHAT-06, CHAT-07, CHAT-08)
 
 **UI hint**: yes
 
@@ -228,7 +228,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete    | 2026-05-25 |
-| 48. History Drawer | v3.0 | 2/3 | In Progress|  |
+| 48. History Drawer | v3.0 | 3/3 | Complete   | 2026-05-26 |
 | 49. File Attachments | v3.0 | 0/3 | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
