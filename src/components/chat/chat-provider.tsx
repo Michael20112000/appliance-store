@@ -286,10 +286,12 @@ export function ChatProvider({
             `/api/chat/guest?token=${encodeURIComponent(stored)}`,
           );
           if (response.status === 404) {
-            // Token was claimed (guestToken set to null) — remove stale token so
-            // we don't keep hitting 404 on every page load after logout.
+            // Token was claimed (guestToken set to null in DB) — clear localStorage so
+            // future page loads don't hit 404 again. Keep guestToken in state: it is
+            // still valid for creating a new conversation in this session, and clearing
+            // it would cause a race where a mid-flight Pusher subscription re-runs
+            // with guestToken=null → auth 401 → admin replies stop arriving.
             localStorage.removeItem(GUEST_CHAT_TOKEN_KEY);
-            setGuestToken(null);
             return;
           }
           if (!response.ok) return; // other errors: keep token, wait for first Send
