@@ -10,9 +10,18 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: Planning Next
+## Current Milestone: v3.1 UX Polish & Fixes
 
-**v3.0 shipped 2026-05-26.** Run `/gsd:new-milestone` to start next milestone cycle.
+**Goal:** Переробити корзину/вішліст на drawer, покращити chat UX (unread badge, suggested messages, mobile drawer, history slide-in, persistent state), додати product search в адмінці.
+
+**Target features:**
+- Корзина і вішліст — повноекранний drawer замість окремих сторінок (виїжає справа)
+- Unread chat badge — лічильник непрочитаних від адміна на FAB/кнопці відкриття чату
+- Suggested messages — заготовані повідомлення при відкритті чату (контекстне по товару + загальні)
+- Mobile chat → shadcn Drawer (знизу, swipe-to-close)
+- Chat history → slide-in з лівого боку всередині widget (не заміна вмісту)
+- Chat persistent state — не закривається при навігації/кліках, тільки явний close або URL
+- Admin товари — live-пошук через пошукове поле
 
 ## Current State
 
@@ -97,9 +106,16 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ CHAT-08 — Новий чат можна створити з дровера — Phase 48
 - ✓ CHAT-09 — Вкладення файлів (jpg/png/webp, ≤10 МБ) — лише авторизовані та адмін — Phase 49
 
-### Active (post-v3.0)
+### Active (v3.1)
 
-*(No active requirements — start /gsd:new-milestone for next cycle)*
+- [ ] CART-DR-01 — Корзина як drawer (замість /koszyk сторінки)
+- [ ] WISH-DR-01 — Вішліст як drawer (замість /obrane сторінки)
+- [ ] CHAT-UNR-01 — Unread badge на кнопці відкриття чату
+- [ ] CHAT-SUGG-01 — Suggested messages при відкритті чату
+- [ ] CHAT-MOB-01 — Mobile chat через shadcn Drawer (swipe-to-close)
+- [ ] CHAT-HIST-01 — History slide-in всередині widget (не заміна вмісту)
+- [ ] CHAT-PERS-01 — Chat не закривається при навігації по сайту
+- [ ] ADM-SRCH-01 — Live-пошук товарів в /admin/tovary
 
 ### Deferred (post–v2.0)
 
@@ -210,4 +226,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-26 after v3.0 milestone — CHAT-01…09 all shipped*
+*Last updated: 2026-05-26 after v3.1 milestone start — 8 active requirements defined*
