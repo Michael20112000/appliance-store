@@ -20,6 +20,8 @@ import {
   GUEST_NOT_FOUND,
   GUEST_TOKEN_INVALID,
   listConversationsForAdmin,
+  // @ts-expect-error — not exported yet (Wave 0 RED stub)
+  listConversationsForBuyer,
   listMessages,
   parseConversationChannel,
   sendMessage,
@@ -653,6 +655,74 @@ describe("Phase 47 stubs — claimGuestConversation (CHAT-02)", () => {
         data: expect.objectContaining({ userId: "user-1", guestToken: null, isActive: false }),
       }),
     );
+  });
+});
+
+describe("listConversationsForBuyer (CHAT-07)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("calls prisma.conversation.findMany with where: { userId } (CHAT-07)", async () => {
+    vi.mocked(prisma.conversation.findMany).mockResolvedValueOnce([] as never);
+
+    await (listConversationsForBuyer as (userId: string) => Promise<unknown[]>)(
+      "buyer-1",
+    );
+
+    expect(prisma.conversation.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ userId: "buyer-1" }),
+      }),
+    );
+  });
+
+  it("returns conversations sorted desc by lastMessageAt", async () => {
+    const rows = [
+      {
+        id: "conv-2",
+        userId: "buyer-1",
+        status: "OPEN",
+        lastMessagePreview: "b",
+        lastMessageAt: new Date("2026-05-26"),
+      },
+      {
+        id: "conv-1",
+        userId: "buyer-1",
+        status: "ARCHIVED",
+        lastMessagePreview: "a",
+        lastMessageAt: new Date("2026-05-25"),
+      },
+    ] as never;
+    vi.mocked(prisma.conversation.findMany).mockResolvedValueOnce(rows);
+
+    const result = await (
+      listConversationsForBuyer as (userId: string) => Promise<
+        Array<{
+          id: string;
+          buyerName: string;
+          buyerEmail: string;
+          unreadForAdmin: boolean;
+        }>
+      >
+    )("buyer-1");
+
+    expect(result).toHaveLength(2);
+    expect(result[0]?.id).toBe("conv-2");
+    expect(result[0]?.buyerName).toBe("Ви");
+    expect(result[0]?.buyerEmail).toBe("");
+    expect(result[0]?.unreadForAdmin).toBe(false);
+  });
+
+  it("does NOT filter by isActive in the where clause (CHAT-07 — all history)", async () => {
+    vi.mocked(prisma.conversation.findMany).mockResolvedValueOnce([] as never);
+
+    await (listConversationsForBuyer as (userId: string) => Promise<unknown[]>)(
+      "buyer-1",
+    );
+
+    const call = vi.mocked(prisma.conversation.findMany).mock.calls[0]?.[0];
+    expect(call?.where).not.toHaveProperty("isActive");
   });
 });
 
