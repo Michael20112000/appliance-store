@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useChat } from "@/components/chat/chat-provider";
 import { ArchivedChatBanner } from "@/components/chat/archived-chat-banner";
 import { ChatComposer } from "@/components/chat/chat-composer";
+import { HistoryDrawer } from "@/components/chat/history-drawer";
 import { MessageList } from "@/components/chat/message-list";
 import { ProductContextBanner } from "@/components/chat/product-context-banner";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,8 @@ function PanelHeader({
   onClose: () => void;
   sticky?: boolean;
 }) {
+  const { hasSession, openHistory } = useChat();
+
   return (
     <div
       className={
@@ -30,10 +33,22 @@ function PanelHeader({
           : "flex shrink-0 items-start justify-between border-b border-border px-4 py-3"
       }
     >
-      <div className="min-w-0 pr-2">
+      <div className="min-w-0 flex-1 pr-2">
         <p className="text-sm font-semibold">Чат з магазином</p>
         <p className="text-xs text-muted-foreground">Відповімо якнайшвидше</p>
       </div>
+      {hasSession ? (
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-9 shrink-0"
+          onClick={openHistory}
+          aria-label="Відкрити меню чатів"
+        >
+          <Menu className="size-4" />
+        </Button>
+      ) : null}
       <Button
         type="button"
         variant="outline"
@@ -137,7 +152,7 @@ function useIsMobile() {
 }
 
 export function ChatPanel() {
-  const { isOpen, closePanel } = useChat();
+  const { isOpen, closePanel, panelView } = useChat();
   const isMobile = useIsMobile();
 
   return (
@@ -156,7 +171,7 @@ export function ChatPanel() {
           aria-modal="true"
           aria-label="Чат з магазином"
         >
-          {isOpen ? <PanelBody useNativeScroll={false} /> : null}
+          {isOpen ? (panelView === "history" ? <HistoryDrawer /> : <PanelBody useNativeScroll={false} />) : null}
         </div>
       </div>
 
@@ -172,7 +187,7 @@ export function ChatPanel() {
           <SheetHeader className="sr-only">
             <SheetTitle>Чат з магазином</SheetTitle>
           </SheetHeader>
-          <PanelBody useNativeScroll stickyHeader />
+          {panelView === "history" ? <HistoryDrawer /> : <PanelBody useNativeScroll stickyHeader />}
         </SheetContent>
       </Sheet>
     </>
