@@ -285,7 +285,14 @@ export function ChatProvider({
           const response = await fetch(
             `/api/chat/guest?token=${encodeURIComponent(stored)}`,
           );
-          if (!response.ok) return; // 404 or other: keep token, wait for first Send
+          if (response.status === 404) {
+            // Token was claimed (guestToken set to null) — remove stale token so
+            // we don't keep hitting 404 on every page load after logout.
+            localStorage.removeItem(GUEST_CHAT_TOKEN_KEY);
+            setGuestToken(null);
+            return;
+          }
+          if (!response.ok) return; // other errors: keep token, wait for first Send
           const data = (await response.json()) as {
             conversationId: string;
             messages: MessageDto[];
