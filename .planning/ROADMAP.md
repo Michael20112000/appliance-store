@@ -146,7 +146,7 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 48-01-PLAN.md — RED test stubs: extend chat.service.test.ts + create conversations/route.test.ts + create chat-panel.test.tsx (CHAT-06, CHAT-07)
+- [x] 48-01-PLAN.md — RED test stubs: extend chat.service.test.ts + create conversations/route.test.ts + create chat-panel.test.tsx (CHAT-06, CHAT-07)
 
 **Wave 2** *(depends on 48-01)*
 - [ ] 48-02-PLAN.md — Backend: listConversationsForBuyer in chat.service.ts + GET /api/chat/conversations route (CHAT-07)
@@ -228,7 +228,7 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete   | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete    | 2026-05-25 |
-| 48. History Drawer | v3.0 | 0/3 | Not started | - |
+| 48. History Drawer | v3.0 | 1/3 | In Progress|  |
 | 49. File Attachments | v3.0 | 0/3 | Not started | - |
 | 44. Mobile Header Cleanup | v2.3 | 2/2 | Complete   | 2026-05-23 |
 | 45. Floating UI Overhaul | v2.3 | 2/2 | Complete    | 2026-05-24 |
