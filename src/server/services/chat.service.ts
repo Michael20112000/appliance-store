@@ -436,6 +436,34 @@ export async function listConversationsForAdmin(options: {
   });
 }
 
+export async function listConversationsForBuyer(
+  userId: string,
+): Promise<ConversationSummaryDto[]> {
+  const rows = await prisma.conversation.findMany({
+    where: { userId },
+    orderBy: { lastMessageAt: "desc" },
+    take: 50,
+    select: {
+      id: true,
+      userId: true,
+      status: true,
+      lastMessagePreview: true,
+      lastMessageAt: true,
+    },
+  });
+
+  return rows.map((row) => ({
+    id: row.id,
+    userId: row.userId,
+    status: row.status,
+    buyerName: "Ви",
+    buyerEmail: "",
+    lastMessagePreview: row.lastMessagePreview,
+    lastMessageAt: row.lastMessageAt?.toISOString() ?? null,
+    unreadForAdmin: false,
+  }));
+}
+
 export function parseConversationChannel(channelName: string): string | null {
   const match = CONVERSATION_CHANNEL_RE.exec(channelName);
   return match?.[1] ?? null;

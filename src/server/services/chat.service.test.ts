@@ -20,7 +20,6 @@ import {
   GUEST_NOT_FOUND,
   GUEST_TOKEN_INVALID,
   listConversationsForAdmin,
-  // @ts-expect-error — not exported yet (Wave 0 RED stub)
   listConversationsForBuyer,
   listMessages,
   parseConversationChannel,
