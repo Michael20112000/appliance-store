@@ -2,7 +2,7 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
-status: phase_complete_pending_uat
+status: phase_complete
 last_updated: "2026-05-27T15:35:00Z"
 last_activity: 2026-05-27 — Phase 50 code review fixes applied; verification human_needed
 progress:
@@ -20,13 +20,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 50 complete (pending human UAT) → Phase 51 next
+**Current focus:** Phase 50 complete (verified) → Phase 51 next
 
 ## Current Position
 
 Phase: 50 (cart-wishlist-drawers) — COMPLETE (human UAT pending)
 Plan: 5 of 5 complete
-Status: Code review fixes applied; verification score 11/13 (human_needed)
+Status: All 13/13 checks passed — human UAT confirmed 2026-05-27
 
 ```
 Progress: [██        ] 25% (1/4 phases)

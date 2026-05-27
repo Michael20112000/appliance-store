@@ -1,26 +1,27 @@
 ---
 phase: 50-cart-wishlist-drawers
 verified: 2026-05-27T15:25:00Z
-status: human_needed
-score: 11/13 must-haves verified
+human_verified: 2026-05-27T15:50:00Z
+status: verified
+score: 13/13 must-haves verified
 overrides_applied: 0
 human_verification:
   - test: "Open cart drawer from FAB and header icon — verify full-height right Sheet appears with current cart items and totals"
     expected: "Sheet slides in from the right, fills viewport height, displays cart line items with remove buttons and a subtotal; does NOT navigate to /koszyk"
-    why_human: "Rendered Sheet appearance and data presence require browser interaction; unit tests mock Sheet and server actions"
+    result: passed
   - test: "Open wishlist drawer from the heart icon — verify right Sheet appears with saved wishlist items"
     expected: "Sheet slides in from the right, shows saved product cards with ClearWishlistButton and WishlistGrid; does NOT navigate to /obrane"
-    why_human: "Visual rendering and data correctness require browser; unit tests mock Sheet and server actions"
+    result: passed
   - test: "Close both drawers by clicking the backdrop (outside the Sheet)"
     expected: "Backdrop click triggers Sheet onOpenChange(false) which calls closeCart/closeWishlist and the Sheet disappears"
-    why_human: "Sheet backdrop behaviour depends on Base UI Dialog internals and real DOM interaction — not exercised by unit tests"
+    result: passed
 ---
 
 # Phase 50: Cart & Wishlist Drawers Verification Report
 
 **Phase Goal:** Replace /koszyk and /obrane page navigation with in-page right-side drawer panels for cart and wishlist, controlled by a shared DrawerProvider context.
 **Verified:** 2026-05-27T15:25:00Z
-**Status:** human_needed
+**Status:** verified (13/13 — human UAT passed 2026-05-27)
 **Re-verification:** No — initial verification
 
 ## Goal Achievement
