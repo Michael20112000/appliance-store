@@ -96,7 +96,13 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   3. The cart drawer shows current cart contents and totals; user can update quantities or remove items
   4. The wishlist drawer shows saved items; user can remove items or move them to cart
   5. Both drawers close when clicking the backdrop or an explicit close button
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 50-01-PLAN.md — Wave 0 test stubs (DrawerContext, CartNavButton, CartDrawer, WishlistNavLink, WishlistDrawer tests + storefront-fabs update)
+- [ ] 50-02-PLAN.md — DrawerProvider context + getCartAction + getWishlistAction server actions
+- [ ] 50-03-PLAN.md — CartDrawer shell + CartDrawerContent (auth/guest data loading)
+- [ ] 50-04-PLAN.md — WishlistDrawer shell + WishlistDrawerContent (auth/guest data loading)
+- [ ] 50-05-PLAN.md — Wire DrawerProvider into ChatProvider + convert all Link entry points to buttons
 **UI hint**: yes
 
 ### Phase 51: Chat Badge & Suggested Messages
@@ -138,7 +144,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 50. Cart & Wishlist Drawers | v3.1 | 0/? | Not started | - |
+| 50. Cart & Wishlist Drawers | v3.1 | 0/5 | In progress | - |
 | 51. Chat Badge & Suggested Messages | v3.1 | 0/? | Not started | - |
 | 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
