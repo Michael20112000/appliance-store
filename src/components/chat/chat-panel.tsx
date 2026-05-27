@@ -11,11 +11,13 @@ import { ProductContextBanner } from "@/components/chat/product-context-banner";
 import { SuggestedMessages } from "@/components/chat/suggested-messages";
 import { Button } from "@/components/ui/button";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  DrawerRoot,
+  DrawerPortal,
+  DrawerBackdrop,
+  DrawerPopup,
+  DrawerSwipeArea,
+} from "@/components/ui/drawer";
+import { cn } from "@/lib/utils";
 
 function PanelHeader({
   onClose,
@@ -182,25 +184,45 @@ export function ChatPanel() {
           aria-modal="true"
           aria-label="Чат з магазином"
         >
-          {isOpen ? (panelView === "history" ? <HistoryDrawer /> : <PanelBody useNativeScroll={false} />) : null}
+          {isOpen ? (
+            <div className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+              <PanelBody useNativeScroll={false} />
+              <div
+                className={cn(
+                  "absolute inset-y-0 left-0 z-10 w-[75%] bg-background transition-transform duration-200 ease-in-out motion-reduce:transition-none",
+                  panelView === "history" ? "translate-x-0" : "-translate-x-full"
+                )}
+              >
+                <HistoryDrawer />
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
 
-      <Sheet
+      <DrawerRoot
         open={isOpen && isMobile}
-        onOpenChange={(open) => !open && closePanel()}
+        onOpenChange={(open) => { if (!open) closePanel(); }}
+        swipeDirection="down"
       >
-        <SheetContent
-          side="bottom"
-          showCloseButton={false}
-          className="flex h-[80dvh] max-h-[80dvh] min-h-0 flex-col gap-0 overflow-hidden rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))] md:hidden data-[side=bottom]:h-[80dvh]"
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Чат з магазином</SheetTitle>
-          </SheetHeader>
-          {panelView === "history" ? <HistoryDrawer /> : <PanelBody useNativeScroll stickyHeader />}
-        </SheetContent>
-      </Sheet>
+        <DrawerPortal>
+          <DrawerBackdrop />
+          <DrawerPopup className="h-[80dvh] max-h-[80dvh] min-h-0 flex-col gap-0 rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))] md:hidden">
+            <DrawerSwipeArea />
+            <div className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+              <PanelBody useNativeScroll stickyHeader />
+              <div
+                className={cn(
+                  "absolute inset-y-0 left-0 z-10 w-[75%] bg-background transition-transform duration-200 ease-in-out motion-reduce:transition-none",
+                  panelView === "history" ? "translate-x-0" : "-translate-x-full"
+                )}
+              >
+                <HistoryDrawer />
+              </div>
+            </div>
+          </DrawerPopup>
+        </DrawerPortal>
+      </DrawerRoot>
     </>
   );
 }

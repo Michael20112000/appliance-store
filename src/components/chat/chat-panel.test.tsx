@@ -132,14 +132,11 @@ describe("CHAT-12 — Mobile Drawer", () => {
     vi.clearAllMocks();
   });
 
-  it.fails("renders drawer-popup when isMobile and isOpen", () => {
+  it("CHAT-12: renders drawer-popup when isMobile and isOpen", () => {
     mockUseChat.mockReturnValue({ ...baseChatContext, isOpen: true });
 
     render(<ChatPanel />);
 
-    // Fails now: current implementation renders SheetContent (data-slot="sheet-content"),
-    // not a Drawer component with data-slot="drawer-popup".
-    // Will pass after Plan 03 replaces Sheet with shadcn Drawer on mobile.
     expect(document.querySelector('[data-slot="drawer-popup"]')).not.toBeNull();
   });
 });
@@ -167,7 +164,7 @@ describe("CHAT-13 — History overlay always-rendered", () => {
     vi.clearAllMocks();
   });
 
-  it.fails("renders PanelBody even when panelView=history", () => {
+  it("CHAT-13: renders PanelBody even when panelView=history", () => {
     mockUseChat.mockReturnValue({
       ...baseChatContext,
       isOpen: true,
@@ -176,17 +173,45 @@ describe("CHAT-13 — History overlay always-rendered", () => {
 
     render(<ChatPanel />);
 
-    // Fails now: chat-panel.tsx line 185 swaps PanelBody out entirely when
-    // panelView="history", rendering HistoryDrawer instead. PanelHeader (and its
-    // "Чат з магазином" text) is only inside PanelBody, so the text is absent.
-    // Will pass after Plan 04 introduces an always-rendered PanelBody with
-    // HistoryDrawer as an overlay.
     expect(screen.getByText("Чат з магазином")).toBeTruthy();
   });
 });
 
 describe("CHAT-14 — isOpen as pure useState", () => {
-  it.todo(
-    "closePanel is called on drawer close; no URL manipulation occurs",
-  );
+  beforeEach(() => {
+    // Simulate mobile viewport so DrawerRoot is rendered
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: true,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
+  it("CHAT-14: closePanel is NOT called on initial render (opening chat does not auto-close)", () => {
+    const closePanelMock = vi.fn();
+    mockUseChat.mockReturnValue({
+      ...baseChatContext,
+      isOpen: true,
+      closePanel: closePanelMock,
+    });
+
+    render(<ChatPanel />);
+
+    // closePanel must not be called when the panel opens — only user gesture or explicit close triggers it
+    expect(closePanelMock).not.toHaveBeenCalled();
+    // Navigation persistence (CHAT-14) is verified manually — see VALIDATION.md
+  });
 });
