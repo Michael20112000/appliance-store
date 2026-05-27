@@ -129,7 +129,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 **Plans**: 4 plans
 
 **Wave 1** *(TDD red baseline)*
-- [ ] 51-01-PLAN.md — Test stubs: new suggested-messages.test.tsx + rename unreadFromStore→unreadCount in three existing test files
+- [x] 51-01-PLAN.md — Test stubs: new suggested-messages.test.tsx + rename unreadFromStore→unreadCount in three existing test files
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 51-02-PLAN.md — countUnreadForBuyer service fn + ChatProvider/ChatProviderGate boolean→number migration
@@ -170,7 +170,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
-| 51. Chat Badge & Suggested Messages | v3.1 | 0/4 | Not started | - |
+| 51. Chat Badge & Suggested Messages | v3.1 | 1/4 | In Progress|  |
 | 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |

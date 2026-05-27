@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
 status: executing
-last_updated: "2026-05-27T15:34:56.174Z"
-last_activity: 2026-05-27 -- Phase 51 planning complete
+last_updated: "2026-05-27T15:40:39.848Z"
+last_activity: 2026-05-27
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
+  completed_plans: 6
   percent: 25
 ---
 
@@ -20,19 +20,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 50 complete (verified) → Phase 51 next
+**Current focus:** Phase 51 — chat-badge-suggested-messages
 
 ## Current Position
 
-Phase: 50 (cart-wishlist-drawers) — COMPLETE (human UAT pending)
-Plan: 5 of 5 complete
+Phase: 51 (chat-badge-suggested-messages) — EXECUTING
+Plan: 2 of 4
 Status: Ready to execute
 
 ```
-Progress: [██        ] 25% (1/4 phases)
+Progress: [███████░░░] 67%
 ```
 
-Last activity: 2026-05-27 -- Phase 51 planning complete
+Last activity: 2026-05-27
 
 ## Deferred Items
 
