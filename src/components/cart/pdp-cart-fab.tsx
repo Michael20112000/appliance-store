@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CART_CHANGED_EVENT } from "@/lib/cart/cart-events";
 import { getPendingItemCount } from "@/lib/cart/pending-storage";
 import { cn } from "@/lib/utils";
+import { useDrawers } from "@/lib/drawers/drawer-context";
 
 type PdpCartFabProps = {
   initialCount: number;
@@ -15,6 +15,7 @@ type PdpCartFabProps = {
 
 export function PdpCartFab({ initialCount, hasSession }: PdpCartFabProps) {
   const [count, setCount] = useState(initialCount);
+  const { openCart } = useDrawers();
 
   useEffect(() => {
     setCount(initialCount);
@@ -34,13 +35,14 @@ export function PdpCartFab({ initialCount, hasSession }: PdpCartFabProps) {
   const badgeLabel = count > 9 ? "9+" : String(count);
 
   return (
-    <Link
-      href="/koszyk"
+    <button
+      type="button"
       className={cn(
         "fixed bottom-[5.75rem] right-6 z-[59] flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg",
         "pb-[max(0px,env(safe-area-inset-bottom))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
       )}
-      aria-label="Перейти до кошика"
+      aria-label="Відкрити кошик"
+      onClick={openCart}
     >
       <ShoppingCart className="size-6" aria-hidden />
       <Badge
@@ -49,6 +51,6 @@ export function PdpCartFab({ initialCount, hasSession }: PdpCartFabProps) {
       >
         {badgeLabel}
       </Badge>
-    </Link>
+    </button>
   );
 }

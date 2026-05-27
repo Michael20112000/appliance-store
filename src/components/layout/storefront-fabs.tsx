@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MessageSquare, Phone, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +16,7 @@ import { formatUaPhoneDisplay, uaPhoneTelHref } from "@/lib/phone/format-ua";
 import type { PublicStorePhone } from "@/server/services/store-settings.service";
 import { cn } from "@/lib/utils";
 import { useChat } from "@/components/chat/chat-provider";
+import { useDrawers } from "@/lib/drawers/drawer-context";
 
 type StorefrontFabsProps = {
   phones: PublicStorePhone[];
@@ -32,6 +32,7 @@ export function StorefrontFabs({
   const [cartCount, setCartCount] = useState(initialCartCount);
   const [callbackOpen, setCallbackOpen] = useState(false);
   const { isOpen: chatIsOpen, openPanel, unreadFromStore, hasSession: chatHasSession } = useChat();
+  const { openCart } = useDrawers();
 
   useEffect(() => {
     setCartCount(initialCartCount);
@@ -66,8 +67,9 @@ export function StorefrontFabs({
       </button>
 
       {/* FAB-01: Cart FAB — always visible, no early return when count === 0 */}
-      <Link
-        href="/koszyk"
+      <button
+        type="button"
+        onClick={openCart}
         aria-label={cartCount > 0 ? `Кошик, ${cartCount} товарів` : "Кошик"}
         className={cn(
           "flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg",
@@ -83,7 +85,7 @@ export function StorefrontFabs({
             {badgeLabel}
           </Badge>
         )}
-      </Link>
+      </button>
 
       {/* FAB-04: Chat FAB — hidden when chat panel is open */}
       {!chatIsOpen && (
