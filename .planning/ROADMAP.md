@@ -136,7 +136,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 **Wave 3** *(blocked on Wave 2 completion — plans 03 and 04 are parallel)*
 - [x] 51-03-PLAN.md — Badge rendering: storefront-fabs.tsx + chat-fab.tsx (dot → numeric Badge)
-- [ ] 51-04-PLAN.md — Suggested messages: SuggestedMessages component + chat-panel.tsx wiring + chat-composer.tsx prefill
+- [x] 51-04-PLAN.md — Suggested messages: SuggestedMessages component + chat-panel.tsx wiring + chat-composer.tsx prefill
 
 **Cross-cutting constraints:**
 - ChatProvider must export unreadCount: number (Wave 2) before badge components can consume it (Wave 3)
@@ -170,7 +170,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
-| 51. Chat Badge & Suggested Messages | v3.1 | 3/4 | In Progress|  |
+| 51. Chat Badge & Suggested Messages | v3.1 | 4/4 | Complete   | 2026-05-27 |
 | 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
