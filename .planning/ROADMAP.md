@@ -126,7 +126,21 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   3. When a user opens a new chat on a product page, a context-specific suggested message for that product appears as a chip or button
   4. Two to three general suggested messages (e.g. opening hours, address) appear alongside the product chip for any new chat
   5. Clicking a suggested message pre-fills the input or sends it directly; suggestions disappear once a message is sent
-**Plans**: TBD
+**Plans**: 4 plans
+
+**Wave 1** *(TDD red baseline)*
+- [ ] 51-01-PLAN.md — Test stubs: new suggested-messages.test.tsx + rename unreadFromStore→unreadCount in three existing test files
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 51-02-PLAN.md — countUnreadForBuyer service fn + ChatProvider/ChatProviderGate boolean→number migration
+
+**Wave 3** *(blocked on Wave 2 completion — plans 03 and 04 are parallel)*
+- [ ] 51-03-PLAN.md — Badge rendering: storefront-fabs.tsx + chat-fab.tsx (dot → numeric Badge)
+- [ ] 51-04-PLAN.md — Suggested messages: SuggestedMessages component + chat-panel.tsx wiring + chat-composer.tsx prefill
+
+**Cross-cutting constraints:**
+- ChatProvider must export unreadCount: number (Wave 2) before badge components can consume it (Wave 3)
+- suggested-messages.tsx must be created (Plan 04) to resolve the import in suggested-messages.test.tsx (Plan 01)
 **UI hint**: yes
 
 ### Phase 52: Chat Structural Refactor
@@ -156,7 +170,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
-| 51. Chat Badge & Suggested Messages | v3.1 | 0/? | Not started | - |
+| 51. Chat Badge & Suggested Messages | v3.1 | 0/4 | Not started | - |
 | 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
