@@ -97,12 +97,23 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   4. The wishlist drawer shows saved items; user can remove items or move them to cart
   5. Both drawers close when clicking the backdrop or an explicit close button
 **Plans**: 5 plans
-Plans:
+
+**Wave 1**
 - [ ] 50-01-PLAN.md — Wave 0 test stubs (DrawerContext, CartNavButton, CartDrawer, WishlistNavLink, WishlistDrawer tests + storefront-fabs update)
+
+**Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 50-02-PLAN.md — DrawerProvider context + getCartAction + getWishlistAction server actions
+
+**Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 50-03-PLAN.md — CartDrawer shell + CartDrawerContent (auth/guest data loading)
 - [ ] 50-04-PLAN.md — WishlistDrawer shell + WishlistDrawerContent (auth/guest data loading)
+
+**Wave 4** *(blocked on Wave 3 completion)*
 - [ ] 50-05-PLAN.md — Wire DrawerProvider into ChatProvider + convert all Link entry points to buttons
+
+**Cross-cutting constraints:**
+- `DrawerProvider` (Wave 2) must exist before CartDrawer, WishlistDrawer, and all entry-point conversions — applies to Waves 3–4
+- Both Waves 3 plans (CartDrawer, WishlistDrawer) must complete before Wave 4 wiring
 **UI hint**: yes
 
 ### Phase 51: Chat Badge & Suggested Messages

@@ -578,20 +578,23 @@ No security surface changes in this phase. The drawers call existing server acti
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should `CartNavLink` become fully client-rendered (losing SSR count)?**
    - What we know: `CartNavLink` is `async` and fetches the count server-side. Converting to fully client breaks SSR badge (flicker on load).
    - What's unclear: Whether an RSC wrapper that passes `initialCount` + a client button is acceptable vs. a full client component.
    - Recommendation: Use RSC wrapper pattern — `CartNavLink` (server, gets count) renders a `CartNavButton` (client, receives `initialCount`, calls `openCart`). This preserves SSR count and matches the existing `StorefrontFabs` → `initialCartCount` prop pattern.
+   - RESOLVED: RSC wrapper pattern — `CartNavLink` remains `async` RSC, renders `CartNavButton` client component. Implemented in Plan 50-05 Task 2.
 
 2. **Should PdpCartFab open the drawer or navigate to /koszyk?**
    - What we know: DRWR-01 says "FAB/кнопка кошика більше не переходить на /koszyk". PdpCartFab is a separate FAB on the PDP page (only visible when cart has items). It currently links to /koszyk.
    - Recommendation: Convert PdpCartFab to open the cart drawer — it is specifically called out as a "cart button" in the requirement. But it lives outside ChatProvider (inside PDP page), so it needs access to DrawerProvider. DrawerProvider must be placed high enough to cover PDP pages.
+   - RESOLVED: PdpCartFab opens the cart drawer. Implemented in Plan 50-05 Task 3.
 
 3. **Where does DrawerProvider sit in the tree relative to ChatProvider?**
    - What we know: `ChatProvider` renders `StorefrontFabs` and `ChatPanel` as siblings to `{children}`. `StorefrontFabs` needs `openCart`. `PdpCartFab` (inside page `{children}`) also needs `openCart`.
    - Recommendation: `DrawerProvider` wraps the entire `ChatProvider` tree (i.e., placed in `ChatProviderGate` or `StorefrontLayout`). `CartDrawer` and `WishlistDrawer` are rendered as children of `DrawerProvider`, not inside `ChatProvider`. This way both `StorefrontFabs` (inside ChatProvider) and `PdpCartFab` (inside page children) can consume `DrawerContext`.
+   - RESOLVED: `DrawerProvider` wraps `ChatContext.Provider` inside `chat-provider.tsx` — covers both `StorefrontFabs` and page `{children}`. `CartDrawer` and `WishlistDrawer` rendered as siblings to `StorefrontFabs`/`ChatPanel`. Implemented in Plan 50-05 Task 1.
 
 ---
 
