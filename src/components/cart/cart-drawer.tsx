@@ -27,7 +27,7 @@ export function CartDrawer({ hasSession = false }: CartDrawerProps) {
       <SheetContent
         side="right"
         showCloseButton={false}
-        className="flex flex-col gap-0 p-0 sm:max-w-md"
+        className="flex flex-col gap-0 p-0 px-4 sm:max-w-md"
       >
         <SheetHeader className="flex-row items-center justify-between border-b px-4 py-3">
           <SheetTitle>Кошик</SheetTitle>
