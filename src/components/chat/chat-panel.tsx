@@ -14,6 +14,7 @@ import {
   DrawerRoot,
   DrawerPortal,
   DrawerBackdrop,
+  DrawerViewport,
   DrawerPopup,
   DrawerSwipeArea,
 } from "@/components/ui/drawer";
@@ -207,7 +208,8 @@ export function ChatPanel() {
       >
         <DrawerPortal>
           <DrawerBackdrop />
-          <DrawerPopup className="h-[80dvh] max-h-[80dvh] min-h-0 flex-col gap-0 rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))] md:hidden">
+          <DrawerViewport className="md:hidden">
+          <DrawerPopup className="h-[80dvh] max-h-[80dvh] min-h-0 flex-col gap-0 rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))]">
             <DrawerSwipeArea />
             <div className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden">
               <PanelBody useNativeScroll stickyHeader />
@@ -221,6 +223,7 @@ export function ChatPanel() {
               </div>
             </div>
           </DrawerPopup>
+          </DrawerViewport>
         </DrawerPortal>
       </DrawerRoot>
     </>

@@ -26,12 +26,22 @@ function DrawerBackdrop({ className, ...props }: DrawerPrimitive.Backdrop.Props)
   )
 }
 
+function DrawerViewport({ className, ...props }: DrawerPrimitive.Viewport.Props) {
+  return (
+    <DrawerPrimitive.Viewport
+      data-slot="drawer-viewport"
+      className={cn("fixed inset-0 z-50 flex items-end justify-center", className)}
+      {...props}
+    />
+  )
+}
+
 function DrawerPopup({ className, children, ...props }: DrawerPrimitive.Popup.Props) {
   return (
     <DrawerPrimitive.Popup
       data-slot="drawer-popup"
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 flex flex-col bg-background transition-transform duration-200 ease-in-out data-ending-style:translate-y-[2.5rem] data-ending-style:opacity-0 data-starting-style:translate-y-[2.5rem] data-starting-style:opacity-0",
+        "inset-x-0 bottom-0 flex flex-col bg-background transition-transform duration-200 ease-in-out data-ending-style:translate-y-[2.5rem] data-ending-style:opacity-0 data-starting-style:translate-y-[2.5rem] data-starting-style:opacity-0",
         className
       )}
       {...props}
@@ -79,6 +89,7 @@ export {
   DrawerRoot,
   DrawerPortal,
   DrawerBackdrop,
+  DrawerViewport,
   DrawerPopup,
   DrawerSwipeArea,
   DrawerClose,
