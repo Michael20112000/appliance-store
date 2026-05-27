@@ -576,20 +576,23 @@ const [prefillText, setPrefillText] = useState("");
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should guests see the numeric unread badge?**
    - What we know: Current code gates the dot on `hasSession`. Guests CAN receive admin replies and have `buyerLastReadAt` in their conversation.
    - What's unclear: Whether the operator wants guests to see the badge (they might not know the guest has a conversation).
    - Recommendation: Show badge for guests too — removes the `hasSession &&` guard on the badge (but not on auth-gated actions like markBuyerReadAction). Guests' unread count is in-memory only (not SSR-initialized, since `ChatProviderGate` only queries for `session?.user`). Guests get realtime increments via Pusher when chat is open. This is acceptable for v1.
+   - **RESOLVED:** Guests see the badge — Plan 03 removes the `hasSession &&` guard on the badge.
 
 2. **Pre-fill vs. auto-send on chip click**
    - What we know: Success criteria says "pre-fills the input or sends it directly"
    - Recommendation: Pre-fill only. Auto-send skips user review and is harder to undo. The success criteria "or" allows either choice.
+   - **RESOLVED:** Pre-fill chosen — Plan 04 implements `prefillText` prop passed to ChatComposer.
 
 3. **General suggested messages — exact Ukrainian text**
    - What we know: Requirements mention "графік роботи, адреса" as examples.
    - Recommendation (hardcode these 3): `"Який у вас графік роботи?"`, `"Де ви знаходитесь?"`, `"Як оформити замовлення?"`. Planner should confirm with user or define as constants that can be easily changed.
+   - **RESOLVED:** Hardcoded as `GENERAL_SUGGESTIONS` constant in Plans 01 and 04: `["Який у вас графік роботи?", "Де ви знаходитесь?", "Як оформити замовлення?"]`.
 
 ---
 
