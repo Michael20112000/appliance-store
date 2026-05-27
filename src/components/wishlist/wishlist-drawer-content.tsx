@@ -7,8 +7,10 @@ import {
   getWishlistAction,
   resolveGuestWishlistProductsAction,
 } from "@/server/actions/wishlist.actions";
-import { WishlistGrid } from "./wishlist-grid";
 import { ClearWishlistButton } from "./clear-wishlist-button";
+import { GuestWishlistLineItem } from "./guest-wishlist-line-item";
+import { WishlistLineItem } from "./wishlist-line-item";
+import { WishlistUnavailableLineItem } from "./wishlist-unavailable-line-item";
 import { WISHLIST_CHANGED_EVENT } from "@/lib/wishlist/wishlist-events";
 import {
   getGuestWishlistProductIds,
@@ -24,7 +26,7 @@ type WishlistDrawerContentProps = {
 };
 
 export function WishlistDrawerContent({ hasSession }: WishlistDrawerContentProps) {
-  const { wishlistOpen } = useDrawers();
+  const { wishlistOpen, closeWishlist } = useDrawers();
   const [lines, setLines] = useState<WishlistLineDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,26 +72,30 @@ export function WishlistDrawerContent({ hasSession }: WishlistDrawerContentProps
 
     void load();
 
+    const onChanged = () => {
+      void load();
+    };
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === GUEST_WISHLIST_KEY) void load();
+    };
+
+    window.addEventListener(WISHLIST_CHANGED_EVENT, onChanged);
     if (!hasSession) {
-      const onChanged = () => {
-        void load();
-      };
-      const onStorage = (e: StorageEvent) => {
-        if (e.key === GUEST_WISHLIST_KEY) void load();
-      };
-      window.addEventListener(WISHLIST_CHANGED_EVENT, onChanged);
       window.addEventListener("storage", onStorage);
-      return () => {
-        cancelled = true;
-        window.removeEventListener(WISHLIST_CHANGED_EVENT, onChanged);
-        window.removeEventListener("storage", onStorage);
-      };
     }
 
     return () => {
       cancelled = true;
+      window.removeEventListener(WISHLIST_CHANGED_EVENT, onChanged);
+      if (!hasSession) {
+        window.removeEventListener("storage", onStorage);
+      }
     };
   }, [wishlistOpen, hasSession]);
+
+  function handleLineRemoved(productId: string) {
+    setLines((prev) => prev.filter((line) => line.productId !== productId));
+  }
 
   if (loading) {
     return (
@@ -114,6 +120,7 @@ export function WishlistDrawerContent({ hasSession }: WishlistDrawerContentProps
         <Link
           href="/katalog"
           className={cn(buttonVariants({ variant: "outline" }))}
+          onClick={closeWishlist}
         >
           До каталогу
         </Link>
@@ -122,9 +129,41 @@ export function WishlistDrawerContent({ hasSession }: WishlistDrawerContentProps
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <ClearWishlistButton hasSession={hasSession} />
-      <WishlistGrid lines={lines} hasSession={hasSession} />
-    </div>
+    <>
+      <ul className="divide-y divide-border">
+        {lines.map((line) =>
+          line.available ? (
+            hasSession ? (
+              <WishlistLineItem
+                key={line.productId}
+                line={line}
+                onRemoved={() => handleLineRemoved(line.productId)}
+                onNavigate={closeWishlist}
+              />
+            ) : (
+              <GuestWishlistLineItem
+                key={line.productId}
+                line={line}
+                onRemoved={() => handleLineRemoved(line.productId)}
+                onNavigate={closeWishlist}
+              />
+            )
+          ) : (
+            <WishlistUnavailableLineItem
+              key={line.productId}
+              line={line}
+              hasSession={hasSession}
+              onRemoved={() => handleLineRemoved(line.productId)}
+            />
+          ),
+        )}
+      </ul>
+      <div className="border-t p-4">
+        <ClearWishlistButton
+          hasSession={hasSession}
+          onCleared={() => setLines([])}
+        />
+      </div>
+    </>
   );
 }

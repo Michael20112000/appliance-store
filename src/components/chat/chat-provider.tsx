@@ -140,14 +140,6 @@ export function ChatProvider({
   const canSend =
     conversationStatus === null || conversationStatus === "OPEN";
 
-  const guestRedirect = useCallback(() => {
-    const query = searchParams.toString();
-    const callbackUrl = encodeURIComponent(
-      `${pathname}${query ? `?${query}` : ""}`,
-    );
-    router.push(`/uviity?callbackUrl=${callbackUrl}`);
-  }, [pathname, router, searchParams]);
-
   // WR-01: keep isOpenRef in sync so appendMessage doesn't need isOpen in its
   // dependency array, preventing Pusher re-subscription on every panel toggle.
   useEffect(() => {

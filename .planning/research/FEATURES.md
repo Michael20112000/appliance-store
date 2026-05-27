@@ -1,227 +1,262 @@
 # Feature Research
 
-**Domain:** Used-appliance single-store e-commerce (Lviv, Ukraine)
-**Researched:** 2026-05-16
-**Confidence:** HIGH (catalog/checkout/admin aligned with PROJECT.md + verified UA competitors; MEDIUM for legal copy specifics)
+**Domain:** Chat enhancements — v3.0 milestone on existing Ukrainian appliance-store chat system
+**Researched:** 2026-05-24
+**Confidence:** HIGH (codebase read + industry UX patterns verified across multiple sources)
+
+---
+
+## Context: What Already Exists
+
+The v2.x chat system is fully built and operational:
+
+- `ChatProvider` / `ChatProviderGate` — server-side session detection, Pusher real-time, optimistic messages
+- `ChatPanel` — floating widget (desktop: fixed 380×520px bottom-right; mobile: bottom Sheet)
+- `ChatComposer` / `AdminChatComposer` — text-only send, 2000-char limit, Enter-to-send
+- `ArchivedChatBanner` — shown when `status === "ARCHIVED"`, composer placeholder = "Діалог закрито"
+- `admin-chat-provider` + `/admin/chaty` — full admin inbox, conversation list, real-time Pusher subscription
+- `ConversationList` — unread highlight, context-menu lifecycle actions (archive / delete)
+- DB schema: `Conversation` is **one-per-user** (`userId @unique`), `Message` belongs to conversation
+
+**Current auth gate:** `openPanel()` redirects guests to `/uviity` (login). Guests cannot chat at all.
+
+**Key constraint the schema imposes:** `Conversation.userId` is `@unique` — one conversation per registered user. Guest conversations need either a separate identity scheme or a nullable userId + guestToken approach.
+
+---
 
 ## Feature Landscape
 
 ### Table Stakes (Users Expect These)
 
-Features users assume exist. Missing these = product feels incomplete or untrustworthy for б/у великої техніки.
+Features that — given the existing chat exists and is being extended — users will expect to work correctly.
 
 | Feature | Why Expected | Complexity | Notes |
 |---------|--------------|------------|-------|
-| Каталог з категоріями | Усі конкуренти (Tehnoskarb, OBYAVA, Vencon) групують за типом техніки | LOW | 8 seed-категорій + admin CRUD; breadcrumbs |
-| Картка товару (PDP) | Рішення купувати приймають на сторінці одиниці | LOW | Фото, бренд, модель, ціна, **стан**, опис, наявність |
-| Кілька фото на товар | Б/у — потрібно бачити подряпини, фасад, комплектацію | MEDIUM | Cloudinary gallery; мінімум 2–4 фото для великої техніки |
-| Позначка стану (condition) | На OBYAVA/оголошеннях — «б/у», «відмінний стан»; на refurbished — grades A/B/C | LOW | Enum + пояснення шкали в UI (не лише «б/у») |
-| Ціна в гривнях, чітко | Без ціни — не магазин | LOW | Форматування UAH; без «договірна» на v1 |
-| Наявність / «в наявності» | Б/у часто 1 одиниця; покупець боїться «продали» | LOW | `in_stock` / sold flag; прибирати з каталогу або «продано» |
-| Пошук + фільтри | PROJECT + OBYAVA: категорія, бренд, ціна, стан | MEDIUM | Facets: category, brand, price range, condition; URL-sync (nuqs) |
-| Сортування списку | Tehnoskarb: за ціною ↑↓, популярністю | LOW | Price asc/desc; «нові» / дата додавання |
-| Кошик | Стандарт e-commerce | MEDIUM | Auth required per PROJECT; persist per user |
-| Checkout без онлайн-оплати | Типово для UA локальних магазинів: готівка/термінал при отриманні | MEDIUM | Ім’я, телефон, спосіб доставки, коментар; статус замовлення |
-| Самовивіз + доставка по Львову | Локальний бізнес; PROJECT out of scope — за межі міста | LOW | Enum: pickup / delivery; адреса доставки умовно |
-| Підтвердження замовлення | Покупець має бачити, що заявку прийнято | LOW | Success screen + номер замовлення; email — v1.x |
-| Контакти магазину | Довіра + «Комфорт Техніка» — телефон, графік | LOW | Footer/header: телефон, адреса, години роботи |
-| Мобільна версія | Більшість трафіку — телефон | MEDIUM | Responsive; великі touch-targets для фільтрів |
-| Українська мова UI | Аудиторія Львів | LOW | `uk` only; copy для стану/доставки/оплати |
-| Адмін: CRUD товарів | Один магазин оновлює асортимент | MEDIUM | Фото, бренд, ціна, стан, категорія, опис |
-| Адмін: CRUD категорій | PROJECT requirement | LOW | Create/edit/delete; slug для URL |
-| Адмін: замовлення | Магазин виконує замовлення | MEDIUM | Список, статуси (нове → підтверджено → виконано/скасовано) |
-| Адмін: чати з клієнтами | PROJECT + high-consideration used goods | HIGH | Inbox, прив’язка до user/order context |
-| Авторизація для кошика/чату | PROJECT: каталог без логіну | MEDIUM | Better Auth; guest browse OK |
-| Базові юридичні сторінки | Закон про захист прав споживачів — дистанційний договір, контакти продавця | LOW | Оферта, політика повернення (б/у — обмеження), privacy |
-| SEO-сторінки товарів/категорій | PROJECT: «хороший продукт = SEO» | MEDIUM | SSR/SSG, title/description, Product schema, local Lviv copy |
-| Швидке завантаження каталогу | UX table stakes 2024+ | MEDIUM | Image optimization, pagination, indexed filters |
-
-**Used-appliance-specific table stakes** (не generic shop):
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Бренд + модель у назві/картці | Пошук «Samsung пральна» — стандарт оголошень | LOW | Admin fields; search index |
-| Короткі характеристики | Об’єм барабана, No Frost, розміри — для вбудовування | MEDIUM | JSON specs або fixed fields per category — v1 може бути в описі |
-| Гарантія / перевірка (якщо є) | OBYAVA: «гарантія 6 місяців», «перевірена майстром» | LOW | Optional text field + badge; не вигадувати — лише те, що дає магазин |
-| Прозорість дефектів | Refurbished industry: grades + photos of damage | LOW–MED | Condition + фото подряпин; знижує суперечки |
+| Guest can open and send messages without registering | Removing the registration wall is the entire point of CHAT-01; competitors (Crisp, Tidio, Intercom) all support anonymous chat | MEDIUM | Needs guestToken (UUID) stored in `localStorage`; new DB column or separate model |
+| Guest session persists across page refreshes | Users close and reopen the browser tab; losing the conversation mid-session = broken UX | LOW | `localStorage` key survives page refresh; cookie as fallback for cross-tab |
+| Guest identified as "Гість" in admin panel | Admin needs to know who they are talking to; displaying null/blank is confusing | LOW | `buyerName` fallback logic in `listConversationsForAdmin`; no new DB field needed if handled in service layer |
+| Admin-closed chat shows clear "Чат завершено" state to user | Industry standard — Help Scout, Zendesk, LiveAgent all show a visible banner + disable composer on closure | LOW | `ArchivedChatBanner` already exists but says "Діалог закрито магазином"; update copy or augment |
+| After chat is closed, user can start a new one | Expected "start over" affordance; Intercom, Crisp both offer this | LOW | "Почати новий чат" button inside the banner |
+| Auth user chat history accessible from within widget | Users expect to be able to revisit prior conversations without leaving the page | HIGH | Requires multi-conversation model (see Anti-Features for scope guard) |
+| File attachments for auth users | Established expectation in support chat — Zendesk supports 20 MB; Dynamics 365 supports 20–128 MB | HIGH | Cloudinary upload for images; PDF pass-through; size guard (10 MB recommended for this use case) |
+| Guest cannot attach files | Matches PROJECT constraint; prevents anonymous spam/abuse | LOW | Composer gate: `if (!hasSession) { /* no attachment UI */ }` |
 
 ### Differentiators (Competitive Advantage)
 
-Not required to launch, but aligned with **Core Value** (швидкий пошук + реальний стан + чат без тертя).
+Features within v3.0 scope that go beyond baseline expectations for a small local shop chat.
 
 | Feature | Value Proposition | Complexity | Notes |
 |---------|-------------------|------------|-------|
-| Легкий, «повітряний» UI | Відрізняє від важких маркетплейсів і оголошень | MEDIUM | Design tokens, whitespace, shadcn — trust for used |
-| Real-time чат під час перегляду | Закриває питання «чи є доставка?», «чи працює?» до checkout | HIGH | Pusher/Ably; не лише після замовлення |
-| Чітка шкала стану з легендою | Менше повернень vs vague «б/у» | LOW | A/B/C або «відмінний/добрий/задовільний» + tooltip |
-| Швидкі фільтри без перезавантаження | Краще за OBYAVA UX | MEDIUM | Client + server filters; debounced URL |
-| Локальний SEO «б/у техніка Львів» | Органіка vs платні оголошення | MEDIUM | Category H1, area pages, LocalBusiness schema |
-| Історія замовлень (кабінет) | Повторні покупці | LOW | Після auth — список + статус |
-| Прив’язка чату до товару/замовлення | Менеджер бачить контекст | MEDIUM | Admin sees product link in thread |
-| Оптимізовані фото (WebP, sizes) | Швидкість = SEO + UX | LOW | Cloudinary transforms |
+| In-widget drawer for conversation history | Chat history without leaving the product page; differentiates from Crisp/Tidio flat single-thread on small e-commerce sites | MEDIUM | Slide-in panel *inside* the 380px widget (not a full-page route); auth only |
+| Guest-to-account chat migration on login | No data loss: guest's messages become part of their account history | MEDIUM | Token-matching on login/register flow; `guestToken` column on Conversation + migration step |
+| New conversation from history drawer | Auth user can initiate a fresh chat topic without wiping current context | LOW | "Новий чат" button in drawer; requires multi-conversation model |
 
 ### Anti-Features (Commonly Requested, Often Problematic)
 
 | Feature | Why Requested | Why Problematic | Alternative |
 |---------|---------------|-----------------|-------------|
-| Онлайн-оплата (LiqPay/Stripe) v1 | Зручність | Scope, chargebacks на б/у, інтеграція | «Оплата при отриманні» + статус замовлення |
-| Маркетплейс (багато продавців) | Масштаб | Не бізнес-модель | Single admin, один асортимент |
-| Розстрочка Monobank/Приват v1 | Tehnoskarb показує badges | Окремі договори, API, compliance | Телефон менеджера / «уточніть в чаті» |
-| Відгуки та рейтинги v1 | Довіра | Немає об’єму; фейки | Гарантія магазину + чат + фото стану |
-| Порівняння товарів (compare) | Електроніка | Overkill для малого каталогу | Фільтри + wishlist later |
-| Доставка Нова Пошта по Україні v1 | Охоплення | Логістика великої техніки | Львів pickup + local delivery only |
-| AI ціноутворення | «Ринкова ціна» | Помилки, відповідальність | Ручна ціна в адмінці |
-| Native mobile app | Охоплення | Подвійна підтримка | PWA-ready responsive web |
-| Guest checkout без телефону | Швидше | Неможливо передзвонити/доставити | Телефон обов’язковий на checkout |
-| Нова техніка в каталозі | Більший TAM | Розмиває позиціонування | Тільки б/у; окремий проект якщо треба |
-| Багатомовність | Туризм | Scope | UA only v1 |
-| Аукціон / торг | «Дешевше» | Не магазин | Фіксована ціна |
-| Trade-in онлайн | Залучення | Оцінка, логістика | «Привезіть в магазин» — офлайн |
-| Real-time everything (live stock sync) | Актуальність | Over-engineering для 1 магазину | Admin mark sold + cache revalidate |
-| Чат без auth | Менше тертя | Спам, немає історії | Auth для чату (PROJECT) |
-| Складний CRM в v1 | Продажі | Відволікає від каталогу | Admin orders + chat достатньо |
+| Multi-conversation for guests | Completeness | Guest sessions are ephemeral; multiple anonymous threads create admin noise and linkage complexity | One guest = one active conversation; closure creates a new one |
+| Video / voice chat | "Full support" | Scope explosion, WebRTC infra, separate permission model | Text + file attachments covers 95% of pre-sale questions |
+| Read receipts (double-tick) | Chat-app familiarity | `buyerLastReadAt` exists but surfacing it as "seen" ticks adds UI complexity and real-time sync overhead | Unread dot on FAB is sufficient signal |
+| Chat transcript email to guest | Common in support tools | Guests have no email on record; would require capturing email upfront (adds friction, contradicts guest-first goal) | Show history in-widget on return if token still in localStorage |
+| Typing indicators | "Feels alive" | Pusher presence channels add auth complexity; marginal UX gain for a one-admin shop | Real-time message delivery is enough |
+| File attachments for guests | Requested by edge case | Abuse vector; anonymous uploads require stricter validation and moderation | Auth users and admin only — matches PROJECT decision |
+| Admin-to-admin internal notes / threads | CRM feature | Not a store of this scale; separate model from public chat | Admin can use the chat to leave notes if needed (or post-v3 feature) |
+| Push notifications (browser / mobile) | "Don't miss messages" | Service Worker registration complexity; Safari limitations on iOS | Unread badge on FAB (`unreadFromStore` already implemented) |
+
+---
 
 ## Feature Dependencies
 
 ```
-Public Catalog
-    └──requires──> Categories (seed + admin)
-    └──requires──> Products (admin CRUD)
-                       └──enhances──> Cloudinary images
+[CHAT-01: Guest conversation]
+    └──requires──> DB: guestToken on Conversation (nullable userId or separate guest model)
+    └──requires──> localStorage: guestToken persistence
+    └──requires──> API: unauthenticated POST /api/chat/messages path
 
-Search & Filters
-    └──requires──> Products + Categories (indexed fields)
-    └──enhances──> Catalog listing UX
+[CHAT-02: Guest → account link]
+    └──requires──> CHAT-01 (guest token in localStorage)
+    └──requires──> Auth hook on login/register (Better Auth post-login callback)
+    └──requires──> Service: claimGuestConversation(userId, guestToken)
 
-Product Detail (PDP)
-    └──requires──> Product record + images + condition
+[CHAT-03: "Гість" label in admin]
+    └──requires──> CHAT-01 (guest conversation created)
+    └──requires──> listConversationsForAdmin: handle null userId / null user record
 
-Auth (Better Auth)
-    └──requires──> User model
-    └──gates──> Cart
-    └──gates──> Chat (buyer)
-    └──gates──> Order history (buyer)
+[CHAT-04: Admin closes chat → user sees "Чат завершено"]
+    └──requires──> archiveConversation() already exists in chat.service.ts
+    └──requires──> Pusher event: conversation:status-changed broadcast to buyer channel
+    └──note──> ArchivedChatBanner + composer already handle ARCHIVED status; gap is real-time push on closure
 
-Cart
-    └──requires──> Auth (buyer)
-    └──requires──> Products in_stock
+[CHAT-05: "Почати новий чат" after closure]
+    └──requires──> CHAT-04 (chat is closed)
+    └──requires──> For auth users: new Conversation (breaks userId @unique constraint — needs schema change)
+    └──requires──> For guests: clear localStorage guestToken, generate new one
 
-Checkout
-    └──requires──> Cart (non-empty)
-    └──creates──> Order
-    └──requires──> Delivery method (pickup | Lviv delivery)
+[CHAT-06 + CHAT-07: In-widget drawer with chat history]
+    └──requires──> CHAT-05 schema change (multi-conversation per user)
+    └──requires──> listConversationsForBuyer() service method (does not exist yet)
+    └──requires──> ChatProvider: add conversations[] list state + selectedConversationId
+    └──note──> Auth users only; guest sees no drawer
 
-Orders (admin)
-    └──requires──> Checkout
-    └──enhanced by──> Chat (context)
+[CHAT-08: New chat from drawer]
+    └──requires──> CHAT-06/07 (drawer exists)
+    └──requires──> createNewConversation(userId) service method
+    └──requires──> ChatProvider: switch active conversationId
 
-Chat (realtime)
-    └──requires──> Auth (buyer + admin role)
-    └──requires──> Realtime transport (research in STACK)
-    └──enhances──> PDP, Checkout (pre-sale questions)
-
-Admin CRUD
-    └──requires──> Auth (admin role)
-    └──requires──> Categories before product assign
-
-SEO / Structured data
-    └──requires──> Public PDP + category routes
-    └──conflicts with──> Heavy client-only catalog (bad for crawl)
+[CHAT-09: File attachments]
+    └──requires──> Message model: add attachmentUrl, attachmentType fields (schema migration)
+    └──requires──> Cloudinary: upload endpoint for images (jpg/png/webp); PDF storage
+    └──requires──> Composer: file input UI (paperclip icon), preview, progress indicator
+    └──requires──> Auth gate: hasSession check before rendering attachment UI
+    └──requires──> Admin composer: matching file input
+    └──enhances──> CHAT-07 (attachments visible in history)
 ```
 
 ### Dependency Notes
 
-- **Filters require catalog schema:** brand, price, condition, categoryId must be queryable with DB indexes before filter UI ships.
-- **Cart requires auth:** Browse-without-login means cart is post-login — expect «login to add to cart» UX, not silent guest cart.
-- **Chat enhances conversion on used goods:** High-consideration purchases; thread should optionally reference `productId` or `orderId`.
-- **Checkout without payment gateway:** Order is the source of truth; payment method = offline enum (cash/terminal on delivery) — no PaymentIntent flow v1.
-- **Sold items:** Marking `sold` or `in_stock=false` must hide from catalog filters and invalidate cart lines — dependency between admin and cart.
+- **CHAT-05 breaks the current `@unique` constraint on `Conversation.userId`.** This is the most impactful schema change in the milestone. It must be resolved before CHAT-07 and CHAT-08 can be implemented. Options: drop the unique constraint and add an `isActive` flag, or keep the constraint and create `ArchivedConversation` copies. The cleanest approach is removing `@unique` from `userId` and adding an `isActive: Boolean @default(true)` column so `getActiveConversationForBuyer(userId)` remains a single-row query.
+- **CHAT-01 needs a guest identity model.** The current `Conversation.userId` is non-nullable (implied by `@unique` and foreign key to User). A `guestToken: String? @unique` column is needed alongside a nullable `userId`. This is a single migration but touches the core table.
+- **CHAT-04 real-time notification gap.** Archiving currently works server-side but the buyer's open widget does not receive a Pusher event when admin archives. The buyer only discovers closure on next page load (status comes from server-side `initialConversationStatus`). A `conversation:archived` Pusher event on the private buyer channel is needed.
+- **CHAT-09 is independent of CHAT-01–08** except for the auth gate. File attachments can be phased separately and do not block guest chat or history drawer implementation.
 
-## MVP Definition
+---
 
-**Note:** Stakeholder defined MVP = **full feature set in one release** (not stripped catalog-only). Below maps to PROJECT.md Active requirements; ordering is for **roadmap phases**, not scope cut.
+## MVP Definition (v3.0 Scope)
 
-### Launch With (v1)
+All nine CHAT requirements are in-scope for v3.0. Priority ordering by risk/dependency:
 
-Minimum to match stated MVP — all P1:
+### Phase 1 — Foundation (unblocks everything)
 
-- [ ] **Каталог** — 8 категорій, listing, PDP, pagination
-- [ ] **Пошук і фільтри** — category, brand, price range, condition + sort
-- [ ] **Кошик + checkout** — без онлайн-оплати; pickup + Lviv delivery; phone required
-- [ ] **Опційна auth** — каталог публічний; login для cart/chat
-- [ ] **Realtime чат** — покупець ↔ менеджер; admin inbox
-- [ ] **Адмінка** — CRUD categories/products; orders list + status; chats
-- [ ] **UI/UX/SEO baseline** — UA, mobile, legal pages, Product meta, performance budget
+- [x] Schema migration: `guestToken` on Conversation, nullable `userId`, remove `@unique` on `userId`, add `isActive` flag
+- [x] CHAT-01 — Guest conversation (localStorage token, text-only, unauthenticated POST)
+- [x] CHAT-03 — "Гість" label in admin
 
-### Add After Validation (v1.x)
+### Phase 2 — Lifecycle control
 
-- [ ] Email/SMS on new order (admin + buyer) — when manual phone calls become bottleneck
-- [ ] Order notes timeline in admin — when dispute rate grows
-- [ ] Wishlist — repeat visitors without commitment
-- [ ] Spec templates per category — when descriptions inconsistent
-- [ ] Basic analytics (Plausible/PostHog) — when marketing starts
+- [x] CHAT-04 — Admin closes chat → real-time Pusher event → buyer widget shows "Чат завершено"
+- [x] CHAT-05 — "Почати новий чат" button in ArchivedChatBanner
+- [x] CHAT-02 — Guest → account migration on login/register
 
-### Future Consideration (v2+)
+### Phase 3 — History drawer (auth users)
 
-- [ ] Online payment (LiqPay / Monobank pay)
-- [ ] Installment badges / bank APIs
-- [ ] Delivery outside Lviv (NP / own logistics)
-- [ ] Reviews / verified purchase
-- [ ] Promotions / discount codes
-- [ ] Multi-store / franchise (explicitly out of scope now)
-- [ ] EN/RU locale
+- [x] CHAT-06 — Menu button in widget header → slide-in drawer inside widget
+- [x] CHAT-07 — Drawer: conversation list with switch
+- [x] CHAT-08 — "Новий чат" from drawer
+
+### Phase 4 — File attachments
+
+- [x] CHAT-09 — File attachments (jpg/png/webp + pdf); auth users + admin; guest blocked
+
+### Add After v3.0 Validation
+
+- [ ] Read receipts / "seen" indicator — when users report messages feel unanswered
+- [ ] Transcript export — when admin needs audit trail
+- [ ] Chat notification email for guest — if guest email captured at send time
+
+### Future Consideration (v4+)
+
+- [ ] Push notifications (Service Worker + FCM)
+- [ ] Typing indicators (Pusher presence channels)
+- [ ] Chat assignment to specific staff members (multi-admin)
+
+---
 
 ## Feature Prioritization Matrix
 
 | Feature | User Value | Implementation Cost | Priority |
 |---------|------------|---------------------|----------|
-| Catalog + categories | HIGH | MEDIUM | P1 |
-| PDP (photos, condition, price) | HIGH | LOW | P1 |
-| Search/filters/sort | HIGH | MEDIUM | P1 |
-| Cart + checkout (offline pay) | HIGH | MEDIUM | P1 |
-| Delivery pickup + Lviv | HIGH | LOW | P1 |
-| Admin products/categories | HIGH | MEDIUM | P1 |
-| Admin orders | HIGH | MEDIUM | P1 |
-| Auth (optional browse) | HIGH | MEDIUM | P1 |
-| Realtime chat | HIGH | HIGH | P1 |
-| Ukrainian UI + legal pages | HIGH | LOW | P1 |
-| SEO (meta, schema, speed) | HIGH | MEDIUM | P1 |
-| Condition grade legend | MEDIUM | LOW | P1 |
-| Order email notifications | MEDIUM | LOW | P2 |
-| Wishlist | LOW | LOW | P3 |
-| Reviews | MEDIUM | MEDIUM | P3 |
-| Online payment | HIGH | HIGH | v2 |
-| NP Ukraine delivery | MEDIUM | HIGH | v2 |
+| CHAT-01 Guest chat | HIGH | MEDIUM | P1 — schema + token system |
+| CHAT-03 "Гість" in admin | MEDIUM | LOW | P1 — display-only change |
+| CHAT-04 Admin closes, buyer notified | HIGH | LOW | P1 — Pusher event gap |
+| CHAT-05 New chat after closure | HIGH | LOW | P1 — button + new conversation |
+| CHAT-02 Guest → account link | MEDIUM | MEDIUM | P1 — auth hook required |
+| CHAT-06/07 History drawer | MEDIUM | HIGH | P2 — multi-conversation schema |
+| CHAT-08 New chat from drawer | LOW | LOW | P2 — depends on CHAT-07 |
+| CHAT-09 File attachments | MEDIUM | HIGH | P2 — schema + Cloudinary upload |
 
-**Priority key:** P1 = v1 launch per PROJECT; P2 = soon after traffic; P3 = defer.
+**Priority key:** P1 = must ship for v3.0 core; P2 = should ship in v3.0 but can phase after P1.
 
-## Competitor Feature Analysis
+---
 
-| Feature | Tehnoskarb (b/у UA) | OBYAVA (classifieds) | Komfort Tekhnika (Lviv shop) | Our Approach |
-|---------|----------------------|------------------------|------------------------------|--------------|
-| Catalog by category | ✓ filters, city | ✓ deep categories | ✓ SEO catalog pages | ✓ 8 cats + admin CRUD |
-| Condition filter | Partial (marketplace) | ✓ «б/у» / state in text | «Відновлена» positioning | ✓ Dedicated condition enum + legend |
-| Price sort | ✓ | ✓ | — | ✓ |
-| Installment badges | ✓ Monobank/Privat | — | «Гнучка оплата» | ✗ v1 — anti-feature |
-| Cart/checkout | Marketplace flow | Contact seller | Online + visit store | ✓ Full cart; offline pay |
-| Chat | — | Messenger off-site | Phone callback | ✓ In-app realtime |
-| Single seller | Multi-seller platform | Multi-seller | ✓ Single store | ✓ Single store |
-| Warranty in listing | Varies | Often in description | ✓ Stated on site | Optional field + badge |
-| Delivery | City filter | Self-arranged | Lviv store + delivery | ✓ Pickup + Lviv only |
-| Reviews | — | — | Mentioned in copy | ✗ v1 |
-| Airy modern UI | Utilitarian | Ad-heavy | Traditional | ✓ Differentiator |
+## "Done" Definitions (User-Perspective Acceptance)
+
+### CHAT-01 (Guest chat)
+- Unauthenticated user opens chat widget → sees composer (not redirect to /uviity)
+- Guest sends a message → message appears in widget and in admin inbox
+- Guest refreshes the page → previous messages still visible (token in localStorage)
+- Guest clears localStorage → treated as new guest on next open
+
+### CHAT-02 (Guest → account link)
+- Guest sends messages, then registers or logs in
+- After login, their guest conversation appears as their account conversation
+- The guest messages are preserved (not lost)
+- Admin sees the same conversation now attributed to the registered user's name/email
+
+### CHAT-03 ("Гість" in admin)
+- Admin inbox shows "Гість" (not blank, not null, not "Покупець") for unregistered users
+- Guest avatar initials = "Г" or similar fallback
+
+### CHAT-04 (Admin closes chat)
+- Admin clicks "Завершити чат" in the admin workspace
+- Within ~1 second, buyer's open widget shows "Чат завершено" banner
+- Buyer's composer is disabled (cannot type or send)
+- On next page load (for buyers not currently in widget), the closed state persists
+
+### CHAT-05 (New chat after closure)
+- Closed-state banner includes a "Почати новий чат" button
+- Clicking it starts a new conversation (new DB record, fresh message list)
+- Old conversation is preserved in history (visible in drawer for auth users)
+
+### CHAT-06/07 (In-widget drawer)
+- A menu icon (hamburger or list icon) appears in the chat panel header, beside the × button
+- Clicking it slides in a panel *inside* the widget (not a new page or full-screen modal)
+- Panel shows a list of past conversations (name/preview/date)
+- Clicking a conversation switches the message view to that thread
+- Guest users do not see the menu icon
+
+### CHAT-08 (New chat from drawer)
+- Drawer includes a "Новий чат" button
+- Clicking it creates a new conversation and switches to it in the widget
+
+### CHAT-09 (File attachments)
+- Auth user sees a paperclip/attachment icon in the composer
+- Clicking it opens a file picker filtered to jpg/png/webp/pdf
+- Selected file shows a preview (image thumbnail or filename for PDF) before sending
+- Sending uploads to Cloudinary and posts a message with the attachment
+- Recipient (admin or user) sees the image inline or a PDF download link
+- File size limit is visible (or error shown on exceed)
+- Guest users see no attachment UI in composer
+
+---
+
+## Scope-Creep Risks for This Milestone
+
+The following were considered and explicitly excluded from v3.0:
+
+1. **Multi-admin chat assignment** — single admin shop; out of scope
+2. **Chat-to-order linking for guests** — guests have no order history; link can be added in v3.x after guest migration is stable
+3. **Email notifications** — guests have no email; auth users get real-time; emails are post-v3.0
+4. **Video/voice** — not in PROJECT.md, high complexity
+5. **Chat search within history** — nice but low priority; drawer list with preview is sufficient for a shop with moderate chat volume
+6. **File attachments for guests** — explicitly excluded in PROJECT.md to prevent spam
+
+---
 
 ## Sources
 
-- [PROJECT.md](../PROJECT.md) — scope, constraints, active requirements (HIGH)
-- [Tehnoskarb — побутова техніка Львів](https://tehnoskarb.ua/bytovaja-tekhnika/c141/filter/city=8) — filters, sort, installment (HIGH)
-- [OBYAVA.ua — велика побутова техніка Львів](https://obyava.ua/ua/elektronika/krupnaja-bytovaja-tehnika/lvov) — category/brand/used filters (HIGH)
-- [Komfort Tekhnika Lviv](https://komfort-tekhnika.com.ua/pobutova-tekhnika.php?lang=1) — local shop, consultation, delivery copy (MEDIUM)
-- [Appliances Direct — refurbished grades](https://appliancesdirect.co.uk/help-and-advice/buying-guides/refurbished-grades-explained) — A1/A2/A3 condition pattern (HIGH)
-- [Inflow — category page best practices](https://www.goinflow.com/blog/gallery-pages-best-in-class/) — filters, sort, mobile (MEDIUM)
-- [Zakon.rada.gov.ua — consumer protection 1023-XII](https://zakon.rada.gov.ua/laws/show/1023-12?lang=en) — distance selling, returns framework (MEDIUM)
-- [LIGA:ZAKON — internet store returns](https://ips.ligazakon.net/document/BZ012335) — 14-day return context (MEDIUM; legal review before copy)
+- `/Users/michael_ivashko/WebStormProjects/web/appliance-store/.planning/PROJECT.md` — v3.0 requirements, stack, constraints (HIGH)
+- Codebase audit: `src/components/chat/`, `src/server/services/chat.service.ts`, `src/types/chat.ts`, `prisma/schema.prisma` (HIGH)
+- [NN/g — The User Experience of Customer-Service Chat: 20 Guidelines](https://www.nngroup.com/articles/chat-ux/) — closure UX, session continuity (HIGH)
+- [Help Scout — What Happens When You End a Live Chat](https://docs.helpscout.com/article/1228-end-a-live-chat) — admin closure behavior (HIGH)
+- [Crisp — Session Continuity (Web Chat SDK)](https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/session-continuity/) — guest token / session merge pattern (HIGH)
+- [Logto — Implement guest mode and convert to users](https://blog.logto.io/implement-guest-mode-with-logto) — anonymous → authenticated migration flow (MEDIUM)
+- [GetStream — Authless Users (React chat)](https://getstream.io/chat/docs/react/authless_users/) — guest identity model in production chat SDKs (MEDIUM)
+- [Zendesk — Sending files in a chat](https://support.zendesk.com/hc/en-us/articles/4408828723738-Sending-files-in-a-chat) — file attachment size limits and auth-gate precedent (HIGH)
+- [Microsoft Learn — Configure file attachment capability](https://learn.microsoft.com/en-us/dynamics365/customer-service/administer/configure-file-attachment) — attachment size / type configuration (MEDIUM)
+- [Baymard — Three Popular Live Chat Approaches](https://baymard.com/blog/live-chat-usability-issues) — floating widget UX patterns (MEDIUM)
+- [Qwen/issue#1444 — Guest session history lost on login](https://github.com/QwenLM/Qwen/issues/1444) — UX pitfall: history loss on account creation without migration (MEDIUM)
 
 ---
-*Feature research for: Appliance Store Lviv (used appliances, single-store)*
-*Researched: 2026-05-16*
+*Feature research for: Appliance Store Lviv — v3.0 Chat & Engagement milestone*
+*Researched: 2026-05-24*

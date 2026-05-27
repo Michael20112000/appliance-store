@@ -13,6 +13,7 @@ import { resolveGuestCartProducts } from "@/server/services/cart.service";
 import type { CartViewDto } from "@/types/cart";
 import {
   addToCartSchema,
+  cartProductIdSchema,
   mergePendingSchema,
   resolveGuestCartSchema,
 } from "@/server/validators/cart";
@@ -48,7 +49,7 @@ export async function mergePendingCartAction(
 
 export async function removeFromCartAction(productId: string) {
   const session = await requireBuyer();
-  const parsed = addToCartSchema.parse({ productId, quantity: 1 });
+  const parsed = cartProductIdSchema.parse({ productId });
   await removeFromCart(session.user.id, parsed.productId);
   revalidateCartPaths();
   return { ok: true as const };

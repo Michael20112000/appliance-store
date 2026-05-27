@@ -6,9 +6,14 @@ import { cn } from "@/lib/utils";
 type CartSummaryProps = {
   subtotalKopiyky: number;
   itemCount: number;
+  onCheckoutClick?: () => void;
 };
 
-export function CartSummary({ subtotalKopiyky, itemCount }: CartSummaryProps) {
+export function CartSummary({
+  subtotalKopiyky,
+  itemCount,
+  onCheckoutClick,
+}: CartSummaryProps) {
   return (
     <aside className="rounded-lg border border-border bg-muted/30 p-6 md:sticky md:top-20">
       <h2 className="text-lg font-medium">Підсумок</h2>
@@ -24,6 +29,7 @@ export function CartSummary({ subtotalKopiyky, itemCount }: CartSummaryProps) {
       <Link
         href="/zamovlennia"
         className={cn(buttonVariants(), "mt-6 inline-flex w-full justify-center")}
+        onClick={onCheckoutClick}
       >
         Оформити замовлення
       </Link>

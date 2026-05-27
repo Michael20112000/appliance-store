@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CartEmpty } from "@/components/cart/cart-empty";
 import { CartLineItem } from "@/components/cart/cart-line-item";
@@ -21,46 +21,75 @@ type CartDrawerContentProps = {
 };
 
 export function CartDrawerContent({ hasSession }: CartDrawerContentProps) {
-  const { cartOpen } = useDrawers();
+  const { cartOpen, closeCart } = useDrawers();
   const [cart, setCart] = useState<CartViewDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (hasSession) {
-        const result = await getCartAction();
-        setCart(result);
-      } else {
-        const productIds = getPendingProductIds();
-        if (productIds.length === 0) {
-          setCart({ items: [], subtotalKopiyky: 0, removedTitles: [] });
-          setLoading(false);
-          return;
-        }
-        const result = await resolveGuestCartAction(productIds);
-        setCart(result.cart);
-      }
-    } catch {
-      setError("Не вдалося завантажити кошик. Спробуйте оновити сторінку.");
-    } finally {
-      setLoading(false);
-    }
-  }, [hasSession]);
-
   useEffect(() => {
     if (!cartOpen) return;
 
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+
+      try {
+        if (hasSession) {
+          const result = await getCartAction();
+          if (!cancelled) setCart(result);
+        } else {
+          const productIds = getPendingProductIds();
+          if (productIds.length === 0) {
+            if (!cancelled) {
+              setCart({ items: [], subtotalKopiyky: 0, removedTitles: [] });
+            }
+            return;
+          }
+          const result = await resolveGuestCartAction(productIds);
+          if (!cancelled) setCart(result.cart);
+        }
+      } catch {
+        if (!cancelled) {
+          setError("Не вдалося завантажити кошик. Спробуйте оновити сторінку.");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
     void load();
 
+    const onChanged = () => {
+      void load();
+    };
+    window.addEventListener(CART_CHANGED_EVENT, onChanged);
+
     if (!hasSession) {
-      window.addEventListener(CART_CHANGED_EVENT, load);
-      return () => window.removeEventListener(CART_CHANGED_EVENT, load);
+      return () => {
+        cancelled = true;
+        window.removeEventListener(CART_CHANGED_EVENT, onChanged);
+      };
     }
-  }, [cartOpen, hasSession, load]);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener(CART_CHANGED_EVENT, onChanged);
+    };
+  }, [cartOpen, hasSession]);
+
+  function handleRemoveLine(removedLine: { productId: string; priceKopiyky: number }) {
+    setCart((prev) => {
+      if (!prev) return prev;
+      const nextItems = prev.items.filter((item) => item.productId !== removedLine.productId);
+      return {
+        ...prev,
+        items: nextItems,
+        subtotalKopiyky: Math.max(0, prev.subtotalKopiyky - removedLine.priceKopiyky),
+      };
+    });
+  }
 
   if (loading) {
     return (
@@ -91,12 +120,18 @@ export function CartDrawerContent({ hasSession }: CartDrawerContentProps) {
       <>
         <ul className="divide-y divide-border">
           {cart.items.map((line) => (
-            <CartLineItem key={line.productId} line={line} />
+            <CartLineItem
+              key={line.productId}
+              line={line}
+              onRemoved={handleRemoveLine}
+              onNavigate={closeCart}
+            />
           ))}
         </ul>
         <CartSummary
           subtotalKopiyky={cart.subtotalKopiyky}
           itemCount={cart.items.length}
+          onCheckoutClick={closeCart}
         />
       </>
     );
@@ -106,13 +141,23 @@ export function CartDrawerContent({ hasSession }: CartDrawerContentProps) {
     <>
       <ul className="divide-y divide-border">
         {cart.items.map((line) => (
-          <GuestCartLineItem key={line.productId} line={line} onRemoved={load} />
+          <GuestCartLineItem
+            key={line.productId}
+            line={line}
+            onRemoved={handleRemoveLine}
+            onNavigate={closeCart}
+          />
         ))}
       </ul>
-      <GuestClearCartButton onCleared={load} />
+      <GuestClearCartButton
+        onCleared={() =>
+          setCart((prev) => (prev ? { ...prev, items: [], subtotalKopiyky: 0 } : prev))
+        }
+      />
       <CartSummary
         subtotalKopiyky={cart.subtotalKopiyky}
         itemCount={cart.items.length}
+        onCheckoutClick={closeCart}
       />
     </>
   );

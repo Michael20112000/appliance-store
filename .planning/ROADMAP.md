@@ -19,7 +19,7 @@
 
 ### v3.1 UX Polish & Fixes
 
-- [ ] **Phase 50: Cart & Wishlist Drawers** - Replace /koszyk and /obrane pages with full-height right-side drawers
+- [x] **Phase 50: Cart & Wishlist Drawers** - Replace /koszyk and /obrane pages with full-height right-side drawers (5/5 plans, human UAT pending)
 - [ ] **Phase 51: Chat Badge & Suggested Messages** - Add unread badge on chat FAB and suggested messages on chat open
 - [ ] **Phase 52: Chat Structural Refactor** - Mobile drawer, history slide-in panel, and persistent chat across navigation
 - [ ] **Phase 53: Admin Product Search** - Live search field on /admin/tovary

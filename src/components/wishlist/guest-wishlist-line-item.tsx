@@ -1,26 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { PriceDisplay } from "@/components/catalog/price-display";
 import { ConditionBadge } from "@/components/catalog/condition-badge";
+import { PriceDisplay } from "@/components/catalog/price-display";
 import { OptimizedImage } from "@/components/media/optimized-image";
 import { Button } from "@/components/ui/button";
-import { dispatchCartChanged } from "@/lib/cart/cart-events";
-import { removeFromCartAction } from "@/server/actions/cart.actions";
-import type { CartLineDto } from "@/types/cart";
+import { removeGuestWishlistProduct } from "@/lib/wishlist/guest-storage";
+import type { WishlistLineDto } from "@/types/wishlist";
 
-type CartLineItemProps = {
-  line: CartLineDto;
-  onRemoved: (line: CartLineDto) => void;
+type GuestWishlistLineItemProps = {
+  line: WishlistLineDto;
+  onRemoved: () => void;
   onNavigate?: () => void;
 };
 
-export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-
+export function GuestWishlistLineItem({
+  line,
+  onRemoved,
+  onNavigate,
+}: GuestWishlistLineItemProps) {
   return (
     <li className="flex gap-4 border-b border-border py-4 last:border-b-0">
       <Link
@@ -46,7 +44,7 @@ export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps)
         <div>
           <Link
             href={`/tovar/${line.slug}`}
-            className="font-medium hover:underline line-clamp-2"
+            className="line-clamp-2 font-medium hover:underline"
             onClick={onNavigate}
           >
             {line.title}
@@ -62,17 +60,12 @@ export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps)
           variant="outline"
           size="sm"
           className="w-fit"
-          disabled={isPending}
-          onClick={() =>
-            startTransition(async () => {
-              await removeFromCartAction(line.productId);
-              onRemoved(line);
-              dispatchCartChanged();
-              router.refresh();
-            })
-          }
+          onClick={() => {
+            removeGuestWishlistProduct(line.productId);
+            onRemoved();
+          }}
         >
-          {isPending ? "Видаляємо…" : "Видалити"}
+          Видалити
         </Button>
       </div>
     </li>

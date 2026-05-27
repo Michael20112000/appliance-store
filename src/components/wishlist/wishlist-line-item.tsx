@@ -1,24 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { PriceDisplay } from "@/components/catalog/price-display";
 import { ConditionBadge } from "@/components/catalog/condition-badge";
+import { PriceDisplay } from "@/components/catalog/price-display";
 import { OptimizedImage } from "@/components/media/optimized-image";
 import { Button } from "@/components/ui/button";
-import { dispatchCartChanged } from "@/lib/cart/cart-events";
-import { removeFromCartAction } from "@/server/actions/cart.actions";
-import type { CartLineDto } from "@/types/cart";
+import { dispatchWishlistChanged } from "@/lib/wishlist/wishlist-events";
+import { removeFromWishlistAction } from "@/server/actions/wishlist.actions";
+import type { WishlistLineDto } from "@/types/wishlist";
 
-type CartLineItemProps = {
-  line: CartLineDto;
-  onRemoved: (line: CartLineDto) => void;
+type WishlistLineItemProps = {
+  line: WishlistLineDto;
+  onRemoved: () => void;
   onNavigate?: () => void;
 };
 
-export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps) {
-  const router = useRouter();
+export function WishlistLineItem({
+  line,
+  onRemoved,
+  onNavigate,
+}: WishlistLineItemProps) {
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -46,7 +48,7 @@ export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps)
         <div>
           <Link
             href={`/tovar/${line.slug}`}
-            className="font-medium hover:underline line-clamp-2"
+            className="line-clamp-2 font-medium hover:underline"
             onClick={onNavigate}
           >
             {line.title}
@@ -65,10 +67,9 @@ export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps)
           disabled={isPending}
           onClick={() =>
             startTransition(async () => {
-              await removeFromCartAction(line.productId);
-              onRemoved(line);
-              dispatchCartChanged();
-              router.refresh();
+              await removeFromWishlistAction(line.productId);
+              dispatchWishlistChanged();
+              onRemoved();
             })
           }
         >

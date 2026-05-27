@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const cartProductIdSchema = z.object({
+  productId: z.string().cuid("Невірний ідентифікатор товару"),
+});
+
 export const addToCartSchema = z.object({
   productId: z.string().cuid("Невірний ідентифікатор товару"),
   quantity: z.literal(1),

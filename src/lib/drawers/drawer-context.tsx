@@ -27,9 +27,15 @@ export function DrawerProvider({ children }: { children: ReactNode }) {
     () => ({
       cartOpen,
       wishlistOpen,
-      openCart: () => setCartOpen(true),
+      openCart: () => {
+        setWishlistOpen(false);
+        setCartOpen(true);
+      },
       closeCart: () => setCartOpen(false),
-      openWishlist: () => setWishlistOpen(true),
+      openWishlist: () => {
+        setCartOpen(false);
+        setWishlistOpen(true);
+      },
       closeWishlist: () => setWishlistOpen(false),
     }),
     [cartOpen, wishlistOpen],

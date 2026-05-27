@@ -1,6 +1,7 @@
 /** @vitest-environment jsdom */
+import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
 vi.mock("@/lib/drawers/drawer-context", () => ({
   useDrawers: vi.fn().mockReturnValue({
@@ -14,8 +15,27 @@ vi.mock("@/lib/drawers/drawer-context", () => ({
 }));
 
 vi.mock("@/components/ui/sheet", () => ({
-  Sheet: ({ open, children }: { open: boolean; children: React.ReactNode }) =>
-    open ? React.createElement("div", { "data-testid": "sheet" }, children) : null,
+  Sheet: ({
+    open,
+    onOpenChange,
+    children,
+  }: {
+    open: boolean;
+    onOpenChange?: (open: boolean) => void;
+    children: React.ReactNode;
+  }) =>
+    open
+      ? React.createElement(
+          "div",
+          { "data-testid": "sheet" },
+          React.createElement("button", {
+            type: "button",
+            "data-testid": "sheet-close-trigger",
+            onClick: () => onOpenChange?.(false),
+          }),
+          children,
+        )
+      : null,
   SheetContent: ({ children }: { children: React.ReactNode }) =>
     React.createElement("div", { "data-testid": "sheet-content" }, children),
   SheetHeader: ({ children }: { children: React.ReactNode }) =>
@@ -32,7 +52,6 @@ vi.mock("@/components/cart/cart-drawer-content", () => ({
     React.createElement("div", { "data-testid": "cart-drawer-content" }),
 }));
 
-import React from "react";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { useDrawers } from "@/lib/drawers/drawer-context";
 
@@ -81,12 +100,9 @@ describe("CartDrawer", () => {
       openWishlist: vi.fn(),
       closeWishlist: vi.fn(),
     });
-    // The Sheet mock renders when open=true; the drawer should pass onOpenChange that calls closeCart
-    // We verify closeCart is wired by checking it gets called when the Sheet closes
     render(<CartDrawer />);
-    expect(screen.getByTestId("sheet")).toBeDefined();
-    // closeCart will be tested when Sheet's onOpenChange(false) is triggered by implementation
-    expect(closeCartMock).toBeDefined();
+    fireEvent.click(screen.getByTestId("sheet-close-trigger"));
+    expect(closeCartMock).toHaveBeenCalledTimes(1);
   });
 
   it("CART-DRW-04: renders SheetTitle with text 'Кошик'", () => {

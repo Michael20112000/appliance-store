@@ -31,7 +31,7 @@ export function StorefrontFabs({
 }: StorefrontFabsProps) {
   const [cartCount, setCartCount] = useState(initialCartCount);
   const [callbackOpen, setCallbackOpen] = useState(false);
-  const { isOpen: chatIsOpen, openPanel, unreadFromStore, hasSession: chatHasSession } = useChat();
+  const { isOpen: chatIsOpen, openPanel, unreadFromStore } = useChat();
   const { openCart } = useDrawers();
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export function StorefrontFabs({
           aria-label="Відкрити чат з магазином"
         >
           <MessageSquare className="size-6" aria-hidden />
-          {chatHasSession && unreadFromStore ? (
+          {hasSession && unreadFromStore ? (
             <span
               className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-primary ring-2 ring-background"
               aria-hidden

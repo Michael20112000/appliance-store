@@ -10,15 +10,21 @@ import type { CartLineDto } from "@/types/cart";
 
 type GuestCartLineItemProps = {
   line: CartLineDto;
-  onRemoved: () => void;
+  onRemoved: (line: CartLineDto) => void;
+  onNavigate?: () => void;
 };
 
-export function GuestCartLineItem({ line, onRemoved }: GuestCartLineItemProps) {
+export function GuestCartLineItem({
+  line,
+  onRemoved,
+  onNavigate,
+}: GuestCartLineItemProps) {
   return (
     <li className="flex gap-4 border-b border-border py-4 last:border-b-0">
       <Link
         href={`/tovar/${line.slug}`}
         className="relative block h-20 w-20 shrink-0 overflow-hidden rounded-md bg-muted sm:h-24 sm:w-24"
+        onClick={onNavigate}
       >
         {line.image ? (
           <OptimizedImage
@@ -39,6 +45,7 @@ export function GuestCartLineItem({ line, onRemoved }: GuestCartLineItemProps) {
           <Link
             href={`/tovar/${line.slug}`}
             className="line-clamp-2 font-medium hover:underline"
+            onClick={onNavigate}
           >
             {line.title}
           </Link>
@@ -55,7 +62,7 @@ export function GuestCartLineItem({ line, onRemoved }: GuestCartLineItemProps) {
           className="w-fit"
           onClick={() => {
             removePendingProduct(line.productId);
-            onRemoved();
+            onRemoved(line);
           }}
         >
           Видалити

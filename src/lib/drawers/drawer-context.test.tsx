@@ -95,6 +95,22 @@ describe("DrawerProvider", () => {
     expect(screen.getByTestId("wishlist-open").textContent).toBe("true");
   });
 
+  it("DRWR-CTX-07: openCart closes wishlist and openWishlist closes cart", () => {
+    render(
+      <DrawerProvider>
+        <TestConsumer />
+      </DrawerProvider>,
+    );
+    fireEvent.click(screen.getByTestId("open-wishlist"));
+    expect(screen.getByTestId("wishlist-open").textContent).toBe("true");
+    fireEvent.click(screen.getByTestId("open-cart"));
+    expect(screen.getByTestId("cart-open").textContent).toBe("true");
+    expect(screen.getByTestId("wishlist-open").textContent).toBe("false");
+    fireEvent.click(screen.getByTestId("open-wishlist"));
+    expect(screen.getByTestId("wishlist-open").textContent).toBe("true");
+    expect(screen.getByTestId("cart-open").textContent).toBe("false");
+  });
+
   it("DRWR-CTX-06: useDrawers throws outside DrawerProvider", () => {
     // Suppress React's error boundary console output during this test
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});

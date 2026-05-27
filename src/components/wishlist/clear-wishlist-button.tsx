@@ -16,13 +16,18 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { clearGuestWishlist } from "@/lib/wishlist/guest-storage";
+import { dispatchWishlistChanged } from "@/lib/wishlist/wishlist-events";
 import { clearWishlistAction } from "@/server/actions/wishlist.actions";
 
 type ClearWishlistButtonProps = {
   hasSession: boolean;
+  onCleared?: () => void;
 };
 
-export function ClearWishlistButton({ hasSession }: ClearWishlistButtonProps) {
+export function ClearWishlistButton({
+  hasSession,
+  onCleared,
+}: ClearWishlistButtonProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -32,10 +37,12 @@ export function ClearWishlistButton({ hasSession }: ClearWishlistButtonProps) {
       try {
         if (hasSession) {
           await clearWishlistAction();
+          dispatchWishlistChanged();
           router.refresh();
         } else {
           clearGuestWishlist();
         }
+        onCleared?.();
         setOpen(false);
         toast.success("Обране очищено");
       } catch {

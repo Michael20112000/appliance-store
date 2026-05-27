@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
-status: executing
-last_updated: "2026-05-27T11:01:28.085Z"
-last_activity: 2026-05-27 -- Phase 50 execution started
+status: phase_complete_pending_uat
+last_updated: "2026-05-27T15:35:00Z"
+last_activity: 2026-05-27 — Phase 50 code review fixes applied; verification human_needed
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 0
-  percent: 0
+  completed_plans: 5
+  percent: 25
 ---
 
 # Project State
@@ -20,19 +20,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 50 — cart-wishlist-drawers
+**Current focus:** Phase 50 complete (pending human UAT) → Phase 51 next
 
 ## Current Position
 
-Phase: 50 (cart-wishlist-drawers) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 50
+Phase: 50 (cart-wishlist-drawers) — COMPLETE (human UAT pending)
+Plan: 5 of 5 complete
+Status: Code review fixes applied; verification score 11/13 (human_needed)
 
 ```
-Progress: [          ] 0% (0/4 phases)
+Progress: [██        ] 25% (1/4 phases)
 ```
 
-Last activity: 2026-05-27 -- Phase 50 execution started
+Last activity: 2026-05-27 — Phase 50 review fixes + verification complete
 
 ## Deferred Items
 
@@ -47,6 +47,7 @@ Items acknowledged and deferred at milestone close on 2026-05-24:
 | verification_gaps | 43-VERIFICATION.md | human_needed — user approved during v2.2 execution |
 | verification_gaps | 44-VERIFICATION.md | human_needed — user approved during v2.3 execution |
 | verification_gaps | 45-VERIFICATION.md | human_needed — user approved during v2.3 execution |
+| verification_gaps | 50-VERIFICATION.md | human_needed — cart/wishlist drawer visual + backdrop checks |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Items acknowledged and deferred at milestone close on 2026-05-24:
 - v3.0/47: claimGuestConversation wrapped in $transaction (TOCTOU race fix)
 - v3.0/47: unarchiveConversation must set isActive: true (not just status: "OPEN")
 - v3.0/47: router.refresh() after claim — SSR re-hydrates initialConversationId
+- v3.1/50: cart and wishlist open as right-side Sheet drawers via DrawerProvider (no /koszyk or /obrane navigation)
+- v3.1/50: only one drawer open at a time (mutual exclusion in openCart/openWishlist)
 
 ### Blockers/Concerns
 
@@ -77,4 +80,5 @@ None.
 
 ## Operator Next Steps
 
-- Run `/gsd:execute-phase 50` — execute all 5 plans (4 waves)
+1. **Human UAT (Phase 50):** Open cart/wishlist drawers in browser — verify data, backdrop close, no page navigation
+2. Run `/gsd:plan-phase 51` or `/gsd:execute-phase 51` — Chat Badge & Suggested Messages

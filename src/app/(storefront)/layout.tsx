@@ -24,21 +24,21 @@ export default async function StorefrontLayout({
 
   return (
     <>
-      <StoreHeader />
-      <main id="main-content" className="flex-1">
-        <PageTransition>
-          <NuqsAdapter>
-            <Suspense fallback={null}>
-              <ChatProviderGate phones={contacts.phones} initialCartCount={cartCount}>
+      <NuqsAdapter>
+        <Suspense fallback={null}>
+          <ChatProviderGate phones={contacts.phones} initialCartCount={cartCount}>
+            <StoreHeader />
+            <main id="main-content" className="flex-1">
+              <PageTransition>
                 <CartPendingMergeGate />
                 <WishlistPendingMergeGate />
                 {children}
                 <Analytics />
-              </ChatProviderGate>
-            </Suspense>
-          </NuqsAdapter>
-        </PageTransition>
-      </main>
+              </PageTransition>
+            </main>
+          </ChatProviderGate>
+        </Suspense>
+      </NuqsAdapter>
       <StoreFooter />
       <Toaster richColors position="top-center" closeButton />
     </>
