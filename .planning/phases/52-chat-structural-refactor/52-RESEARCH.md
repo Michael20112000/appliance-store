@@ -436,17 +436,19 @@ const [isOpen, setIsOpen] = useState(false);
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Width of history overlay (CHAT-13)**
    - What we know: "current conversation remains visible on the right and is not replaced"
    - What's unclear: Does "visible on the right" mean 25% peek, or a full 50/50 split, or just that the conversation component still exists in the DOM (even if fully covered)?
    - Recommendation: Implement as ~75% wide overlay (conversation shows 25% on right). This matches the "slides in from the left" framing where you can see where you came from.
+   - **RESOLVED:** 75% wide overlay (`w-[75%]`) per Plan 04 implementation — conversation thread peeks 25% on the right.
 
 2. **productId URL param after CHAT-14**
    - What we know: `productId` is passed via URL when opening chat from a product page (`setQuery({ chat: "open", productId: ... })`). This is used for product context in the chat panel.
    - What's unclear: After removing nuqs for `isOpen`, should `productId` also move to pure state (passed as arg to `openPanel`)?
    - Recommendation: Yes. `openPanel({ productId, productTitle, productSlug })` already carries all needed context as arguments. The URL param is redundant. Remove both `chat` and `productId` from nuqs.
+   - **RESOLVED:** Both `chat` and `productId` parsers removed from nuqs in Plan 02 — `openPanel()` args carry all product context.
 
 ---
 
