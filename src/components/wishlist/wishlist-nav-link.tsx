@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -10,6 +8,7 @@ import {
   getGuestWishlistCount,
 } from "@/lib/wishlist/guest-storage";
 import { WISHLIST_CHANGED_EVENT } from "@/lib/wishlist/wishlist-events";
+import { useDrawers } from "@/lib/drawers/drawer-context";
 
 type WishlistNavLinkProps = {
   hasSession: boolean;
@@ -20,7 +19,7 @@ export function WishlistNavLink({
   hasSession,
   initialCount,
 }: WishlistNavLinkProps) {
-  const pathname = usePathname();
+  const { openWishlist } = useDrawers();
   const [count, setCount] = useState(() =>
     hasSession ? (initialCount ?? 0) : 0,
   );
@@ -55,11 +54,11 @@ export function WishlistNavLink({
       : "Обране";
 
   return (
-    <Link
-      href="/obrane"
+    <button
+      type="button"
       className="relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3 text-sm font-medium hover:bg-muted"
       aria-label={ariaLabel}
-      aria-current={pathname === "/obrane" ? "page" : undefined}
+      onClick={openWishlist}
     >
       <Heart className="size-5" />
       {count > 0 ? (
@@ -67,6 +66,6 @@ export function WishlistNavLink({
           {badgeLabel}
         </Badge>
       ) : null}
-    </Link>
+    </button>
   );
 }
