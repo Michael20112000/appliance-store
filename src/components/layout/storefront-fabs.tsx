@@ -48,6 +48,7 @@ export function StorefrontFabs({
   }, [hasSession]);
 
   const badgeLabel = cartCount > 9 ? "9+" : String(cartCount);
+  const chatBadgeLabel = unreadCount > 9 ? "9+" : String(unreadCount);
 
   return (
     <div
@@ -96,15 +97,21 @@ export function StorefrontFabs({
             "flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring relative",
           )}
-          aria-label="Відкрити чат з магазином"
+          aria-label={
+            unreadCount > 0
+              ? `Відкрити чат з магазином, ${unreadCount} непрочитаних`
+              : "Відкрити чат з магазином"
+          }
         >
           <MessageSquare className="size-6" aria-hidden />
-          {unreadCount > 0 ? (
-            <span
-              className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-primary ring-2 ring-background"
+          {unreadCount > 0 && (
+            <Badge
+              className="absolute -right-0.5 -top-0.5 min-w-5 justify-center px-1 text-[10px]"
               aria-hidden
-            />
-          ) : null}
+            >
+              {chatBadgeLabel}
+            </Badge>
+          )}
         </button>
       )}
 
