@@ -108,3 +108,85 @@ describe("PanelHeader — Menu icon visibility gated on hasSession", () => {
     ).toBeTruthy();
   });
 });
+
+describe("CHAT-12 — Mobile Drawer", () => {
+  beforeEach(() => {
+    // Simulate mobile viewport (max-width: 767px matches)
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: true,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
+  it.fails("renders drawer-popup when isMobile and isOpen", () => {
+    mockUseChat.mockReturnValue({ ...baseChatContext, isOpen: true });
+
+    render(<ChatPanel />);
+
+    // Fails now: current implementation renders SheetContent (data-slot="sheet-content"),
+    // not a Drawer component with data-slot="drawer-popup".
+    // Will pass after Plan 03 replaces Sheet with shadcn Drawer on mobile.
+    expect(document.querySelector('[data-slot="drawer-popup"]')).not.toBeNull();
+  });
+});
+
+describe("CHAT-13 — History overlay always-rendered", () => {
+  beforeEach(() => {
+    // Desktop viewport so desktop branch is exercised
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
+  it.fails("renders PanelBody even when panelView=history", () => {
+    mockUseChat.mockReturnValue({
+      ...baseChatContext,
+      isOpen: true,
+      panelView: "history" as const,
+    });
+
+    render(<ChatPanel />);
+
+    // Fails now: chat-panel.tsx line 185 swaps PanelBody out entirely when
+    // panelView="history", rendering HistoryDrawer instead. PanelHeader (and its
+    // "Чат з магазином" text) is only inside PanelBody, so the text is absent.
+    // Will pass after Plan 04 introduces an always-rendered PanelBody with
+    // HistoryDrawer as an overlay.
+    expect(screen.getByText("Чат з магазином")).toBeTruthy();
+  });
+});
+
+describe("CHAT-14 — isOpen as pure useState", () => {
+  it.todo(
+    "closePanel is called on drawer close; no URL manipulation occurs",
+  );
+});
