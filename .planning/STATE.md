@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
-status: in_progress
-last_updated: "2026-05-26T00:00:00.000Z"
-last_activity: 2026-05-26
+status: executing
+last_updated: "2026-05-27T11:01:28.085Z"
+last_activity: 2026-05-27 -- Phase 50 execution started
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
+  total_plans: 5
   completed_plans: 0
   percent: 0
 ---
@@ -20,19 +20,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** v3.1 UX Polish & Fixes — 4 phases, starting at Phase 50
+**Current focus:** Phase 50 — cart-wishlist-drawers
 
 ## Current Position
 
-Phase: 50 (Cart & Wishlist Drawers) — Planned, ready to execute
-Plan: 5 plans in 4 waves
-Status: Planning complete — all plans verified
+Phase: 50 (cart-wishlist-drawers) — EXECUTING
+Plan: 1 of 5
+Status: Executing Phase 50
 
 ```
 Progress: [          ] 0% (0/4 phases)
 ```
 
-Last activity: 2026-05-27 — Phase 50 planned (5 plans, 4 waves)
+Last activity: 2026-05-27 -- Phase 50 execution started
 
 ## Deferred Items
 
