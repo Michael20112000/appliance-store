@@ -41,7 +41,7 @@ vi.mock("@/components/chat/chat-provider", () => ({
   useChat: vi.fn().mockReturnValue({
     isOpen: false,
     openPanel: vi.fn(),
-    unreadFromStore: false,
+    unreadCount: 0,
     hasSession: false,
   }),
 }));
@@ -170,7 +170,7 @@ describe("StorefrontFabs", () => {
     vi.mocked(useChat).mockReturnValue({
       isOpen: false,
       openPanel: vi.fn(),
-      unreadFromStore: false,
+      unreadCount: 0,
       hasSession: false,
     } as unknown as ReturnType<typeof useChat>);
     render(
@@ -183,7 +183,7 @@ describe("StorefrontFabs", () => {
     vi.mocked(useChat).mockReturnValue({
       isOpen: true,
       openPanel: vi.fn(),
-      unreadFromStore: false,
+      unreadCount: 0,
       hasSession: false,
     } as unknown as ReturnType<typeof useChat>);
     render(
@@ -196,12 +196,52 @@ describe("StorefrontFabs", () => {
     vi.mocked(useChat).mockReturnValue({
       isOpen: false,
       openPanel: vi.fn(),
-      unreadFromStore: false,
+      unreadCount: 0,
       hasSession: false,
     } as unknown as ReturnType<typeof useChat>);
     render(
       <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
     );
     expect(screen.getByRole("button", { name: "Відкрити чат з магазином" })).toBeDefined();
+  });
+
+  it("CHAT-10-a: chat FAB shows badge with text '3' when unreadCount is 3", () => {
+    vi.mocked(useChat).mockReturnValue({
+      isOpen: false,
+      openPanel: vi.fn(),
+      unreadCount: 3,
+      hasSession: true,
+    } as unknown as ReturnType<typeof useChat>);
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={true} />,
+    );
+    expect(screen.getByText("3")).toBeDefined();
+  });
+
+  it("CHAT-10-b: chat FAB shows no badge when unreadCount is 0", () => {
+    vi.mocked(useChat).mockReturnValue({
+      isOpen: false,
+      openPanel: vi.fn(),
+      unreadCount: 0,
+      hasSession: true,
+    } as unknown as ReturnType<typeof useChat>);
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
+    );
+    // No chat unread badge — chat button should just say "Відкрити чат з магазином"
+    expect(screen.queryByRole("button", { name: /0 непрочитаних/ })).toBeNull();
+  });
+
+  it("CHAT-10-c: chat FAB shows badge '9+' when unreadCount is 10", () => {
+    vi.mocked(useChat).mockReturnValue({
+      isOpen: false,
+      openPanel: vi.fn(),
+      unreadCount: 10,
+      hasSession: true,
+    } as unknown as ReturnType<typeof useChat>);
+    render(
+      <StorefrontFabs phones={[]} initialCartCount={0} hasSession={true} />,
+    );
+    expect(screen.getByText("9+")).toBeDefined();
   });
 });

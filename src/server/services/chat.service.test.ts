@@ -11,6 +11,8 @@ import {
   CONVERSATION_NOT_FOUND,
   countUnreadForAdmin,
   // @ts-expect-error — not exported yet (Wave 0 RED stub)
+  countUnreadForBuyer,
+  // @ts-expect-error — not exported yet (Wave 0 RED stub)
   createNewConversation,
   deleteConversation,
   FORBIDDEN,
@@ -257,6 +259,39 @@ describe("countUnreadForAdmin", () => {
         }),
       }),
     );
+  });
+});
+
+describe("countUnreadForBuyer", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("counts STORE messages in conversation after buyerLastReadAt", async () => {
+    vi.mocked(prisma.message.count).mockResolvedValueOnce(2);
+
+    const cutoff = new Date("2026-05-01T00:00:00.000Z");
+    const count = await (countUnreadForBuyer as (conversationId: string, buyerLastReadAt: Date) => Promise<number>)("conv-1", cutoff);
+
+    expect(count).toBe(2);
+    expect(prisma.message.count).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          conversationId: "conv-1",
+          senderRole: "STORE",
+          createdAt: { gt: cutoff },
+        }),
+      }),
+    );
+  });
+
+  it("returns 0 when no STORE messages after buyerLastReadAt", async () => {
+    vi.mocked(prisma.message.count).mockResolvedValueOnce(0);
+
+    const cutoff = new Date("2026-05-01T00:00:00.000Z");
+    const count = await (countUnreadForBuyer as (conversationId: string, buyerLastReadAt: Date) => Promise<number>)("conv-1", cutoff);
+
+    expect(count).toBe(0);
   });
 });
 
