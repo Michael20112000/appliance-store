@@ -317,6 +317,19 @@ export async function markBuyerRead(conversationId: string) {
   });
 }
 
+export async function countUnreadForBuyer(
+  conversationId: string,
+  buyerLastReadAt: Date,
+): Promise<number> {
+  return prisma.message.count({
+    where: {
+      conversationId,
+      senderRole: "STORE",
+      createdAt: { gt: buyerLastReadAt },
+    },
+  });
+}
+
 export async function countUnreadForAdmin(): Promise<number> {
   return prisma.conversation.count({
     where: {
