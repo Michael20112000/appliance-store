@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Paperclip, Send } from "lucide-react";
 import { useAdminChat } from "@/components/chat/admin-chat-provider";
 import { useChat } from "@/components/chat/chat-provider";
@@ -69,7 +69,7 @@ async function signAndUpload(file: File): Promise<ChatAttachment> {
   };
 }
 
-export function ChatComposer() {
+export function ChatComposer({ prefillText = "", onPrefillConsumed }: { prefillText?: string; onPrefillConsumed?: () => void; } = {}) {
   const {
     conversationId,
     productContext,
@@ -89,6 +89,12 @@ export function ChatComposer() {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!prefillText) return;
+    setBody(prefillText);
+    onPrefillConsumed?.();
+  }, [prefillText, onPrefillConsumed]);
 
   const trimmed = body.trim();
   const overLimit = body.length > MAX_LENGTH;

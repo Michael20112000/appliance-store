@@ -8,6 +8,7 @@ import { ChatComposer } from "@/components/chat/chat-composer";
 import { HistoryDrawer } from "@/components/chat/history-drawer";
 import { MessageList } from "@/components/chat/message-list";
 import { ProductContextBanner } from "@/components/chat/product-context-banner";
+import { SuggestedMessages } from "@/components/chat/suggested-messages";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -101,9 +102,11 @@ function PanelBody({
     refetchMessages,
     closePanel,
     isOpen,
+    canSend,
   } = useChat();
 
   const isArchived = conversationStatus === "ARCHIVED";
+  const [prefillText, setPrefillText] = useState("");
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
@@ -120,6 +123,11 @@ function PanelBody({
         useNativeScroll={useNativeScroll}
         isPanelOpen={isOpen}
       />
+      {messages.length === 0 && !isLoading && canSend ? (
+        <div className="shrink-0">
+          <SuggestedMessages productContext={productContext} onSelect={setPrefillText} />
+        </div>
+      ) : null}
       {productContext ? (
         <div className="shrink-0">
           <ProductContextBanner context={productContext} />
@@ -131,7 +139,7 @@ function PanelBody({
         </div>
       ) : null}
       <div className="shrink-0">
-        <ChatComposer />
+        <ChatComposer prefillText={prefillText} onPrefillConsumed={() => setPrefillText("")} />
       </div>
     </div>
   );
