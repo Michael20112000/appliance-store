@@ -162,7 +162,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 - [x] 52-03-PLAN.md — Create src/components/ui/drawer.tsx wrapping @base-ui/react/drawer (CHAT-12)
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 52-04-PLAN.md — Rewrite chat-panel.tsx: Drawer mobile + CSS overlay history + upgrade test stubs (CHAT-12, CHAT-13, CHAT-14)
+- [x] 52-04-PLAN.md — Rewrite chat-panel.tsx: Drawer mobile + CSS overlay history + upgrade test stubs (CHAT-12, CHAT-13, CHAT-14)
 
 **Cross-cutting constraints:**
 - chat-provider.tsx (Plan 02) must have useState isOpen before chat-panel.tsx can rely on it being non-URL-derived
@@ -186,7 +186,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 |-------|-----------|----------------|--------|-----------|
 | 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
 | 51. Chat Badge & Suggested Messages | v3.1 | 4/4 | Complete   | 2026-05-27 |
-| 52. Chat Structural Refactor | v3.1 | 3/4 | In Progress|  |
+| 52. Chat Structural Refactor | v3.1 | 4/4 | Complete   | 2026-05-27 |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete | 2026-05-25 |
