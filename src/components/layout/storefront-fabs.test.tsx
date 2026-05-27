@@ -46,9 +46,21 @@ vi.mock("@/components/chat/chat-provider", () => ({
   }),
 }));
 
+vi.mock("@/lib/drawers/drawer-context", () => ({
+  useDrawers: vi.fn().mockReturnValue({
+    cartOpen: false,
+    wishlistOpen: false,
+    openCart: vi.fn(),
+    closeCart: vi.fn(),
+    openWishlist: vi.fn(),
+    closeWishlist: vi.fn(),
+  }),
+}));
+
 import React from "react";
 import { StorefrontFabs } from "./storefront-fabs";
 import { useChat } from "@/components/chat/chat-provider";
+import { useDrawers } from "@/lib/drawers/drawer-context";
 
 describe("StorefrontFabs", () => {
   beforeEach(() => {
@@ -59,20 +71,30 @@ describe("StorefrontFabs", () => {
     cleanup();
   });
 
-  it("FAB-01-a: renders cart FAB when initialCartCount is 0 (no early return)", () => {
+  it("FAB-01-a: renders cart FAB as a button (not a link)", () => {
     render(
       <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
     );
-    const cartLink = screen.getByRole("link", { name: "Кошик" });
-    expect(cartLink).toBeDefined();
+    const cartBtn = screen.getByRole("button", { name: "Кошик" });
+    expect(cartBtn).toBeDefined();
   });
 
-  it("FAB-01-b: cart FAB has href='/koszyk'", () => {
+  it("FAB-01-b: clicking cart FAB calls openCart from useDrawers", () => {
+    const openCartMock = vi.fn();
+    vi.mocked(useDrawers).mockReturnValue({
+      cartOpen: false,
+      wishlistOpen: false,
+      openCart: openCartMock,
+      closeCart: vi.fn(),
+      openWishlist: vi.fn(),
+      closeWishlist: vi.fn(),
+    });
     render(
       <StorefrontFabs phones={[]} initialCartCount={0} hasSession={false} />,
     );
-    const cartLink = screen.getByRole("link", { name: "Кошик" });
-    expect(cartLink.getAttribute("href")).toBe("/koszyk");
+    const cartBtn = screen.getByRole("button", { name: "Кошик" });
+    fireEvent.click(cartBtn);
+    expect(openCartMock.mock.calls.length).toBe(1);
   });
 
   it("FAB-01-c: does NOT show badge when initialCartCount is 0", () => {
