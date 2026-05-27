@@ -24,6 +24,9 @@ import { markBuyerReadAction } from "@/server/actions/chat.actions";
 import type { ChatAttachment, MessageDto } from "@/types/chat";
 import { StorefrontFabs } from "@/components/layout/storefront-fabs";
 import type { PublicStorePhone } from "@/server/services/store-settings.service";
+import { DrawerProvider } from "@/lib/drawers/drawer-context";
+import { CartDrawer } from "@/components/cart/cart-drawer";
+import { WishlistDrawer } from "@/components/wishlist/wishlist-drawer";
 
 const ChatPanel = dynamic(
   () =>
@@ -537,15 +540,19 @@ export function ChatProvider({
   );
 
   return (
-    <ChatContext.Provider value={value}>
-      {children}
-      <StorefrontFabs
-        phones={phones}
-        initialCartCount={initialCartCount}
-        hasSession={hasSession}
-      />
-      <ChatPanel />
-    </ChatContext.Provider>
+    <DrawerProvider>
+      <ChatContext.Provider value={value}>
+        {children}
+        <StorefrontFabs
+          phones={phones}
+          initialCartCount={initialCartCount}
+          hasSession={hasSession}
+        />
+        <ChatPanel />
+        <CartDrawer hasSession={hasSession} />
+        <WishlistDrawer hasSession={hasSession} />
+      </ChatContext.Provider>
+    </DrawerProvider>
   );
 }
 
