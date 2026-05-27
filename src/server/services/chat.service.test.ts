@@ -6,13 +6,10 @@ import {
   CHAT_ARCHIVED,
   CHAT_RATE_LIMIT,
   ChatRateLimitError,
-  // @ts-expect-error — not exported yet (Wave 0 RED stub)
   claimGuestConversation,
   CONVERSATION_NOT_FOUND,
   countUnreadForAdmin,
-  // @ts-expect-error — not exported yet (Wave 0 RED stub)
   countUnreadForBuyer,
-  // @ts-expect-error — not exported yet (Wave 0 RED stub)
   createNewConversation,
   deleteConversation,
   FORBIDDEN,

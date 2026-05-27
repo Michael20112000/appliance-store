@@ -5,7 +5,7 @@ import { useChat } from "@/components/chat/chat-provider";
 import { cn } from "@/lib/utils";
 
 export function ChatFab() {
-  const { isOpen, unreadFromStore, openPanel, hasSession } = useChat();
+  const { isOpen, unreadCount, openPanel, hasSession } = useChat();
 
   if (isOpen) return null;
 
@@ -20,7 +20,7 @@ export function ChatFab() {
       aria-label="Відкрити чат з магазином"
     >
       <MessageSquare className="size-6" aria-hidden />
-      {hasSession && unreadFromStore ? (
+      {hasSession && unreadCount > 0 ? (
         <span
           className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-primary ring-2 ring-background"
           aria-hidden

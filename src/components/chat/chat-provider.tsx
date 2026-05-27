@@ -56,7 +56,7 @@ type ChatContextValue = {
   isLoading: boolean;
   loadError: string | null;
   isDisconnected: boolean;
-  unreadFromStore: boolean;
+  unreadCount: number;
   productContext: ProductChatContext | null;
   guestToken: string | null;
   openPanel: (options?: ProductChatContext) => void;
@@ -67,7 +67,7 @@ type ChatContextValue = {
   removeOptimisticMessage: (tempId: string) => void;
   setConversationId: (id: string) => void;
   setConversationStatus: (status: ConversationStatus) => void;
-  clearUnreadFromStore: () => void;
+  clearUnreadCount: () => void;
   resetMessages: () => void;
   updateGuestToken: (token: string) => void;
   panelView: "thread" | "history";
@@ -84,7 +84,7 @@ type ChatProviderProps = {
   hasSession: boolean;
   initialConversationId?: string;
   initialConversationStatus?: ConversationStatus;
-  initialUnreadFromStore?: boolean;
+  initialUnreadCount?: number;
   // FAB-04: props forwarded to StorefrontFabs
   phones: PublicStorePhone[];
   initialCartCount: number;
@@ -104,7 +104,7 @@ export function ChatProvider({
   hasSession,
   initialConversationId,
   initialConversationStatus,
-  initialUnreadFromStore = false,
+  initialUnreadCount = 0,
   phones,
   initialCartCount,
 }: ChatProviderProps) {
@@ -125,7 +125,7 @@ export function ChatProvider({
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isDisconnected, setIsDisconnected] = useState(false);
-  const [unreadFromStore, setUnreadFromStore] = useState(initialUnreadFromStore);
+  const [unreadCount, setUnreadCount] = useState(initialUnreadCount);
   const [productContext, setProductContext] = useState<ProductChatContext | null>(
     null,
   );
@@ -188,8 +188,8 @@ export function ChatProvider({
       if (prev.some((item) => item.id === message.id)) return prev;
       return [...prev, message];
     });
-    if (message.senderRole === "STORE") {
-      setUnreadFromStore(!isOpenRef.current);
+    if (message.senderRole === "STORE" && !isOpenRef.current) {
+      setUnreadCount((prev) => prev + 1);
     }
   }, []); // stable reference — reads isOpen via isOpenRef.current (WR-01)
 
@@ -210,8 +210,8 @@ export function ChatProvider({
     setMessages((prev) => prev.filter((item) => item.id !== tempId));
   }, []);
 
-  const clearUnreadFromStore = useCallback(() => {
-    setUnreadFromStore(false);
+  const clearUnreadCount = useCallback(() => {
+    setUnreadCount(0);
   }, []);
 
   const fetchMessages = useCallback(async (id: string) => {
@@ -320,7 +320,7 @@ export function ChatProvider({
           await fetchMessages(conversationId);
           if (cancelled) return;
           await markBuyerReadAction(conversationId);
-          clearUnreadFromStore();
+          clearUnreadCount();
         } catch {
           if (!cancelled) {
             setLoadError(
@@ -341,7 +341,7 @@ export function ChatProvider({
     setConversationStatus(null);
     setLoadError(null);
     setIsLoading(false);
-  }, [clearUnreadFromStore, conversationId, fetchMessages, hasSession, isOpen]);
+  }, [clearUnreadCount, conversationId, fetchMessages, hasSession, isOpen]);
 
   useEffect(() => {
     // T-46-11: guard prevents subscription before conversationId exists
@@ -428,10 +428,10 @@ export function ChatProvider({
   }, [appendMessage, conversationId, guestToken, hasSession, isOpen, refetchMessages, refetchMessagesForGuest]);
 
   useEffect(() => {
-    if (isOpen && hasSession) {
-      clearUnreadFromStore();
+    if (isOpen) {
+      clearUnreadCount();
     }
-  }, [clearUnreadFromStore, hasSession, isOpen]);
+  }, [clearUnreadCount, isOpen]);
 
   const resetMessages = useCallback(() => setMessages([]), []);
 
@@ -485,7 +485,7 @@ export function ChatProvider({
       isLoading,
       loadError,
       isDisconnected,
-      unreadFromStore,
+      unreadCount,
       productContext,
       guestToken,
       openPanel,
@@ -496,7 +496,7 @@ export function ChatProvider({
       removeOptimisticMessage,
       setConversationId,
       setConversationStatus,
-      clearUnreadFromStore,
+      clearUnreadCount,
       resetMessages,
       updateGuestToken,
       panelView,
@@ -505,7 +505,7 @@ export function ChatProvider({
     }),
     [
       appendMessage,
-      clearUnreadFromStore,
+      clearUnreadCount,
       closePanel,
       canSend,
       conversationId,
@@ -523,7 +523,7 @@ export function ChatProvider({
       replaceOptimisticMessage,
       removeOptimisticMessage,
       resetMessages,
-      unreadFromStore,
+      unreadCount,
       updateGuestToken,
       panelView,
       openHistory,
