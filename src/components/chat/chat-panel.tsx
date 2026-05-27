@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ChevronLeft, Menu, X } from "lucide-react";
 import { useChat } from "@/components/chat/chat-provider";
 import { ArchivedChatBanner } from "@/components/chat/archived-chat-banner";
 import { ChatComposer, type ChatComposerHandle } from "@/components/chat/chat-composer";
@@ -27,7 +27,8 @@ function PanelHeader({
   onClose: () => void;
   sticky?: boolean;
 }) {
-  const { hasSession, openHistory } = useChat();
+  const { hasSession, openHistory, closeHistory, panelView } = useChat();
+  const historyOpen = panelView === "history";
 
   return (
     <div
@@ -47,10 +48,10 @@ function PanelHeader({
           variant="ghost"
           size="icon"
           className="size-9 shrink-0"
-          onClick={openHistory}
-          aria-label="Відкрити меню чатів"
+          onClick={historyOpen ? closeHistory : openHistory}
+          aria-label={historyOpen ? "Назад до чату" : "Відкрити меню чатів"}
         >
-          <Menu className="size-4" />
+          {historyOpen ? <ChevronLeft className="size-4" /> : <Menu className="size-4" />}
         </Button>
       ) : null}
       <Button
@@ -112,7 +113,7 @@ function PanelBody({
   const composerRef = useRef<ChatComposerHandle>(null);
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+    <div className="flex h-full min-h-0 flex-1 rounded-t-xl flex-col overflow-hidden">
       <PanelHeader onClose={closePanel} sticky={stickyHeader} />
       {isDisconnected ? (
         <div className="shrink-0">
