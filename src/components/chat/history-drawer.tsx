@@ -81,7 +81,7 @@ export function HistoryDrawer() {
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
-      <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3">
+      <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-4">
         <Button type="button" variant="ghost" size="sm" onClick={closeHistory}>
           <ArrowLeft className="mr-1 size-4" /> Назад
         </Button>
