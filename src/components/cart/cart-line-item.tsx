@@ -13,7 +13,8 @@ import type { CartLineDto } from "@/types/cart";
 
 type CartLineItemProps = {
   line: CartLineDto;
-  onRemoved: (line: CartLineDto) => void;
+  /** Instant UI update in drawer; page uses router.refresh() when omitted */
+  onRemoved?: (line: CartLineDto) => void;
   onNavigate?: () => void;
 };
 
@@ -66,7 +67,7 @@ export function CartLineItem({ line, onRemoved, onNavigate }: CartLineItemProps)
           onClick={() =>
             startTransition(async () => {
               await removeFromCartAction(line.productId);
-              onRemoved(line);
+              onRemoved?.(line);
               dispatchCartChanged();
               router.refresh();
             })

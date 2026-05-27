@@ -350,9 +350,10 @@ export async function createNewConversation(
         where: { userId: input.userId, isActive: true },
         data: { isActive: false },
       });
-      return tx.conversation.create({
+      const conv = await tx.conversation.create({
         data: { userId: input.userId, isActive: true },
       });
+      return { id: conv.id };
     } else {
       // Deactivate the old active conversation without touching its guestToken —
       // clearing guestToken would violate the owner_required check constraint
