@@ -109,7 +109,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 - [x] 50-04-PLAN.md — WishlistDrawer shell + WishlistDrawerContent (auth/guest data loading)
 
 **Wave 4** *(blocked on Wave 3 completion)*
-- [ ] 50-05-PLAN.md — Wire DrawerProvider into ChatProvider + convert all Link entry points to buttons
+- [x] 50-05-PLAN.md — Wire DrawerProvider into ChatProvider + convert all Link entry points to buttons
 
 **Cross-cutting constraints:**
 - `DrawerProvider` (Wave 2) must exist before CartDrawer, WishlistDrawer, and all entry-point conversions — applies to Waves 3–4
@@ -155,7 +155,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 50. Cart & Wishlist Drawers | v3.1 | 4/5 | In Progress|  |
+| 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
 | 51. Chat Badge & Suggested Messages | v3.1 | 0/? | Not started | - |
 | 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
