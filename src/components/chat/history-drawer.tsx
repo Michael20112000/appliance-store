@@ -85,7 +85,6 @@ export function HistoryDrawer() {
         <Button type="button" variant="ghost" size="sm" onClick={closeHistory}>
           <ArrowLeft className="mr-1 size-4" /> Назад
         </Button>
-        <p className="text-sm font-semibold">Мої чати</p>
         <Button
           type="button"
           variant="outline"
