@@ -102,7 +102,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 - [x] 50-01-PLAN.md — Wave 0 test stubs (DrawerContext, CartNavButton, CartDrawer, WishlistNavLink, WishlistDrawer tests + storefront-fabs update)
 
 **Wave 2** *(blocked on Wave 1 completion)*
-- [ ] 50-02-PLAN.md — DrawerProvider context + getCartAction + getWishlistAction server actions
+- [x] 50-02-PLAN.md — DrawerProvider context + getCartAction + getWishlistAction server actions
 
 **Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 50-03-PLAN.md — CartDrawer shell + CartDrawerContent (auth/guest data loading)
@@ -155,7 +155,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 50. Cart & Wishlist Drawers | v3.1 | 1/5 | In Progress|  |
+| 50. Cart & Wishlist Drawers | v3.1 | 2/5 | In Progress|  |
 | 51. Chat Badge & Suggested Messages | v3.1 | 0/? | Not started | - |
 | 52. Chat Structural Refactor | v3.1 | 0/? | Not started | - |
 | 53. Admin Product Search | v3.1 | 0/? | Not started | - |
