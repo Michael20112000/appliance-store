@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
-status: verifying
-last_updated: "2026-05-27T15:55:14.228Z"
+status: planning
+last_updated: "2026-05-27T19:20:00.000Z"
 last_activity: 2026-05-27
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 9
   completed_plans: 9
-  percent: 50
+  percent: 75
 ---
 
 # Project State
@@ -20,13 +20,11 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Phase 51 — chat-badge-suggested-messages
+**Current focus:** Phase 52 — Chat Structural Refactor
 
 ## Current Position
 
-Phase: 51 (chat-badge-suggested-messages) — EXECUTING
-Plan: 4 of 4
-Status: Phase complete — ready for verification
+Phase: 52 (chat-structural-refactor) — READY TO PLAN
 
 ```
 Progress: [██████████] 100%
