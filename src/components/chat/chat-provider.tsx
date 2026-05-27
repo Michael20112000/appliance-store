@@ -345,7 +345,8 @@ export function ChatProvider({
 
   useEffect(() => {
     // T-46-11: guard prevents subscription before conversationId exists
-    if (!isOpen || !conversationId || !isPusherClientConfigured()) {
+    // Subscribe regardless of isOpen so unread count increments in real time while panel is closed.
+    if (!conversationId || !isPusherClientConfigured()) {
       return;
     }
 
@@ -425,7 +426,7 @@ export function ChatProvider({
       pusher.unsubscribe(channelName);
       subscribedChannelRef.current = null;
     };
-  }, [appendMessage, conversationId, guestToken, hasSession, isOpen, refetchMessages, refetchMessagesForGuest]);
+  }, [appendMessage, conversationId, guestToken, hasSession, refetchMessages, refetchMessagesForGuest]);
 
   useEffect(() => {
     if (isOpen) {

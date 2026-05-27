@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useChat } from "@/components/chat/chat-provider";
 import { ArchivedChatBanner } from "@/components/chat/archived-chat-banner";
-import { ChatComposer } from "@/components/chat/chat-composer";
+import { ChatComposer, type ChatComposerHandle } from "@/components/chat/chat-composer";
 import { HistoryDrawer } from "@/components/chat/history-drawer";
 import { MessageList } from "@/components/chat/message-list";
 import { ProductContextBanner } from "@/components/chat/product-context-banner";
@@ -106,7 +106,7 @@ function PanelBody({
   } = useChat();
 
   const isArchived = conversationStatus === "ARCHIVED";
-  const [prefillText, setPrefillText] = useState("");
+  const composerRef = useRef<ChatComposerHandle>(null);
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
@@ -125,7 +125,10 @@ function PanelBody({
       />
       {messages.length === 0 && !isLoading && canSend ? (
         <div className="shrink-0">
-          <SuggestedMessages productContext={productContext} onSelect={setPrefillText} />
+          <SuggestedMessages
+            productContext={productContext}
+            onSelect={(text) => { void composerRef.current?.sendWithText(text); }}
+          />
         </div>
       ) : null}
       {productContext ? (
@@ -139,7 +142,7 @@ function PanelBody({
         </div>
       ) : null}
       <div className="shrink-0">
-        <ChatComposer prefillText={prefillText} onPrefillConsumed={() => setPrefillText("")} />
+        <ChatComposer ref={composerRef} />
       </div>
     </div>
   );

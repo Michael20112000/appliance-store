@@ -19,13 +19,13 @@ export function SuggestedMessages({ productContext, onSelect }: SuggestedMessage
   suggestions.push(...GENERAL_SUGGESTIONS);
 
   return (
-    <div className="flex flex-wrap gap-2 px-4 py-3">
+    <div className="flex gap-2 overflow-x-auto px-4 py-3 scrollbar-none">
       {suggestions.map((text) => (
         <button
           key={text}
           type="button"
           onClick={() => onSelect(text)}
-          className="rounded-full border border-border bg-muted px-3 py-1.5 text-sm text-foreground hover:bg-muted/80 transition-colors"
+          className="shrink-0 whitespace-nowrap rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-sm text-primary transition-colors hover:bg-primary/20"
         >
           {text}
         </button>

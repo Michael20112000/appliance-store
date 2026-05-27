@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState, type KeyboardEvent } from "react";
 import { Paperclip, Send } from "lucide-react";
 import { useAdminChat } from "@/components/chat/admin-chat-provider";
 import { useChat } from "@/components/chat/chat-provider";
@@ -69,7 +69,12 @@ async function signAndUpload(file: File): Promise<ChatAttachment> {
   };
 }
 
-export function ChatComposer({ prefillText = "", onPrefillConsumed }: { prefillText?: string; onPrefillConsumed?: () => void; } = {}) {
+export type ChatComposerHandle = {
+  sendWithText: (text: string) => Promise<void>;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export const ChatComposer = forwardRef<ChatComposerHandle, {}>(function ChatComposer(_, ref) {
   const {
     conversationId,
     productContext,
@@ -89,12 +94,6 @@ export function ChatComposer({ prefillText = "", onPrefillConsumed }: { prefillT
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (!prefillText) return;
-    setBody(prefillText);
-    onPrefillConsumed?.();
-  }, [prefillText, onPrefillConsumed]);
 
   const trimmed = body.trim();
   const overLimit = body.length > MAX_LENGTH;
@@ -198,6 +197,67 @@ export function ChatComposer({ prefillText = "", onPrefillConsumed }: { prefillT
     }
   };
 
+  const sendWithText = useCallback(async (text: string) => {
+    const input = text.trim();
+    if (!input || !canSendMessages || isSending) return;
+
+    setError(null);
+    setIsSending(true);
+
+    const tempId = `pending-${crypto.randomUUID()}`;
+    const optimistic: MessageDto & { pending: true } = {
+      id: tempId,
+      conversationId: conversationId ?? "pending",
+      body: input,
+      senderRole: "BUYER",
+      senderId: "",
+      createdAt: new Date().toISOString(),
+      pending: true,
+    };
+
+    appendMessage(optimistic);
+
+    try {
+      const response = await fetch("/api/chat/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          body: input,
+          conversationId: conversationId ?? undefined,
+          productId: productContext?.productId,
+          guestToken: guestToken ?? undefined,
+        }),
+      });
+
+      const payload = (await response.json()) as MessageDto & {
+        error?: string;
+        message?: string;
+      };
+
+      if (!response.ok) {
+        removeOptimisticMessage(tempId);
+        if (payload.error === "CHAT_ARCHIVED") {
+          setConversationStatus("ARCHIVED");
+        }
+        setError(mapSendError(response.status, payload));
+        return;
+      }
+
+      replaceOptimisticMessage(tempId, payload);
+      if (!conversationId) {
+        setConversationId(payload.conversationId);
+        setConversationStatus("OPEN");
+      }
+    } catch {
+      removeOptimisticMessage(tempId);
+      setError("Не вдалося надіслати. Спробуйте ще раз.");
+    } finally {
+      setIsSending(false);
+    }
+  }, [appendMessage, canSendMessages, conversationId, guestToken, isSending, productContext, removeOptimisticMessage, replaceOptimisticMessage, setConversationId, setConversationStatus]);
+
+  useImperativeHandle(ref, () => ({ sendWithText }), [sendWithText]);
+
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -288,7 +348,7 @@ export function ChatComposer({ prefillText = "", onPrefillConsumed }: { prefillT
       {fileError ? <p className="mt-1 text-sm text-destructive">{fileError}</p> : null}
     </div>
   );
-}
+});
 
 export function AdminChatComposer() {
   const {
