@@ -11,9 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import dynamic from "next/dynamic";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useQueryStates } from "nuqs";
-import { chatParsers, chatUrlKeys } from "@/lib/chat/search-params";
+import { useRouter } from "next/navigation";
 import {
   getPusherClient,
   isPusherClientConfigured,
@@ -109,12 +107,6 @@ export function ChatProvider({
   initialCartCount,
 }: ChatProviderProps) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const [query, setQuery] = useQueryStates(chatParsers, {
-    shallow: false,
-    urlKeys: chatUrlKeys,
-  });
 
   const [conversationId, setConversationId] = useState<string | null>(
     initialConversationId ?? null,
@@ -131,11 +123,10 @@ export function ChatProvider({
   );
   const [guestToken, setGuestToken] = useState<string | null>(null);
   const [panelView, setPanelView] = useState<"thread" | "history">("thread");
+  const [isOpen, setIsOpen] = useState(false);
 
   const wasDisconnectedRef = useRef(false);
   const subscribedChannelRef = useRef<string | null>(null);
-
-  const isOpen = query.chat === "open";
   const isOpenRef = useRef(isOpen);
   const canSend =
     conversationStatus === null || conversationStatus === "OPEN";
@@ -147,10 +138,10 @@ export function ChatProvider({
   }, [isOpen]);
 
   const closePanel = useCallback(() => {
-    void setQuery({ chat: null, productId: null });
+    setIsOpen(false);
     setProductContext(null);
     setPanelView("thread");
-  }, [setQuery]);
+  }, []);
 
   const openHistory = useCallback(() => setPanelView("history"), []);
   const closeHistory = useCallback(() => setPanelView("thread"), []);
@@ -171,16 +162,11 @@ export function ChatProvider({
 
       if (options?.productId || options?.productTitle || options?.productSlug) {
         setProductContext(options);
-        void setQuery({
-          chat: "open",
-          productId: options.productId ?? null,
-        });
-        return;
       }
 
-      void setQuery({ chat: "open" });
+      setIsOpen(true);
     },
-    [guestToken, hasSession, setQuery],
+    [guestToken, hasSession],
   );
 
   const appendMessage = useCallback((message: ChatMessage) => {
