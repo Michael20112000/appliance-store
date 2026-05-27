@@ -5,10 +5,12 @@ import { requireBuyer } from "@/lib/permissions";
 import {
   addToCart,
   clearCart,
+  getCartForUser,
   mergePendingItems,
   removeFromCart,
 } from "@/server/services/cart.service";
 import { resolveGuestCartProducts } from "@/server/services/cart.service";
+import type { CartViewDto } from "@/types/cart";
 import {
   addToCartSchema,
   mergePendingSchema,
@@ -63,4 +65,9 @@ export async function resolveGuestCartAction(productIds: string[]) {
   const parsed = resolveGuestCartSchema.parse({ productIds });
   const cart = await resolveGuestCartProducts(parsed.productIds);
   return { ok: true as const, cart };
+}
+
+export async function getCartAction(): Promise<CartViewDto> {
+  const session = await requireBuyer();
+  return getCartForUser(session.user.id);
 }

@@ -5,11 +5,13 @@ import { requireBuyer } from "@/lib/permissions";
 import {
   addToWishlist,
   clearWishlistForUser,
+  listWishlistForUser,
   mergePendingWishlistItems,
   removeFromWishlist,
   resolveProductsByIds,
   WISHLIST_MAX_ERROR,
 } from "@/server/services/wishlist.service";
+import type { WishlistViewDto } from "@/types/wishlist";
 import {
   mergePendingWishlistSchema,
   resolveGuestWishlistSchema,
@@ -71,4 +73,9 @@ export async function mergePendingWishlistAction(
   );
   revalidateWishlistPaths();
   return { ok: true as const, merged: result.merged };
+}
+
+export async function getWishlistAction(): Promise<WishlistViewDto> {
+  const session = await requireBuyer();
+  return listWishlistForUser(session.user.id);
 }
