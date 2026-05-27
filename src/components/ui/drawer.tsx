@@ -30,7 +30,7 @@ function DrawerViewport({ className, ...props }: DrawerPrimitive.Viewport.Props)
   return (
     <DrawerPrimitive.Viewport
       data-slot="drawer-viewport"
-      className={cn("fixed inset-0 z-50 flex items-end justify-center", className)}
+      className={cn("fixed inset-0 z-50", className)}
       {...props}
     />
   )

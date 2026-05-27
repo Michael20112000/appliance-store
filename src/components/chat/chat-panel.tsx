@@ -166,7 +166,7 @@ function useIsMobile() {
 }
 
 export function ChatPanel() {
-  const { isOpen, closePanel, panelView } = useChat();
+  const { isOpen, closePanel, panelView, closeHistory } = useChat();
   const isMobile = useIsMobile();
 
   return (
@@ -196,6 +196,14 @@ export function ChatPanel() {
               >
                 <HistoryDrawer />
               </div>
+              <div
+                className={cn(
+                  "absolute inset-0 z-[9] bg-black/30 transition-opacity duration-200 motion-reduce:transition-none",
+                  panelView === "history" ? "opacity-100" : "pointer-events-none opacity-0"
+                )}
+                onClick={closeHistory}
+                aria-hidden="true"
+              />
             </div>
           ) : null}
         </div>
@@ -209,7 +217,7 @@ export function ChatPanel() {
         <DrawerPortal>
           <DrawerBackdrop />
           <DrawerViewport className="md:hidden">
-          <DrawerPopup className="h-[80dvh] max-h-[80dvh] min-h-0 flex-col gap-0 rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))]">
+          <DrawerPopup className="h-[80dvh] max-h-[80dvh] min-h-0 w-full flex-col gap-0 rounded-t-2xl border-t p-0 pb-[max(0px,env(safe-area-inset-bottom))]">
             <DrawerSwipeArea />
             <div className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden">
               <PanelBody useNativeScroll stickyHeader />
@@ -221,6 +229,14 @@ export function ChatPanel() {
               >
                 <HistoryDrawer />
               </div>
+              <div
+                className={cn(
+                  "absolute inset-0 z-[9] bg-black/30 transition-opacity duration-200 motion-reduce:transition-none",
+                  panelView === "history" ? "opacity-100" : "pointer-events-none opacity-0"
+                )}
+                onClick={closeHistory}
+                aria-hidden="true"
+              />
             </div>
           </DrawerPopup>
           </DrawerViewport>
