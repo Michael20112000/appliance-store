@@ -58,6 +58,12 @@ describe("ProductSearchInput", () => {
     expect(url).toContain("page=1");
   });
 
+  it("does not navigate on mount (no first-render router.replace) (ADM-SRCH-01)", () => {
+    render(<ProductSearchInput q="Samsung" pageSize={20} />);
+    vi.advanceTimersByTime(300);
+    expect(mockReplace).not.toHaveBeenCalled();
+  });
+
   it("syncs input value when q prop changes (ADM-SRCH-01)", () => {
     const { rerender } = render(<ProductSearchInput q="Sony" pageSize={20} />);
     rerender(<ProductSearchInput q="LG" pageSize={20} />);

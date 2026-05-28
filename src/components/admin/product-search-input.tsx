@@ -36,12 +36,17 @@ export function ProductSearchInput({
   const [value, setValue] = useState(q ?? "");
   const [isPending, startTransition] = useTransition();
   const debounceRef = useRef(createDebounce(DEBOUNCE_MS));
+  const isMountedRef = useRef(false);
 
   useEffect(() => {
     setValue(q ?? "");
   }, [q]);
 
   useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
     debounceRef.current(() => {
       startTransition(() => {
         router.replace(
