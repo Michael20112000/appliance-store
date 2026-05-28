@@ -21,7 +21,7 @@
 
 ### Admin
 
-- [ ] **ADM-SRCH-01**: Live-пошук товарів через пошукове поле на /admin/tovary
+- [x] **ADM-SRCH-01**: Live-пошук товарів через пошукове поле на /admin/tovary
 
 ## Future Requirements
 
@@ -54,7 +54,7 @@
 | CHAT-12 | Phase 52 | Pending |
 | CHAT-13 | Phase 52 | Pending |
 | CHAT-14 | Phase 52 | Pending |
-| ADM-SRCH-01 | Phase 53 | Pending |
+| ADM-SRCH-01 | Phase 53 | Complete |
 
 **Coverage:**
 - v3.1 requirements: 8 total

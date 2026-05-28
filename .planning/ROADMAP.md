@@ -197,7 +197,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 | 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
 | 51. Chat Badge & Suggested Messages | v3.1 | 4/4 | Complete   | 2026-05-27 |
 | 52. Chat Structural Refactor | v3.1 | 4/4 | Complete   | 2026-05-27 |
-| 53. Admin Product Search | v3.1 | 2/2 | Complete   | 2026-05-28 |
+| 53. Admin Product Search | v3.1 | 2/2 | Complete    | 2026-05-28 |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 48. History Drawer | v3.0 | 3/3 | Complete | 2026-05-26 |
