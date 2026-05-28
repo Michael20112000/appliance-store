@@ -25,7 +25,7 @@
 
 ## Current State
 
-**Shipped:** v1.0 → v3.0 (2026-05-26)
+**Shipped:** v1.0 → v3.0 (2026-05-26) | Phase 53 complete (2026-05-28)
 
 **v3.0 (2026-05-26):** Full real-time chat — guest chat without registration (localStorage token), admin lifecycle control (close/reopen), guest conversation claim on login, in-widget history drawer (auth only), image attachments (jpg/png/webp, signed Cloudinary).
 
@@ -115,7 +115,7 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - [ ] CHAT-MOB-01 — Mobile chat через shadcn Drawer (swipe-to-close)
 - [ ] CHAT-HIST-01 — History slide-in всередині widget (не заміна вмісту)
 - [ ] CHAT-PERS-01 — Chat не закривається при навігації по сайту
-- [ ] ADM-SRCH-01 — Live-пошук товарів в /admin/tovary
+- ✓ ADM-SRCH-01 — Live-пошук товарів в /admin/tovary — Validated in Phase 53
 
 ### Deferred (post–v2.0)
 
