@@ -15,6 +15,7 @@ import {
   listAdminProductsSchema,
   type ListAdminProductsFilters,
 } from "@/server/validators/admin-product";
+import { ProductSearchInput } from "@/components/admin/product-search-input";
 
 export const metadata: Metadata = {
   title: "Товари",
@@ -74,6 +75,15 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           Додати товар
         </Button>
       </div>
+
+      <ProductSearchInput
+        q={filters.q}
+        stock={filters.stock}
+        categoryId={filters.categoryId}
+        pageSize={filters.pageSize}
+        sort={filters.sort}
+        dir={filters.dir}
+      />
 
       <ProductListFilters
         categories={categories.map((category) => ({
