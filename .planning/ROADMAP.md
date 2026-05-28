@@ -178,7 +178,17 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
   1. A search input is visible at the top of the /admin/tovary product list
   2. Typing in the search field filters the product list in real time (no submit button required)
   3. The filtered list shows only products whose name or relevant field matches the query; an empty state is shown when there are no matches
-**Plans**: TBD
+**Plans**: 2 plans
+
+**Wave 0**
+- [ ] 53-01-PLAN.md — Failing test stubs: product-search-input.test.tsx (5 unit tests, RED) + extend admin-product.service.test.ts with q-filter cases
+
+**Wave 1** *(blocked on Wave 0 completion)*
+- [ ] 53-02-PLAN.md — Implement ProductSearchInput component + wire into tovary/page.tsx
+
+**Cross-cutting constraints:**
+- product-search-input.test.tsx (Plan 01) must exist before Plan 02 can turn the tests GREEN
+- Plan 02 also extends admin-product.service.test.ts (already green — tests existing backend code)
 
 ## Progress
 
@@ -187,7 +197,7 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 | 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
 | 51. Chat Badge & Suggested Messages | v3.1 | 4/4 | Complete   | 2026-05-27 |
 | 52. Chat Structural Refactor | v3.1 | 4/4 | Complete   | 2026-05-27 |
-| 53. Admin Product Search | v3.1 | 0/? | Not started | - |
+| 53. Admin Product Search | v3.1 | 0/2 | Not started | - |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 48. History Drawer | v3.0 | 3/3 | Complete | 2026-05-26 |
