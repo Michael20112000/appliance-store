@@ -18,10 +18,10 @@ describe("adminProductsUrl", () => {
     );
   });
 
-  it("omits page when page is 1", () => {
+  it("includes page when page is 1 (explicit reset)", () => {
     expect(
       adminProductsUrl({ stock: "in_stock", page: 1, pageSize: 50 }),
-    ).toBe("/admin/tovary?stock=in_stock&pageSize=50");
+    ).toBe("/admin/tovary?stock=in_stock&page=1&pageSize=50");
   });
 
   it("includes page when greater than 1", () => {
@@ -30,14 +30,14 @@ describe("adminProductsUrl", () => {
     );
   });
 
-  it("resets page in URL when filter changes with page 1", () => {
+  it("includes page=1 when page is 1 (explicit reset to first page)", () => {
     expect(
       adminProductsUrl({
         stock: "in_stock",
         page: 1,
         pageSize: 20,
       }),
-    ).toBe("/admin/tovary?stock=in_stock");
+    ).toBe("/admin/tovary?stock=in_stock&page=1");
   });
 
   it("includes sort and dir when sort is active", () => {

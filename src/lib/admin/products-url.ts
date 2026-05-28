@@ -33,7 +33,7 @@ export function adminProductsUrl(params: AdminProductsUrlParams = {}): string {
   if (params.q != null && params.q.trim() !== "") {
     searchParams.set("q", params.q.trim());
   }
-  if (params.page != null && params.page !== DEFAULT_PAGE) {
+  if (params.page != null) {
     searchParams.set("page", String(params.page));
   }
   if (params.pageSize != null && params.pageSize !== DEFAULT_PAGE_SIZE) {
