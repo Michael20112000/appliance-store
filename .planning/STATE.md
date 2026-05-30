@@ -2,37 +2,36 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: UX Polish & Fixes
-status: milestone_complete
-last_updated: 2026-05-28T16:25:49.298Z
-last_activity: 2026-05-28 -- Phase 53 execution started
+status: archived
+last_updated: 2026-05-30T00:00:00.000Z
+last_activity: 2026-05-30 -- v3.1 milestone archived
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 15
   completed_plans: 15
-  percent: 75
-stopped_at: Milestone complete (Phase 53 was final phase)
+  percent: 100
+stopped_at: Milestone archived — start /gsd:new-milestone for v3.2
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-26)
+See: .planning/PROJECT.md (updated 2026-05-30)
 
 **Core value:** Покупець швидко знаходить б/у техніку у Львові, оформлює замовлення і за потреби пише магазину в чат.
-**Current focus:** Milestone complete
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 53
-Plan: Not started
+Milestone v3.1 archived. Next: `/gsd:new-milestone`
 
 ```
-Progress: [██████████] 100%
+Progress: [██████████] 100% — ARCHIVED
 ```
 
-Last activity: 2026-05-28
+Last activity: 2026-05-30
 
 ## Deferred Items
 
@@ -80,5 +79,4 @@ None.
 
 ## Operator Next Steps
 
-1. **Human UAT (Phase 50):** Open cart/wishlist drawers in browser — verify data, backdrop close, no page navigation
-2. Run `/gsd:plan-phase 51` or `/gsd:execute-phase 51` — Chat Badge & Suggested Messages
+1. Run `/gsd:new-milestone` — start next milestone cycle (questioning → research → requirements → roadmap)

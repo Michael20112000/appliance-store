@@ -10,22 +10,11 @@
 
 Покупець швидко знаходить потрібну б/у техніку у Львові, бачить реальний стан і ціну, оформлює замовлення без зайвого тертя — і за потреби одразу пише магазину в чат.
 
-## Current Milestone: v3.1 UX Polish & Fixes
-
-**Goal:** Переробити корзину/вішліст на drawer, покращити chat UX (unread badge, suggested messages, mobile drawer, history slide-in, persistent state), додати product search в адмінці.
-
-**Target features:**
-- Корзина і вішліст — повноекранний drawer замість окремих сторінок (виїжає справа)
-- Unread chat badge — лічильник непрочитаних від адміна на FAB/кнопці відкриття чату
-- Suggested messages — заготовані повідомлення при відкритті чату (контекстне по товару + загальні)
-- Mobile chat → shadcn Drawer (знизу, swipe-to-close)
-- Chat history → slide-in з лівого боку всередині widget (не заміна вмісту)
-- Chat persistent state — не закривається при навігації/кліках, тільки явний close або URL
-- Admin товари — live-пошук через пошукове поле
-
 ## Current State
 
-**Shipped:** v1.0 → v3.0 (2026-05-26) | Phase 53 complete (2026-05-28)
+**Shipped:** v1.0 → v3.1 (2026-05-30) | Phase 53 complete (2026-05-28)
+
+**v3.1 (2026-05-30):** Cart/wishlist as right-side Sheet drawers (DrawerProvider, 5 entry points converted from Link to button); numeric unread chat badge + suggested message chips; Base UI mobile Drawer (swipe-to-close); CSS translate history overlay (PanelBody stays mounted); chat persistence via useState (nuqs removed); live admin product search (debounced, Zod-validated).
 
 **v3.0 (2026-05-26):** Full real-time chat — guest chat without registration (localStorage token), admin lifecycle control (close/reopen), guest conversation claim on login, in-widget history drawer (auth only), image attachments (jpg/png/webp, signed Cloudinary).
 
@@ -106,16 +95,16 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 - ✓ CHAT-08 — Новий чат можна створити з дровера — Phase 48
 - ✓ CHAT-09 — Вкладення файлів (jpg/png/webp, ≤10 МБ) — лише авторизовані та адмін — Phase 49
 
-### Active (v3.1)
+### Validated (v3.1)
 
-- [ ] CART-DR-01 — Корзина як drawer (замість /koszyk сторінки)
-- [ ] WISH-DR-01 — Вішліст як drawer (замість /obrane сторінки)
-- [ ] CHAT-UNR-01 — Unread badge на кнопці відкриття чату
-- [ ] CHAT-SUGG-01 — Suggested messages при відкритті чату
-- [ ] CHAT-MOB-01 — Mobile chat через shadcn Drawer (swipe-to-close)
-- [ ] CHAT-HIST-01 — History slide-in всередині widget (не заміна вмісту)
-- [ ] CHAT-PERS-01 — Chat не закривається при навігації по сайту
-- ✓ ADM-SRCH-01 — Live-пошук товарів в /admin/tovary — Validated in Phase 53
+- ✓ DRWR-01/CART-DR-01 — Корзина як drawer (DrawerProvider, CartDrawer, усі entry points → button) — v3.1
+- ✓ DRWR-02/WISH-DR-01 — Вішліст як drawer (WishlistDrawer, WishlistNavLink → button) — v3.1
+- ✓ CHAT-10/CHAT-UNR-01 — Numeric unread badge на FAB (countUnreadForBuyer, boolean→number migration) — v3.1
+- ✓ CHAT-11/CHAT-SUGG-01 — Suggested messages при відкритті чату (SuggestedMessages chips + prefillText) — v3.1
+- ✓ CHAT-12/CHAT-MOB-01 — Mobile chat через Base UI Drawer (swipeDirection=down) — v3.1
+- ✓ CHAT-13/CHAT-HIST-01 — History CSS translate overlay всередині widget (PanelBody stays mounted) — v3.1
+- ✓ CHAT-14/CHAT-PERS-01 — Chat persistence via useState (nuqs removed, survives navigation) — v3.1
+- ✓ ADM-SRCH-01 — Live-пошук товарів в /admin/tovary (debounced, Zod-validated) — v3.1
 
 ### Deferred (post–v2.0)
 
@@ -175,8 +164,22 @@ See prior milestones in `.planning/milestones/v1.*-REQUIREMENTS.md` and Validate
 | panelView state in ChatProvider | In-widget view-state switch ('thread' \| 'history') — no Sheet/modal, simpler than overlay | ✓ Good (v3.0/48) |
 | PDF attachments dropped in Phase 49 | Cloudinary signed delivery URL complexity; images only (jpg/png/webp) | ✓ Good (v3.0/49) |
 | Cloudinary signed preset chat-attachments | Server-validates type + size; no unsigned upload | ✓ Good (v3.0/49) |
+| DrawerProvider wraps ChatProvider | Ensures StorefrontFabs (inside ChatContext tree) and PdpCartFab can both useDrawers() | ✓ Good (v3.1/50) |
+| One drawer open at a time | Mutual exclusion in openCart/openWishlist — avoids z-index stack | ✓ Good (v3.1/50) |
+| CartNavButton separate client from CartNavLink RSC | Clean RSC/client boundary; RSC fetches count, client handles open | ✓ Good (v3.1/50) |
+| CSS translate overlay for history panel | PanelBody stays mounted, real-time state preserved; no content-swap | ✓ Good (v3.1/52) |
+| useState isOpen for chat (nuqs removed) | URL-free chat persistence across page navigation; simpler than search-params | ✓ Good (v3.1/52) |
+| prefillText state in PanelBody (not ChatProvider) | Local UI state, not shared context — avoids unnecessary re-renders | ✓ Good (v3.1/51) |
 
 ## Evolution
+
+<details>
+<summary>v3.1 milestone snapshot (2026-05-30)</summary>
+
+v3.1 scope: UX drawer pattern (cart + wishlist via DrawerProvider, 5 entry-point conversions), chat badge + suggested messages (countUnreadForBuyer, SuggestedMessages chips, prefillText state), chat structural refactor (Base UI Drawer mobile, CSS translate history overlay, useState isOpen replacing nuqs), admin live product search (debounced ProductSearchInput, Zod q param).
+4 phases, 15 plans, shipped 2026-05-30. All 8 DRWR/CHAT/ADM requirements validated.
+
+</details>
 
 <details>
 <summary>v3.0 milestone snapshot (2026-05-26)</summary>
@@ -226,4 +229,4 @@ v1.5 scope: ORD-03/04, ADM-CAT/PRD polish, HOME-03, FOOT-01…04, UAT-01 closure
 </details>
 
 ---
-*Last updated: 2026-05-26 after v3.1 milestone start — 8 active requirements defined*
+*Last updated: 2026-05-30 after v3.1 milestone*

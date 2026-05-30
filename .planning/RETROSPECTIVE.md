@@ -1,5 +1,43 @@
 # Project Retrospective
 
+## Milestone: v3.1 — UX Polish & Fixes
+
+**Shipped:** 2026-05-30
+**Phases:** 50–53 | **Plans:** 15
+
+### What Was Built
+
+Phase 50: DrawerProvider context (mutual exclusion openCart/openWishlist), getCartAction/getWishlistAction server actions, CartDrawer + WishlistDrawer Sheet shells with auth/guest data loading, five Link-to-button entry-point conversions (StorefrontFabs cart FAB, CartNavLink, GuestCartNavLink, WishlistNavLink, PdpCartFab) — DRWR-01/02 complete. Phase 51: countUnreadForBuyer service, ChatProvider boolean→number migration (unreadCount), numeric Badge on chat FAB + chat-fab.tsx, SuggestedMessages chip component (product-contextual + 3 general Ukrainian), prefillText state in PanelBody + useEffect prefill in ChatComposer — CHAT-10/11 complete. Phase 52: ChatProvider nuqs→useState refactor (search-params.ts deleted), src/components/ui/drawer.tsx wrapping @base-ui/react/drawer, chat-panel.tsx rewrite with DrawerRoot (mobile, swipeDirection=down) + CSS translate overlay for history panel (absolute inset-y-0 left-0 w-[75%] translate-x-0/-translate-x-full, motion-reduce support) — CHAT-12/13/14 complete. Phase 53: ProductSearchInput "use client" with useRef(createDebounce) + router.replace(page:1, scroll:false) + isMountedRef guard, wired above filters in tovary/page.tsx — ADM-SRCH-01 complete.
+
+### What Worked
+
+- CSS translate overlay pattern for history panel — PanelBody stays mounted, real-time message state is never lost on view switch
+- DrawerProvider wrapping ChatProvider — correct placement for both FAB-level (StorefrontFabs) and PDP-level (PdpCartFab) consumers with zero extra wiring
+- useState for chat isOpen (no URL) — eliminating nuqs dependency simplified the chat provider and made persistence trivial
+- TDD RED→GREEN across all 4 phases — stubs locked API contracts before implementation
+- Phase 52 Wave 1 parallel plans (52-02 + 52-03) — no shared files, no conflicts
+- isMountedRef in ProductSearchInput — clean way to prevent router.replace on initial render without additional flag state
+
+### What Was Inefficient
+
+- REQUIREMENTS.md checkbox sync gap (third occurrence) — 5 requirements left as `[ ]` despite being shipped; needed manual reconciliation at milestone close. Same issue as v3.0 and v2.1.
+- Phase 50 had "human UAT pending" note in ROADMAP bullet despite being completed — stale bullet not cleared after phase execution
+
+### Patterns Established
+
+- `DrawerProvider wraps ChatProvider` — outer context owns drawer state, inner context owns chat state; no circular dependency
+- CSS translate overlay for in-widget panels: `absolute inset-y-0 left-0 z-10 w-[75%]` with `translate-x-0`/`-translate-x-full` + `motion-reduce:transition-none`
+- `isMountedRef` guard in debounced router components — prevents spurious navigation on first render
+- `prefillText` state in local parent (not shared context) — for ephemeral UI state that only one component subtree needs
+
+### Key Lessons
+
+- REQUIREMENTS.md checkbox gap is now a confirmed pattern: plan executors write SUMMARY.md but not REQUIREMENTS.md traceability. Should add a "done-when" criterion to phase plan templates: "update REQUIREMENTS.md traceability for each requirement this phase satisfies."
+- ROADMAP phase bullets with "human UAT pending" should be cleared by the executor when UAT passes — stale status notes cause confusion at milestone close
+- Base UI Drawer internals cannot be tested via jsdom gesture simulation (swipe events) — CHAT-14 approach (test non-regression rather than the behavior) is acceptable for this constraint
+
+---
+
 ## Milestone: v3.0 — Chat & Engagement
 
 **Shipped:** 2026-05-26
@@ -189,6 +227,7 @@ BUG-12…17 verified on main; CI green after minimal test fixes; intake wave 1�
 
 | Milestone | Phases | Theme |
 |-----------|--------|-------|
+| v3.1 | 50–53 | UX drawer pattern + chat polish + admin search |
 | v3.0 | 46–49 | Real-time chat — guest, lifecycle, history, attachments |
 | v2.3 | 44–45 | Header cleanup + FAB overhaul |
 | v2.2 | 41–43 | Social links, FABs, slider, animation |

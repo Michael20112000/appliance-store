@@ -1,5 +1,23 @@
 # Milestones
 
+## v3.1 UX Polish & Fixes (Shipped: 2026-05-30)
+
+**Phases completed:** 4 phases, 15 plans
+
+**Key accomplishments:**
+
+- Cart and wishlist replaced as page navigations — both open as right-side Sheet drawers via DrawerProvider; all five entry points (StorefrontFabs, CartNavLink, GuestCartNavLink, WishlistNavLink, PdpCartFab) converted from Link to button
+- Numeric unread badge on chat FAB shows count of unread admin messages; resets to zero on chat open via countUnreadForBuyer service
+- SuggestedMessages chip component shows product-contextual chip + 3 general Ukrainian chips on new chat open; clicking prefills ChatComposer via prefillText state in PanelBody
+- Mobile chat replaced with Base UI Drawer (swipeDirection=down, swipe-to-close); desktop retains Sheet panel — same ChatPanel branch handles both
+- Chat history panel changed from content-swap to CSS translate overlay (absolute inset-y-0 left-0 translate-x-0/-translate-x-full) — PanelBody stays mounted, real-time state preserved
+- Chat persistence achieved by replacing nuqs isOpen URL param with plain useState(false) — chat survives storefront page navigation, closes only on explicit X press
+- Admin /admin/tovary gains live ProductSearchInput (debounced router.replace, page=1 reset, isMountedRef guard) with q param wired through existing Zod listAdminProductsSchema
+
+**Stats:** 97 commits · 58 files changed · +2880/−239 lines · 3 days (2026-05-27 → 2026-05-30)
+
+---
+
 ## v3.0 Chat & Engagement (Shipped: 2026-05-26)
 
 **Phases completed:** 4 phases, 16 plans

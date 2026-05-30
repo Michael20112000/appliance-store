@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- 🔄 **v3.1 UX Polish & Fixes** — Phases 50–53 (in progress)
+- ✅ **v3.1 UX Polish & Fixes** — Phases 50–53 (shipped 2026-05-30) — [archive](milestones/v3.1-ROADMAP.md) · [requirements](milestones/v3.1-REQUIREMENTS.md)
 - ✅ **v3.0 Chat & Engagement** — Phases 46–49 (shipped 2026-05-26) — [archive](milestones/v3.0-ROADMAP.md) · [requirements](milestones/v3.0-REQUIREMENTS.md)
 - ✅ **v2.3 Bugfixes & Small Features** — Phases 44–45 (shipped 2026-05-24) — [archive](milestones/v2.3-ROADMAP.md) · [requirements](milestones/v2.3-REQUIREMENTS.md)
 - ✅ **v2.2 Bugfixes & Small Features** — Phases 41–43 (shipped 2026-05-23) — [archive](milestones/v2.2-ROADMAP.md) · [requirements](milestones/v2.2-REQUIREMENTS.md)
@@ -17,12 +17,17 @@
 
 ## Phases
 
-### v3.1 UX Polish & Fixes
+<details>
+<summary>✅ v3.1 UX Polish & Fixes (Phases 50–53) — SHIPPED 2026-05-30</summary>
 
-- [x] **Phase 50: Cart & Wishlist Drawers** - Replace /koszyk and /obrane pages with full-height right-side drawers (5/5 plans, human UAT pending)
-- [x] **Phase 51: Chat Badge & Suggested Messages** - Add unread badge on chat FAB and suggested messages on chat open
-- [ ] **Phase 52: Chat Structural Refactor** - Mobile drawer, history slide-in panel, and persistent chat across navigation
-- [ ] **Phase 53: Admin Product Search** - Live search field on /admin/tovary
+- [x] Phase 50: Cart & Wishlist Drawers (5/5 plans) — completed 2026-05-27
+- [x] Phase 51: Chat Badge & Suggested Messages (4/4 plans) — completed 2026-05-27
+- [x] Phase 52: Chat Structural Refactor (4/4 plans) — completed 2026-05-27
+- [x] Phase 53: Admin Product Search (2/2 plans) — completed 2026-05-28
+
+Full phase details: [milestones/v3.1-ROADMAP.md](milestones/v3.1-ROADMAP.md)
+
+</details>
 
 <details>
 <summary>✅ v3.0 Chat & Engagement (Phases 46–49) — SHIPPED 2026-05-26</summary>
@@ -84,120 +89,14 @@ Full phase details: [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md)
 
 </details>
 
-## Phase Details
-
-### Phase 50: Cart & Wishlist Drawers
-**Goal**: Users can open their cart and wishlist inline without leaving the current page
-**Depends on**: Nothing (first phase of milestone)
-**Requirements**: DRWR-01, DRWR-02
-**Success Criteria** (what must be TRUE):
-  1. Clicking the cart FAB or cart icon opens a full-height drawer from the right side — the browser does not navigate to /koszyk
-  2. Clicking the wishlist icon opens a full-height drawer from the right side — the browser does not navigate to /obrane
-  3. The cart drawer shows current cart contents and totals; user can update quantities or remove items
-  4. The wishlist drawer shows saved items; user can remove items or move them to cart
-  5. Both drawers close when clicking the backdrop or an explicit close button
-**Plans**: 5 plans
-
-**Wave 1**
-- [x] 50-01-PLAN.md — Wave 0 test stubs (DrawerContext, CartNavButton, CartDrawer, WishlistNavLink, WishlistDrawer tests + storefront-fabs update)
-
-**Wave 2** *(blocked on Wave 1 completion)*
-- [x] 50-02-PLAN.md — DrawerProvider context + getCartAction + getWishlistAction server actions
-
-**Wave 3** *(blocked on Wave 2 completion)*
-- [x] 50-03-PLAN.md — CartDrawer shell + CartDrawerContent (auth/guest data loading)
-- [x] 50-04-PLAN.md — WishlistDrawer shell + WishlistDrawerContent (auth/guest data loading)
-
-**Wave 4** *(blocked on Wave 3 completion)*
-- [x] 50-05-PLAN.md — Wire DrawerProvider into ChatProvider + convert all Link entry points to buttons
-
-**Cross-cutting constraints:**
-- `DrawerProvider` (Wave 2) must exist before CartDrawer, WishlistDrawer, and all entry-point conversions — applies to Waves 3–4
-- Both Waves 3 plans (CartDrawer, WishlistDrawer) must complete before Wave 4 wiring
-**UI hint**: yes
-
-### Phase 51: Chat Badge & Suggested Messages
-**Goal**: Users immediately see when they have unread admin messages and get helpful starting points when opening a new chat
-**Depends on**: Phase 50
-**Requirements**: CHAT-10, CHAT-11
-**Success Criteria** (what must be TRUE):
-  1. When the admin sends messages the user has not read, a numeric badge appears on the chat FAB showing the count
-  2. The badge disappears (or resets to 0) once the user opens the chat and views the messages
-  3. When a user opens a new chat on a product page, a context-specific suggested message for that product appears as a chip or button
-  4. Two to three general suggested messages (e.g. opening hours, address) appear alongside the product chip for any new chat
-  5. Clicking a suggested message pre-fills the input or sends it directly; suggestions disappear once a message is sent
-**Plans**: 4 plans
-
-**Wave 1** *(TDD red baseline)*
-- [x] 51-01-PLAN.md — Test stubs: new suggested-messages.test.tsx + rename unreadFromStore→unreadCount in three existing test files
-
-**Wave 2** *(blocked on Wave 1 completion)*
-- [x] 51-02-PLAN.md — countUnreadForBuyer service fn + ChatProvider/ChatProviderGate boolean→number migration
-
-**Wave 3** *(blocked on Wave 2 completion — plans 03 and 04 are parallel)*
-- [x] 51-03-PLAN.md — Badge rendering: storefront-fabs.tsx + chat-fab.tsx (dot → numeric Badge)
-- [x] 51-04-PLAN.md — Suggested messages: SuggestedMessages component + chat-panel.tsx wiring + chat-composer.tsx prefill
-
-**Cross-cutting constraints:**
-- ChatProvider must export unreadCount: number (Wave 2) before badge components can consume it (Wave 3)
-- suggested-messages.tsx must be created (Plan 04) to resolve the import in suggested-messages.test.tsx (Plan 01)
-**UI hint**: yes
-
-### Phase 52: Chat Structural Refactor
-**Goal**: Chat works naturally on mobile, history browsing does not disrupt the active conversation, and chat survives page navigation
-**Depends on**: Phase 51
-**Requirements**: CHAT-12, CHAT-13, CHAT-14
-**Success Criteria** (what must be TRUE):
-  1. On a mobile viewport the chat widget renders as a shadcn Drawer that slides up from the bottom and closes with a downward swipe
-  2. Tapping the history/menu button inside the widget slides a panel in from the left within the widget frame — the current conversation remains visible on the right and is not replaced
-  3. Navigating to a different storefront page (e.g. from catalog to PDP) leaves the chat widget open and in the same state it was before navigation
-  4. Chat closes only when the user presses the explicit close (X) button, and not on any internal link click or page transition
-**Plans**: 4 plans
-
-**Wave 0**
-- [x] 52-01-PLAN.md — Failing test stubs in chat-panel.test.tsx (CHAT-12, CHAT-13, CHAT-14 stubs)
-
-**Wave 1** *(blocked on Wave 0 — plans 02 and 03 are parallel)*
-- [x] 52-02-PLAN.md — ChatProvider nuqs→useState refactor + delete search-params.ts (CHAT-14)
-- [x] 52-03-PLAN.md — Create src/components/ui/drawer.tsx wrapping @base-ui/react/drawer (CHAT-12)
-
-**Wave 2** *(blocked on Wave 1 completion)*
-- [x] 52-04-PLAN.md — Rewrite chat-panel.tsx: Drawer mobile + CSS overlay history + upgrade test stubs (CHAT-12, CHAT-13, CHAT-14)
-
-**Cross-cutting constraints:**
-- chat-provider.tsx (Plan 02) must have useState isOpen before chat-panel.tsx can rely on it being non-URL-derived
-- drawer.tsx (Plan 03) must exist before chat-panel.tsx imports from it in Plan 04
-- Plans 02 and 03 have no file overlap — they can run in parallel in Wave 1
-**UI hint**: yes
-
-### Phase 53: Admin Product Search
-**Goal**: Admin can instantly find any product by name or SKU on /admin/tovary without paginating through the full list
-**Depends on**: Phase 50
-**Requirements**: ADM-SRCH-01
-**Success Criteria** (what must be TRUE):
-  1. A search input is visible at the top of the /admin/tovary product list
-  2. Typing in the search field filters the product list in real time (no submit button required)
-  3. The filtered list shows only products whose name or relevant field matches the query; an empty state is shown when there are no matches
-**Plans**: 2 plans
-
-**Wave 0**
-- [x] 53-01-PLAN.md — Failing test stubs: product-search-input.test.tsx (5 unit tests, RED) + extend admin-product.service.test.ts with q-filter cases
-
-**Wave 1** *(blocked on Wave 0 completion)*
-- [x] 53-02-PLAN.md — Implement ProductSearchInput component + wire into tovary/page.tsx
-
-**Cross-cutting constraints:**
-- product-search-input.test.tsx (Plan 01) must exist before Plan 02 can turn the tests GREEN
-- Plan 02 also extends admin-product.service.test.ts (already green — tests existing backend code)
-
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete   | 2026-05-27 |
-| 51. Chat Badge & Suggested Messages | v3.1 | 4/4 | Complete   | 2026-05-27 |
-| 52. Chat Structural Refactor | v3.1 | 4/4 | Complete   | 2026-05-27 |
-| 53. Admin Product Search | v3.1 | 2/2 | Complete    | 2026-05-28 |
+| 50. Cart & Wishlist Drawers | v3.1 | 5/5 | Complete | 2026-05-27 |
+| 51. Chat Badge & Suggested Messages | v3.1 | 4/4 | Complete | 2026-05-27 |
+| 52. Chat Structural Refactor | v3.1 | 4/4 | Complete | 2026-05-27 |
+| 53. Admin Product Search | v3.1 | 2/2 | Complete | 2026-05-28 |
 | 46. Schema Foundation + Guest Chat | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 47. Chat Lifecycle Control | v3.0 | 5/5 | Complete | 2026-05-25 |
 | 48. History Drawer | v3.0 | 3/3 | Complete | 2026-05-26 |
